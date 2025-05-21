@@ -2,6 +2,8 @@
 name = "ap33772s-rs"
 version = "0.1.0"
 edition = "2024"
+description = "Driver for the AP33772S USB C Power Delivery and Extended Power Supply IC. Allowing for both embedded-hal and embedded-hal-async I2C"
+authors = ["Scott Gibb <smgibb@yahoo.com"]
 
 [features]
 default = ["sync"]
@@ -9,8 +11,8 @@ sync = ["dep:embedded-hal", "maybe-async/is_sync"]
 async = ["dep:embedded-hal-async"]
 
 [dependencies]
-embedded-hal = {version="1.0.0", optional =true}
-embedded-hal-async = {version ="1.0.0", optional = true}
+embedded-hal = { version = "1.0.0", optional = true }
+embedded-hal-async = { version = "1.0.0", optional = true }
 maybe-async = "0.2.10"
 
 
