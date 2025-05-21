@@ -1,0 +1,40 @@
+name: Continuous Build
+
+on:
+    push:
+        branches: [ main ]
+    pull_request:
+        branches: [ main ]
+
+jobs:
+    build-sync:
+        name: Build with sync feature
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - name: Cache
+              uses: actions/cache@v4
+              with:
+                path: |
+                    ~/.cargo/registry
+                    ~/.cargo/git
+                    target
+                key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+            - name: Build (sync)
+              run: cargo build --no-default-features --features sync --verbose
+
+    build-async:
+        name: Build with async feature
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - name: Cache
+              uses: actions/cache@v4
+              with:
+                path: |
+                    ~/.cargo/registry
+                    ~/.cargo/git
+                    target
+                key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+            - name: Build (async)
+              run: cargo build --no-default-features --features async --verbose
