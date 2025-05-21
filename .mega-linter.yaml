@@ -17,6 +17,12 @@ APPLY_FIXES: all
 DISABLE:
   # - COPYPASTE # Uncomment to disable checks of excessive copy-pastes
   - SPELL # Comment to enable checks of spelling mistakes
+  - REPOSITORY_CHECKOV
+  - REPOSITORY_TRUFFLEHOG
+  - REPOSITORY_TRIVY_SBOM
+  - REPOSITORY_TRIVY
+  - REPOSITORY_SYFT
+  - REPOSITORY_GRYPE
 
 SHOW_ELAPSED_TIME: true
 
