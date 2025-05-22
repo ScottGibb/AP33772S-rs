@@ -1,19 +1,7 @@
-// Hal imports
-#[cfg(feature = "sync")]
-mod hal {
-    pub use embedded_hal::i2c::I2c;
-}
-
-#[cfg(feature = "async")]
-mod hal {
-    pub use embedded_hal_async::i2c::I2c;
-}
-
-use hal::*;
-
+use super::hal::*;
 
 pub struct Ap33772s<I2C: I2c> {
-    i2c: I2C,
+    pub i2c: I2C,
 }
 
 impl<I2C: I2c> Ap33772s<I2C> {
@@ -24,10 +12,7 @@ impl<I2C: I2c> Ap33772s<I2C> {
     }
 
     #[maybe_async::maybe_async]
-    pub async fn new_default(i2c: I2C) -> Self
-    where
-    {
-        
+    pub async fn new_default(i2c: I2C) -> Self {
         Self::new(i2c)
     }
 }

@@ -10,13 +10,13 @@ pub mod power_delivery_request_message;
 pub trait CommandRegister {
     fn raw_value(&self) -> u8;
     fn new_with_raw_value(raw_value: u8) -> Self;
-    fn get_command() -> Command;
+    fn get_command(&self) -> Command;
 }
 
 pub trait TwoByteCommandRegister {
     fn raw_value(&self) -> u16;
     fn new_with_raw_value(raw_value: u16) -> Self;
-    fn get_command() -> Command;
+    fn get_command(&self) -> Command;
 }
 
 #[macro_export]
@@ -29,7 +29,7 @@ macro_rules! impl_register {
             fn new_with_raw_value(raw_value: u8) -> Self {
                 Self::new_with_raw_value(raw_value)
             }
-            fn get_command() -> Command {
+            fn get_command(&self) -> Command {
                 $address
             }
         }
@@ -46,7 +46,7 @@ macro_rules! impl_dual_register {
             fn new_with_raw_value(raw_value: u16) -> Self {
                 Self::new_with_raw_value(raw_value)
             }
-            fn get_command() -> Command {
+            fn get_command(&self) -> Command {
                 $address
             }
         }

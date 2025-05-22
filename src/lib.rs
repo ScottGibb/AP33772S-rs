@@ -10,11 +10,39 @@ compile_error!("You cannot use both sync and async features at the same time. Pl
 compile_error!("You must enable either the sync or async feature. Please choose one.");
 
 pub mod ap33772s;
-
-#[cfg(not(feature = "register"))]
-mod commands;
-
-#[cfg(feature = "register")]
 pub mod commands;
+pub mod communications;
 
+#[cfg(feature = "sync")]
+mod hal {
+    pub use embedded_hal::i2c::I2c;
+    pub use embedded_hal::i2c::ErrorKind;
+}
 
+#[cfg(feature = "async")]
+mod hal {
+    pub use embedded_hal_async::i2c::I2c;
+        pub use embedded_hal_async::i2c::ErrorKind;
+
+}
+#[derive(PartialEq, Clone, Debug)]
+pub enum Ap33772sError {
+    I2c(hal::ErrorKind),
+}
+
+impl<E: embedded_hal::i2c::Error> From<E> for Ap33772sError {
+    fn from(e: E) -> Self {
+        Ap33772sError::I2c(e.kind())
+    }
+}
+
+// Allows Error Bubbling when working with both std and no-std rust
+impl core::error::Error for Ap33772sError {}
+
+impl core::fmt::Display for Ap33772sError {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        match self {
+            Ap33772sError::I2c(err) => write!(f, "I2C error: {:?}", err),
+        }
+    }
+}
