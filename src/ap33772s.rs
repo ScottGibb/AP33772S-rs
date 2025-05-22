@@ -27,7 +27,7 @@ impl<I2C: I2c> Ap33772s<I2C> {
     pub async fn new_default(i2c: I2C) -> Self
     where
     {
-        let driver = Self::new(i2c);
-        driver
+        
+        Self::new(i2c)
     }
 }

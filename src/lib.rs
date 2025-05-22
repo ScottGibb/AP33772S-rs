@@ -9,4 +9,8 @@ compile_error!("You cannot use both sync and async features at the same time. Pl
 #[cfg(all(not(feature = "async"), not(feature = "sync")))]
 compile_error!("You must enable either the sync or async feature. Please choose one.");
 
-pub (crate) mod ap33772s;
+pub mod ap33772s;
+#[cfg(not(feature = "register"))]
+mod commands;
+#[cfg(feature = "register")]
+pub mod commands;
