@@ -1,11 +1,12 @@
 use command_map::Command;
-mod command_map;
-mod interrupt_enable;
-mod status;
-mod operation_mode;
-mod protection_mode_configuration;
-mod power_delivery_configuration;
-mod power_delivery_request_message;
+
+pub mod command_map;
+pub mod interrupt_enable;
+pub mod status;
+pub mod operation_mode;
+pub mod protection_mode_configuration;
+pub mod power_delivery_configuration;
+pub mod power_delivery_request_message;
 pub trait CommandRegister {
     fn raw_value(&self) -> u8;
     fn new_with_raw_value(raw_value: u8) -> Self;
