@@ -13,7 +13,6 @@ async = ["dep:embedded-hal-async"]
 register = [] # Used to enable lower level register access
 
 [dependencies]
-device-driver = {version ="1.0.4", default-features = false, features = ["yaml"] }
 embedded-hal = { version = "1.0.0", optional = true }
 embedded-hal-async = { version = "1.0.0", optional = true }
 maybe-async = "0.2.10"
