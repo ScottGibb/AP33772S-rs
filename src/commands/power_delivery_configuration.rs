@@ -1,11 +1,11 @@
 use arbitrary_int::{u1, u4};
 use bitbybit::bitfield;
 
-use crate::impl_register;
+use crate::{impl_one_byte_read_command, impl_one_byte_write_command};
 
 use super::command_map::Command;
 
-/// CONFIG
+/// Command: CONFIG
 #[bitfield(u8, default = 0x03)]
 #[derive(Debug, PartialEq)]
 pub struct PowerDeliveryConfiguration {
@@ -23,7 +23,11 @@ pub struct PowerDeliveryConfiguration {
     reserved3: u4,
 }
 
-impl_register!(
+impl_one_byte_write_command!(
+    PowerDeliveryConfiguration,
+    Command::PowerDeliveryConfiguration
+);
+impl_one_byte_read_command!(
     PowerDeliveryConfiguration,
     Command::PowerDeliveryConfiguration
 );

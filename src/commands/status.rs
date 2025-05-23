@@ -1,10 +1,9 @@
 use bitbybit::bitfield;
 
-use crate::impl_register;
+use crate::{impl_one_byte_read_command};
 
 use super::command_map::Command;
 
-/// MASK
 #[bitfield(u8, default = 0x00)]
 #[derive(Debug, PartialEq)]
 pub struct Status{
@@ -33,5 +32,5 @@ pub struct Status{
     pub reserved: bool,
 
 }
-
-impl_register!(Status, Command::Status);
+// Ready Only Register
+impl_one_byte_read_command!(Status, Command::Status);

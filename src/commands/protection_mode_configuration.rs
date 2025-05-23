@@ -1,14 +1,14 @@
 use arbitrary_int::u3;
 use bitbybit::bitfield;
 
-use crate::impl_register;
+use crate::{impl_one_byte_read_command, impl_one_byte_write_command};
 
 use super::command_map::Command;
 
-/// CONFIG
+/// Command: CONFIG
 #[bitfield(u8, default = 0xF8)]
 #[derive(Debug, PartialEq)]
-pub struct SystemModeConfiguration {
+pub struct ProtectionModeConfiguration {
     /// Reserved
     #[bits(0..=2, rw)]
     reserved: u3,
@@ -25,5 +25,6 @@ pub struct SystemModeConfiguration {
 }
 
 
-impl_register!(SystemModeConfiguration, Command::SystemConfiguration);
+impl_one_byte_write_command!(ProtectionModeConfiguration, Command::SystemConfiguration);
+impl_one_byte_read_command!(ProtectionModeConfiguration, Command::SystemConfiguration);
 

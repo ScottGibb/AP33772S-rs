@@ -1,11 +1,11 @@
 use arbitrary_int::u4;
 use bitbybit::{bitenum, bitfield};
 
-use crate::impl_register;
+use crate::{impl_one_byte_read_command};
 
 use super::command_map::Command;
 
-/// STATUS register
+/// Command: OPMODE
 #[bitfield(u8, default = 0x00)]
 #[derive(Debug, PartialEq)]
 pub struct OperationMode {
@@ -45,4 +45,4 @@ pub enum ConfigurationChannel {
     Two = 1,
 }
 
-impl_register!(OperationMode, Command::OperationMode);
+impl_one_byte_read_command!(OperationMode, Command::OperationMode);

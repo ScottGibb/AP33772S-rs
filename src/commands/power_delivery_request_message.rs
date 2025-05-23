@@ -1,7 +1,7 @@
 use arbitrary_int::{u4};
 use bitbybit::{bitenum, bitfield};
 
-use crate::impl_dual_register;
+use crate::impl_write_two_byte_command;
 
 use super::command_map::Command;
 
@@ -34,7 +34,7 @@ pub enum PowerDataObject{
     ExtendedPowerRange13 = 0x0C,
 }
 
-impl_dual_register!(
+impl_write_two_byte_command!(
     PowerDeliveryRequestMessage,
     Command::PowerDeliveryRequestMessage
 );

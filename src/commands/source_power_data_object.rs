@@ -1,35 +1,39 @@
-use bitbybit::bitfield;
-use arbitrary_int::{u104};
+use bitbybit::{bitenum, bitfield};
 
-use crate::impl_register;
-
-use super::command_map::Command;
-#[bitfield(u104, default = 0x00)]
-#[derive(Debug, PartialEq)]
-pub struct AllSourceDataPowerDataObject {
-    #[bits(0..=7, rw)]
-    pub source_power_data_object: [SourcePowerDataObject; 13],
-}
-
-#[bitfield(u8, default = 0x00)]
+#[bitfield(u16, default = 0x00)]
 #[derive(Debug, PartialEq)]
 pub struct SourcePowerDataObject {
-
+    #[bits(0..=7, r)]
+    pub max_voltage: u8,
+    #[bits(8..=9, r)]
+    pub minimum_voltage: MinimumVoltage,
+    #[bits(10..=13, r)]
+    pub max_current: SourcePowerCurrent,
+    #[bit(14, r)]
+    pub source_power_type : SourcePowerType,
+    #[bit(15, r)]
+    pub is_detected: bool,
 }
 
-// TODO: Resolve this multiple defintions for one enum
-impl_register!(SourcePowerDataObject, Command::SourceStandardPowerRange1);
-impl_register!(SourcePowerDataObject, Command::SourceStandardPowerRange2);
-impl_register!(SourcePowerDataObject, Command::SourceStandardPowerRange3);
-impl_register!(SourcePowerDataObject, Command::SourceStandardPowerRange4);
-impl_register!(SourcePowerDataObject, Command::SourceStandardPowerRange5);
-impl_register!(SourcePowerDataObject, Command::SourceStandardPowerRange6);
-impl_register!(SourcePowerDataObject, Command::SourceStandardPowerRange7);
-impl_register!(SourcePowerDataObject, Command::SourceExtendedPowerRange8);
-impl_register!(SourcePowerDataObject, Command::SourceExtendedPowerRange9);
-impl_register!(SourcePowerDataObject, Command::SourceExtendedPowerRange10);
-impl_register!(SourcePowerDataObject, Command::SourceExtendedPowerRange11);
-impl_register!(SourcePowerDataObject, Command::SourceExtendedPowerRange12);
-impl_register!(SourcePowerDataObject, Command::SourceExtendedPowerRange13);
+/// VOLTAGE_MIN
+/// For AVS APDO (bit[14]=1)
+#[bitenum(u2, exhaustive=true)]
+pub enum MinimumVoltage {
+    Reserved = 0,
+    _3_3 = 1,
+    _3_3To5 = 2,
+    Others = 3,
+}
 
+#[bitenum(u3, exhaustive=true)]
+#[derive(Debug, PartialEq)]
+pub enum SourcePowerCurrent {
+  
+}
 
+#[bitenum(u1, exhaustive=true)]
+#[derive(Debug, PartialEq)]
+pub enum SourcePowerType {
+    FixedPowerDataObject = 0,
+    ProgrammablePowerSupplyAdjustablePowerDataObject = 1,
+}

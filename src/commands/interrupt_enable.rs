@@ -1,10 +1,10 @@
 use bitbybit::bitfield;
 
-use crate::impl_register;
+use crate::{impl_one_byte_read_command, impl_one_byte_write_command};
 
 use super::command_map::Command;
 
-/// MASK
+/// Command: MASK
 #[bitfield(u8, default = 0x03)]
 #[derive(Debug, PartialEq)]
 pub struct InterruptEnable{
@@ -33,4 +33,6 @@ pub struct InterruptEnable{
     pub reserved: bool,
 
 }
-impl_register!(InterruptEnable, Command::InterruptEnableMask);
+
+impl_one_byte_write_command!(InterruptEnable, Command::InterruptEnableMask);
+impl_one_byte_read_command!(InterruptEnable, Command::InterruptEnableMask);
