@@ -5,7 +5,8 @@ use std::{error::Error};
 
 fn main() {
  let i2c = setup_i2c().expect("Failed to set up I2C");
- let ap33772s = Ap33772s::new(i2c);
+ let mut ap33772s = Ap33772s::new(i2c);
+ let command = ap33772s.read_one_byte_command();
  
 
  // Set Some Registers with the feature register flag enabled

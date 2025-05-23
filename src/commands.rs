@@ -13,7 +13,8 @@ pub mod source_power_data_object;
 pub mod extended_power_range_data_object;
 pub mod power_delivery_command_message;
 pub mod power_delivery_message_result;
-
+pub mod minimum_selection_voltage;
+pub mod voltage;
 pub trait WriteOneByteCommand {
     fn raw_value(&self) -> u8;
     fn get_command(&self) -> Command;

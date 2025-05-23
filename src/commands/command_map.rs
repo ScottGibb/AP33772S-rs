@@ -19,6 +19,9 @@ pub enum Command {
     Temperature = 0x13,
     RequestedVoltage = 0x14,
     RequestedCurrent = 0x15,
+    /// The Minimum Selection Voltage, 
+    /// LSB 200mV The default value is 19h (5000mV).
+    /// Command: VSELMIN
     MinimumSelectionVoltage = 0x16,
     UnderVoltageProtectionThreshold = 0x17,
     OverVoltageProtectionThreshold = 0x18,
