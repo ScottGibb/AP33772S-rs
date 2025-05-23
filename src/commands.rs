@@ -10,6 +10,9 @@ pub mod all_source_power_data_object;
 pub mod status;
 pub mod system_control;
 pub mod source_power_data_object;
+pub mod extended_power_range_data_object;
+pub mod power_delivery_command_message;
+pub mod power_delivery_message_result;
 
 pub trait WriteOneByteCommand {
     fn raw_value(&self) -> u8;
