@@ -6,7 +6,6 @@ use crate::impl_dual_register;
 use super::command_map::Command;
 
 
-/// CONFIG
 #[bitfield(u16, default = 0x0000)]
 #[derive(Debug, PartialEq)]
 pub struct PowerDeliveryRequestMessage {

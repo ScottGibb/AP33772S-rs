@@ -27,6 +27,7 @@ mod hal {
 }
 #[derive(PartialEq, Clone, Debug)]
 pub enum Ap33772sError {
+    InvalidCommand,
     I2c(hal::ErrorKind),
 }
 
@@ -43,6 +44,7 @@ impl core::fmt::Display for Ap33772sError {
     fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         match self {
             Ap33772sError::I2c(err) => write!(f, "I2C error: {:?}", err),
+            Ap33772sError::InvalidCommand => write!(f, "Invalid command"),
         }
     }
 }
