@@ -18,8 +18,8 @@ impl Voltage {
     pub const VOLTAGE_RESOLUTION: u16 = 80; //mV
     /// Returns the voltage value in millivolts.
     pub fn voltage(&self) -> ElectricPotential {
-        let scaled_raw_voltage = self.raw_voltage() as u16 * Self::VOLTAGE_RESOLUTION;
-        ElectricPotential::new::<millivolt>(f32::from(scaled_raw_voltage))
+        let scaled_voltage = self.raw_voltage() as u16 * Self::VOLTAGE_RESOLUTION;
+        ElectricPotential::new::<millivolt>(f32::from(scaled_voltage))
     }
 }
 

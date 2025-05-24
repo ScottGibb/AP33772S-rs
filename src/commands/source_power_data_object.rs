@@ -1,4 +1,3 @@
-use arbitrary_int::u2;
 use bitbybit::{bitenum, bitfield};
 
 #[bitfield(u16, default = 0x00)]

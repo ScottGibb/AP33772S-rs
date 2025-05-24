@@ -15,6 +15,8 @@ pub mod power_delivery_command_message;
 pub mod power_delivery_message_result;
 pub mod minimum_selection_voltage;
 pub mod voltage;
+pub mod current;
+pub mod temperature;
 pub trait WriteOneByteCommand {
     fn raw_value(&self) -> u8;
     fn get_command(&self) -> Command;
