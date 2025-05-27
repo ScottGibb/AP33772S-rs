@@ -1,5 +1,7 @@
 use crate::Ap33772sError;
 use crate::commands::command_map::Command;
+use crate::commands::requested;
+use crate::commands::requested::voltage_requested::VoltageRequested;
 use crate::commands::statistics::current::Current;
 use crate::commands::statistics::minimum_selection_voltage::MinimumSelectionVoltage;
 use crate::commands::statistics::temperature::Temperature;
@@ -51,11 +53,8 @@ impl<I2C: I2c> Ap33772s<I2C> {
     }
     #[maybe_async::maybe_async]
     pub async fn get_requested_voltage(mut self) -> Result<ElectricPotential, Ap33772sError> {
-        let write = [u8::from(Command::VoltageRequested)];
-        let mut buf: [u8; 2] = [0, 0];
-        self.i2c.write_read(Self::ADDRESS, &write, &mut buf)?.await;
-        let voltage_raw = f32::from(u16::from(buf[0]) * resolutions::REQUESTED_VOLTAGE_RESOLUTION);
-        Ok(ElectricPotential::new::<millivolt>(voltage_raw))
+        let requested_voltage = self.read_two_byte_command::<VoltageRequested>()?;
+        Ok(requested_voltage.voltage())
     }
     #[maybe_async::maybe_async]
     pub async fn get_requested_current(mut self) -> Result<ElectricCurrent, Ap33772sError> {
