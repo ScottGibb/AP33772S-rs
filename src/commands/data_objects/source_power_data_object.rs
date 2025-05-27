@@ -11,14 +11,14 @@ pub struct SourcePowerDataObject {
     #[bits(10..=13, r)]
     pub max_current: SourcePowerCurrent,
     #[bit(14, r)]
-    pub source_power_type : SourcePowerType,
+    pub source_power_type: SourcePowerType,
     #[bit(15, r)]
     pub is_detected: bool,
 }
 
 /// VOLTAGE_MIN
 /// For AVS APDO (bit[14]=1)
-#[bitenum(u2, exhaustive=true)]
+#[bitenum(u2, exhaustive = true)]
 #[derive(Debug, PartialEq)]
 
 pub enum MinimumVoltage {
@@ -33,11 +33,9 @@ pub enum MinimumVoltage {
 // pub enum PeakCurrent{
 //     CurrentEqualsIoc =0,
 
-
-
 // }
 
-#[bitenum(u4, exhaustive=true)]
+#[bitenum(u4, exhaustive = true)]
 #[derive(Debug, PartialEq)]
 pub enum SourcePowerCurrent {
     LessThan1_24 = 0,
@@ -56,10 +54,9 @@ pub enum SourcePowerCurrent {
     _4_25To4_49 = 13,
     _4_50To4_99 = 14,
     MoreThan5 = 15,
-  
 }
 
-#[bitenum(u1, exhaustive=true)]
+#[bitenum(u1, exhaustive = true)]
 #[derive(Debug, PartialEq)]
 pub enum SourcePowerType {
     FixedPowerDataObject = 0,

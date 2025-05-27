@@ -1,9 +1,9 @@
 use arbitrary_int::u4;
 use bitbybit::{bitenum, bitfield};
 
-use crate::{impl_one_byte_read_command};
+use crate::impl_one_byte_read_command;
 
-use super::command_map::Command;
+use crate::commands::command_map::Command;
 
 /// Command: OPMODE
 #[bitfield(u8, default = 0x00)]

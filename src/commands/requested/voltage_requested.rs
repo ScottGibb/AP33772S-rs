@@ -1,5 +1,5 @@
 use bitbybit::bitfield;
-use uom::si::electric_potential::{millivolt};
+use uom::si::electric_potential::millivolt;
 use uom::si::f32::ElectricPotential;
 
 use super::command_map::Command;

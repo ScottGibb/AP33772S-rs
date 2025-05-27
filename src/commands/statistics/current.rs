@@ -1,14 +1,13 @@
 use bitbybit::bitfield;
-use uom::si::electric_current::{milliampere};
+use uom::si::electric_current::milliampere;
 use uom::si::f32::ElectricCurrent;
 
+use crate::commands::command_map::Command;
 use crate::impl_one_byte_read_command;
-
-use super::command_map::Command;
 
 #[bitfield(u8, default = 0x0)]
 #[derive(Debug, PartialEq)]
-pub struct Current{
+pub struct Current {
     #[bits(0..=7, r)]
     raw_current: u8,
 }

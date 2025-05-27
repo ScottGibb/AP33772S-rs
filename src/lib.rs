@@ -15,15 +15,14 @@ pub mod communications;
 
 #[cfg(feature = "sync")]
 mod hal {
-    pub use embedded_hal::i2c::I2c;
     pub use embedded_hal::i2c::ErrorKind;
+    pub use embedded_hal::i2c::I2c;
 }
 
 #[cfg(feature = "async")]
 mod hal {
+    pub use embedded_hal_async::i2c::ErrorKind;
     pub use embedded_hal_async::i2c::I2c;
-        pub use embedded_hal_async::i2c::ErrorKind;
-
 }
 #[derive(PartialEq, Clone, Debug)]
 pub enum Ap33772sError {

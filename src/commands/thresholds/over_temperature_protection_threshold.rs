@@ -8,13 +8,12 @@ use super::command_map::Command;
 
 #[bitfield(u8, default = 0x19)]
 #[derive(Debug, PartialEq)]
-pub struct OverTemperatureProrectionThreshold{
+pub struct OverTemperatureProrectionThreshold {
     #[bits(0..=7, rw)]
-    raw_threshold: u8
+    raw_threshold: u8,
 }
 
 impl OverTemperatureProrectionThreshold {
-
     /// Returns the temperature value in degrees Celsius.
     pub fn temperature(&self) -> ThermodynamicTemperature {
         let scaled_temperature = f32::from(u16::from(self.raw_threshold()));
@@ -22,5 +21,11 @@ impl OverTemperatureProrectionThreshold {
     }
 }
 
-impl_one_byte_read_command!(OverTemperatureProrectionThreshold, Command::OverTemperatureProtectionThreshold);
-impl_one_byte_write_command!(OverTemperatureProrectionThreshold, Command::OverTemperatureProtectionThreshold);
+impl_one_byte_read_command!(
+    OverTemperatureProrectionThreshold,
+    Command::OverTemperatureProtectionThreshold
+);
+impl_one_byte_write_command!(
+    OverTemperatureProrectionThreshold,
+    Command::OverTemperatureProtectionThreshold
+);

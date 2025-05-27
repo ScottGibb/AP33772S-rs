@@ -1,10 +1,9 @@
-use arbitrary_int::{u4};
+use arbitrary_int::u4;
 use bitbybit::{bitenum, bitfield};
 
-use crate::{impl_one_byte_read_command};
+use crate::impl_one_byte_read_command;
 
 use super::command_map::Command;
-
 
 #[bitfield(u8, default = 0x00)]
 #[derive(Debug, PartialEq)]
@@ -20,11 +19,14 @@ pub struct PowerDeliveryMessageResult {
 #[bitenum(u3, exhaustive = false)]
 #[derive(Debug, PartialEq)]
 pub enum Response {
-    Busy =0,
-    Success =1,
-    Invalid =2,
-    NotSupported=3,
-    TransactionFailed=4
+    Busy = 0,
+    Success = 1,
+    Invalid = 2,
+    NotSupported = 3,
+    TransactionFailed = 4,
 }
 
-impl_one_byte_read_command!(PowerDeliveryMessageResult, Command::PowerDeliveryMessageResult);
+impl_one_byte_read_command!(
+    PowerDeliveryMessageResult,
+    Command::PowerDeliveryMessageResult
+);

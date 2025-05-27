@@ -1,8 +1,9 @@
-use crate::commands::minimum_selection_voltage::MinimumSelectionVoltage;
-use crate::commands::temperature::{Temperature};
-use crate::commands::voltage::Voltage;
-use crate::commands::current::Current;
-use crate::{commands::command_map::Command, Ap33772sError};
+use crate::Ap33772sError;
+use crate::commands::command_map::Command;
+use crate::commands::statistics::current::Current;
+use crate::commands::statistics::minimum_selection_voltage::MinimumSelectionVoltage;
+use crate::commands::statistics::temperature::Temperature;
+use crate::commands::statistics::voltage::Voltage;
 use uom::si::electric_current::milliampere;
 use uom::si::electric_potential::millivolt;
 use uom::si::f32::ElectricCurrent;
@@ -12,11 +13,11 @@ use uom::si::f32::ThermodynamicTemperature;
 use super::hal::*;
 
 mod resolutions {
-    pub const REQUESTED_VOLTAGE_RESOLUTION:u16 = 50; //mV
+    pub const REQUESTED_VOLTAGE_RESOLUTION: u16 = 50; //mV
     pub const REQUEUSTED_CURRENT_RESOLUTION: u16 = 10; //mA
 }
 pub struct Ap33772s<I2C: I2c> {
-    pub (crate) i2c: I2C,
+    pub(crate) i2c: I2C,
 }
 
 impl<I2C: I2c> Ap33772s<I2C> {
@@ -51,7 +52,7 @@ impl<I2C: I2c> Ap33772s<I2C> {
     #[maybe_async::maybe_async]
     pub async fn get_requested_voltage(mut self) -> Result<ElectricPotential, Ap33772sError> {
         let write = [u8::from(Command::VoltageRequested)];
-        let mut buf: [u8; 2] = [0,0];
+        let mut buf: [u8; 2] = [0, 0];
         self.i2c.write_read(Self::ADDRESS, &write, &mut buf)?.await;
         let voltage_raw = f32::from(u16::from(buf[0]) * resolutions::REQUESTED_VOLTAGE_RESOLUTION);
         Ok(ElectricPotential::new::<millivolt>(voltage_raw))
@@ -59,18 +60,17 @@ impl<I2C: I2c> Ap33772s<I2C> {
     #[maybe_async::maybe_async]
     pub async fn get_requested_current(mut self) -> Result<ElectricCurrent, Ap33772sError> {
         let write = [u8::from(Command::CurrentRequested)];
-        let mut buf: [u8; 2] = [0,0];
+        let mut buf: [u8; 2] = [0, 0];
         self.i2c.write_read(Self::ADDRESS, &write, &mut buf)?.await;
         let current_raw = f32::from(u16::from(buf[0]) * resolutions::REQUEUSTED_CURRENT_RESOLUTION);
         Ok(ElectricCurrent::new::<milliampere>(current_raw))
     }
 
     #[maybe_async::maybe_async]
-    pub async fn get_minimum_selection_voltage(mut self) -> Result<ElectricPotential, Ap33772sError> {
-        let voltage_selection = self.read_one_byte_command::<MinimumSelectionVoltage>()?; 
+    pub async fn get_minimum_selection_voltage(
+        mut self,
+    ) -> Result<ElectricPotential, Ap33772sError> {
+        let voltage_selection = self.read_one_byte_command::<MinimumSelectionVoltage>()?;
         Ok(voltage_selection.voltage())
     }
-
-
-   
 }

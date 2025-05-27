@@ -18,7 +18,7 @@ pub enum Command {
     Temperature = 0x13,
     VoltageRequested = 0x14,
     CurrentRequested = 0x15,
-    /// The Minimum Selection Voltage, 
+    /// The Minimum Selection Voltage,
     /// LSB 200mV The default value is 19h (5000mV).
     /// Command: VSELMIN
     MinimumSelectionVoltage = 0x16,
@@ -28,7 +28,7 @@ pub enum Command {
     OverTemperatureProtectionThreshold = 0x1A,
     DeratingThreshold = 0x1B,
     /// Get All PD Source Power Capabilities (PDO1 to PDO13)
-    /// Command: SRCPDO 
+    /// Command: SRCPDO
     AllSourcesPowerDataObject = 0x20,
     /// Source Standard Power Range  Power Data Object 1
     /// Command: SRC_SPR_PDO1
@@ -67,15 +67,15 @@ pub enum Command {
     /// Command: SRC_EPR_PDO12
     SourceExtendedPowerRange12 = 0x2C,
     /// Source Extended Power Range  Power Data Object 13
-    /// Command: SRC_EPR_PDO13 
+    /// Command: SRC_EPR_PDO13
     SourceExtendedPowerRange13 = 0x2D,
-    /// Send request message with selected voltage, current and Power Data Object(PDO) index 
+    /// Send request message with selected voltage, current and Power Data Object(PDO) index
     /// Command: PD_REQMSG
     PowerDeliveryRequestMessage = 0x31,
     /// Send request message with selected voltage, current and PDO index
-    /// Command: PD_CMDMSG 
+    /// Command: PD_CMDMSG
     PowerDeliveryCommandMessage = 0x32,
     /// Result and status of PD request or command message
-    /// Command: PD_MSGRLT 
+    /// Command: PD_MSGRLT
     PowerDeliveryMessageResult = 0x33,
 }

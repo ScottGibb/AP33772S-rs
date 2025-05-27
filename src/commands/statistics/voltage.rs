@@ -1,10 +1,9 @@
 use bitbybit::bitfield;
-use uom::si::electric_potential::{millivolt};
+use uom::si::electric_potential::millivolt;
 use uom::si::f32::ElectricPotential;
 
+use crate::commands::command_map::Command;
 use crate::impl_one_byte_read_command;
-
-use super::command_map::Command;
 
 #[bitfield(u8, default = 0x0)]
 #[derive(Debug, PartialEq)]

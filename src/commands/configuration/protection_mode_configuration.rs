@@ -3,7 +3,7 @@ use bitbybit::bitfield;
 
 use crate::{impl_one_byte_read_command, impl_one_byte_write_command};
 
-use super::command_map::Command;
+use crate::commands::command_map::Command;
 
 /// Command: CONFIG
 #[bitfield(u8, default = 0xF8)]
@@ -24,7 +24,5 @@ pub struct ProtectionModeConfiguration {
     derating_function_enabled: bool,
 }
 
-
 impl_one_byte_write_command!(ProtectionModeConfiguration, Command::SystemConfiguration);
 impl_one_byte_read_command!(ProtectionModeConfiguration, Command::SystemConfiguration);
-

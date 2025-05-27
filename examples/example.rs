@@ -1,14 +1,13 @@
-use ap33772s_rs::{ap33772s::Ap33772s};
+use ap33772s_rs::ap33772s::Ap33772s;
 use ftdi::Device;
 use ftdi_embedded_hal::{self as hal, I2c};
-use std::{error::Error};
+use std::error::Error;
 
 fn main() {
- let i2c = setup_i2c().expect("Failed to set up I2C");
- let ap33772s = Ap33772s::new(i2c);
- 
+    let i2c = setup_i2c().expect("Failed to set up I2C");
+    let ap33772s = Ap33772s::new(i2c);
 
- // Set Some Registers with the feature register flag enabled
+    // Set Some Registers with the feature register flag enabled
 }
 
 pub fn setup_i2c() -> Result<I2c<Device>, Box<dyn Error>> {
