@@ -6,8 +6,8 @@ use std::error::Error;
 fn main() {
     let i2c = setup_i2c().expect("Failed to set up I2C");
     let ap33772s = Ap33772s::new(i2c);
-
-    // Set Some Registers with the feature register flag enabled
+    let current = ap33772s.get_requested_voltage().unwrap();
+    println!("Requested Voltage: {:?}", current);
 }
 
 pub fn setup_i2c() -> Result<I2c<Device>, Box<dyn Error>> {
