@@ -1,22 +1,20 @@
 use command_map::Command;
 
 pub mod command_map;
+pub mod current;
 pub mod interrupt_enable;
+pub mod minimum_selection_voltage;
 pub mod operation_mode;
-pub mod power_delivery_configuration;
-pub mod power_delivery_request_message;
+pub mod power_delivery;
+pub mod data_objects;
 pub mod protection_mode_configuration;
-pub mod all_source_power_data_object;
 pub mod status;
 pub mod system_control;
-pub mod source_power_data_object;
-pub mod extended_power_range_data_object;
-pub mod power_delivery_command_message;
-pub mod power_delivery_message_result;
-pub mod minimum_selection_voltage;
-pub mod voltage;
-pub mod current;
 pub mod temperature;
+pub mod thermal_resistances;
+pub mod voltage;
+pub mod requested;
+pub mod thresholds;
 pub trait WriteOneByteCommand {
     fn raw_value(&self) -> u8;
     fn get_command(&self) -> Command;
@@ -65,7 +63,7 @@ macro_rules! impl_one_byte_read_command {
 }
 
 #[macro_export]
-macro_rules! impl_write_two_byte_command {
+macro_rules! impl_two_byte_write_command {
     ($type:ty, $address:expr) => {
         impl $crate::commands::WriteTwoByteCommand for $type {
             fn raw_value(&self) -> u16 {

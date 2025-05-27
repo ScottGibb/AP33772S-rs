@@ -1,7 +1,7 @@
 use arbitrary_int::{u4};
 use bitbybit::{bitenum, bitfield};
 
-use crate::{impl_one_byte_read_command, impl_write_two_byte_command};
+use crate::{impl_one_byte_read_command};
 
 use super::command_map::Command;
 

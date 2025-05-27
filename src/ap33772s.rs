@@ -1,5 +1,5 @@
 use crate::commands::minimum_selection_voltage::MinimumSelectionVoltage;
-use crate::commands::temperature::{self, Temperature};
+use crate::commands::temperature::{Temperature};
 use crate::commands::voltage::Voltage;
 use crate::commands::current::Current;
 use crate::{commands::command_map::Command, Ap33772sError};
@@ -50,7 +50,7 @@ impl<I2C: I2c> Ap33772s<I2C> {
     }
     #[maybe_async::maybe_async]
     pub async fn get_requested_voltage(mut self) -> Result<ElectricPotential, Ap33772sError> {
-        let write = [u8::from(Command::RequestedVoltage)];
+        let write = [u8::from(Command::VoltageRequested)];
         let mut buf: [u8; 2] = [0,0];
         self.i2c.write_read(Self::ADDRESS, &write, &mut buf)?.await;
         let voltage_raw = f32::from(u16::from(buf[0]) * resolutions::REQUESTED_VOLTAGE_RESOLUTION);
@@ -58,7 +58,7 @@ impl<I2C: I2c> Ap33772s<I2C> {
     }
     #[maybe_async::maybe_async]
     pub async fn get_requested_current(mut self) -> Result<ElectricCurrent, Ap33772sError> {
-        let write = [u8::from(Command::RequestedCurrent)];
+        let write = [u8::from(Command::CurrentRequested)];
         let mut buf: [u8; 2] = [0,0];
         self.i2c.write_read(Self::ADDRESS, &write, &mut buf)?.await;
         let current_raw = f32::from(u16::from(buf[0]) * resolutions::REQUEUSTED_CURRENT_RESOLUTION);

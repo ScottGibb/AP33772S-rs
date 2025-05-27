@@ -2,7 +2,6 @@ use num_enum::{IntoPrimitive, TryFromPrimitive};
 
 #[derive(Debug, IntoPrimitive, TryFromPrimitive, PartialEq, Clone, Copy)]
 #[repr(u8)]
-
 pub enum Command {
     Status = 0x01,
     InterruptEnableMask = 0x02,
@@ -17,8 +16,8 @@ pub enum Command {
     Voltage = 0x11,
     Current = 0x12,
     Temperature = 0x13,
-    RequestedVoltage = 0x14,
-    RequestedCurrent = 0x15,
+    VoltageRequested = 0x14,
+    CurrentRequested = 0x15,
     /// The Minimum Selection Voltage, 
     /// LSB 200mV The default value is 19h (5000mV).
     /// Command: VSELMIN

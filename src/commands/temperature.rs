@@ -13,11 +13,10 @@ pub struct Temperature {
     raw_temperature: u8,
 }
 impl Temperature {
-    pub const TEMPERATURE_RESOLUTION:u16 = 1; // °C
 
     /// Returns the temperature value in degrees Celsius.
     pub fn temperature(&self) -> ThermodynamicTemperature {
-        let scaled_temperature = f32::from(u16::from(self.raw_temperature()) * Self::TEMPERATURE_RESOLUTION);
+        let scaled_temperature = f32::from(u16::from(self.raw_temperature()));
         ThermodynamicTemperature::new::<degree_celsius>(scaled_temperature)
     }
 }

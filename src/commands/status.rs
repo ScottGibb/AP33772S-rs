@@ -29,7 +29,7 @@ pub struct Status{
     #[bit(6, r)]
     pub over_temperature_protection : bool,
     #[bit(7, r)]
-    pub reserved: bool,
+    reserved: bool,
 
 }
 // Ready Only Register

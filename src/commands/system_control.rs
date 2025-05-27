@@ -14,19 +14,19 @@ pub struct SystemControl{
     pub v_out_control: VOutControl, 
     /// Reserved
     #[bit(2, rw)]
-    pub reserved: u1,
+    reserved: u1,
     /// Reserved
     #[bit(3, rw)]
-    pub reserved2: u1,
+    reserved2: u1,
     /// CMDVER
     #[bits(4..=5, r)]
     pub command_version: Option<CommandVersion>,
     /// Reserved
     #[bit(6, rw)]
-    pub reserved3: u1,
+    reserved3: u1,
     /// Reserved
     #[bit(7, rw)]
-    pub reserved4: u1,
+    reserved4: u1,
 }
 
 

@@ -19,7 +19,7 @@ pub struct OperationMode {
 
     /// Reserved bits [2..5]
     #[bits(2..=5,r)]
-    pub reserved: u4,
+    reserved: u4,
 
     /// DR - Derating mode
     #[bit(6, r)]

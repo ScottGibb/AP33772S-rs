@@ -30,7 +30,7 @@ pub struct InterruptEnable{
     #[bit(6, rw)]
     pub over_temperature_protection : bool,
     #[bit(7, rw)]
-    pub reserved: bool,
+    reserved: bool,
 
 }
 

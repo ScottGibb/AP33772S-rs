@@ -14,13 +14,13 @@ pub struct PowerDeliveryCommandMessage {
     #[bit(0, w)]
     pub HardResetEnable: bool,
     #[bit(1, w)]
-    pub reserved: bool,
+    reserved: bool,
     #[bit(2, w)]
-    pub reserved2: bool,
+    reserved2: bool,
     #[bit(3, w)]
-    pub reserved3: bool,
+    reserved3: bool,
     #[bits(4..=7, w)]
-    pub reserved4: u4,
+    reserved4: u4,
 
 }
 

@@ -1,7 +1,8 @@
 use arbitrary_int::{u4};
 use bitbybit::{bitenum, bitfield};
 
-use crate::impl_write_two_byte_command;
+
+use crate::impl_two_byte_write_command;
 
 use super::command_map::Command;
 
@@ -52,7 +53,7 @@ pub enum CurrentSelection {
     _4_5A=14,
     _5AOrMore=15,
 }
-impl_write_two_byte_command!(
+impl_two_byte_write_command!(
     PowerDeliveryRequestMessage,
     Command::PowerDeliveryRequestMessage
 );
