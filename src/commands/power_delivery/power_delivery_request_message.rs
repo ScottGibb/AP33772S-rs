@@ -9,11 +9,11 @@ use super::command_map::Command;
 #[derive(Debug, PartialEq)]
 pub struct PowerDeliveryRequestMessage {
     #[bits(0..=7, w)]
-    voltage_selection: u8,
+    pub voltage_selection: u8,
     #[bits(8..=11, w)]
-    current_selection: u4,
+    pub current_selection: u4,
     #[bits(12..=15, w)]
-    power_data_object_index: PowerDataObject,
+    pub power_data_object_index: PowerDataObject,
 }
 
 #[bitenum(u4, exhaustive = false)]

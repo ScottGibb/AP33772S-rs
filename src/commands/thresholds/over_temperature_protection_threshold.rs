@@ -6,7 +6,7 @@ use crate::{impl_one_byte_read_command, impl_one_byte_write_command};
 
 use super::command_map::Command;
 
-#[bitfield(u8, default = 0x19)]
+#[bitfield(u8, default = 0x78)]
 #[derive(Debug, PartialEq)]
 pub struct OverTemperatureProrectionThreshold {
     #[bits(0..=7, rw)]
