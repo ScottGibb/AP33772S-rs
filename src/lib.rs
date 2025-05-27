@@ -10,6 +10,7 @@ compile_error!("You cannot use both sync and async features at the same time. Pl
 compile_error!("You must enable either the sync or async feature. Please choose one.");
 
 pub mod ap33772s;
+pub mod getters;
 mod commands;
 mod communications;
 
