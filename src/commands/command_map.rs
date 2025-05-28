@@ -13,12 +13,12 @@ pub enum Command {
     /// register defines the enable and disable of ON and OFF for various
     /// [Status](crate::commands::configuration::status::Status)-defined events
     ///
-    /// /// Datasheet Name: MASK
+    /// Datasheet Name: MASK
     InterruptEnableMask = 0x02,
     /// The Operation Mode register provides the current operation mode of the AP33772S.
     /// See [OperationMode](crate::commands::configuration::operation_mode::OperationMode) for more details
     ///
-    /// /// Datasheet Name: OPMODE
+    /// Datasheet Name: OPMODE
     OperationMode = 0x03,
     /// The System Configuration register is defined as the system configuration options that enable specific modules
     /// See [ProtectionModeConfiguration](crate::commands::configuration::protection_mode_configuration::ProtectionModeConfiguration) for more details

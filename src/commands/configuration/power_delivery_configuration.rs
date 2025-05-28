@@ -19,7 +19,7 @@ pub struct PowerDeliveryConfiguration {
     extended_power_delivery_enabled: bool,
     /// Programmable Power Delivery and Adjustable Power Supply Enabled
     /// 
-    /// /// Datasheet Name: PPS_AVS_EN
+    /// Datasheet Name: PPS_AVS_EN
     #[bit(1, rw)]
     programmable_power_delivery_and_adjustable_power_supply_enabled: bool,
     /// Reserved bit

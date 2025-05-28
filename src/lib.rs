@@ -10,9 +10,17 @@ compile_error!("You cannot use both sync and async features at the same time. Pl
 compile_error!("You must enable either the sync or async feature. Please choose one.");
 
 pub mod ap33772s;
-mod commands;
-mod communications;
 pub mod getters;
+
+#[cfg(feature = "advanced")]
+pub mod commands;
+#[cfg(feature = "advanced")]
+pub mod communications;
+
+#[cfg(not(feature = "advanced"))]
+mod commands;
+#[cfg(not(feature = "advanced"))]
+mod communications;
 
 #[cfg(feature = "sync")]
 mod hal {
