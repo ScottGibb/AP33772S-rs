@@ -7,7 +7,10 @@ use num_enum::{IntoPrimitive, TryFromPrimitive};
 ///
 /// To use this enum, you can simple do the following:
 /// ```
+/// // In the case of reading Registers, you can use the `read_one_byte_command` method
 /// let voltage = self.read_one_byte_command::<Voltage>()?;
+/// // // In the case of writing to Registers, you can use the `write_one_byte_command` method
+/// //TODO FIll this in
 /// ```
 #[derive(Debug, IntoPrimitive, TryFromPrimitive, PartialEq, Clone, Copy)]
 #[repr(u8)]
