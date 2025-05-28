@@ -7,3 +7,9 @@
 **This is a placeholder crate for the upcoming `ap33772` Rust Driver**
 
 More info coming soon!
+
+
+## Datasheets
+
+- [AP33772S Datasheet](./docs/AP33772S.pdf)
+- [AP33772S Evaluation Board User Guide](./docs/AP33772S-Sink-Controller-EVB-User-Guide.pdf)
