@@ -1,9 +1,11 @@
 //! This module contains the implementation of the communication methods for the AP33772S driver.
 //! It provides methods for reading and writing commands to the device using I2C communication.
-use crate::ap33772s::Ap33772s;
+use super::traits::{
+    ReadOneByteCommand, ReadTwoByteCommand, WriteOneByteCommand, WriteTwoByteCommand,
+};
 use crate::Ap33772sError;
+use crate::ap33772s::Ap33772s;
 use crate::hal::I2c;
-use super::traits::{ReadOneByteCommand, ReadTwoByteCommand, WriteOneByteCommand, WriteTwoByteCommand};
 
 impl<I2C: I2c> Ap33772s<I2C> {
     #[maybe_async::maybe_async]

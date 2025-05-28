@@ -4,7 +4,7 @@ use num_enum::{IntoPrimitive, TryFromPrimitive};
 /// for configuration, power delivery, and status management.
 /// The `Command` enum represents the different commands that can be sent to the device,
 /// each associated with a specific functionality or register.
-/// 
+///
 /// To use this enum, you can simple do the following:
 /// ```
 /// let voltage = self.read_one_byte_command::<Voltage>()?;
@@ -43,7 +43,13 @@ pub enum Command {
     ///  See [SystemControl](crate::commands::configuration::system_control::SystemControl) for more details
     ///  By default, the VOUT MOS switches are controlled by the AP33772S.
     ///  Writing the [VOutControl](crate::commands::configuration::system_control::VOutControl) parameter can force the VOUT MOS switches to turn OFF/ON.
+    ///
+    /// Datasheet Name: SYSTEM
     SystemControl = 0x06,
+    /// The ThermalResistance25 register is defined as the thermal resistance of the AP33772S at 25°C.
+    /// See [ThermalResistance25](crate::commands::thermal_resistances::thermal_resistance_25::ThermalResistance25) for more details
+    ///
+    /// Datasheet Name: TR25
     ThermalResistance25 = 0x0C,
     ThermalResistance50 = 0x0D,
     ThermalResistance75 = 0x0E,

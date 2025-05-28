@@ -7,18 +7,18 @@ use crate::{
 
 /// The AP33772S supports a Power Delivery Configuration register that defines the
 /// system configuration options that enable specific modules.
-/// 
+///
 /// Datasheet Name: PDCONFIG
 #[bitfield(u8, default = 0x03)]
 #[derive(Debug, PartialEq)]
 pub struct PowerDeliveryConfiguration {
     /// Extended Power Delivery Enabled
-    /// 
+    ///
     /// Datasheet Name: EPR_MODE_EN
     #[bit(0, rw)]
     extended_power_delivery_enabled: bool,
     /// Programmable Power Delivery and Adjustable Power Supply Enabled
-    /// 
+    ///
     /// Datasheet Name: PPS_AVS_EN
     #[bit(1, rw)]
     programmable_power_delivery_and_adjustable_power_supply_enabled: bool,

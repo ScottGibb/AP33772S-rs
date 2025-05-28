@@ -8,14 +8,14 @@ use crate::commands::command_map::Command;
 /// The System Control register defines the system control options.
 /// It includes the [VOutControl](crate::commands::configuration::system_control::VOutControl) which control the output voltage.
 /// The command version is also included in this register.
-/// 
+///
 /// Datasheet Name: SYSTEM
 #[bitfield(u8, default = 0x10)]
 #[derive(Debug, PartialEq)]
 pub struct SystemControl {
     /// VOUT Control Switch
     /// See [VOutControl](crate::commands::configuration::system_control::VOutControl) for more details.
-    /// 
+    ///
     /// Datasheet Name: VOUTCTL
     #[bits(0..=1, rw)]
     pub v_out_control: VOutControl,
@@ -42,7 +42,7 @@ pub struct SystemControl {
 /// The AP33772S supports a command version.
 /// The command version is used to indicate the version of the command set.
 /// The current version is `V1_0`. The rest are reserved for future use.
-/// 
+///
 /// Datasheet Name: CMDVER
 #[bitenum(u2, exhaustive = false)]
 pub enum CommandVersion {
@@ -54,7 +54,7 @@ pub enum CommandVersion {
 /// - `ForceOff`: The output voltage is forced off.
 /// - `ForceOn`: The output voltage is forced on.
 /// - `Reserved`: This mode is reserved for future use.
-/// 
+///
 /// Datasheet Name: VOUTCTL
 #[bitenum(u2, exhaustive = true)]
 #[derive(Debug, PartialEq, Default)]
