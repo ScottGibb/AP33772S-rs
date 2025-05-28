@@ -1,8 +1,6 @@
-
-use crate::ap33772s::Ap33772s;
-use crate::Ap33772sError;
 use super::hal::*;
-
+use crate::Ap33772sError;
+use crate::ap33772s::Ap33772s;
 
 use crate::commands::requested::current_requested::CurrentRequested;
 use crate::commands::requested::voltage_requested::VoltageRequested;
@@ -14,7 +12,6 @@ use crate::commands::statistics::voltage::Voltage;
 use uom::si::f32::ElectricCurrent;
 use uom::si::f32::ElectricPotential;
 use uom::si::f32::ThermodynamicTemperature;
-
 
 impl<I2C: I2c> Ap33772s<I2C> {
     #[maybe_async::maybe_async]

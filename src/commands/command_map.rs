@@ -3,11 +3,37 @@ use num_enum::{IntoPrimitive, TryFromPrimitive};
 #[derive(Debug, IntoPrimitive, TryFromPrimitive, PartialEq, Clone, Copy)]
 #[repr(u8)]
 pub enum Command {
+    /// Command Associated with the STATUS Register
+    /// See [Status](crate::commands::configuration::status::Status) for more details
+    ///
+    /// DataSheet Name: STATUS
     Status = 0x01,
+    /// The AP33772S supports a level-triggered interrupt signal through the INT pin to the host MCU.
+    /// The [Interrupt Enable](crate::commands::configuration::interrupt_enable::InterruptEnable)
+    /// register defines the enable and disable of ON and OFF for various
+    /// [Status](crate::commands::configuration::status::Status)-defined events
+    ///
+    /// /// Datasheet Name: MASK
     InterruptEnableMask = 0x02,
+    /// The Operation Mode register provides the current operation mode of the AP33772S.
+    /// See [OperationMode](crate::commands::configuration::operation_mode::OperationMode) for more details
+    ///
+    /// /// Datasheet Name: OPMODE
     OperationMode = 0x03,
+    /// The System Configuration register is defined as the system configuration options that enable specific modules
+    /// See [ProtectionModeConfiguration](crate::commands::configuration::protection_mode_configuration::ProtectionModeConfiguration) for more details
+    ///
+    /// Datasheet Name: CONFIG
     SystemConfiguration = 0x04,
+    /// Power Delviery Configuration register is defined as the Power Delivery mode configuration options that enable specific modules
+    /// See [PowerDeliveryConfiguration](crate::commands::configuration::power_delivery_configuration::PowerDeliveryConfiguration) for more details
+    ///
+    /// Datasheet Name: PDCONFIG
     PowerDeliveryConfiguration = 0x05,
+    /// The SystemControl register is defined as the system information and control options that request specific functions.
+    ///  See [SystemControl](crate::commands::configuration::system_control::SystemControl) for more details
+    ///  By default, the VOUT MOS switches are controlled by the AP33772S.
+    ///  Writing the [VOutControl](crate::commands::configuration::system_control::VOutControl) parameter can force the VOUT MOS switches to turn OFF/ON.
     SystemControl = 0x06,
     ThermalResistance25 = 0x0C,
     ThermalResistance50 = 0x0D,
@@ -26,7 +52,7 @@ pub enum Command {
     OverVoltageProtectionThreshold = 0x18,
     OverCurrentProtectionThreshold = 0x19,
     OverTemperatureProtectionThreshold = 0x1A,
-    DeratingThreshold = 0x1B,
+    DeRatingThreshold = 0x1B,
     /// Get All PD Source Power Capabilities (PDO1 to PDO13)
     /// Command: SRCPDO
     AllSourcesPowerDataObject = 0x20,

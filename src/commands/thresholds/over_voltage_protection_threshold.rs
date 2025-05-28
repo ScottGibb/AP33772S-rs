@@ -14,7 +14,7 @@ pub struct OverVoltageProtectionThreshold {
 }
 
 impl OverVoltageProtectionThreshold {
-    pub const VOLTAGE_RESOLUTION: u16 = 80; //mV
+    const VOLTAGE_RESOLUTION: u16 = 80; //mV
     /// Returns the voltage value in millivolts.
     pub fn voltage(&self) -> ElectricPotential {
         let scaled_voltage = self.raw_voltage() as u16 * Self::VOLTAGE_RESOLUTION;

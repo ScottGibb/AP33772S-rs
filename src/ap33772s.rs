@@ -15,6 +15,4 @@ impl<I2C: I2c> Ap33772s<I2C> {
     pub async fn new_default(i2c: I2C) -> Self {
         Self::new(i2c)
     }
-
-   
 }
