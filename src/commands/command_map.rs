@@ -94,7 +94,9 @@ pub enum Command {
     /// 
     /// Datasheet Name: IREQ
     CurrentRequested = 0x15,
-    /// The Minimum Selection Voltage,
+    /// The Minimum Selection Voltage os defined as the minimum selection voltage of the AP33772S.
+    /// See [MinimumSelectionVoltage](crate::commands::statistics::minimum_selection_voltage::MinimumSelectionVoltage) for more details
+    /// 
     /// Command: VSELMIN
     MinimumSelectionVoltage = 0x16,
     UnderVoltageProtectionThreshold = 0x17,
