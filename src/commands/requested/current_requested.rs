@@ -1,5 +1,5 @@
 use super::command_map::Command;
-use crate::{impl_two_byte_read_command, impl_two_byte_write_command};
+use crate::{impl_two_byte_read_command};
 use bitbybit::bitfield;
 use uom::si::electric_current::milliampere;
 use uom::si::f32::ElectricCurrent;
