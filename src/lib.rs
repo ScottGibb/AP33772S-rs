@@ -11,6 +11,7 @@ compile_error!("You must enable either the sync or async feature. Please choose 
 
 pub mod ap33772s;
 pub mod getters;
+pub mod setters;
 
 #[cfg(feature = "advanced")]
 pub mod commands;

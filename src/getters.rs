@@ -1,4 +1,8 @@
 use super::hal::*;
+use crate::commands::thermal_resistances::thermal_resistance_100::ThermalResistance100;
+use crate::commands::thermal_resistances::thermal_resistance_25::ThermalResistance25;
+use crate::commands::thermal_resistances::thermal_resistance_50::ThermalResistance50;
+use crate::commands::thermal_resistances::thermal_resistance_75::ThermalResistance75;
 use crate::Ap33772sError;
 use crate::ap33772s;
 use crate::ap33772s::Ap33772s;
@@ -76,6 +80,22 @@ impl<I2C: I2c> Ap33772s<I2C> {
             requested_voltage,
             requested_current,
             requested_power: requested_voltage * requested_current,
+        })
+    }
+    #[maybe_async::maybe_async]
+    pub async fn get_thermal_resistances(
+        &mut self,
+    ) -> Result<ap33772s::AP33772SThermalResistances, Ap33772sError> {
+        let resistance_25 = self.read_two_byte_command::<ThermalResistance25>()?;
+        let resistance_50 = self.read_two_byte_command::<ThermalResistance50>()?;
+        let resistance_75 = self.read_two_byte_command::<ThermalResistance75>()?;
+        let resistance_100 = self.read_two_byte_command::<ThermalResistance100>()?;
+
+        Ok(ap33772s::AP33772SThermalResistances {
+            resistance_25: resistance_25.thermal_resistance(),
+            resistance_50: resistance_50.thermal_resistance(),
+            resistance_75: resistance_75.thermal_resistance(),
+            resistance_100: resistance_100.thermal_resistance(),
         })
     }
 }

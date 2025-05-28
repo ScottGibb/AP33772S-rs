@@ -1,6 +1,7 @@
 use super::hal::*;
 use uom::si::f32::ElectricCurrent;
 use uom::si::f32::ElectricPotential;
+use uom::si::f32::ElectricalResistance;
 use uom::si::f32::Power;
 use uom::si::f32::ThermodynamicTemperature;
 
@@ -14,6 +15,14 @@ pub struct AP33772SStatistics {
     pub requested_voltage: ElectricPotential,
     pub requested_current: ElectricCurrent,
     pub requested_power: Power,
+}
+
+#[derive(Debug)]
+pub struct AP33772SThermalResistances {
+    pub resistance_25: ElectricalResistance,
+    pub resistance_50: ElectricalResistance,
+    pub resistance_75: ElectricalResistance,
+    pub resistance_100: ElectricalResistance,
 }
 pub struct Ap33772s<I2C: I2c> {
     pub(crate) i2c: I2C,
