@@ -1,3 +1,5 @@
+//! This module contains the implementation of the communication methods for the AP33772S driver.
+//! It provides methods for reading and writing commands to the device using I2C communication.
 use crate::ap33772s::Ap33772s;
 use crate::Ap33772sError;
 use crate::hal::I2c;
@@ -5,7 +7,7 @@ use super::traits::{ReadOneByteCommand, ReadTwoByteCommand, WriteOneByteCommand,
 
 impl<I2C: I2c> Ap33772s<I2C> {
     #[maybe_async::maybe_async]
-    pub(crate) async fn write_one_byte_command(
+    pub async fn write_one_byte_command(
         &mut self,
         command: impl WriteOneByteCommand,
     ) -> Result<(), Ap33772sError> {
@@ -17,7 +19,7 @@ impl<I2C: I2c> Ap33772s<I2C> {
         Ok(())
     }
     #[maybe_async::maybe_async]
-    pub(crate) async fn read_one_byte_command<CommandRegister>(
+    pub async fn read_one_byte_command<CommandRegister>(
         &mut self,
     ) -> Result<CommandRegister, Ap33772sError>
     where
@@ -32,7 +34,7 @@ impl<I2C: I2c> Ap33772s<I2C> {
     }
 
     #[maybe_async::maybe_async]
-    pub(crate) async fn read_two_byte_command<CommandRegister>(
+    pub async fn read_two_byte_command<CommandRegister>(
         &mut self,
     ) -> Result<CommandRegister, Ap33772sError>
     where
@@ -49,7 +51,7 @@ impl<I2C: I2c> Ap33772s<I2C> {
     }
 
     #[maybe_async::maybe_async]
-    pub(crate) async fn write_two_byte_command(
+    pub async fn write_two_byte_command(
         &mut self,
         command: impl WriteTwoByteCommand,
     ) -> Result<(), Ap33772sError> {

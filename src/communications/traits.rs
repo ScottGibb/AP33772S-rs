@@ -1,4 +1,6 @@
+//! This Module contains the traits for attaching bitfields structs to commands.
 use crate::commands::command_map::Command;
+
 
 pub trait WriteOneByteCommand {
     fn raw_value(&self) -> u8;

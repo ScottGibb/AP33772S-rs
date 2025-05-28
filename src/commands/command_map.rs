@@ -1,5 +1,14 @@
 use num_enum::{IntoPrimitive, TryFromPrimitive};
 
+/// This module defines the command map for the AP33772S device, including various commands
+/// for configuration, power delivery, and status management.
+/// The `Command` enum represents the different commands that can be sent to the device,
+/// each associated with a specific functionality or register.
+/// 
+/// To use this enum, you can simple do the following:
+/// ```
+/// let voltage = self.read_one_byte_command::<Voltage>()?;
+/// ```
 #[derive(Debug, IntoPrimitive, TryFromPrimitive, PartialEq, Clone, Copy)]
 #[repr(u8)]
 pub enum Command {
