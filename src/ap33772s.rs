@@ -1,12 +1,11 @@
 use super::hal::*;
+use uom::si::f32::ElectricCurrent;
+use uom::si::f32::ElectricPotential;
 use uom::si::f32::Power;
 use uom::si::f32::ThermodynamicTemperature;
-use uom::si::f32::ElectricPotential;
-use uom::si::f32::ElectricCurrent;
-
 
 #[derive(Debug)]
-pub struct AP33772SStatistics{
+pub struct AP33772SStatistics {
     pub current: ElectricCurrent,
     pub voltage: ElectricPotential,
     pub power: Power,

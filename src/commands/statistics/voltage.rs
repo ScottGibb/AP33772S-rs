@@ -3,14 +3,20 @@ use uom::si::electric_potential::millivolt;
 use uom::si::f32::ElectricPotential;
 
 use crate::commands::command_map::Command;
-use crate::impl_one_byte_read_command;
+use crate::impl_two_byte_read_command;
 
-#[bitfield(u8, default = 0x0)]
+/// This struct represents the voltage of the AP33772S device.
+/// It contains the raw voltage value and provides a method to convert it to millivolts.
+///
+/// Datasheet Name: VOLTAGE
+#[bitfield(u16, default = 0x0)]
 #[derive(Debug, PartialEq)]
 pub struct Voltage {
-    #[bits(0..=7, r)]
+    #[bits(0..=15, r)]
     /// The raw voltage value.
-    raw_voltage: u8,
+    ///
+    /// Datasheet Name: VOLTAGE
+    raw_voltage: u16,
 }
 
 impl Voltage {
@@ -22,4 +28,4 @@ impl Voltage {
     }
 }
 
-impl_one_byte_read_command!(Voltage, Command::Voltage);
+impl_two_byte_read_command!(Voltage, Command::Voltage);

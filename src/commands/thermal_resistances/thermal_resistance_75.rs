@@ -21,7 +21,7 @@ use uom::si::f32::ElectricalResistance;
 #[derive(Debug, PartialEq)]
 pub struct ThermalResistance75 {
     /// Raw thermal resistance value in LSB (Ω)
-    /// 
+    ///
     /// Datasheet Name: TR75
     #[bits(0..=15, rw)]
     raw_thermal_resistance: u16,

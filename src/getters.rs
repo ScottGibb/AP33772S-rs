@@ -25,7 +25,7 @@ impl<I2C: I2c> Ap33772s<I2C> {
 
     #[maybe_async::maybe_async]
     pub async fn get_voltage(&mut self) -> Result<ElectricPotential, Ap33772sError> {
-        let voltage = self.read_one_byte_command::<Voltage>()?;
+        let voltage = self.read_two_byte_command::<Voltage>()?;
         Ok(voltage.voltage())
     }
 

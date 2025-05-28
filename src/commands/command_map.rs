@@ -51,11 +51,35 @@ pub enum Command {
     ///
     /// Datasheet Name: TR25
     ThermalResistance25 = 0x0C,
+    /// The ThermalResistance50 register is defined as the thermal resistance of the AP33772S at 50°C.
+    /// See [ThermalResistance50](crate::commands::thermal_resistances::thermal_resistance_50::ThermalResistance50) for more details
+    ///
+    /// Datasheet Name: TR50
     ThermalResistance50 = 0x0D,
+    /// The ThermalResistance75 register is defined as the thermal resistance of the AP33772S at 75°C.
+    /// See [ThermalResistance75](crate::commands::thermal_resistances::thermal_resistance_75::ThermalResistance75) for more details
+    ///
+    /// Datasheet Name: TR75
     ThermalResistance75 = 0x0E,
+    /// The ThermalResistance100 register is defined as the thermal resistance of the AP33772S at 100°C.
+    /// See [ThermalResistance100](crate::commands::thermal_resistances::thermal_resistance_100::ThermalResistance100) for more details
+    ///
+    /// Datasheet Name: TR100
     ThermalResistance100 = 0x0F,
+    /// Voltage Register is defined as the output voltage of the AP33772S.
+    /// See [Voltage](crate::commands::statistics::voltage::Voltage) for more details
+    ///
+    /// Datasheet Name: Voltage
     Voltage = 0x11,
+    /// Current Register is defined as the output current of the AP33772S.
+    /// See [Current](crate::commands::statistics::current::Current) for more details
+    ///
+    /// Datasheet Name: Current
     Current = 0x12,
+    /// Temperature Register is defined as the temperature of the AP33772S.
+    /// See [Temperature](crate::commands::statistics::temperature::Temperature) for more details
+    ///
+    /// Datasheet Name: TEMP
     Temperature = 0x13,
     VoltageRequested = 0x14,
     CurrentRequested = 0x15,
