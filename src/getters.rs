@@ -60,7 +60,7 @@ impl<I2C: I2c> Ap33772s<I2C> {
         Ok(requested_power)
     }
     #[maybe_async::maybe_async]
-    pub async fn get_requested_statistics(
+    pub async fn get_statistics(
         &mut self,
     ) -> Result<ap33772s::AP33772SStatistics, Ap33772sError> {
         let current = self.get_current().await?;

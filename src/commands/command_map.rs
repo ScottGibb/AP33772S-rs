@@ -81,10 +81,17 @@ pub enum Command {
     ///
     /// Datasheet Name: TEMP
     Temperature = 0x13,
+    /// The VoltageRequested register is defined as the requested output voltage of the AP33772S.
+    /// See [VoltageRequested](crate::commands::requested::voltage_requested::VoltageRequested) for more details
+    /// 
+    /// Datasheet Name: VREQ
     VoltageRequested = 0x14,
+    /// The CurrentRequested register is defined as the requested output current of the AP33772S.
+    /// See [CurrentRequested](crate::commands::requested::current_requested::CurrentRequested) for more details
+    /// 
+    /// Datasheet Name: IREQ
     CurrentRequested = 0x15,
     /// The Minimum Selection Voltage,
-    /// LSB 200mV The default value is 19h (5000mV).
     /// Command: VSELMIN
     MinimumSelectionVoltage = 0x16,
     UnderVoltageProtectionThreshold = 0x17,
