@@ -1,3 +1,8 @@
+//! This module provides the core command-related functionality for the project.
+//!
+//! It organizes various submodules that handle specific aspects of command processing,
+//! configuration, data management, power delivery, statistics, and more.
+//!
 pub mod command_map;
 pub mod configuration;
 pub mod data_objects;
@@ -8,4 +13,5 @@ pub mod thermal_resistances;
 pub mod thresholds;
 
 pub mod macros;
-pub mod traits;
+
+use crate::communications::*;

@@ -1,4 +1,4 @@
-use super::command_map::Command;
+use crate::commands::command_map::Command;
 
 pub trait WriteOneByteCommand {
     fn raw_value(&self) -> u8;
