@@ -38,6 +38,7 @@ mod hal {
 pub enum Ap33772sError {
     InvalidCommand,
     I2c(hal::ErrorKind),
+    ConversionError,
 }
 
 impl<E: embedded_hal::i2c::Error> From<E> for Ap33772sError {
@@ -54,6 +55,7 @@ impl core::fmt::Display for Ap33772sError {
         match self {
             Ap33772sError::I2c(err) => write!(f, "I2C error: {:?}", err),
             Ap33772sError::InvalidCommand => write!(f, "Invalid command"),
+            Ap33772sError::ConversionError => write!(f, "Conversion error"),
         }
     }
 }
