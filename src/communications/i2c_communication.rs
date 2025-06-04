@@ -16,8 +16,7 @@ impl<I2C: I2c> Ap33772s<I2C> {
         let command_address = u8::from(command.get_command());
         let data = command.raw_value();
         self.i2c
-            .write(Self::ADDRESS, &[command_address, data])?
-            .await;
+            .write(Self::ADDRESS, &[command_address, data]).await?;
         Ok(())
     }
     #[maybe_async::maybe_async]
@@ -30,8 +29,8 @@ impl<I2C: I2c> Ap33772s<I2C> {
         let mut data: [u8; 1] = [0x00];
         let command_address = u8::from(CommandRegister::command());
         self.i2c
-            .write_read(Self::ADDRESS, &[command_address], &mut data)?
-            .await;
+            .write_read(Self::ADDRESS, &[command_address], &mut data)
+            .await?;
         Ok(CommandRegister::new_with_raw_value(data[0]))
     }
 
@@ -45,8 +44,8 @@ impl<I2C: I2c> Ap33772s<I2C> {
         let mut data: [u8; 2] = [0x00; 2];
         let command_address = u8::from(CommandRegister::command());
         self.i2c
-            .write_read(Self::ADDRESS, &[command_address], &mut data)?
-            .await;
+            .write_read(Self::ADDRESS, &[command_address], &mut data)
+            .await?;
         Ok(CommandRegister::new_with_raw_value(u16::from_le_bytes(
             data,
         )))
@@ -60,8 +59,7 @@ impl<I2C: I2c> Ap33772s<I2C> {
         let command_address = u8::from(command.get_command());
         let data = command.raw_value().to_be_bytes();
         self.i2c
-            .write(Self::ADDRESS, &[command_address, data[0], data[1]])?
-            .await;
+            .write(Self::ADDRESS, &[command_address, data[0], data[1]]).await?;
         Ok(())
     }
 }

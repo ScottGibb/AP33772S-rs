@@ -23,19 +23,19 @@ use uom::si::f32::ThermodynamicTemperature;
 impl<I2C: I2c> Ap33772s<I2C> {
     #[maybe_async::maybe_async]
     pub async fn get_current(&mut self) -> Result<ElectricCurrent, Ap33772sError> {
-        let current = self.read_one_byte_command::<Current>()?;
+        let current = self.read_one_byte_command::<Current>().await?;
         Ok(current.current())
     }
 
     #[maybe_async::maybe_async]
     pub async fn get_voltage(&mut self) -> Result<ElectricPotential, Ap33772sError> {
-        let voltage = self.read_two_byte_command::<Voltage>()?;
+        let voltage = self.read_two_byte_command::<Voltage>().await?;
         Ok(voltage.voltage())
     }
 
     #[maybe_async::maybe_async]
     pub async fn get_temperature(&mut self) -> Result<ThermodynamicTemperature, Ap33772sError> {
-        let temperature = self.read_one_byte_command::<Temperature>()?;
+        let temperature = self.read_one_byte_command::<Temperature>().await?;
         Ok(temperature.temperature())
     }
 
@@ -48,12 +48,12 @@ impl<I2C: I2c> Ap33772s<I2C> {
     }
     #[maybe_async::maybe_async]
     pub async fn get_requested_voltage(&mut self) -> Result<ElectricPotential, Ap33772sError> {
-        let requested_voltage = self.read_two_byte_command::<VoltageRequested>()?;
+        let requested_voltage = self.read_two_byte_command::<VoltageRequested>().await?;
         Ok(requested_voltage.voltage())
     }
     #[maybe_async::maybe_async]
     pub async fn get_requested_current(&mut self) -> Result<ElectricCurrent, Ap33772sError> {
-        let requested_current = self.read_two_byte_command::<CurrentRequested>()?;
+        let requested_current = self.read_two_byte_command::<CurrentRequested>().await?;
         Ok(requested_current.current())
     }
     #[maybe_async::maybe_async]
@@ -86,10 +86,10 @@ impl<I2C: I2c> Ap33772s<I2C> {
     pub async fn get_thermal_resistances(
         &mut self,
     ) -> Result<ap33772s::AP33772SThermalResistances, Ap33772sError> {
-        let resistance_25 = self.read_two_byte_command::<ThermalResistance25>()?;
-        let resistance_50 = self.read_two_byte_command::<ThermalResistance50>()?;
-        let resistance_75 = self.read_two_byte_command::<ThermalResistance75>()?;
-        let resistance_100 = self.read_two_byte_command::<ThermalResistance100>()?;
+        let resistance_25 = self.read_two_byte_command::<ThermalResistance25>().await?;
+        let resistance_50 = self.read_two_byte_command::<ThermalResistance50>().await?;
+        let resistance_75 = self.read_two_byte_command::<ThermalResistance75>().await?;
+        let resistance_100 = self.read_two_byte_command::<ThermalResistance100>().await?;
 
         Ok(ap33772s::AP33772SThermalResistances {
             resistance_25: resistance_25.thermal_resistance(),
@@ -105,7 +105,7 @@ impl<I2C: I2c> Ap33772s<I2C> {
     pub async fn get_minimum_selection_voltage(
         &mut self,
     ) -> Result<ElectricPotential, Ap33772sError> {
-        let voltage_selection = self.read_one_byte_command::<MinimumSelectionVoltage>()?;
+        let voltage_selection = self.read_one_byte_command::<MinimumSelectionVoltage>().await?;
         Ok(voltage_selection.voltage())
     }
 }
