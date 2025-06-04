@@ -29,7 +29,7 @@ pub struct PowerDeliveryConfiguration {
     #[bit(3, rw)]
     reserved2: u1,
     /// Reserved bits
-    #[bits(4..=7,rw)]
+    #[bits(4..=7, rw)]
     reserved3: u4,
 }
 
