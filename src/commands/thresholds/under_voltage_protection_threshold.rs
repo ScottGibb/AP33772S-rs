@@ -14,6 +14,7 @@ pub struct UnderVoltageProtectionThreshold {
     reserved: u4,
 }
 
+#[derive(Debug, PartialEq)]
 #[bitenum(u4, exhaustive = false)]
 pub enum UnderVoltageThreshold {
     EightyPercent = 0,
