@@ -37,7 +37,7 @@ pub enum Command {
     ///
     /// Datasheet Name: CONFIG
     SystemConfiguration = 0x04,
-    /// Power Delviery Configuration register is defined as the Power Delivery mode configuration options that enable specific modules
+    /// Power Delivery Configuration register is defined as the Power Delivery mode configuration options that enable specific modules
     /// See [PowerDeliveryConfiguration](crate::commands::configuration::power_delivery_configuration::PowerDeliveryConfiguration) for more details
     ///
     /// Datasheet Name: PDCONFIG
