@@ -12,25 +12,25 @@ impl<I2C: I2c> Ap33772s<I2C> {
     ) -> Result<(), Ap33772sError> {
         let resistance_25 = ThermalResistance25::builder()
             .with_raw_thermal_resistance(
-                convert_resistance_to_raw_resistance(resistances.resistance_25).unwrap(),
+                convert_resistance_to_raw_resistance(resistances.resistance_25)?,
             )
             .build();
         self.write_two_byte_command(resistance_25).await?;
         let resistance_50 = ThermalResistance25::builder()
             .with_raw_thermal_resistance(
-                convert_resistance_to_raw_resistance(resistances.resistance_50).unwrap(),
+                convert_resistance_to_raw_resistance(resistances.resistance_50)?,
             )
             .build();
         self.write_two_byte_command(resistance_50).await?;
         let resistance_75 = ThermalResistance25::builder()
             .with_raw_thermal_resistance(
-                convert_resistance_to_raw_resistance(resistances.resistance_75).unwrap(),
+                convert_resistance_to_raw_resistance(resistances.resistance_75)?,
             )
             .build();
         self.write_two_byte_command(resistance_75).await?;
         let resistance_100 = ThermalResistance25::builder()
             .with_raw_thermal_resistance(
-                convert_resistance_to_raw_resistance(resistances.resistance_100).unwrap(),
+                convert_resistance_to_raw_resistance(resistances.resistance_100)?,
             )
             .build();
         self.write_two_byte_command(resistance_100).await?;
