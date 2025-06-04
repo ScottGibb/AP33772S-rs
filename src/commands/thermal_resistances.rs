@@ -19,7 +19,7 @@ pub fn convert_resistance_to_raw_resistance(
 
     let raw_value = resistance.get::<uom::si::electrical_resistance::ohm>();
 
-    if raw_value < 0.0 || raw_value > u16::MAX as f32 {
+    if raw_value > u16::MAX as f32 {
         return Err(Ap33772sError::ConversionError);
     }
 
