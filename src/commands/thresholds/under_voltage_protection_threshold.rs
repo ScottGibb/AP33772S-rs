@@ -1,4 +1,3 @@
-use arbitrary_int::u4;
 use bitbybit::{bitenum, bitfield};
 
 use crate::{
@@ -10,8 +9,8 @@ use crate::{
 pub struct UnderVoltageProtectionThreshold {
     #[bits(0..=3, rw)]
     threshold: Option<UnderVoltageThreshold>,
-    #[bits(4..=7, rw)]
-    reserved: u4,
+    // #[bits(4..=7, rw)]
+    // reserved: u4,
 }
 
 #[derive(Debug, PartialEq)]

@@ -48,8 +48,8 @@ pub struct Status {
     /// Datasheet Name: OTP
     #[bit(6, r)]
     pub over_temperature_protection: bool,
-    /// Reserved Bit
-    #[bit(7, r)]
-    reserved: bool,
+    // /// Reserved Bit
+    // #[bit(7, r)]
+    // reserved: bool,
 }
 impl_one_byte_read_command!(Status, Command::Status);

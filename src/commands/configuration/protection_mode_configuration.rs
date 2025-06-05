@@ -1,4 +1,3 @@
-use arbitrary_int::u3;
 use bitbybit::bitfield;
 
 use crate::{impl_one_byte_read_command, impl_one_byte_write_command};
@@ -12,9 +11,9 @@ use crate::commands::command_map::Command;
 #[bitfield(u8, default = 0xF8)]
 #[derive(Debug, PartialEq)]
 pub struct ProtectionModeConfiguration {
-    /// Reserved
-    #[bits(0..=2, rw)]
-    reserved: u3,
+    // /// Reserved
+    // #[bits(0..=2, rw)]
+    // reserved: u3,
     /// Under Voltage Protection Enabled
     ///
     /// Datasheet Name: UVP_EN

@@ -1,4 +1,3 @@
-use arbitrary_int::u1;
 use bitbybit::{bitenum, bitfield};
 
 use crate::{impl_one_byte_read_command, impl_one_byte_write_command};
@@ -19,24 +18,24 @@ pub struct SystemControl {
     /// Datasheet Name: VOUTCTL
     #[bits(0..=1, rw)]
     pub v_out_control: VOutControl,
-    /// Reserved
-    #[bit(2, rw)]
-    reserved: u1,
-    /// Reserved
-    #[bit(3, rw)]
-    reserved2: u1,
+    // /// Reserved
+    // #[bit(2, rw)]
+    // reserved: u1,
+    // /// Reserved
+    // #[bit(3, rw)]
+    // reserved2: u1,
     /// Command Version
     /// The command version is used to indicate the version of the command set.
     /// See [CommandVersion](crate::commands::configuration::system_control::CommandVersion) for more details.
     /// Datasheet Name: CMDVER
     #[bits(4..=5, r)]
     pub command_version: Option<CommandVersion>,
-    /// Reserved
-    #[bit(6, rw)]
-    reserved3: u1,
-    /// Reserved
-    #[bit(7, rw)]
-    reserved4: u1,
+    // /// Reserved
+    // #[bit(6, rw)]
+    // reserved3: u1,
+    // /// Reserved
+    // #[bit(7, rw)]
+    // reserved4: u1,
 }
 
 /// The AP33772S supports a command version.

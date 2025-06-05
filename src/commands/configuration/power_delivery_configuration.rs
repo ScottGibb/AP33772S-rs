@@ -1,4 +1,3 @@
-use arbitrary_int::{u1, u4};
 use bitbybit::bitfield;
 
 use crate::{
@@ -22,15 +21,15 @@ pub struct PowerDeliveryConfiguration {
     /// Datasheet Name: PPS_AVS_EN
     #[bit(1, rw)]
     programmable_power_delivery_and_adjustable_power_supply_enabled: bool,
-    /// Reserved bit
-    #[bit(2, rw)]
-    reserved: u1,
-    /// Reserved bit
-    #[bit(3, rw)]
-    reserved2: u1,
-    /// Reserved bits
-    #[bits(4..=7, rw)]
-    reserved3: u4,
+    // /// Reserved bit
+    // #[bit(2, rw)]
+    // reserved: u1,
+    // /// Reserved bit
+    // #[bit(3, rw)]
+    // reserved2: u1,
+    // /// Reserved bits
+    // #[bits(4..=7, rw)]
+    // reserved3: u4,
 }
 
 impl_one_byte_write_command!(

@@ -1,8 +1,12 @@
 use super::hal::*;
+use crate::commands::thresholds::over_current_protection_threshold::OverCurrentProtectionThreshold;
+use crate::commands::thresholds::over_temperature_protection_threshold::OverTemperatureProrectionThreshold;
+use crate::commands::thresholds::under_voltage_protection_threshold::UnderVoltageProtectionThreshold;
 use crate::Ap33772sError;
 use crate::ap33772s::{AP33772SThermalResistances, AP33772SThresholds, Ap33772s};
 use crate::commands::thermal_resistances::convert_resistance_to_raw_resistance;
 use crate::commands::thermal_resistances::thermal_resistance_25::ThermalResistance25;
+use crate::commands::thresholds::over_voltage_protection_threshold::OverVoltageProtectionThreshold;
 
 impl<I2C: I2c> Ap33772s<I2C> {
     #[maybe_async::maybe_async]
@@ -11,27 +15,27 @@ impl<I2C: I2c> Ap33772s<I2C> {
         resistances: AP33772SThermalResistances,
     ) -> Result<(), Ap33772sError> {
         let resistance_25 = ThermalResistance25::builder()
-            .with_raw_thermal_resistance(
-                convert_resistance_to_raw_resistance(resistances.resistance_25)?,
-            )
+            .with_raw_thermal_resistance(convert_resistance_to_raw_resistance(
+                resistances.resistance_25,
+            )?)
             .build();
         self.write_two_byte_command(resistance_25).await?;
         let resistance_50 = ThermalResistance25::builder()
-            .with_raw_thermal_resistance(
-                convert_resistance_to_raw_resistance(resistances.resistance_50)?,
-            )
+            .with_raw_thermal_resistance(convert_resistance_to_raw_resistance(
+                resistances.resistance_50,
+            )?)
             .build();
         self.write_two_byte_command(resistance_50).await?;
         let resistance_75 = ThermalResistance25::builder()
-            .with_raw_thermal_resistance(
-                convert_resistance_to_raw_resistance(resistances.resistance_75)?,
-            )
+            .with_raw_thermal_resistance(convert_resistance_to_raw_resistance(
+                resistances.resistance_75,
+            )?)
             .build();
         self.write_two_byte_command(resistance_75).await?;
         let resistance_100 = ThermalResistance25::builder()
-            .with_raw_thermal_resistance(
-                convert_resistance_to_raw_resistance(resistances.resistance_100)?,
-            )
+            .with_raw_thermal_resistance(convert_resistance_to_raw_resistance(
+                resistances.resistance_100,
+            )?)
             .build();
         self.write_two_byte_command(resistance_100).await?;
         Ok(())
@@ -42,7 +46,51 @@ impl<I2C: I2c> Ap33772s<I2C> {
         &mut self,
         thresholds: AP33772SThresholds,
     ) -> Result<(), Ap33772sError> {
-         //TODO: Finish this function
+        let over_voltage_threshold: OverVoltageProtectionThreshold =
+            OverVoltageProtectionThreshold::builder()
+                .with_raw_voltage(
+                    OverVoltageProtectionThreshold::convert_voltage_to_raw_voltage(
+                        thresholds.over_voltage_threshold,
+                    )?,
+                )
+                .build();
+        self.write_one_byte_command(over_voltage_threshold).await?;
+
+        let over_current_threshold : OverCurrentProtectionThreshold =
+            OverCurrentProtectionThreshold::builder()
+                .with_raw_current(
+                    OverCurrentProtectionThreshold::convert_current_to_raw_current(
+                        thresholds.over_current_threshold,
+                    )?,
+                )
+                .build();
+        self.write_one_byte_command(over_current_threshold).await?;
+
+        let under_voltage_threshold: UnderVoltageProtectionThreshold =
+            UnderVoltageProtectionThreshold::builder()
+                .with_threshold(thresholds.under_voltage_threshold)
+                .build();
+        self.write_one_byte_command(under_voltage_threshold).await?;
+
+        let over_temperature_threshold : OverTemperatureProrectionThreshold =
+            OverTemperatureProrectionThreshold::builder()
+                .with_raw_temperature(
+                    OverTemperatureProrectionThreshold::convert_temperature_to_raw_temperature(
+                        thresholds.over_temperature_threshold,
+                    )?,
+                )
+                .build();
+        self.write_one_byte_command(over_temperature_threshold).await?;
+
+        let derating_threshold: OverTemperatureProrectionThreshold =
+            OverTemperatureProrectionThreshold::builder()
+                .with_raw_temperature(
+                    OverTemperatureProrectionThreshold::convert_temperature_to_raw_temperature(
+                        thresholds.derating_threshold,
+                    )?,
+                )
+                .build();
+        self.write_one_byte_command(derating_threshold).await?;
         Ok(())
     }
 }

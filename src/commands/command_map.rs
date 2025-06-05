@@ -100,6 +100,10 @@ pub enum Command {
     /// Command: VSELMIN
     MinimumSelectionVoltage = 0x16,
     UnderVoltageProtectionThreshold = 0x17,
+    /// The Over Voltage Protection Threshold is defined as the over voltage protection threshold of the AP33772S.
+    /// See [OverVoltageProtectionThreshold](crate::commands::thresholds::over_voltage_protection_threshold::OverVoltageProtectionThreshold) for more details
+    ///
+    /// Datasheet Name: OVPTHR
     OverVoltageProtectionThreshold = 0x18,
     OverCurrentProtectionThreshold = 0x19,
     OverTemperatureProtectionThreshold = 0x1A,

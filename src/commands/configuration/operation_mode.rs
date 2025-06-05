@@ -1,4 +1,3 @@
-use arbitrary_int::u4;
 use bitbybit::{bitenum, bitfield};
 
 use crate::impl_one_byte_read_command;
@@ -29,9 +28,9 @@ pub struct OperationMode {
     /// Datasheet Name: PDMOD
     #[bit(1, r)]
     pub power_delivery_source_connected: bool,
-    /// Reserved bits [2..5]
-    #[bits(2..=5,r)]
-    reserved: u4,
+    // /// Reserved bits [2..5]
+    // #[bits(2..=5,r)]
+    // reserved: u4,
     /// Derating Mode
     ///
     /// Datasheet Name: DR

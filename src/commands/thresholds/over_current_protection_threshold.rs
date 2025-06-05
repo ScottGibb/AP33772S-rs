@@ -17,6 +17,21 @@ impl OverCurrentProtectionThreshold {
         let scaled_current = u16::from(self.raw_current()) * Self::CURRENT_RESOLUTION;
         ElectricCurrent::new::<milliampere>(f32::from(scaled_current))
     }
+    /// TODO: Look to generigy and combine into a helper function
+    pub fn convert_current_to_raw_current(
+        current: ElectricCurrent,
+    ) -> Result<u8, crate::Ap33772sError> {
+        if !current.is_finite() || !current.is_sign_positive() {
+            return Err(crate::Ap33772sError::ConversionError);
+        }
+        let raw_value = current.get::<milliampere>() / Self::CURRENT_RESOLUTION as f32;
+
+        if raw_value > u8::MAX as f32 {
+            return Err(crate::Ap33772sError::ConversionError);
+        }
+
+        Ok(raw_value as u8)
+    }
 }
 impl_one_byte_read_command!(
     OverCurrentProtectionThreshold,
