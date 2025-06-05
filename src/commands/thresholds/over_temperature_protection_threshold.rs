@@ -6,14 +6,19 @@ use crate::{impl_one_byte_read_command, impl_one_byte_write_command};
 
 use super::command_map::Command;
 
+/// The OTPTHR register is defined as the OTP Threshold Temperature (°C) that triggers OTP protection function.
+/// The default value for the OTPTHR is 78h (120°C).
+/// Please refer to the “Overtemperature Protection and De-Rating” section for more details.
+///
+/// // Datasheet Name: OTPTHR
 #[bitfield(u8, default = 0x78)]
 #[derive(Debug, PartialEq)]
-pub struct OverTemperatureProrectionThreshold {
+pub struct OverTemperatureProtectionThreshold {
     #[bits(0..=7, rw)]
     raw_temperature: u8,
 }
 
-impl OverTemperatureProrectionThreshold {
+impl OverTemperatureProtectionThreshold {
     /// Returns the temperature value in degrees Celsius.
     pub fn temperature(&self) -> ThermodynamicTemperature {
         let scaled_temperature = f32::from(u16::from(self.raw_temperature()));
@@ -37,10 +42,10 @@ impl OverTemperatureProrectionThreshold {
 }
 
 impl_one_byte_read_command!(
-    OverTemperatureProrectionThreshold,
+    OverTemperatureProtectionThreshold,
     Command::OverTemperatureProtectionThreshold
 );
 impl_one_byte_write_command!(
-    OverTemperatureProrectionThreshold,
+    OverTemperatureProtectionThreshold,
     Command::OverTemperatureProtectionThreshold
 );

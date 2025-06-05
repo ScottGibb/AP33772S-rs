@@ -8,7 +8,6 @@
 
 More info coming soon!
 
-
 ## Datasheets
 
 - [AP33772S Datasheet](./docs/AP33772S.pdf)

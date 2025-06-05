@@ -16,7 +16,8 @@ impl<I2C: I2c> Ap33772s<I2C> {
         let command_address = u8::from(command.get_command());
         let data = command.raw_value();
         self.i2c
-            .write(Self::ADDRESS, &[command_address, data]).await?;
+            .write(Self::ADDRESS, &[command_address, data])
+            .await?;
         Ok(())
     }
     #[maybe_async::maybe_async]
@@ -59,7 +60,8 @@ impl<I2C: I2c> Ap33772s<I2C> {
         let command_address = u8::from(command.get_command());
         let data = command.raw_value().to_be_bytes();
         self.i2c
-            .write(Self::ADDRESS, &[command_address, data[0], data[1]]).await?;
+            .write(Self::ADDRESS, &[command_address, data[0], data[1]])
+            .await?;
         Ok(())
     }
 }

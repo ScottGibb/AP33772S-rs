@@ -1,11 +1,11 @@
 use super::hal::*;
-use crate::commands::thermal_resistances::thermal_resistance_100::ThermalResistance100;
-use crate::commands::thermal_resistances::thermal_resistance_25::ThermalResistance25;
-use crate::commands::thermal_resistances::thermal_resistance_50::ThermalResistance50;
-use crate::commands::thermal_resistances::thermal_resistance_75::ThermalResistance75;
 use crate::Ap33772sError;
 use crate::ap33772s;
 use crate::ap33772s::Ap33772s;
+use crate::commands::thermal_resistances::thermal_resistance_25::ThermalResistance25;
+use crate::commands::thermal_resistances::thermal_resistance_50::ThermalResistance50;
+use crate::commands::thermal_resistances::thermal_resistance_75::ThermalResistance75;
+use crate::commands::thermal_resistances::thermal_resistance_100::ThermalResistance100;
 
 use crate::commands::requested::current_requested::CurrentRequested;
 use crate::commands::requested::voltage_requested::VoltageRequested;
@@ -64,9 +64,7 @@ impl<I2C: I2c> Ap33772s<I2C> {
         Ok(requested_power)
     }
     #[maybe_async::maybe_async]
-    pub async fn get_statistics(
-        &mut self,
-    ) -> Result<ap33772s::AP33772SStatistics, Ap33772sError> {
+    pub async fn get_statistics(&mut self) -> Result<ap33772s::AP33772SStatistics, Ap33772sError> {
         let current = self.get_current().await?;
         let voltage = self.get_voltage().await?;
         let temperature = self.get_temperature().await?;
@@ -105,7 +103,9 @@ impl<I2C: I2c> Ap33772s<I2C> {
     pub async fn get_minimum_selection_voltage(
         &mut self,
     ) -> Result<ElectricPotential, Ap33772sError> {
-        let voltage_selection = self.read_one_byte_command::<MinimumSelectionVoltage>().await?;
+        let voltage_selection = self
+            .read_one_byte_command::<MinimumSelectionVoltage>()
+            .await?;
         Ok(voltage_selection.voltage())
     }
 }

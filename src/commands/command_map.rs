@@ -86,26 +86,38 @@ pub enum Command {
     Temperature = 0x13,
     /// The VoltageRequested register is defined as the requested output voltage of the AP33772S.
     /// See [VoltageRequested](crate::commands::requested::voltage_requested::VoltageRequested) for more details
-    /// 
+    ///
     /// Datasheet Name: VREQ
     VoltageRequested = 0x14,
     /// The CurrentRequested register is defined as the requested output current of the AP33772S.
     /// See [CurrentRequested](crate::commands::requested::current_requested::CurrentRequested) for more details
-    /// 
+    ///
     /// Datasheet Name: IREQ
     CurrentRequested = 0x15,
     /// The Minimum Selection Voltage os defined as the minimum selection voltage of the AP33772S.
     /// See [MinimumSelectionVoltage](crate::commands::statistics::minimum_selection_voltage::MinimumSelectionVoltage) for more details
-    /// 
+    ///
     /// Command: VSELMIN
     MinimumSelectionVoltage = 0x16,
+    /// The Under Voltage Protection Threshold is defined as the under voltage protection threshold of the AP33772S.
+    /// See [UnderVoltageProtectionThreshold](crate::commands::thresholds::under_voltage_protection_threshold::UnderVoltageProtectionThreshold) for more details
+    ///
+    /// Datasheet Name: UVPTHR
     UnderVoltageProtectionThreshold = 0x17,
     /// The Over Voltage Protection Threshold is defined as the over voltage protection threshold of the AP33772S.
     /// See [OverVoltageProtectionThreshold](crate::commands::thresholds::over_voltage_protection_threshold::OverVoltageProtectionThreshold) for more details
     ///
     /// Datasheet Name: OVPTHR
     OverVoltageProtectionThreshold = 0x18,
+    /// The Over Current Protection Threshold is defined as the over current protection threshold of the AP33772S.
+    /// See [OverCurrentProtectionThreshold](crate::commands::thresholds::over_current_protection_threshold::OverCurrentProtectionThreshold) for more details
+    ///
+    /// Datasheet Name: OCPTHR
     OverCurrentProtectionThreshold = 0x19,
+    /// The Over Temperature Protection Threshold is defined as the over temperature protection threshold of the AP33772S.
+    /// See [OverTemperatureProtectionThreshold](crate::commands::thresholds::over_temperature_protection_threshold::OverTemperatureProtectionThreshold) for more details
+    ///
+    /// Datasheet Name: OTPTHR
     OverTemperatureProtectionThreshold = 0x1A,
     DeRatingThreshold = 0x1B,
     /// Get All PD Source Power Capabilities (PDO1 to PDO13)

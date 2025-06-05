@@ -25,4 +25,3 @@ pub fn convert_resistance_to_raw_resistance(
 
     Ok(raw_value as u16)
 }
-

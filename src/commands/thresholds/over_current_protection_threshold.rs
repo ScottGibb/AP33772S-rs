@@ -4,7 +4,17 @@ use uom::si::{electric_current::milliampere, f32::ElectricCurrent};
 use super::command_map::Command;
 use crate::{impl_one_byte_read_command, impl_one_byte_write_command};
 
-#[bitfield(u8, default = 0x78)]
+/// The OCPTHR register is defined as the OCP Threshold Current that triggers OCP protection function.
+/// The OCP Threshold Current is 110% of the OCPTHR current value. The default value for the OCPTHR is
+/// 00h and the LSB is 50mA.
+///
+/// If the OCPTHR is set to 0, the OCP Threshold Current will be updated to 110%
+/// of the selected [Power Data Object](crate::commands::data_objects::source_power_data_object::SourcePowerDataObject)
+/// (POD) maximum current after successful negotiation with the PD source.
+/// Please refer to the “Overcurrent Protection” section for more details
+///
+/// // Datasheet Name: OCPTHR
+#[bitfield(u8, default = 0x00)]
 #[derive(Debug, PartialEq)]
 pub struct OverCurrentProtectionThreshold {
     #[bits(0..=7, rw)]
@@ -13,6 +23,8 @@ pub struct OverCurrentProtectionThreshold {
 
 impl OverCurrentProtectionThreshold {
     const CURRENT_RESOLUTION: u16 = 50; // mA
+
+    /// Returns the current value in milliampere.
     pub fn current(&self) -> ElectricCurrent {
         let scaled_current = u16::from(self.raw_current()) * Self::CURRENT_RESOLUTION;
         ElectricCurrent::new::<milliampere>(f32::from(scaled_current))

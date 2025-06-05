@@ -7,7 +7,7 @@ use crate::impl_one_byte_read_command;
 
 /// This struct represents the current of the AP33772S device.
 /// It contains the raw current value and provides a method to convert it to milliamperes.
-/// 
+///
 /// Datasheet Name: CURRENT
 #[bitfield(u8, default = 0x0)]
 #[derive(Debug, PartialEq)]
