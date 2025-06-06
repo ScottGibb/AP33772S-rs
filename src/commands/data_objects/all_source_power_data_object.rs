@@ -1,17 +1,22 @@
-use arbitrary_int::u104;
-use bitbybit::bitfield;
+use crate::commands::data_objects::extended_power_range_data_object::ExtendedPowerRangeDataObject;
 
 use super::source_power_data_object::SourcePowerDataObject;
 
-#[bitfield(u104, default = 0x00)]
+pub(crate) const MAX_SOURCE_POWER_DATA_OBJECTS: usize = 7;
+pub(crate) const MAX_EXTENDED_POWER_DATA_OBJECTS: usize = 5;
 #[derive(Debug, PartialEq)]
 pub struct AllSourceDataPowerDataObject {
-    #[bits(0..=15, rw)]
-    pub source_power_data_object: [SourcePowerDataObject; 7],
-    #[bits(0..=15, rw)]
-    pub extended_power_data_object: [SourcePowerDataObject; 5],
+    pub source_power_data_object: [SourcePowerDataObject; MAX_SOURCE_POWER_DATA_OBJECTS],
+    pub extended_power_data_object: [ExtendedPowerRangeDataObject; MAX_EXTENDED_POWER_DATA_OBJECTS],
 }
 
-#[bitfield(u16, default = 0x00)]
-#[derive(Debug, PartialEq)]
-pub struct ExtendedPowerDataObject {}
+impl Default for AllSourceDataPowerDataObject {
+    fn default() -> Self {
+        AllSourceDataPowerDataObject {
+            source_power_data_object: [SourcePowerDataObject::default();
+                MAX_SOURCE_POWER_DATA_OBJECTS],
+            extended_power_data_object: [ExtendedPowerRangeDataObject::default();
+                MAX_EXTENDED_POWER_DATA_OBJECTS],
+        }
+    }
+}
