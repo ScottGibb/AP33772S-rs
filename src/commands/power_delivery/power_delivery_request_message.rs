@@ -32,6 +32,8 @@ pub enum PowerDataObject {
     ExtendedPowerRange12 = 0x0B,
     ExtendedPowerRange13 = 0x0C,
 }
+
+#[derive(Debug, PartialEq, PartialOrd)]
 #[bitenum(u4, exhaustive = true)]
 pub enum CurrentSelection {
     _1A = 0,
@@ -51,6 +53,7 @@ pub enum CurrentSelection {
     _4_5A = 14,
     _5AOrMore = 15,
 }
+
 impl_two_byte_write_command!(
     PowerDeliveryRequestMessage,
     Command::PowerDeliveryRequestMessage

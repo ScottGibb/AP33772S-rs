@@ -1,15 +1,16 @@
 use ap33772s_rs::{
     ap33772s::Ap33772s,
     commands::{
-        data_objects::{
-            all_source_power_data_object::PowerType,
-            extended_power_range_data_object::ExtendedPowerSourcePowerType,
-            source_power_data_object::SourcePowerType,
-        },
-        power_delivery::power_delivery_request_message::PowerDataObject,
+        data_objects::all_source_power_data_object::PowerType,
+        power_delivery::power_delivery_request_message::{CurrentSelection, PowerDataObject},
+        statistics::{current, voltage},
     },
 };
-use uom::si::power;
+use uom::si::{
+    electric_potential::{millivolt, volt},
+    f32::ElectricPotential,
+    power,
+};
 use utils::setup_i2c;
 
 fn main() {
@@ -42,18 +43,17 @@ fn main() {
     print!(" Power Data Object Index: {:?}\n", power_data_object_index);
 
     // Check of the Power Data Object Index is not a fixed type //TODO: Replace this
-    if let fixed = power_data_object_index >= PowerDataObject::ExtendedPowerRange9 {
+    let fixed = if power_data_object_index >= PowerDataObject::ExtendedPowerRange9 {
         let index = usize::from(u8::from(
             power_data_object_index.raw_value() - PowerDataObject::ExtendedPowerRange9.raw_value(),
         ));
-        power_delivery_capabilities.extended_power[index].source_power_type() == PowerType::Fixed;
+        power_delivery_capabilities.extended_power[index].source_power_type() == PowerType::Fixed
     } else {
         let index: usize = usize::from(u8::from(power_data_object_index.raw_value()));
-        power_delivery_capabilities.source_power[index].source_power_type()
-            == SourcePowerType::Fixed;
-    }
+        power_delivery_capabilities.source_power[index].source_power_type() == PowerType::Fixed
+    };
 
-    if !fixed {
+    let voltage = if !fixed {
         println!(
             "The power data object is not a fixed type, please enter the voltage in milivolts (mV)"
         );
@@ -61,6 +61,24 @@ fn main() {
         std::io::stdin()
             .read_line(&mut input)
             .expect("Failed to read line");
-        let voltage: u16 = input.trim().parse().expect("Invalid input");
-    }
+        let raw_voltage: f32 = input.trim().parse().expect("Invalid input");
+        Some(ElectricPotential::new::<millivolt>(raw_voltage))
+    } else {
+        None
+    };
+
+    println!("Enter the Current you wish to select");
+    let mut input = String::new();
+    std::io::stdin()
+        .read_line(&mut input)
+        .expect("Failed to read line");
+    let current_selection: u8 = input.trim().parse().expect("Invalid input");
+    let current_selection = CurrentSelection::new_with_raw_value(current_selection.into());
+
+    println!("Current Selected: {:?}", current_selection);
+
+    /// Request the Power Delivery
+    ap33772s
+        .send_power_delivery_request(power_data_object_index, current_selection, voltage)
+        .expect("Failed to send Power Delivery Request");
 }

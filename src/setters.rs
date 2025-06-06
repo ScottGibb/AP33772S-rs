@@ -1,3 +1,5 @@
+use uom::si::f32::ElectricPotential;
+
 use super::hal::*;
 use crate::Ap33772sError;
 use crate::ap33772s::{AP33772SThermalResistances, AP33772SThresholds, Ap33772s};
@@ -17,7 +19,7 @@ impl<I2C: I2c> Ap33772s<I2C> {
         &mut self,
         power_data_object_index: PowerDataObject,
         current_selection: CurrentSelection,
-        voltage_selection: u8,
+        voltage_selection: Option<ElectricPotential>,
     ) -> Result<(), Ap33772sError> {
         let delivery_message = PowerDeliveryRequestMessage::builder()
             .with_voltage_selection(voltage_selection)
