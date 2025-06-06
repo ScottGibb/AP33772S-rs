@@ -8,6 +8,7 @@ updates:
   - package-ecosystem: "cargo"
     directories:
       - "/"
+      - "**/*"
     schedule:
       interval: "weekly"
     commit-message:
