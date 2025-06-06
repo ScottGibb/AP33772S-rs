@@ -8,7 +8,7 @@ use super::command_map::Command;
 #[derive(Debug, PartialEq)]
 pub struct PowerDeliveryMessageResult {
     #[bits(0..=2, r)]
-    response: Option<Response>,
+    response: Option<PowerDeliveryResponse>,
     // #[bit(3, r)]
     // reserved: bool,
     // #[bits(4..=7, r)]
@@ -17,7 +17,7 @@ pub struct PowerDeliveryMessageResult {
 
 #[bitenum(u3, exhaustive = false)]
 #[derive(Debug, PartialEq)]
-pub enum Response {
+pub enum PowerDeliveryResponse {
     Busy = 0,
     Success = 1,
     Invalid = 2,

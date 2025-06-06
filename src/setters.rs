@@ -1,6 +1,9 @@
 use super::hal::*;
 use crate::Ap33772sError;
 use crate::ap33772s::{AP33772SThermalResistances, AP33772SThresholds, Ap33772s};
+use crate::commands::power_delivery::power_delivery_request_message::{
+    CurrentSelection, PowerDataObject, PowerDeliveryRequestMessage,
+};
 use crate::commands::thermal_resistances::convert_resistance_to_raw_resistance;
 use crate::commands::thermal_resistances::thermal_resistance_25::ThermalResistance25;
 use crate::commands::thresholds::de_rating_threshold::DeRatingThreshold;
@@ -8,7 +11,23 @@ use crate::commands::thresholds::over_current_protection_threshold::OverCurrentP
 use crate::commands::thresholds::over_temperature_protection_threshold::OverTemperatureProtectionThreshold;
 use crate::commands::thresholds::over_voltage_protection_threshold::OverVoltageProtectionThreshold;
 use crate::commands::thresholds::under_voltage_protection_threshold::UnderVoltageProtectionThreshold;
-
+impl<I2C: I2c> Ap33772s<I2C> {
+    #[maybe_async::maybe_async]
+    pub async fn send_power_delivery_request(
+        &mut self,
+        power_data_object_index: PowerDataObject,
+        current_selection: CurrentSelection,
+        voltage_selection: u8,
+    ) -> Result<(), Ap33772sError> {
+        let delivery_message = PowerDeliveryRequestMessage::builder()
+            .with_voltage_selection(voltage_selection)
+            .with_current_selection(current_selection)
+            .with_power_data_object_index(power_data_object_index)
+            .build();
+        self.write_two_byte_command(delivery_message).await?;
+        Ok(())
+    }
+}
 impl<I2C: I2c> Ap33772s<I2C> {
     #[maybe_async::maybe_async]
     pub async fn set_thermal_resistances(

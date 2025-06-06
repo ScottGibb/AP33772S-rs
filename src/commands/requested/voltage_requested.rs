@@ -37,5 +37,20 @@ impl VoltageRequested {
         let scaled_voltage = self.raw_voltage() * Self::VOLTAGE_RESOLUTION;
         ElectricPotential::new::<millivolt>(f32::from(scaled_voltage))
     }
+
+    pub fn convert_voltage_to_raw_voltage(
+        voltage: ElectricPotential,
+    ) -> Result<u16, crate::Ap33772sError> {
+        if !voltage.is_finite() || !voltage.is_sign_positive() {
+            return Err(crate::Ap33772sError::ConversionError);
+        }
+        let raw_value = voltage.get::<millivolt>() / Self::VOLTAGE_RESOLUTION as f32;
+
+        if raw_value > u16::MAX as f32 {
+            return Err(crate::Ap33772sError::ConversionError);
+        }
+
+        Ok(raw_value as u16)
+    }
 }
 impl_two_byte_read_command!(VoltageRequested, Command::VoltageRequested);

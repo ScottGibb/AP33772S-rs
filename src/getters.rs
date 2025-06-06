@@ -4,14 +4,14 @@ use crate::ap33772s;
 use crate::ap33772s::AP33772SThermalResistances;
 use crate::ap33772s::AP33772SThresholds;
 use crate::ap33772s::Ap33772s;
-use crate::commands::command_map;
 use crate::commands::command_map::Command;
 use crate::commands::data_objects::all_source_power_data_object::AllSourceDataPowerDataObject;
 use crate::commands::data_objects::all_source_power_data_object::MAX_EXTENDED_POWER_DATA_OBJECTS;
 use crate::commands::data_objects::all_source_power_data_object::MAX_SOURCE_POWER_DATA_OBJECTS;
 use crate::commands::data_objects::extended_power_range_data_object::ExtendedPowerRangeDataObject;
-use crate::commands::data_objects::extended_power_range_data_object::ExtendedPowerSourcePowerType;
 use crate::commands::data_objects::source_power_data_object::SourcePowerDataObject;
+use crate::commands::power_delivery::power_delivery_message_result::PowerDeliveryMessageResult;
+use crate::commands::power_delivery::power_delivery_message_result::PowerDeliveryResponse;
 use crate::commands::thermal_resistances::thermal_resistance_25::ThermalResistance25;
 use crate::commands::thermal_resistances::thermal_resistance_50::ThermalResistance50;
 use crate::commands::thermal_resistances::thermal_resistance_75::ThermalResistance75;
@@ -144,7 +144,7 @@ impl<I2C: I2c> Ap33772s<I2C> {
             over_voltage_threshold: over_voltage_threshold.voltage(),
             over_current_threshold: over_current_threshold.current(),
             over_temperature_threshold: over_temperature_protection_threshold.temperature(),
-            under_voltage_threshold: under_voltage_threshold,
+            under_voltage_threshold,
             derating_threshold: de_rating_threshold.temperature(),
         })
     }
@@ -180,5 +180,16 @@ impl<I2C: I2c> Ap33772s<I2C> {
         }
 
         Ok(data_object)
+    }
+
+    #[maybe_async::maybe_async]
+    pub async fn get_power_delivery_request_result(
+        &mut self,
+    ) -> Result<PowerDeliveryResponse, Ap33772sError> {
+        let power_delivery_request_result = self
+            .read_one_byte_command::<PowerDeliveryMessageResult>()
+            .await?;
+
+        Ok(power_delivery_request_result.response().unwrap()) // TODO: Handle this error better
     }
 }

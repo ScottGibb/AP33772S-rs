@@ -1,4 +1,3 @@
-use arbitrary_int::u4;
 use bitbybit::{bitenum, bitfield};
 
 use crate::impl_two_byte_write_command;
@@ -9,9 +8,9 @@ use super::command_map::Command;
 #[derive(Debug, PartialEq)]
 pub struct PowerDeliveryRequestMessage {
     #[bits(0..=7, w)]
-    pub voltage_selection: u8,
+    pub voltage_selection: u8, // Handle the different units depending on the power mode
     #[bits(8..=11, w)]
-    pub current_selection: u4,
+    pub current_selection: CurrentSelection,
     #[bits(12..=15, w)]
     pub power_data_object_index: PowerDataObject,
 }
