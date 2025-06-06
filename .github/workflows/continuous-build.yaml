@@ -8,7 +8,10 @@ on:
 jobs:
   build-sync:
     name: Build with sync feature
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
       - uses: actions/checkout@v4
       - name: Cache
@@ -24,7 +27,10 @@ jobs:
 
   build-async:
     name: Build with async feature
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
       - uses: actions/checkout@v4
       - name: Cache
@@ -37,3 +43,34 @@ jobs:
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
       - name: Build (async)
         run: cargo build --no-default-features --features async --verbose
+
+  build-examples:
+    name: Build examples
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    steps:
+      - name: Install FTDI Dependencies (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get install libftdi1 libftdi1-dev -y
+      - name: Install FTDI Dependencies (MacOS)
+        if: runner.os == 'MacOS'
+        run: |
+          brew install libftdi
+      - uses: actions/checkout@v4
+      - name: Cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+      - name: Build Power Data Object Query Example
+        run: |
+         cargo build --examples power_data_object_query --no-default-features --features sync
+      - name: Build Power Data Object Send Example
+        run: |
+         cargo build --examples power_data_object_send --no-default-features --features sync

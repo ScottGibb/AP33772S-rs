@@ -1,5 +1,7 @@
 use bitbybit::{bitenum, bitfield};
 
+use crate::commands::data_objects::all_source_power_data_object::PowerType;
+
 #[bitfield(u16, default = 0x00)]
 #[derive(Debug, PartialEq)]
 pub struct SourcePowerDataObject {
@@ -11,7 +13,7 @@ pub struct SourcePowerDataObject {
     #[bits(10..=13, r)]
     pub max_current: SourcePowerCurrent,
     #[bit(14, r)]
-    pub source_power_type: SourcePowerType,
+    pub source_power_type: PowerType,
     #[bit(15, r)]
     pub is_detected: bool,
 }
@@ -54,11 +56,4 @@ pub enum SourcePowerCurrent {
     _4_25To4_49 = 13,
     _4_50To4_99 = 14,
     MoreThan5 = 15,
-}
-
-#[bitenum(u1, exhaustive = true)]
-#[derive(Debug, PartialEq)]
-pub enum SourcePowerType {
-    FixedPowerDataObject = 0,
-    ProgrammablePowerSupplyAdjustablePowerDataObject = 1,
 }

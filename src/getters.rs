@@ -173,14 +173,14 @@ impl<I2C: I2c> Ap33772s<I2C> {
             .await?;
         let mut data_object = AllSourceDataPowerDataObject::default();
         for i in 0..MAX_SOURCE_POWER_DATA_OBJECTS {
-            data_object.source_power_data_object[i] =
+            data_object.source_power[i] =
                 SourcePowerDataObject::new_with_raw_value(u16::from_le_bytes([
                     buff[2 * i],
                     buff[2 * i + 1],
                 ]));
         }
         for i in 0..MAX_EXTENDED_POWER_DATA_OBJECTS {
-            data_object.extended_power_data_object[i] =
+            data_object.extended_power[i] =
                 ExtendedPowerRangeDataObject::new_with_raw_value(u16::from_le_bytes([
                     buff[2 * (i + MAX_SOURCE_POWER_DATA_OBJECTS)],
                     buff[2 * (i + MAX_SOURCE_POWER_DATA_OBJECTS) + 1],

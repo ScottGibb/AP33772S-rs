@@ -15,6 +15,7 @@ pub struct PowerDeliveryRequestMessage {
     pub power_data_object_index: PowerDataObject,
 }
 
+#[derive(Debug, PartialEq, PartialOrd)]
 #[bitenum(u4, exhaustive = false)]
 pub enum PowerDataObject {
     StandardPowerRange1 = 0x00,

@@ -10,11 +10,10 @@ dependencies = [
  "bitbybit",
  "embedded-hal 1.0.0",
  "embedded-hal-async",
- "ftdi",
- "ftdi-embedded-hal",
  "maybe-async",
  "num_enum",
  "uom",
+ "utils",
 ]
 
 [[package]]
@@ -95,9 +94,9 @@ dependencies = [
 
 [[package]]
 name = "ftdi-embedded-hal"
-version = "0.23.1"
+version = "0.23.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fd32486fe8a220222de65f78dd31ead0e048c5ee3523b1e0dfe524f2f478014f"
+checksum = "0fe355bc850d50b44519d42f875b788e6cb01fd52e4a6292250b23b29d6d5d8e"
 dependencies = [
  "embedded-hal 0.2.7",
  "embedded-hal 1.0.0",
@@ -304,6 +303,14 @@ checksum = "cd5cfe7d84f6774726717f358a37f5bca8fca273bed4de40604ad129d1107b49"
 dependencies = [
  "num-traits",
  "typenum",
+]
+
+[[package]]
+name = "utils"
+version = "0.1.0"
+dependencies = [
+ "ftdi",
+ "ftdi-embedded-hal",
 ]
 
 [[package]]
