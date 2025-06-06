@@ -5,6 +5,7 @@ use crate::ap33772s::AP33772SThermalResistances;
 use crate::ap33772s::AP33772SThresholds;
 use crate::ap33772s::Ap33772s;
 use crate::commands::command_map::Command;
+use crate::commands::configuration::status::Status;
 use crate::commands::data_objects::all_source_power_data_object::AllSourceDataPowerDataObject;
 use crate::commands::data_objects::all_source_power_data_object::MAX_EXTENDED_POWER_DATA_OBJECTS;
 use crate::commands::data_objects::all_source_power_data_object::MAX_SOURCE_POWER_DATA_OBJECTS;
@@ -33,6 +34,13 @@ use uom::si::f32::ElectricCurrent;
 use uom::si::f32::ElectricPotential;
 use uom::si::f32::ThermodynamicTemperature;
 
+impl<I2C: I2c> Ap33772s<I2C> {
+    #[maybe_async::maybe_async]
+    pub async fn get_status(&mut self) -> Result<Status, Ap33772sError> {
+        let status = self.read_one_byte_command::<Status>().await?;
+        Ok(status)
+    }
+}
 /// This module provides methods to read various statistics from the AP33772S device.
 /// It includes methods to get the current, voltage, temperature, power,
 impl<I2C: I2c> Ap33772s<I2C> {
