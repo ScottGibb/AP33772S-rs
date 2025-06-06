@@ -25,6 +25,7 @@ impl OverTemperatureProtectionThreshold {
         ThermodynamicTemperature::new::<degree_celsius>(scaled_temperature)
     }
     /// Converts a temperature in degrees Celsius to the raw temperature value.
+    // TODO: Consider Better Error Handling of the different conversion failures
     pub fn convert_temperature_to_raw_temperature(
         temperature: ThermodynamicTemperature,
     ) -> Result<u8, crate::Ap33772sError> {

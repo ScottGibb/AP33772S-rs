@@ -4,9 +4,15 @@ use bitbybit::bitfield;
 use uom::si::f32::ThermodynamicTemperature;
 use uom::si::thermodynamic_temperature::degree_celsius;
 
+/// The DeRatingThreshold register is defined as the De-Rating Threshold Temperature (°C) that triggers
+/// the De-Rating function. The default value for the DeRatingThreshold is 78h (120°C).
+/// Please refer to the “Overtemperature Protection and De-Rating” section for more details.
+///
+/// // Datasheet Name: DRTHR
 #[bitfield(u8, default = 0x78)]
 #[derive(Debug, PartialEq)]
 pub struct DeRatingThreshold {
+    /// The temperature threshold triggers De-Rating function; the default value for DRTHR is 78h (120°C)
     #[bits(0..=7, rw)]
     pub raw_temperature: u8,
 }
@@ -19,6 +25,7 @@ impl DeRatingThreshold {
     }
 
     /// Converts a temperature in degrees Celsius to the raw temperature value.
+    /// TODO: Consider Better Error Handling of the different conversion failures
     pub fn convert_temperature_to_raw_temperature(
         temperature: ThermodynamicTemperature,
     ) -> Result<u8, crate::Ap33772sError> {

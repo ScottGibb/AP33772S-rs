@@ -30,6 +30,7 @@ impl OverCurrentProtectionThreshold {
         ElectricCurrent::new::<milliampere>(f32::from(scaled_current))
     }
     /// TODO: Look to generigy and combine into a helper function
+    // TODO: Consider Better Error Handling of the different conversion failures
     pub fn convert_current_to_raw_current(
         current: ElectricCurrent,
     ) -> Result<u8, crate::Ap33772sError> {

@@ -1,11 +1,18 @@
 use super::hal::*;
 use crate::Ap33772sError;
 use crate::ap33772s;
+use crate::ap33772s::AP33772SThermalResistances;
+use crate::ap33772s::AP33772SThresholds;
 use crate::ap33772s::Ap33772s;
 use crate::commands::thermal_resistances::thermal_resistance_25::ThermalResistance25;
 use crate::commands::thermal_resistances::thermal_resistance_50::ThermalResistance50;
 use crate::commands::thermal_resistances::thermal_resistance_75::ThermalResistance75;
 use crate::commands::thermal_resistances::thermal_resistance_100::ThermalResistance100;
+use crate::commands::thresholds::de_rating_threshold::DeRatingThreshold;
+use crate::commands::thresholds::over_current_protection_threshold::OverCurrentProtectionThreshold;
+use crate::commands::thresholds::over_temperature_protection_threshold;
+use crate::commands::thresholds::over_voltage_protection_threshold::OverVoltageProtectionThreshold;
+use crate::commands::thresholds::under_voltage_protection_threshold::UnderVoltageProtectionThreshold;
 
 use crate::commands::requested::current_requested::CurrentRequested;
 use crate::commands::requested::voltage_requested::VoltageRequested;
@@ -81,25 +88,6 @@ impl<I2C: I2c> Ap33772s<I2C> {
         })
     }
     #[maybe_async::maybe_async]
-    pub async fn get_thermal_resistances(
-        &mut self,
-    ) -> Result<ap33772s::AP33772SThermalResistances, Ap33772sError> {
-        let resistance_25 = self.read_two_byte_command::<ThermalResistance25>().await?;
-        let resistance_50 = self.read_two_byte_command::<ThermalResistance50>().await?;
-        let resistance_75 = self.read_two_byte_command::<ThermalResistance75>().await?;
-        let resistance_100 = self.read_two_byte_command::<ThermalResistance100>().await?;
-
-        Ok(ap33772s::AP33772SThermalResistances {
-            resistance_25: resistance_25.thermal_resistance(),
-            resistance_50: resistance_50.thermal_resistance(),
-            resistance_75: resistance_75.thermal_resistance(),
-            resistance_100: resistance_100.thermal_resistance(),
-        })
-    }
-}
-
-impl<I2C: I2c> Ap33772s<I2C> {
-    #[maybe_async::maybe_async]
     pub async fn get_minimum_selection_voltage(
         &mut self,
     ) -> Result<ElectricPotential, Ap33772sError> {
@@ -107,5 +95,49 @@ impl<I2C: I2c> Ap33772s<I2C> {
             .read_one_byte_command::<MinimumSelectionVoltage>()
             .await?;
         Ok(voltage_selection.voltage())
+    }
+}
+
+impl<I2C: I2c> Ap33772s<I2C> {
+    #[maybe_async::maybe_async]
+    pub async fn get_thermal_resistances(
+        &mut self,
+    ) -> Result<AP33772SThermalResistances, Ap33772sError> {
+        let resistance_25 = self.read_two_byte_command::<ThermalResistance25>().await?;
+        let resistance_50 = self.read_two_byte_command::<ThermalResistance50>().await?;
+        let resistance_75 = self.read_two_byte_command::<ThermalResistance75>().await?;
+        let resistance_100 = self.read_two_byte_command::<ThermalResistance100>().await?;
+
+        Ok(AP33772SThermalResistances {
+            resistance_25: resistance_25.thermal_resistance(),
+            resistance_50: resistance_50.thermal_resistance(),
+            resistance_75: resistance_75.thermal_resistance(),
+            resistance_100: resistance_100.thermal_resistance(),
+        })
+    }
+    #[maybe_async::maybe_async]
+    pub async fn get_thresholds(&mut self) -> Result<AP33772SThresholds, Ap33772sError> {
+        let over_voltage_threshold = self
+            .read_one_byte_command::<OverVoltageProtectionThreshold>()
+            .await?;
+        let over_current_threshold = self
+            .read_one_byte_command::<OverCurrentProtectionThreshold>()
+            .await?;
+        let over_temperature_protection_threshold = self
+            .read_one_byte_command::<over_temperature_protection_threshold::OverTemperatureProtectionThreshold>()
+            .await
+           ?;
+        let under_voltage_threshold = self
+            .read_one_byte_command::<UnderVoltageProtectionThreshold>()
+            .await?;
+        let under_voltage_threshold = under_voltage_threshold.threshold().unwrap();
+        let de_rating_threshold = self.read_one_byte_command::<DeRatingThreshold>().await?;
+        Ok(AP33772SThresholds {
+            over_voltage_threshold: over_voltage_threshold.voltage(),
+            over_current_threshold: over_current_threshold.current(),
+            over_temperature_threshold: over_temperature_protection_threshold.temperature(),
+            under_voltage_threshold: under_voltage_threshold,
+            derating_threshold: de_rating_threshold.temperature(),
+        })
     }
 }

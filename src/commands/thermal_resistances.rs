@@ -10,6 +10,7 @@ pub mod thermal_resistance_50;
 pub mod thermal_resistance_75;
 
 // TODO: Fix This / is there a better way to do this?
+// TODO: Consider Better Error Handling of the different conversion failures
 pub fn convert_resistance_to_raw_resistance(
     resistance: ElectricalResistance,
 ) -> Result<u16, Ap33772sError> {

@@ -14,6 +14,7 @@ use crate::{
 #[bitfield(u8, default = 0x01)]
 #[derive(Debug, PartialEq)]
 pub struct UnderVoltageProtectionThreshold {
+    /// The UVP Threshold Voltage is UVPTHR percentage (%) of VREQ voltage (unit: %)
     #[bits(0..=3, rw)]
     threshold: Option<UnderVoltageThreshold>,
     // #[bits(4..=7, rw)]
