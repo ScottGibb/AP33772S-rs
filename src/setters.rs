@@ -1,8 +1,12 @@
+use uom::si::electric_potential::volt;
 use uom::si::f32::ElectricPotential;
 
 use super::hal::*;
 use crate::Ap33772sError;
 use crate::ap33772s::{AP33772SThermalResistances, AP33772SThresholds, Ap33772s};
+use crate::commands::data_objects::all_source_power_data_object::{
+    AllSourceDataPowerDataObject, MAX_SOURCE_POWER_DATA_OBJECTS, PowerType,
+};
 use crate::commands::power_delivery::power_delivery_request_message::{
     CurrentSelection, PowerDataObject, PowerDeliveryRequestMessage,
 };
@@ -20,16 +24,36 @@ impl<I2C: I2c> Ap33772s<I2C> {
         power_data_object_index: PowerDataObject,
         current_selection: CurrentSelection,
         voltage_selection: Option<ElectricPotential>,
+        data_objects: AllSourceDataPowerDataObject,
     ) -> Result<(), Ap33772sError> {
-        let delivery_message = PowerDeliveryRequestMessage::builder()
-            .with_voltage_selection(voltage_selection)
-            .with_current_selection(current_selection)
-            .with_power_data_object_index(power_data_object_index)
-            .build();
+        let power_type = data_objects.get_power_mode(power_data_object_index);
+        let scaling_value = data_objects.get_voltage_scaling(power_data_object_index);
+        let delivery_message = if power_type == PowerType::Fixed {
+            // If we are in fixed PDO Mode, the voltage selection is not needed.
+            PowerDeliveryRequestMessage::builder()
+                .with_voltage_selection(0)
+                .with_current_selection(current_selection)
+                .with_power_data_object_index(power_data_object_index)
+                .build()
+        } else {
+            if voltage_selection.is_none() {
+                return Err(Ap33772sError::InvalidCommand);
+            }
+            // If we are in SPR Mode, the voltage selection is needed. The scaling is 100mV per unit.
+            // If we are in EPR Mode, the voltage selection is needed. The Scaling is 200mV per Unit.
+            let voltage= volt
+            
+            PowerDeliveryRequestMessage::builder()
+                .with_voltage_selection(raw_voltage)
+                .with_current_selection(current_selection)
+                .with_power_data_object_index(power_data_object_index)
+                .build()
+        };
         self.write_two_byte_command(delivery_message).await?;
         Ok(())
     }
 }
+
 impl<I2C: I2c> Ap33772s<I2C> {
     #[maybe_async::maybe_async]
     pub async fn set_thermal_resistances(

@@ -1,6 +1,6 @@
+use crate::{Ap33772sError, impl_two_byte_write_command};
 use bitbybit::{bitenum, bitfield};
-
-use crate::impl_two_byte_write_command;
+use uom::si::{electric_potential::millivolt, f32::ElectricPotential};
 
 use super::command_map::Command;
 
