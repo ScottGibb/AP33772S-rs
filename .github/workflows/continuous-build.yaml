@@ -24,7 +24,9 @@ jobs:
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
       - name: Build (sync)
         run: cargo build --no-default-features --features sync --verbose
-
+      - name: Build with advanced feature
+        run: cargo build --no-default-features --features sync advanced --verbose
+        
   build-async:
     name: Build with async feature
     runs-on: ${{ matrix.os }}
@@ -41,8 +43,11 @@ jobs:
             ~/.cargo/git
             target
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-      - name: Build (async)
+      - name: Build
         run: cargo build --no-default-features --features async --verbose
+      - name: Build with advanced feature
+        run: cargo build --no-default-features --features async advanced --verbose
+
 
   build-examples:
     name: Build Vendor Inspired examples
@@ -70,13 +75,13 @@ jobs:
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
       - name: Build Power Data Object Query
         run: |
-         cargo build --examples power_data_object_query --no-default-features --features sync
+         cargo build --examples power_data_object_query --no-default-features --features sync --verbose
       - name: Build Power Data Object Send 
         run: |
-         cargo build --examples power_data_object_send --no-default-features --features sync
+         cargo build --examples power_data_object_send --no-default-features --features sync --verbose
       - name: Build Power Data Object Switch 
         run: |
-         cargo build --examples power_data_object_switch --no-default-features --features sync
+         cargo build --examples power_data_object_switch --no-default-features --features sync --verbose
       - name: Build Startup Configuration
         run: |
-         cargo build --examples state_query --no-default-features --features sync
+         cargo build --examples state_query --no-default-features --features sync --verbose
