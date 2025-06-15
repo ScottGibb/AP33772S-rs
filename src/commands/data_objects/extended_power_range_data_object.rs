@@ -1,4 +1,4 @@
-use bitbybit::{bitenum, bitfield};
+use bitbybit::bitfield;
 
 use crate::commands::data_objects::all_source_power_data_object::PowerType;
 

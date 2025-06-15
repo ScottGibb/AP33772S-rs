@@ -2,14 +2,14 @@ use ap33772s_rs::{
     ap33772s::Ap33772s,
     commands::{
         data_objects::all_source_power_data_object::PowerType,
-        power_delivery::power_delivery_request_message::{CurrentSelection, PowerDataObject},
-        statistics::{current, voltage},
+        power_delivery::power_delivery_request_message::{
+            CURRENT_SELECTIONS, CurrentSelection, PowerDataObject,
+        },
     },
 };
 use uom::si::{
-    electric_potential::{millivolt, volt},
+    electric_potential::millivolt,
     f32::ElectricPotential,
-    power,
 };
 use utils::setup_i2c;
 
@@ -34,13 +34,13 @@ fn main() {
         .read_line(&mut input)
         .expect("Failed to read line");
     let power_data_object_index: u8 = input.trim().parse().expect("Invalid input");
-    if power_data_object_index < 1 || power_data_object_index > 13 {
+    if !(1..=13).contains(&power_data_object_index) {
         panic!("Power Delivery Index must be between 1 and 13");
     }
     let power_data_object_index =
         PowerDataObject::new_with_raw_value(power_data_object_index.into())
             .expect("The Power Data Object Index must be between 1 and 13");
-    print!(" Power Data Object Index: {:?}\n", power_data_object_index);
+    println!(" Power Data Object Index: {:?}", power_data_object_index);
 
     // Check of the Power Data Object Index is not a fixed type //TODO: Replace this
     let fixed = if power_data_object_index >= PowerDataObject::ExtendedPowerRange9 {
@@ -68,6 +68,7 @@ fn main() {
     };
 
     println!("Enter the Current you wish to select");
+    println!("{:?}", CURRENT_SELECTIONS);
     let mut input = String::new();
     std::io::stdin()
         .read_line(&mut input)
@@ -77,8 +78,20 @@ fn main() {
 
     println!("Current Selected: {:?}", current_selection);
 
-    /// Request the Power Delivery
+    // Request the Power Delivery
     ap33772s
-        .send_power_delivery_request(power_data_object_index, current_selection, voltage)
+        .send_power_delivery_request(
+            power_data_object_index,
+            current_selection,
+            voltage,
+            power_delivery_capabilities,
+        )
         .expect("Failed to send Power Delivery Request");
+
+    // Read the Current Statistics
+    let current_statistics = ap33772s
+        .get_statistics()
+        .expect("Failed to get Current Statistics");
+
+    println!("Current Statistics: {:?}", current_statistics);
 }

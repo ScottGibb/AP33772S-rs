@@ -172,6 +172,7 @@ impl<I2C: I2c> Ap33772s<I2C> {
             )
             .await?;
         let mut data_object = AllSourceDataPowerDataObject::default();
+
         for i in 0..MAX_SOURCE_POWER_DATA_OBJECTS {
             data_object.source_power[i] =
                 SourcePowerDataObject::new_with_raw_value(u16::from_le_bytes([

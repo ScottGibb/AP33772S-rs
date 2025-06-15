@@ -1,4 +1,5 @@
 use bitbybit::bitenum;
+use uom::si::{electric_potential::millivolt, f32::ElectricPotential};
 
 use crate::commands::{
     data_objects::extended_power_range_data_object::ExtendedPowerRangeDataObject,
@@ -50,7 +51,10 @@ impl AllSourceDataPowerDataObject {
             }
         }
     }
-    pub fn get_voltage_scaling(&self, selected_data_object: PowerDataObject) -> Option<u8> {
+    pub fn get_voltage_scaling(
+        &self,
+        selected_data_object: PowerDataObject,
+    ) -> Option<ElectricPotential> {
         let power_index: usize = u8::from(selected_data_object.raw_value()) as usize;
         match selected_data_object {
             PowerDataObject::StandardPowerRange1
@@ -62,7 +66,9 @@ impl AllSourceDataPowerDataObject {
             | PowerDataObject::StandardPowerRange7 => {
                 let power_type = self.source_power[power_index].source_power_type();
                 if power_type == PowerType::Adjustable {
-                    Some(Self::STANDARD_POWER_RANGE_RESOLUTION)
+                    Some(ElectricPotential::new::<millivolt>(f32::from(
+                        Self::STANDARD_POWER_RANGE_RESOLUTION,
+                    )))
                 } else {
                     None
                 }
@@ -76,7 +82,9 @@ impl AllSourceDataPowerDataObject {
                 let power_type = self.extended_power[power_index - MAX_SOURCE_POWER_DATA_OBJECTS]
                     .source_power_type();
                 if power_type == PowerType::Adjustable {
-                    Some(Self::EXTENDER_POWER_RANGE_RESOLUTION)
+                    Some(ElectricPotential::new::<millivolt>(f32::from(
+                        Self::EXTENDER_POWER_RANGE_RESOLUTION,
+                    )))
                 } else {
                     None
                 }

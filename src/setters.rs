@@ -1,11 +1,10 @@
-use uom::si::electric_potential::volt;
 use uom::si::f32::ElectricPotential;
 
 use super::hal::*;
 use crate::Ap33772sError;
 use crate::ap33772s::{AP33772SThermalResistances, AP33772SThresholds, Ap33772s};
 use crate::commands::data_objects::all_source_power_data_object::{
-    AllSourceDataPowerDataObject, MAX_SOURCE_POWER_DATA_OBJECTS, PowerType,
+    AllSourceDataPowerDataObject, PowerType,
 };
 use crate::commands::power_delivery::power_delivery_request_message::{
     CurrentSelection, PowerDataObject, PowerDeliveryRequestMessage,
@@ -36,15 +35,10 @@ impl<I2C: I2c> Ap33772s<I2C> {
                 .with_power_data_object_index(power_data_object_index)
                 .build()
         } else {
-            if voltage_selection.is_none() {
-                return Err(Ap33772sError::InvalidCommand);
-            }
-            // If we are in SPR Mode, the voltage selection is needed. The scaling is 100mV per unit.
-            // If we are in EPR Mode, the voltage selection is needed. The Scaling is 200mV per Unit.
-            let voltage= volt
-            
+            //TODO: remove unwraps possibly just bubble up a error?
+            let scaled_voltage = scaling_value.unwrap() * voltage_selection.unwrap();
             PowerDeliveryRequestMessage::builder()
-                .with_voltage_selection(raw_voltage)
+                .with_voltage_selection(scaled_voltage.value as u8) //TODO: Possible risk fix this?
                 .with_current_selection(current_selection)
                 .with_power_data_object_index(power_data_object_index)
                 .build()

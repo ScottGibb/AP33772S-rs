@@ -1,6 +1,7 @@
-use crate::{Ap33772sError, impl_two_byte_write_command};
+use core::fmt::{self};
+
+use crate::impl_two_byte_write_command;
 use bitbybit::{bitenum, bitfield};
-use uom::si::{electric_potential::millivolt, f32::ElectricPotential};
 
 use super::command_map::Command;
 
@@ -52,6 +53,48 @@ pub enum CurrentSelection {
     _4_25A = 13,
     _4_5A = 14,
     _5AOrMore = 15,
+}
+pub const CURRENT_SELECTIONS: [CurrentSelection; 16] = [
+    CurrentSelection::_1A,
+    CurrentSelection::_1_25A,
+    CurrentSelection::_1_5A,
+    CurrentSelection::_1_75A,
+    CurrentSelection::_2A,
+    CurrentSelection::_2_25A,
+    CurrentSelection::_2_5A,
+    CurrentSelection::_2_75A,
+    CurrentSelection::_3A,
+    CurrentSelection::_3_25A,
+    CurrentSelection::_3_5A,
+    CurrentSelection::_3_75A,
+    CurrentSelection::_4A,
+    CurrentSelection::_4_25A,
+    CurrentSelection::_4_5A,
+    CurrentSelection::_5AOrMore,
+];
+impl fmt::Display for CurrentSelection {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        use CurrentSelection::*;
+        let s = match self {
+            _1A => "1A",
+            _1_25A => "1.25A",
+            _1_5A => "1.5A",
+            _1_75A => "1.75A",
+            _2A => "2A",
+            _2_25A => "2.25A",
+            _2_5A => "2.5A",
+            _2_75A => "2.75A",
+            _3A => "3A",
+            _3_25A => "3.25A",
+            _3_5A => "3.5A",
+            _3_75A => "3.75A",
+            _4A => "4A",
+            _4_25A => "4.25A",
+            _4_5A => "4.5A",
+            _5AOrMore => "5A or > 5A ",
+        };
+        write!(f, "{s}")
+    }
 }
 
 impl_two_byte_write_command!(
