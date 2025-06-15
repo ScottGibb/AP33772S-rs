@@ -45,7 +45,7 @@ jobs:
         run: cargo build --no-default-features --features async --verbose
 
   build-examples:
-    name: Build examples
+    name: Build Vendor Inspired examples
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -68,9 +68,15 @@ jobs:
             ~/.cargo/git
             target
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-      - name: Build Power Data Object Query Example
+      - name: Build Power Data Object Query
         run: |
          cargo build --examples power_data_object_query --no-default-features --features sync
-      - name: Build Power Data Object Send Example
+      - name: Build Power Data Object Send 
         run: |
          cargo build --examples power_data_object_send --no-default-features --features sync
+      - name: Build Power Data Object Switch 
+        run: |
+         cargo build --examples power_data_object_switch --no-default-features --features sync
+      - name: Build Startup Configuration
+        run: |
+         cargo build --examples state_query --no-default-features --features sync
