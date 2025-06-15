@@ -120,7 +120,10 @@ pub enum Command {
     /// Datasheet Name: OTPTHR
     OverTemperatureProtectionThreshold = 0x1A,
     DeRatingThreshold = 0x1B,
+    /// Datasheet Name: VDCTHR. not found in datasheet but found in arduino sketch
+    VDCTHR = 0x1C,
     /// Get All PD Source Power Capabilities (PDO1 to PDO13)
+    ///
     /// Command: SRCPDO
     AllSourcesPowerDataObject = 0x20,
     /// Source Standard Power Range  Power Data Object 1

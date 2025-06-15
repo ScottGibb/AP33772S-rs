@@ -55,27 +55,19 @@ impl<I2C: I2c> Ap33772s<I2C> {
         resistances: AP33772SThermalResistances,
     ) -> Result<(), Ap33772sError> {
         let resistance_25 = ThermalResistance25::builder()
-            .with_raw_thermal_resistance(convert_resistance_to_raw_resistance(
-                resistances.resistance_25,
-            )?)
+            .with_raw_thermal_resistance(convert_resistance_to_raw_resistance(resistances._25)?)
             .build();
         self.write_two_byte_command(resistance_25).await?;
         let resistance_50 = ThermalResistance25::builder()
-            .with_raw_thermal_resistance(convert_resistance_to_raw_resistance(
-                resistances.resistance_50,
-            )?)
+            .with_raw_thermal_resistance(convert_resistance_to_raw_resistance(resistances._50)?)
             .build();
         self.write_two_byte_command(resistance_50).await?;
         let resistance_75 = ThermalResistance25::builder()
-            .with_raw_thermal_resistance(convert_resistance_to_raw_resistance(
-                resistances.resistance_75,
-            )?)
+            .with_raw_thermal_resistance(convert_resistance_to_raw_resistance(resistances._75)?)
             .build();
         self.write_two_byte_command(resistance_75).await?;
         let resistance_100 = ThermalResistance25::builder()
-            .with_raw_thermal_resistance(convert_resistance_to_raw_resistance(
-                resistances.resistance_100,
-            )?)
+            .with_raw_thermal_resistance(convert_resistance_to_raw_resistance(resistances._100)?)
             .build();
         self.write_two_byte_command(resistance_100).await?;
         Ok(())
@@ -90,7 +82,7 @@ impl<I2C: I2c> Ap33772s<I2C> {
             OverVoltageProtectionThreshold::builder()
                 .with_raw_voltage(
                     OverVoltageProtectionThreshold::convert_voltage_to_raw_voltage(
-                        thresholds.over_voltage_threshold,
+                        thresholds.over_voltage,
                     )?,
                 )
                 .build();
@@ -100,7 +92,7 @@ impl<I2C: I2c> Ap33772s<I2C> {
             OverCurrentProtectionThreshold::builder()
                 .with_raw_current(
                     OverCurrentProtectionThreshold::convert_current_to_raw_current(
-                        thresholds.over_current_threshold,
+                        thresholds.over_current,
                     )?,
                 )
                 .build();
@@ -108,7 +100,7 @@ impl<I2C: I2c> Ap33772s<I2C> {
 
         let under_voltage_threshold: UnderVoltageProtectionThreshold =
             UnderVoltageProtectionThreshold::builder()
-                .with_threshold(thresholds.under_voltage_threshold)
+                .with_threshold(thresholds.under_voltage)
                 .build();
         self.write_one_byte_command(under_voltage_threshold).await?;
 
@@ -116,7 +108,7 @@ impl<I2C: I2c> Ap33772s<I2C> {
             OverTemperatureProtectionThreshold::builder()
                 .with_raw_temperature(
                     OverTemperatureProtectionThreshold::convert_temperature_to_raw_temperature(
-                        thresholds.over_temperature_threshold,
+                        thresholds.over_temperature,
                     )?,
                 )
                 .build();
@@ -125,7 +117,7 @@ impl<I2C: I2c> Ap33772s<I2C> {
 
         let derating_threshold: DeRatingThreshold = DeRatingThreshold::builder()
             .with_raw_temperature(DeRatingThreshold::convert_temperature_to_raw_temperature(
-                thresholds.derating_threshold,
+                thresholds.derating,
             )?)
             .build();
         self.write_one_byte_command(derating_threshold).await?;

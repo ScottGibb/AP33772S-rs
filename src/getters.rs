@@ -125,10 +125,10 @@ impl<I2C: I2c> Ap33772s<I2C> {
         let resistance_100 = self.read_two_byte_command::<ThermalResistance100>().await?;
 
         Ok(AP33772SThermalResistances {
-            resistance_25: resistance_25.thermal_resistance(),
-            resistance_50: resistance_50.thermal_resistance(),
-            resistance_75: resistance_75.thermal_resistance(),
-            resistance_100: resistance_100.thermal_resistance(),
+            _25: resistance_25.thermal_resistance(),
+            _50: resistance_50.thermal_resistance(),
+            _75: resistance_75.thermal_resistance(),
+            _100: resistance_100.thermal_resistance(),
         })
     }
     #[maybe_async::maybe_async]
@@ -149,11 +149,11 @@ impl<I2C: I2c> Ap33772s<I2C> {
         let under_voltage_threshold = under_voltage_threshold.threshold().unwrap();
         let de_rating_threshold = self.read_one_byte_command::<DeRatingThreshold>().await?;
         Ok(AP33772SThresholds {
-            over_voltage_threshold: over_voltage_threshold.voltage(),
-            over_current_threshold: over_current_threshold.current(),
-            over_temperature_threshold: over_temperature_protection_threshold.temperature(),
-            under_voltage_threshold,
-            derating_threshold: de_rating_threshold.temperature(),
+            over_voltage: over_voltage_threshold.voltage(),
+            over_current: over_current_threshold.current(),
+            over_temperature: over_temperature_protection_threshold.temperature(),
+            under_voltage: under_voltage_threshold,
+            derating: de_rating_threshold.temperature(),
         })
     }
 
