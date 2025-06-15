@@ -7,10 +7,7 @@ use ap33772s_rs::{
         },
     },
 };
-use uom::si::{
-    electric_potential::millivolt,
-    f32::ElectricPotential,
-};
+use uom::si::{electric_potential::millivolt, f32::ElectricPotential};
 use utils::setup_i2c;
 
 fn main() {
@@ -84,7 +81,7 @@ fn main() {
             power_data_object_index,
             current_selection,
             voltage,
-            power_delivery_capabilities,
+            &power_delivery_capabilities,
         )
         .expect("Failed to send Power Delivery Request");
 

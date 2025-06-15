@@ -23,10 +23,10 @@ impl<I2C: I2c> Ap33772s<I2C> {
         power_data_object_index: PowerDataObject,
         current_selection: CurrentSelection,
         voltage_selection: Option<ElectricPotential>,
-        data_objects: AllSourceDataPowerDataObject,
+        data_objects: &AllSourceDataPowerDataObject,
     ) -> Result<(), Ap33772sError> {
-        let power_type = data_objects.get_power_mode(power_data_object_index);
-        let scaling_value = data_objects.get_voltage_scaling(power_data_object_index);
+        let power_type = data_objects.get_power_mode(&power_data_object_index);
+        let scaling_value = data_objects.get_voltage_scaling(&power_data_object_index);
         let delivery_message = if power_type == PowerType::Fixed {
             // If we are in fixed PDO Mode, the voltage selection is not needed.
             PowerDeliveryRequestMessage::builder()

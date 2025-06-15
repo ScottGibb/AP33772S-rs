@@ -10,7 +10,7 @@ use super::source_power_data_object::SourcePowerDataObject;
 
 pub(crate) const MAX_SOURCE_POWER_DATA_OBJECTS: usize = 7;
 pub(crate) const MAX_EXTENDED_POWER_DATA_OBJECTS: usize = 5;
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct AllSourceDataPowerDataObject {
     pub source_power: [SourcePowerDataObject; MAX_SOURCE_POWER_DATA_OBJECTS],
     pub extended_power: [ExtendedPowerRangeDataObject; MAX_EXTENDED_POWER_DATA_OBJECTS],
@@ -29,7 +29,7 @@ impl Default for AllSourceDataPowerDataObject {
 impl AllSourceDataPowerDataObject {
     const EXTENDER_POWER_RANGE_RESOLUTION: u8 = 100; // mV per Unit
     const STANDARD_POWER_RANGE_RESOLUTION: u8 = 200; // mV per Unit
-    pub fn get_power_mode(&self, selected_data_object: PowerDataObject) -> PowerType {
+    pub fn get_power_mode(&self, selected_data_object: &PowerDataObject) -> PowerType {
         let power_index: usize = u8::from(selected_data_object.raw_value()) as usize;
         match selected_data_object {
             PowerDataObject::StandardPowerRange1
@@ -53,7 +53,7 @@ impl AllSourceDataPowerDataObject {
     }
     pub fn get_voltage_scaling(
         &self,
-        selected_data_object: PowerDataObject,
+        selected_data_object: &PowerDataObject,
     ) -> Option<ElectricPotential> {
         let power_index: usize = u8::from(selected_data_object.raw_value()) as usize;
         match selected_data_object {
