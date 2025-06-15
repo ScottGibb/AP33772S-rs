@@ -37,6 +37,7 @@ mod hal {
     pub use embedded_hal_async::i2c::I2c;
 }
 #[derive(PartialEq, Clone, Debug)]
+#[non_exhaustive]
 pub enum Ap33772sError {
     InvalidCommand,
     I2c(hal::ErrorKind),

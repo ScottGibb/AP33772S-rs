@@ -14,6 +14,7 @@ use num_enum::{IntoPrimitive, TryFromPrimitive};
 /// ```
 #[derive(Debug, IntoPrimitive, TryFromPrimitive, PartialEq, Clone, Copy)]
 #[repr(u8)]
+#[non_exhaustive] //TODO: Look to remove once we have full command map
 pub enum Command {
     /// Command Associated with the STATUS Register
     /// See [Status](crate::commands::configuration::status::Status) for more details
