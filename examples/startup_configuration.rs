@@ -2,20 +2,12 @@ use ap33772s_rs::{
     ap33772s::{AP33772SThresholds, Ap33772s},
     commands::{
         configuration::{
-            interrupt_enable::InterruptEnable, operation_mode::OperationMode,
-            power_delivery_configuration::PowerDeliveryConfiguration,
+            interrupt_enable::InterruptEnable,
             protection_mode_configuration::ProtectionModeConfiguration,
-            system_control::SystemControl,
         },
-        statistics::minimum_selection_voltage::{self, MinimumSelectionVoltage},
+        statistics::minimum_selection_voltage::MinimumSelectionVoltage,
         thresholds::{
-            de_rating_threshold::{self, DeRatingThreshold},
-            over_current_protection_threshold::{self, OverCurrentProtectionThreshold},
-            over_voltage_protection_threshold::OverVoltageProtectionThreshold,
-            under_voltage_protection_threshold::{
-                UnderVoltageProtectionThreshold, UnderVoltageThreshold,
-            },
-            vdc_threshold::{self, VDCTHR},
+            under_voltage_protection_threshold::UnderVoltageThreshold, vdc_threshold::VDCTHR,
         },
     },
 };
