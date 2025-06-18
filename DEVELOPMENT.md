@@ -4,7 +4,7 @@
 
 At the moment there is [Continuous Build](./.github/workflows/continuous-build.yaml) workflow that aims to ensure the code can be compiled in both sync and async mode. This ensures that every iteration of the library can be built. Future plans are to incorporate some continuous Hardware in the Loop testing ensuring the driver works across multiple platforms. When adding extra [examples](./examples/). The developer should ensure these are being targeted in the [Continuous Build](./.github/workflows/continuous-build.yaml) workflow file. This ensures the example files are always up to date with the source code.
 
-[Dependabot](/.github/dependabot.yaml) is also used to check when dependencies need updated and ensure we are always up to date with the latest crates.
+[Dependabot](./.github/dependabot.yaml) is also used to check when dependencies need updated and ensure we are always up to date with the latest crates.
 
 [MegaLinter](./.mega-linter.yaml) is also used throughout the project and can be used locally (see below) but also runs on GitHub to ensure we catch inconsistencies.
 
