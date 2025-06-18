@@ -25,7 +25,7 @@ jobs:
       - name: Build (sync)
         run: cargo build --no-default-features --features sync --verbose
       - name: Build with advanced feature
-        run: cargo build --no-default-features --features sync advanced --verbose
+        run: cargo build --no-default-features --features "sync advanced" --verbose
         
   build-async:
     name: Build with async feature
@@ -46,7 +46,7 @@ jobs:
       - name: Build
         run: cargo build --no-default-features --features async --verbose
       - name: Build with advanced feature
-        run: cargo build --no-default-features --features async advanced --verbose
+        run: cargo build --no-default-features --features "async advanced" --verbose
 
 
   build-examples:
