@@ -43,6 +43,8 @@ pub enum Ap33772sError {
     I2c(hal::ErrorKind),
     ConversionFailed,
     DataMalformed,
+    DeviceNotFound,
+    WrongCommandVersion,
 }
 
 impl<E: hal::Error> From<E> for Ap33772sError {
@@ -61,6 +63,8 @@ impl core::fmt::Display for Ap33772sError {
             Ap33772sError::InvalidCommand => write!(f, "Invalid command"),
             Ap33772sError::ConversionFailed => write!(f, "Conversion error"),
             Ap33772sError::DataMalformed => write!(f, "Malformed Data error"),
+            Ap33772sError::DeviceNotFound => write!(f, "Device not found"),
+            Ap33772sError::WrongCommandVersion => write!(f, "Wrong command version"),
         }
     }
 }

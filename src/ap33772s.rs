@@ -1,4 +1,6 @@
 use crate::Ap33772sError;
+use crate::commands::configuration::system_control::CommandVersion;
+use crate::commands::configuration::system_control::SystemControl;
 use crate::commands::power_delivery::power_delivery_command_message::PowerDeliveryCommandMessage;
 use crate::commands::thresholds::under_voltage_protection_threshold::UnderVoltageThreshold;
 use uom::si::f32::ElectricPotential;
@@ -56,10 +58,23 @@ impl<I2C: I2c> Ap33772s<I2C> {
     }
 
     #[maybe_async::maybe_async]
-    pub async fn new_default(i2c: I2C) -> Self {
-        Self::new(i2c)
+    pub async fn new_default(i2c: I2C) -> Result<Self, Ap33772sError> {
+        let mut device = Self::new(i2c);
+        device.is_device_present().await?;
+        Ok(device)
     }
 
+    #[maybe_async::maybe_async]
+    pub async fn is_device_present(&mut self) -> Result<(), Ap33772sError> {
+        let system_control = self.read_one_byte_command::<SystemControl>().await?;
+        let command_version = system_control
+            .command_version()
+            .map_err(|_| Ap33772sError::DeviceNotFound)?;
+        if command_version != CommandVersion::V1_0 {
+            return Err(Ap33772sError::WrongCommandVersion);
+        }
+        Ok(())
+    }
     #[maybe_async::maybe_async]
     pub async fn hard_reset(&mut self) -> Result<(), Ap33772sError> {
         let power_delivery_command_message = PowerDeliveryCommandMessage::builder()

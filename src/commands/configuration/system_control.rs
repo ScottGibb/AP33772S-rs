@@ -44,6 +44,7 @@ pub struct SystemControl {
 ///
 /// Datasheet Name: CMDVER
 #[bitenum(u2, exhaustive = false)]
+#[derive(Debug, PartialEq)]
 pub enum CommandVersion {
     V1_0 = 0,
 }
