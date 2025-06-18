@@ -1,24 +1,25 @@
-use ap33772s_rs::{
-    ap33772s::{AP33772SThresholds, Ap33772s},
-    commands::{
-        configuration::{
-            interrupt_enable::InterruptEnable,
-            protection_mode_configuration::ProtectionModeConfiguration,
-        },
-        statistics::minimum_selection_voltage::MinimumSelectionVoltage,
-        thresholds::{
-            under_voltage_protection_threshold::UnderVoltageThreshold, vdc_threshold::VDCTHR,
-        },
-    },
-};
-use uom::si::{
-    electric_current::{ElectricCurrent, milliampere},
-    electric_potential::{ElectricPotential, millivolt},
-    f32::ThermodynamicTemperature,
-    thermodynamic_temperature::degree_celsius,
-};
-use utils::setup_i2c;
+#[cfg(feature = "advanced")]
+mod imports {
+    use ap33772s_rs::ap33772s::{AP33772SThresholds, Ap33772s};
+    use uom::si::{
+        electric_current::{ElectricCurrent, milliampere},
+        electric_potential::{ElectricPotential, millivolt},
+        f32::ThermodynamicTemperature,
+        thermodynamic_temperature::degree_celsius,
+    };
+    use utils::setup_i2c;
+}
+#[cfg(not(feature = "advanced"))]
+mod imports {}
 
+#[allow(unused_imports)]
+// Added here as Advanced feature is optional, Clippy complains otherwise
+use imports::*;
+
+/// This example demonstrates how to configure the AP33772S chip
+/// for startup settings, including enabling interrupts and setting thresholds. This is done using the `advanced` feature in which you can read and write from the
+/// registers directly as such in order to gain access to the advanced features you need to enable the `advanced` feature in your `Cargo.toml` file
+#[cfg(feature = "advanced")]
 fn main() {
     let i2c = setup_i2c().expect("Failed to set up I2C");
     let mut ap33772s = Ap33772s::new(i2c);
@@ -76,4 +77,9 @@ fn main() {
         .expect("This should not fail");
 
     // Setup complete?? TODO: Investigate this example?
+}
+
+#[cfg(not(feature = "advanced"))]
+fn main() {
+    println!("This example requires the 'advanced' feature to be enabled.");
 }

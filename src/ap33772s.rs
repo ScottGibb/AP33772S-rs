@@ -37,6 +37,13 @@ pub struct AP33772SThresholds {
     pub over_temperature: ThermodynamicTemperature,
     pub derating: ThermodynamicTemperature,
 }
+
+// Types required by the Getters and Setters
+// Expose the requireed types for the functions to be used externally.
+pub use crate::commands::data_objects::all_source_power_data_object::PowerType;
+pub use crate::commands::power_delivery::power_delivery_request_message::{
+    CURRENT_SELECTIONS, CurrentSelection, PowerDataObject,
+};
 pub struct Ap33772s<I2C: I2c> {
     pub(crate) i2c: I2C,
 }

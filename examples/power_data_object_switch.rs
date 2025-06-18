@@ -1,7 +1,4 @@
-use ap33772s_rs::{
-    ap33772s::Ap33772s,
-    commands::power_delivery::power_delivery_request_message::{CurrentSelection, PowerDataObject},
-};
+use ap33772s_rs::ap33772s::{Ap33772s, CurrentSelection, PowerDataObject};
 use utils::setup_i2c;
 
 fn main() {

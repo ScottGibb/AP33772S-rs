@@ -84,7 +84,7 @@ jobs:
          cargo build --example power_data_object_switch --no-default-features --features sync 
       - name: Build Startup Configuration
         run: |
-         cargo build --example startup_configuration --no-default-features --features sync 
+         cargo build --example startup_configuration --no-default-features --features "sync advanced"
       - name: Build State Query
         run: |
          cargo build --example state_query --no-default-features --features sync 

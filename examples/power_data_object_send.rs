@@ -1,11 +1,5 @@
-use ap33772s_rs::{
-    ap33772s::Ap33772s,
-    commands::{
-        data_objects::all_source_power_data_object::PowerType,
-        power_delivery::power_delivery_request_message::{
-            CURRENT_SELECTIONS, CurrentSelection, PowerDataObject,
-        },
-    },
+use ap33772s_rs::ap33772s::{
+    Ap33772s, CURRENT_SELECTIONS, CurrentSelection, PowerDataObject, PowerType,
 };
 use uom::si::{electric_potential::millivolt, f32::ElectricPotential};
 use utils::setup_i2c;
