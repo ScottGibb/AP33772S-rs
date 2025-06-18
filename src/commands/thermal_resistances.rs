@@ -15,13 +15,13 @@ pub fn convert_resistance_to_raw_resistance(
     resistance: ElectricalResistance,
 ) -> Result<u16, Ap33772sError> {
     if !resistance.is_finite() || !resistance.is_sign_positive() {
-        return Err(Ap33772sError::ConversionError);
+        return Err(Ap33772sError::ConversionFailed);
     }
 
     let raw_value = resistance.get::<uom::si::electrical_resistance::ohm>();
 
     if raw_value > u16::MAX as f32 {
-        return Err(Ap33772sError::ConversionError);
+        return Err(Ap33772sError::ConversionFailed);
     }
 
     Ok(raw_value as u16)

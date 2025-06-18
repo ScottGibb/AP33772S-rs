@@ -37,13 +37,13 @@ impl MinimumSelectionVoltage {
         voltage: ElectricPotential,
     ) -> Result<u8, crate::Ap33772sError> {
         if !voltage.is_finite() || !voltage.is_sign_positive() {
-            return Err(crate::Ap33772sError::ConversionError);
+            return Err(crate::Ap33772sError::ConversionFailed);
         }
         let raw_value =
             voltage.get::<millivolt>() / (Self::SELECTION_VOLTAGE_RESOLUTION as u8) as f32;
 
         if raw_value > u8::MAX as f32 {
-            return Err(crate::Ap33772sError::ConversionError);
+            return Err(crate::Ap33772sError::ConversionFailed);
         }
 
         Ok(raw_value as u8)

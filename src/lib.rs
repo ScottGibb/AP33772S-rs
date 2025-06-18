@@ -41,7 +41,8 @@ mod hal {
 pub enum Ap33772sError {
     InvalidCommand,
     I2c(hal::ErrorKind),
-    ConversionError,
+    ConversionFailed,
+    DataMalformed,
 }
 
 impl<E: hal::Error> From<E> for Ap33772sError {
@@ -58,7 +59,8 @@ impl core::fmt::Display for Ap33772sError {
         match self {
             Ap33772sError::I2c(err) => write!(f, "I2C error: {:?}", err),
             Ap33772sError::InvalidCommand => write!(f, "Invalid command"),
-            Ap33772sError::ConversionError => write!(f, "Conversion error"),
+            Ap33772sError::ConversionFailed => write!(f, "Conversion error"),
+            Ap33772sError::DataMalformed => write!(f, "Malformed Data error"),
         }
     }
 }

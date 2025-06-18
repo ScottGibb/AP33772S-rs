@@ -35,12 +35,12 @@ impl OverCurrentProtectionThreshold {
         current: ElectricCurrent,
     ) -> Result<u8, crate::Ap33772sError> {
         if !current.is_finite() || !current.is_sign_positive() {
-            return Err(crate::Ap33772sError::ConversionError);
+            return Err(crate::Ap33772sError::ConversionFailed);
         }
         let raw_value = current.get::<milliampere>() / Self::CURRENT_RESOLUTION as f32;
 
         if raw_value > u8::MAX as f32 {
-            return Err(crate::Ap33772sError::ConversionError);
+            return Err(crate::Ap33772sError::ConversionFailed);
         }
 
         Ok(raw_value as u8)

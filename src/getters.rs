@@ -6,6 +6,8 @@ use crate::ap33772s::AP33772SThresholds;
 use crate::ap33772s::Ap33772s;
 use crate::commands::command_map::Command;
 use crate::commands::configuration::status::Status;
+use crate::commands::configuration::system_control::SystemControl;
+use crate::commands::configuration::system_control::VoltageOutputControl;
 use crate::commands::data_objects::all_source_power_data_object::AllSourceDataPowerDataObject;
 use crate::commands::data_objects::all_source_power_data_object::MAX_EXTENDED_POWER_DATA_OBJECTS;
 use crate::commands::data_objects::all_source_power_data_object::MAX_SOURCE_POWER_DATA_OBJECTS;
@@ -44,6 +46,17 @@ impl<I2C: I2c> Ap33772s<I2C> {
 /// This module provides methods to read various statistics from the AP33772S device.
 /// It includes methods to get the current, voltage, temperature, power,
 impl<I2C: I2c> Ap33772s<I2C> {
+    #[maybe_async::maybe_async]
+    pub async fn get_voltage_out_override(
+        &mut self,
+    ) -> Result<VoltageOutputControl, Ap33772sError> {
+        let system_control = self.read_one_byte_command::<SystemControl>().await?;
+        let v_out_control = system_control
+            .v_out_control()
+            .map_err(|_| Ap33772sError::DataMalformed)?;
+        Ok(v_out_control)
+    }
+
     #[maybe_async::maybe_async]
     pub async fn get_current(&mut self) -> Result<ElectricCurrent, Ap33772sError> {
         let current = self.read_one_byte_command::<Current>().await?;

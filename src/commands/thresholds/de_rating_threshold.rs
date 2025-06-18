@@ -30,12 +30,12 @@ impl DeRatingThreshold {
         temperature: ThermodynamicTemperature,
     ) -> Result<u8, crate::Ap33772sError> {
         if !temperature.is_finite() || !temperature.is_sign_positive() {
-            return Err(crate::Ap33772sError::ConversionError);
+            return Err(crate::Ap33772sError::ConversionFailed);
         }
         let raw_value = temperature.get::<degree_celsius>() as u16;
 
         if raw_value > u8::MAX as u16 {
-            return Err(crate::Ap33772sError::ConversionError);
+            return Err(crate::Ap33772sError::ConversionFailed);
         }
 
         Ok(raw_value as u8)

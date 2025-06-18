@@ -33,12 +33,12 @@ impl OverVoltageProtectionThreshold {
     // TODO: Consider Better Error Handling of the different conversion failures
     pub fn convert_voltage_to_raw_voltage(voltage: ElectricPotential) -> Result<u8, Ap33772sError> {
         if !voltage.is_finite() || !voltage.is_sign_positive() {
-            return Err(Ap33772sError::ConversionError);
+            return Err(Ap33772sError::ConversionFailed);
         }
         let raw_value = voltage.get::<millivolt>() / Self::VOLTAGE_RESOLUTION as f32;
 
         if raw_value > u8::MAX as f32 {
-            return Err(Ap33772sError::ConversionError);
+            return Err(Ap33772sError::ConversionFailed);
         }
 
         Ok(raw_value as u8)

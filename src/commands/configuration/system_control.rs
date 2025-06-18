@@ -17,7 +17,7 @@ pub struct SystemControl {
     ///
     /// Datasheet Name: VOUTCTL
     #[bits(0..=1, rw)]
-    pub v_out_control: VOutControl,
+    pub v_out_control: Option<VoltageOutputControl>,
     // /// Reserved
     // #[bit(2, rw)]
     // reserved: u1,
@@ -55,14 +55,13 @@ pub enum CommandVersion {
 /// - `Reserved`: This mode is reserved for future use.
 ///
 /// Datasheet Name: VOUTCTL
-#[bitenum(u2, exhaustive = true)]
+#[bitenum(u2, exhaustive = false)]
 #[derive(Debug, PartialEq, Default)]
-pub enum VOutControl {
+pub enum VoltageOutputControl {
     #[default]
     Auto = 0,
     ForceOff = 1,
     ForceOn = 2,
-    Reserved = 3,
 }
 impl_one_byte_read_command!(SystemControl, Command::SystemControl);
 impl_one_byte_write_command!(SystemControl, Command::SystemControl);

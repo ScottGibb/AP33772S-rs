@@ -23,10 +23,10 @@ jobs:
             target
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
       - name: Build (sync)
-        run: cargo build --no-default-features --features sync 
+        run: cargo build --no-default-features --features sync
       - name: Build with advanced feature
-        run: cargo build --no-default-features --features "sync advanced" 
-        
+        run: cargo build --no-default-features --features "sync advanced"
+
   build-async:
     name: Build with async feature
     runs-on: ${{ matrix.os }}
@@ -44,10 +44,9 @@ jobs:
             target
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
       - name: Build
-        run: cargo build --no-default-features --features async 
+        run: cargo build --no-default-features --features async
       - name: Build with advanced feature
-        run: cargo build --no-default-features --features "async advanced" 
-
+        run: cargo build --no-default-features --features "async advanced"
 
   build-examples:
     name: Build Vendor Inspired examples
@@ -75,16 +74,16 @@ jobs:
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
       - name: Build Power Data Object Query
         run: |
-         cargo build --example power_data_object_query --no-default-features --features sync 
-      - name: Build Power Data Object Send 
+          cargo build --example power_data_object_query --no-default-features --features sync
+      - name: Build Power Data Object Send
         run: |
-         cargo build --example power_data_object_send --no-default-features --features sync 
-      - name: Build Power Data Object Switch 
+          cargo build --example power_data_object_send --no-default-features --features sync
+      - name: Build Power Data Object Switch
         run: |
-         cargo build --example power_data_object_switch --no-default-features --features sync 
+          cargo build --example power_data_object_switch --no-default-features --features sync
       - name: Build Startup Configuration
         run: |
-         cargo build --example startup_configuration --no-default-features --features "sync advanced"
+          cargo build --example startup_configuration --no-default-features --features "sync advanced"
       - name: Build State Query
         run: |
-         cargo build --example state_query --no-default-features --features sync 
+          cargo build --example state_query --no-default-features --features sync

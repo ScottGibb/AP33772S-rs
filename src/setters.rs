@@ -5,6 +5,7 @@ use crate::Ap33772sError;
 use crate::ap33772s::{
     AP33772SThermalResistances, AP33772SThresholds, Ap33772s, CurrentSelection, PowerDataObject,
 };
+use crate::commands::configuration::system_control::{SystemControl, VoltageOutputControl};
 use crate::commands::data_objects::all_source_power_data_object::{
     AllSourceDataPowerDataObject, PowerType,
 };
@@ -18,6 +19,17 @@ use crate::commands::thresholds::over_voltage_protection_threshold::OverVoltageP
 use crate::commands::thresholds::under_voltage_protection_threshold::UnderVoltageProtectionThreshold;
 
 impl<I2C: I2c> Ap33772s<I2C> {
+    #[maybe_async::maybe_async]
+    pub async fn set_voltage_out_override(
+        &mut self,
+        voltage_output: VoltageOutputControl,
+    ) -> Result<(), Ap33772sError> {
+        let system_control: SystemControl = SystemControl::builder()
+            .with_v_out_control(voltage_output)
+            .build();
+        self.write_one_byte_command(system_control).await?;
+        Ok(())
+    }
     #[maybe_async::maybe_async]
     pub async fn send_power_delivery_request(
         &mut self,
