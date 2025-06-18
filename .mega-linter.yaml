@@ -15,8 +15,7 @@ APPLY_FIXES: all
 # ENABLE_LINTERS:
 
 DISABLE:
-  # - COPYPASTE # Uncomment to disable checks of excessive copy-pastes
-  - SPELL # Comment to enable checks of spelling mistakes
+  - SPELL_CSPELL
   - REPOSITORY_CHECKOV
   - REPOSITORY_TRUFFLEHOG
   - REPOSITORY_TRIVY_SBOM

@@ -13,7 +13,7 @@ At the moment there is [Continuous Build](./.github/workflows/continuous-build.y
 The project is linted using [MegaLinter](https://megalinter.io/latest/) which provides a variety of linters that will not only check rust code but documentation and other types of files as well. Ensuring a consistent standard. Developers can run this locally as well via the following command:
 
 ```bash
-npx megalinter-runner --fix
+npx mega-linter-runner --fix
 ```
 
 However you will need Docker and NodeJS installed to run the linter.
