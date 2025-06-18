@@ -23,9 +23,9 @@ jobs:
             target
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
       - name: Build (sync)
-        run: cargo build --no-default-features --features sync --verbose
+        run: cargo build --no-default-features --features sync 
       - name: Build with advanced feature
-        run: cargo build --no-default-features --features "sync advanced" --verbose
+        run: cargo build --no-default-features --features "sync advanced" 
         
   build-async:
     name: Build with async feature
@@ -44,9 +44,9 @@ jobs:
             target
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
       - name: Build
-        run: cargo build --no-default-features --features async --verbose
+        run: cargo build --no-default-features --features async 
       - name: Build with advanced feature
-        run: cargo build --no-default-features --features "async advanced" --verbose
+        run: cargo build --no-default-features --features "async advanced" 
 
 
   build-examples:
@@ -75,13 +75,16 @@ jobs:
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
       - name: Build Power Data Object Query
         run: |
-         cargo build --examples power_data_object_query --no-default-features --features sync --verbose
+         cargo build --example power_data_object_query --no-default-features --features sync 
       - name: Build Power Data Object Send 
         run: |
-         cargo build --examples power_data_object_send --no-default-features --features sync --verbose
+         cargo build --example power_data_object_send --no-default-features --features sync 
       - name: Build Power Data Object Switch 
         run: |
-         cargo build --examples power_data_object_switch --no-default-features --features sync --verbose
+         cargo build --example power_data_object_switch --no-default-features --features sync 
       - name: Build Startup Configuration
         run: |
-         cargo build --examples state_query --no-default-features --features sync --verbose
+         cargo build --example startup_configuration --no-default-features --features sync 
+      - name: Build State Query
+        run: |
+         cargo build --example state_query --no-default-features --features sync 
