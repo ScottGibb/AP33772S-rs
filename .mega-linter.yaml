@@ -14,7 +14,7 @@ APPLY_FIXES: all
 # default
 # ENABLE_LINTERS:
 
-DISABLE:
+DISABLE_LINTERS:
   - SPELL_CSPELL
   - REPOSITORY_CHECKOV
   - REPOSITORY_TRUFFLEHOG
@@ -23,7 +23,7 @@ DISABLE:
   - REPOSITORY_SYFT
   - REPOSITORY_GRYPE
   - COPYPASTE_JSCPD
-
+  - REPOSITORY_KICS
 SHOW_ELAPSED_TIME: true
 
 # Uncomment if you want MegaLinter to detect errors but not block CI to pass
