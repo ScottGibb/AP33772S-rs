@@ -2,7 +2,7 @@
 name = "utils"
 version = "0.1.0"
 edition = "2024"
-
+description = "Utilities for the project. This is an internal crate, that is used solely for the examples and tests. It isolates code required for accessing the I2C bus from the FT232H I2C bridge."
 [dependencies]
 ftdi = "0.1.3"
 ftdi-embedded-hal = { version = "0.23.0", features = [
