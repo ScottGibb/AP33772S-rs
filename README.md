@@ -1,6 +1,7 @@
 # AP33772S Rust Driver
 
 [![MegaLinter](https://github.com/ScottGibb/AP33772S-rs/actions/workflows/mega-linter.yaml/badge.svg)](https://github.com/ScottGibb/AP33772S-rs/actions/workflows/mega-linter.yaml)
+[![Continuous Build](https://github.com/ScottGibb/AP33772S-rs/actions/workflows/continuous-build.yaml/badge.svg)](https://github.com/ScottGibb/AP33772S-rs/actions/workflows/continuous-build.yaml)
 
 ## Under Development
 
@@ -18,19 +19,23 @@ This is a no-std rust crate for the AP33772S USB C Power Delivery chip by Diodes
 - Advanced mode for low level register access.
 - Examples using the FT232H Breakout Board and a Mac or Linux device.
 
+### Quick Start
+
+To run the examples quickly simply run the following commands:
+
+```bash
+cargo run --example <example script name> --no-default-features --features sync
+```
+
+`sync` feature is required so that the FT232H Breakout board can be used on your dev machine. See [DEVELOPMENT.md](./DEVELOPMENT.md) for more details.
+
 ## Development
 
-In terms of development the driver aims to follow the latest rust standards and PRs are more than welcome to improve or extend existing functionality. The project also contains GitHub Workflows to try and automate updates and testing.
-
-### Continous Integration and GitHub workflows
-
-At the moment there is [Continuous Build](./.github/workflows/continuous-build.yaml) workflow that aims to ensure the code can be compiled in both sync and async mode. This ensures that every iteration of the library can be built. Future plans are to incorporate some continuous Hardware in the Loop testing ensuring the driver works across multiple platforms.
-
-### Project Linting
-
-The project is linted using [MegaLinter]() which provides a variety of linters that will access not only rust code but documentation and other types of files as well. Ensuring a consistent standard.
+In terms of development, the driver aims to follow the latest rust standards and PRs are more than welcome to improve or extend existing functionality. The project also contains GitHub Workflows to try and automate updates and testing. Please read [DEVELOPMENT.md](./DEVELOPMENT.md) for more details.
 
 ## Datasheets
+
+The datasheets are also stored in this repository for convenience purposes. They are listed below:
 
 - [AP33772S Datasheet](./docs/AP33772S.pdf)
 - [AP33772S Evaluation Board User Guide](./docs/AP33772S-Sink-Controller-EVB-User-Guide.pdf)
