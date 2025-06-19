@@ -15,7 +15,7 @@ This is a no-std rust crate for the AP33772S USB C Power Delivery chip by Diodes
 
 - no-std compliant
 - synchronous mode through embedded-hal
-- aysnchronous mode through embedded-hal-async
+- asynchronous mode through embedded-hal-async
 - Advanced mode for low level register access.
 - Examples using the FT232H Breakout Board and a Mac or Linux device.
 
