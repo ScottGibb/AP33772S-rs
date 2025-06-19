@@ -76,7 +76,7 @@ impl<I2C: I2c> Ap33772s<I2C> {
     }
 
     #[maybe_async::maybe_async]
-    pub async fn get_power(mut self) -> Result<uom::si::f32::Power, Ap33772sError> {
+    pub async fn get_power(&mut self) -> Result<uom::si::f32::Power, Ap33772sError> {
         let current = self.get_current().await?;
         let voltage = self.get_voltage().await?;
         let power = current * voltage;
