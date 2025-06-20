@@ -12,6 +12,7 @@ pub fn setup_i2c() -> Result<I2c<Device>, Box<dyn Error>> {
     let device = ftdi::find_by_vid_pid(DEVICE_VID, DEVICE_PID)
         .interface(ftdi::Interface::A)
         .open()?;
+
     // Next initialise the HAL with the device and the Baudrate
     let hal = match hal::FtHal::init_freq(device, BAUDRATE) {
         Ok(hal) => hal,
