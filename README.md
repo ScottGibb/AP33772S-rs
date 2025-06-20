@@ -33,6 +33,7 @@ cargo run --example <example script name> --no-default-features --features sync
 In terms of development, the driver aims to follow the latest rust standards and PRs are more than welcome to improve or extend existing functionality. The project also contains GitHub Workflows to try and automate updates and testing. Please read [DEVELOPMENT.md](./DEVELOPMENT.md) for more details.
 
 ##Datasheets
+
 The datasheets are also stored in this repository for convenience purposes. They are listed below:
 - [AP33772S Datasheet](./docs/AP33772S.pdf)
 - [AP33772S Evaluation Board User Guide](./docs/AP33772S-Sink-Controller-EVB-User-Guide.pdf)
