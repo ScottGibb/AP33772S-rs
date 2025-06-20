@@ -38,7 +38,7 @@ Thank you for considering contributing to the AP33772S project! Contributions fr
 
 ## Code Style
 
-- Follow the existing code style. This can be done by running `mega-linter-runner --fix` before your commit. This check will also run in the CI when doing a merge and point out any fixes that are required. More information on MegaLinter can be found [here](https://megalinter.io/latest/)
+- Follow the existing code style. This can be done by running `mega-linter-runner --fix` before your commit. This check will also run in the CI when doing a merge and point out any fixes that are required. More information on MegaLinter can be found o their [website here](https://megalinter.io/latest/)
 - Include comments where necessary.
 
 ## Reporting Issues

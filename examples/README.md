@@ -81,4 +81,4 @@ Bus 000 Device 001: ID 1d6b:1100
 XHCI Linux Foundation USB 3.0 Bus
 ```
 
-These numbers should match the numbers inside [here](../utils/src/lib.rs).
+These numbers should match the numbers utils [source code](../utils/src/lib.rs).

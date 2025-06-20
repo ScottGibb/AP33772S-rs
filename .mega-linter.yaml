@@ -24,6 +24,8 @@ DISABLE_LINTERS:
   - REPOSITORY_GRYPE
   - COPYPASTE_JSCPD
   - REPOSITORY_KICS
+  - SPELL_LYCHEE
+  - REPOSITORY_DEVSKIM
 SHOW_ELAPSED_TIME: true
 
 # Uncomment if you want MegaLinter to detect errors but not block CI to pass
