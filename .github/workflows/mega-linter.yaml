@@ -115,8 +115,6 @@ jobs:
       # (for now works only on PR from same repository, not from forks)
       - name: Create Pull Request with applied fixes
         uses: peter-evans/create-pull-request@v6
-        with:
-          base: main
         id: cpr
         if: >-
           steps.ml.outputs.has_updated_sources == 1 &&
@@ -132,6 +130,12 @@ jobs:
           !contains(github.event.head_commit.message, 'skip fix')
         with:
           token: ${{ secrets.PAT || secrets.GITHUB_TOKEN }}
+          base: >-
+            ${{
+              github.event.pull_request.base.ref ||
+              github.base_ref ||
+              'main'
+            }}
           commit-message: "[MegaLinter] Apply linters automatic fixes"
           title: "[MegaLinter] Apply linters automatic fixes"
           labels: bot
