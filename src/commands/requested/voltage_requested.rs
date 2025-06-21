@@ -35,7 +35,7 @@ impl VoltageRequested {
     ///
     pub fn voltage(&self) -> ElectricPotential {
         let scaled_voltage = self.raw_voltage() * Self::VOLTAGE_RESOLUTION;
-        ElectricPotential::new::<millivolt>(f32::from(scaled_voltage))
+        ElectricPotential::new::<millivolt>(f32::try_from(scaled_voltage).unwrap())
     }
 }
 impl_two_byte_read_command!(VoltageRequested, Command::VoltageRequested);

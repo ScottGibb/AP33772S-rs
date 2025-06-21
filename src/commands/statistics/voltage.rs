@@ -24,7 +24,7 @@ impl Voltage {
     /// Returns the voltage value in millivolts.
     pub fn voltage(&self) -> ElectricPotential {
         let scaled_voltage = self.raw_voltage() * Self::VOLTAGE_RESOLUTION;
-        ElectricPotential::new::<millivolt>(f32::from(scaled_voltage))
+        ElectricPotential::new::<millivolt>(f32::try_from(scaled_voltage).unwrap())
     }
 }
 

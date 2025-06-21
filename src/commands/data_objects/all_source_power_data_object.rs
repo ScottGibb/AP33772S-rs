@@ -30,7 +30,8 @@ impl AllSourceDataPowerDataObject {
     const EXTENDER_POWER_RANGE_RESOLUTION: u8 = 100; // mV per Unit
     const STANDARD_POWER_RANGE_RESOLUTION: u8 = 200; // mV per Unit
     pub fn get_power_mode(&self, selected_data_object: &PowerDataObject) -> PowerType {
-        let power_index: usize = u8::from(selected_data_object.raw_value()) as usize;
+        let power_index: usize =
+            usize::try_from(u8::try_from(selected_data_object.raw_value()).unwrap()).unwrap();
         match selected_data_object {
             PowerDataObject::StandardPowerRange1
             | PowerDataObject::StandardPowerRange2
@@ -55,7 +56,8 @@ impl AllSourceDataPowerDataObject {
         &self,
         selected_data_object: &PowerDataObject,
     ) -> Option<ElectricPotential> {
-        let power_index: usize = u8::from(selected_data_object.raw_value()) as usize;
+        let power_index: usize =
+            usize::try_from(u8::try_from(selected_data_object.raw_value()).unwrap()).unwrap();
         match selected_data_object {
             PowerDataObject::StandardPowerRange1
             | PowerDataObject::StandardPowerRange2
@@ -66,9 +68,9 @@ impl AllSourceDataPowerDataObject {
             | PowerDataObject::StandardPowerRange7 => {
                 let power_type = self.source_power[power_index].source_power_type();
                 if power_type == PowerType::Adjustable {
-                    Some(ElectricPotential::new::<millivolt>(f32::from(
-                        Self::STANDARD_POWER_RANGE_RESOLUTION,
-                    )))
+                    Some(ElectricPotential::new::<millivolt>(
+                        f32::try_from(Self::STANDARD_POWER_RANGE_RESOLUTION).unwrap(),
+                    ))
                 } else {
                     None
                 }
@@ -82,9 +84,9 @@ impl AllSourceDataPowerDataObject {
                 let power_type = self.extended_power[power_index - MAX_SOURCE_POWER_DATA_OBJECTS]
                     .source_power_type();
                 if power_type == PowerType::Adjustable {
-                    Some(ElectricPotential::new::<millivolt>(f32::from(
-                        Self::EXTENDER_POWER_RANGE_RESOLUTION,
-                    )))
+                    Some(ElectricPotential::new::<millivolt>(
+                        f32::try_from(Self::EXTENDER_POWER_RANGE_RESOLUTION).unwrap(),
+                    ))
                 } else {
                     None
                 }

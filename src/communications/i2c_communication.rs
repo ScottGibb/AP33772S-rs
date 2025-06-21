@@ -13,7 +13,7 @@ impl<I2C: I2c> Ap33772s<I2C> {
         &mut self,
         command: impl WriteOneByteCommand,
     ) -> Result<(), Ap33772sError> {
-        let command_address = u8::from(command.get_command());
+        let command_address = u8::try_from(command.get_command())?;
         let data = command.raw_value();
         self.i2c
             .write(Self::ADDRESS, &[command_address, data])
@@ -28,7 +28,7 @@ impl<I2C: I2c> Ap33772s<I2C> {
         CommandRegister: ReadOneByteCommand,
     {
         let mut data: [u8; 1] = [0x00];
-        let command_address = u8::from(CommandRegister::command());
+        let command_address = u8::try_from(CommandRegister::command())?;
         self.i2c
             .write_read(Self::ADDRESS, &[command_address], &mut data)
             .await?;
@@ -43,7 +43,7 @@ impl<I2C: I2c> Ap33772s<I2C> {
         CommandRegister: ReadTwoByteCommand,
     {
         let mut data: [u8; 2] = [0x00; 2];
-        let command_address = u8::from(CommandRegister::command());
+        let command_address = u8::try_from(CommandRegister::command())?;
         self.i2c
             .write_read(Self::ADDRESS, &[command_address], &mut data)
             .await?;
@@ -57,7 +57,7 @@ impl<I2C: I2c> Ap33772s<I2C> {
         &mut self,
         command: impl WriteTwoByteCommand,
     ) -> Result<(), Ap33772sError> {
-        let command_address = u8::from(command.get_command());
+        let command_address = u8::try_from(command.get_command())?;
         let data = command.raw_value().to_be_bytes();
         self.i2c
             .write(Self::ADDRESS, &[command_address, data[0], data[1]])

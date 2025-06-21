@@ -35,12 +35,18 @@ fn main() {
 
     // Check of the Power Data Object Index is not a fixed type //TODO: Replace this
     let fixed = if power_data_object_index >= PowerDataObject::ExtendedPowerRange9 {
-        let index = usize::from(u8::from(
-            power_data_object_index.raw_value() - PowerDataObject::ExtendedPowerRange9.raw_value(),
-        ));
+        let index = usize::try_from(
+            u8::try_from(
+                power_data_object_index.raw_value()
+                    - PowerDataObject::ExtendedPowerRange9.raw_value(),
+            )
+            .unwrap(),
+        )
+        .unwrap();
         power_delivery_capabilities.extended_power[index].source_power_type() == PowerType::Fixed
     } else {
-        let index: usize = usize::from(u8::from(power_data_object_index.raw_value()));
+        let index: usize =
+            usize::try_from(u8::try_from(power_data_object_index.raw_value()).unwrap()).unwrap();
         power_delivery_capabilities.source_power[index].source_power_type() == PowerType::Fixed
     };
 
