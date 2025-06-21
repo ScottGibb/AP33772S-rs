@@ -159,7 +159,9 @@ impl<I2C: I2c> Ap33772s<I2C> {
         let under_voltage_threshold = self
             .read_one_byte_command::<UnderVoltageProtectionThreshold>()
             .await?;
-        let under_voltage_threshold = under_voltage_threshold.threshold().unwrap();
+        let under_voltage_threshold = under_voltage_threshold
+            .threshold()
+            .or(Err(Ap33772sError::DataMalformed))?;
         let de_rating_threshold = self.read_one_byte_command::<DeRatingThreshold>().await?;
         Ok(AP33772SThresholds {
             over_voltage: over_voltage_threshold.voltage(),
@@ -212,6 +214,8 @@ impl<I2C: I2c> Ap33772s<I2C> {
             .read_one_byte_command::<PowerDeliveryMessageResult>()
             .await?;
 
-        Ok(power_delivery_request_result.response().unwrap()) // TODO: Handle this error better
+        Ok(power_delivery_request_result
+            .response()
+            .or(Err(Ap33772sError::DataMalformed))?)
     }
 }
