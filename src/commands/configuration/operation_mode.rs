@@ -1,4 +1,5 @@
 use bitbybit::{bitenum, bitfield};
+use num_enum::{IntoPrimitive, TryFromPrimitive};
 
 use crate::impl_one_byte_read_command;
 
@@ -43,7 +44,8 @@ pub struct OperationMode {
 
 /// The AP33772S supports two operation modes: Normal and Derating.
 #[bitenum(u1, exhaustive = true)]
-#[derive(Debug, PartialEq, Default)]
+#[derive(Debug, PartialEq, Default, TryFromPrimitive, IntoPrimitive)]
+#[repr(u8)]
 pub enum DeRatingMode {
     #[default]
     Normal = 0,
@@ -56,7 +58,8 @@ pub enum DeRatingMode {
 ///
 /// When `ConfigurationChannel::Two`, the CC2 is connected to the CC line.
 #[bitenum(u1, exhaustive = true)]
-#[derive(Debug, PartialEq, Default)]
+#[derive(Debug, PartialEq, Default, TryFromPrimitive, IntoPrimitive)]
+#[repr(u8)]
 pub enum ConfigurationChannel {
     #[default]
     One = 0,

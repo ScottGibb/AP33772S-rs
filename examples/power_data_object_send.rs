@@ -1,7 +1,6 @@
 use ap33772s_rs::ap33772s::{
     Ap33772s, CURRENT_SELECTIONS, CurrentSelection, PowerDataObject, PowerType,
 };
-use arbitrary_int::u4;
 use uom::si::{electric_potential::millivolt, f32::ElectricPotential, power};
 use utils::setup_i2c;
 
