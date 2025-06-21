@@ -2,6 +2,7 @@ use core::fmt::{self};
 
 use crate::impl_two_byte_write_command;
 use bitbybit::{bitenum, bitfield};
+use num_enum::TryFromPrimitive;
 
 use super::command_map::Command;
 
@@ -16,8 +17,9 @@ pub struct PowerDeliveryRequestMessage {
     pub power_data_object_index: PowerDataObject,
 }
 
-#[derive(Debug, PartialEq, PartialOrd)]
+#[derive(Debug, PartialEq, PartialOrd, TryFromPrimitive)]
 #[bitenum(u4, exhaustive = false)]
+#[repr(u8)]
 pub enum PowerDataObject {
     StandardPowerRange1 = 0x00,
     StandardPowerRange2 = 0x01,
@@ -34,8 +36,9 @@ pub enum PowerDataObject {
     ExtendedPowerRange13 = 0x0C,
 }
 
-#[derive(Debug, PartialEq, PartialOrd)]
+#[derive(Debug, PartialEq, PartialOrd, TryFromPrimitive)]
 #[bitenum(u4, exhaustive = true)]
+#[repr(u8)]
 pub enum CurrentSelection {
     _1A = 0,
     _1_25A = 1,

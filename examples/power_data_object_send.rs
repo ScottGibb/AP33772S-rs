@@ -30,8 +30,7 @@ fn main() {
     if !(1..=13).contains(&power_data_object_index) {
         panic!("Power Delivery Index must be between 1 and 13");
     }
-    let power_data_object_index = u4::from_u8(power_data_object_index); // THIS WILL PANIC: TODO FIX THIS
-    let power_data_object_index = PowerDataObject::new_with_raw_value(power_data_object_index)
+    let power_data_object_index = PowerDataObject::try_from(power_data_object_index)
         .expect("The Power Data Object Index must be between 1 and 13");
     println!(" Power Data Object Index: {:?}", power_data_object_index);
 
@@ -73,8 +72,8 @@ fn main() {
         .read_line(&mut input)
         .expect("Failed to read line");
     let current_selection: u8 = input.trim().parse().expect("Invalid input");
-    let current_selection = u4::from_u8(current_selection); // THIS WILL PANIC: TODO FIX THIS
-    let current_selection = CurrentSelection::new_with_raw_value(current_selection);
+    let current_selection = CurrentSelection::try_from(current_selection)
+        .expect("Invalid Current Selection, must be between 0 and 7");
 
     println!("Current Selected: {:?}", current_selection);
 
