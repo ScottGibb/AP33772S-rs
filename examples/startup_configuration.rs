@@ -64,13 +64,14 @@ fn main() {
         .with_raw_voltage(
             MinimumSelectionVoltage::convert_voltage_to_raw_voltage(ElectricPotential::new::<
                 millivolt,
-            >(0.0))
+            >(5000.0))
             .unwrap(),
         )
         .build();
     ap33772s
         .write_one_byte_command(minimum_selection_voltage)
         .expect("This should not fail");
+
     // Set Thresholds
     let thresholds = AP33772SThresholds {
         over_voltage: ElectricPotential::new::<millivolt>(80.0),
