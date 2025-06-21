@@ -1,7 +1,8 @@
 use ap33772s_rs::ap33772s::{
     Ap33772s, CURRENT_SELECTIONS, CurrentSelection, PowerDataObject, PowerType,
 };
-use uom::si::{electric_potential::millivolt, f32::ElectricPotential};
+use arbitrary_int::u4;
+use uom::si::{electric_potential::millivolt, f32::ElectricPotential, power};
 use utils::setup_i2c;
 
 fn main() {
@@ -25,12 +26,13 @@ fn main() {
         .read_line(&mut input)
         .expect("Failed to read line");
     let power_data_object_index: u8 = input.trim().parse().expect("Invalid input");
+
     if !(1..=13).contains(&power_data_object_index) {
         panic!("Power Delivery Index must be between 1 and 13");
     }
-    let power_data_object_index =
-        PowerDataObject::new_with_raw_value(power_data_object_index.into())
-            .expect("The Power Data Object Index must be between 1 and 13");
+    let power_data_object_index = u4::from_u8(power_data_object_index); // THIS WILL PANIC: TODO FIX THIS
+    let power_data_object_index = PowerDataObject::new_with_raw_value(power_data_object_index)
+        .expect("The Power Data Object Index must be between 1 and 13");
     println!(" Power Data Object Index: {:?}", power_data_object_index);
 
     // Check of the Power Data Object Index is not a fixed type //TODO: Replace this
@@ -71,7 +73,8 @@ fn main() {
         .read_line(&mut input)
         .expect("Failed to read line");
     let current_selection: u8 = input.trim().parse().expect("Invalid input");
-    let current_selection = CurrentSelection::new_with_raw_value(current_selection.into());
+    let current_selection = u4::from_u8(current_selection); // THIS WILL PANIC: TODO FIX THIS
+    let current_selection = CurrentSelection::new_with_raw_value(current_selection);
 
     println!("Current Selected: {:?}", current_selection);
 
