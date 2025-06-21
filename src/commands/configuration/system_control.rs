@@ -1,4 +1,5 @@
 use bitbybit::{bitenum, bitfield};
+use num_enum::{IntoPrimitive, TryFromPrimitive};
 
 use crate::{impl_one_byte_read_command, impl_one_byte_write_command};
 
@@ -44,8 +45,10 @@ pub struct SystemControl {
 ///
 /// Datasheet Name: CMDVER
 #[bitenum(u2, exhaustive = false)]
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Default)]
+#[repr(u8)]
 pub enum CommandVersion {
+    #[default]
     V1_0 = 0,
 }
 
@@ -57,7 +60,8 @@ pub enum CommandVersion {
 ///
 /// Datasheet Name: VOUTCTL
 #[bitenum(u2, exhaustive = false)]
-#[derive(Debug, PartialEq, Default)]
+#[derive(Debug, PartialEq, Default, TryFromPrimitive, IntoPrimitive)]
+#[repr(u8)]
 pub enum VoltageOutputControl {
     #[default]
     Auto = 0,

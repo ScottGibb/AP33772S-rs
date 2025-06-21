@@ -23,8 +23,8 @@ impl Current {
     pub const CURRENT_RESOLUTION: u16 = 24; // mA
     /// Returns the current value in milliamperes.
     pub fn current(&self) -> ElectricCurrent {
-        let scaled_current = u16::try_from(self.raw_current()).unwrap() * Self::CURRENT_RESOLUTION;
-        ElectricCurrent::new::<milliampere>(f32::try_from(scaled_current).unwrap())
+        let scaled_current = u16::from(self.raw_current()) * Self::CURRENT_RESOLUTION;
+        ElectricCurrent::new::<milliampere>(f32::from(scaled_current))
     }
 }
 impl_one_byte_read_command!(Current, Command::Current);

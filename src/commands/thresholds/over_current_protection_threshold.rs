@@ -26,8 +26,8 @@ impl OverCurrentProtectionThreshold {
 
     /// Returns the current value in milliampere.
     pub fn current(&self) -> ElectricCurrent {
-        let scaled_current = u16::try_from(self.raw_current()).unwrap() * Self::CURRENT_RESOLUTION;
-        ElectricCurrent::new::<milliampere>(f32::try_from(scaled_current).unwrap())
+        let scaled_current = u16::from(self.raw_current()) * Self::CURRENT_RESOLUTION;
+        ElectricCurrent::new::<milliampere>(f32::from(scaled_current))
     }
     /// TODO: Look to generigy and combine into a helper function
     // TODO: Consider Better Error Handling of the different conversion failures

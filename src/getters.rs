@@ -180,7 +180,7 @@ impl<I2C: I2c> Ap33772s<I2C> {
         self.i2c
             .write_read(
                 Self::ADDRESS,
-                &[u8::try_from(Command::AllSourcesPowerDataObject).unwrap()],
+                &[u8::from(Command::AllSourcesPowerDataObject)],
                 &mut buff,
             )
             .await?;

@@ -30,9 +30,8 @@ impl MinimumSelectionVoltage {
     pub const SELECTION_VOLTAGE_RESOLUTION: u16 = 200; // mV
     /// Returns the minimum selection voltage in millivolts.
     pub fn voltage(&self) -> ElectricPotential {
-        let scaled_voltage =
-            u16::try_from(self.raw_voltage()).unwrap() * Self::SELECTION_VOLTAGE_RESOLUTION;
-        ElectricPotential::new::<millivolt>(f32::try_from(scaled_voltage).unwrap())
+        let scaled_voltage = u16::from(self.raw_voltage()) * Self::SELECTION_VOLTAGE_RESOLUTION;
+        ElectricPotential::new::<millivolt>(f32::from(scaled_voltage))
     }
     pub fn convert_voltage_to_raw_voltage(
         voltage: ElectricPotential,

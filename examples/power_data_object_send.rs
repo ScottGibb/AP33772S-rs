@@ -29,24 +29,18 @@ fn main() {
     if !(1..=13).contains(&power_data_object_index) {
         panic!("Power Delivery Index must be between 1 and 13");
     }
-    let power_data_object_index = PowerDataObject::try_from(power_data_object_index)
+    let power_data_object_index = PowerDataObject::try_from(power_data_object_index - 1)
         .expect("The Power Data Object Index must be between 1 and 13");
     println!(" Power Data Object Index: {:?}", power_data_object_index);
 
     // Check of the Power Data Object Index is not a fixed type //TODO: Replace this
     let fixed = if power_data_object_index >= PowerDataObject::ExtendedPowerRange9 {
-        let index = usize::try_from(
-            u8::try_from(
-                power_data_object_index.raw_value()
-                    - PowerDataObject::ExtendedPowerRange9.raw_value(),
-            )
-            .unwrap(),
-        )
-        .unwrap();
+        let index = usize::from(u8::from(
+            power_data_object_index.raw_value() - PowerDataObject::ExtendedPowerRange9.raw_value(),
+        ));
         power_delivery_capabilities.extended_power[index].source_power_type() == PowerType::Fixed
     } else {
-        let index: usize =
-            usize::try_from(u8::try_from(power_data_object_index.raw_value()).unwrap()).unwrap();
+        let index: usize = usize::from(u8::from(power_data_object_index.raw_value()));
         power_delivery_capabilities.source_power[index].source_power_type() == PowerType::Fixed
     };
 

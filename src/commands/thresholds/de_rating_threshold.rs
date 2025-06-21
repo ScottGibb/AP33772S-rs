@@ -20,8 +20,7 @@ pub struct DeRatingThreshold {
 impl DeRatingThreshold {
     /// Returns the temperature value in degrees Celsius.
     pub fn temperature(&self) -> ThermodynamicTemperature {
-        let scaled_temperature =
-            f32::try_from(u16::try_from(self.raw_temperature()).unwrap()).unwrap();
+        let scaled_temperature = f32::from(self.raw_temperature());
         ThermodynamicTemperature::new::<degree_celsius>(scaled_temperature)
     }
 

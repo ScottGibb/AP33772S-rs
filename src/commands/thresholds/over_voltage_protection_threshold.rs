@@ -27,7 +27,7 @@ impl OverVoltageProtectionThreshold {
     /// Scales the raw voltage value to millivolts.
     pub fn voltage(&self) -> ElectricPotential {
         let scaled_voltage = self.raw_voltage() as u16 * Self::VOLTAGE_RESOLUTION;
-        ElectricPotential::new::<millivolt>(f32::try_from(scaled_voltage).unwrap())
+        ElectricPotential::new::<millivolt>(f32::from(scaled_voltage))
     }
     /// TODO: Look to generigy and combine into a helper function
     // TODO: Consider Better Error Handling of the different conversion failures
@@ -35,9 +35,9 @@ impl OverVoltageProtectionThreshold {
         if !voltage.is_finite() || !voltage.is_sign_positive() {
             return Err(Ap33772sError::ConversionFailed);
         }
-        let raw_value = voltage.get::<millivolt>() / Self::VOLTAGE_RESOLUTION as f32;
+        let raw_value = voltage.get::<millivolt>() / f32::from(Self::VOLTAGE_RESOLUTION);
 
-        if raw_value > u8::MAX as f32 {
+        if raw_value > f32::from(u8::MAX) {
             return Err(Ap33772sError::ConversionFailed);
         }
 

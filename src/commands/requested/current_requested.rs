@@ -33,7 +33,7 @@ impl CurrentRequested {
     /// Returns the current value in milliamperes.
     pub fn current(&self) -> ElectricCurrent {
         let scaled_current = self.raw_current() * Self::CURRENT_RESOLUTION;
-        ElectricCurrent::new::<milliampere>(f32::try_from(scaled_current).unwrap())
+        ElectricCurrent::new::<milliampere>(f32::from(scaled_current))
     }
 }
 
