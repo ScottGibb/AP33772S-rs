@@ -1,13 +1,23 @@
 #[cfg(feature = "advanced")]
 mod imports {
-    use ap33772s_rs::ap33772s::{AP33772SThresholds, Ap33772s};
-    use uom::si::{
+    pub use ap33772s_rs::ap33772s::{AP33772SThresholds, Ap33772s};
+    pub use ap33772s_rs::commands::{
+        configuration::{
+            interrupt_enable::InterruptEnable,
+            protection_mode_configuration::ProtectionModeConfiguration,
+        },
+        statistics::minimum_selection_voltage::MinimumSelectionVoltage,
+        thresholds::{
+            under_voltage_protection_threshold::UnderVoltageThreshold, vdc_threshold::VDCTHR,
+        },
+    };
+    pub use uom::si::{
         electric_current::{ElectricCurrent, milliampere},
         electric_potential::{ElectricPotential, millivolt},
         f32::ThermodynamicTemperature,
         thermodynamic_temperature::degree_celsius,
     };
-    use utils::setup_i2c;
+    pub use utils::setup_i2c;
 }
 #[cfg(not(feature = "advanced"))]
 mod imports {}
@@ -69,14 +79,15 @@ fn main() {
         over_temperature: ThermodynamicTemperature::new::<degree_celsius>(0x78 as f32), //TODO: Fix this
         derating: ThermodynamicTemperature::new::<degree_celsius>(0x78 as f32), //TODO: Fix this
     };
+    ap33772s
+        .set_thresholds(thresholds)
+        .expect("Should not fail");
 
     //TODO: Investigate this Mystery Registers
     let vdc_threshold = VDCTHR::builder().with_percentage(0x06).build();
     ap33772s
         .write_one_byte_command(vdc_threshold)
         .expect("This should not fail");
-
-    // Setup complete?? TODO: Investigate this example?
 }
 
 #[cfg(not(feature = "advanced"))]
