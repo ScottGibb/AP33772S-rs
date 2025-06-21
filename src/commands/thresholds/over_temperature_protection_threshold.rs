@@ -21,8 +21,7 @@ pub struct OverTemperatureProtectionThreshold {
 impl OverTemperatureProtectionThreshold {
     /// Returns the temperature value in degrees Celsius.
     pub fn temperature(&self) -> ThermodynamicTemperature {
-        let scaled_temperature = f32::from(self.raw_temperature());
-        ThermodynamicTemperature::new::<degree_celsius>(scaled_temperature)
+        Self::convert_raw_temperature_to_temperature(self.raw_temperature())
     }
     /// Converts a temperature in degrees Celsius to the raw temperature value.
     // TODO: Consider Better Error Handling of the different conversion failures
@@ -39,6 +38,11 @@ impl OverTemperatureProtectionThreshold {
         }
 
         Ok(raw_value as u8)
+    }
+
+    pub fn convert_raw_temperature_to_temperature(raw_temperature: u8) -> ThermodynamicTemperature {
+        let scaled_temperature = f32::from(raw_temperature);
+        ThermodynamicTemperature::new::<degree_celsius>(scaled_temperature)
     }
 }
 
