@@ -214,8 +214,8 @@ impl<I2C: I2c> Ap33772s<I2C> {
             .read_one_byte_command::<PowerDeliveryMessageResult>()
             .await?;
 
-        Ok(power_delivery_request_result
+        power_delivery_request_result
             .response()
-            .or(Err(Ap33772sError::DataMalformed))?)
+            .or(Err(Ap33772sError::DataMalformed))
     }
 }
