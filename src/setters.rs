@@ -1,3 +1,6 @@
+use core::u8;
+
+use uom::ConversionFactor;
 use uom::si::f32::ElectricPotential;
 
 use super::hal::*;
@@ -48,10 +51,19 @@ impl<I2C: I2c> Ap33772s<I2C> {
                 .with_power_data_object_index(power_data_object_index)
                 .build()
         } else {
-            //TODO: remove unwraps possibly just bubble up a error?
-            let scaled_voltage = scaling_value.unwrap() * voltage_selection.unwrap();
+            let voltage_selection = voltage_selection.ok_or(Ap33772sError::DataMalformed)?;
+            let scaling_value = scaling_value.ok_or(Ap33772sError::DataMalformed)?;
+            let scaled_voltage = scaling_value * voltage_selection;
+
+            // Check for overflow
+            let scaled_voltage = if scaled_voltage.value.value() > f32::from(u8::MAX) {
+                Err(Ap33772sError::ConversionFailed)
+            } else {
+                Ok(scaled_voltage.value.value() as u8)
+            }?;
+
             PowerDeliveryRequestMessage::builder()
-                .with_voltage_selection(scaled_voltage.value as u8) //TODO: Possible risk fix this?
+                .with_voltage_selection(scaled_voltage)
                 .with_current_selection(current_selection)
                 .with_power_data_object_index(power_data_object_index)
                 .build()
