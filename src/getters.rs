@@ -1,9 +1,9 @@
 use super::hal::*;
 use crate::Ap33772sError;
 use crate::ap33772s;
-use crate::ap33772s::AP33772SThermalResistances;
-use crate::ap33772s::AP33772SThresholds;
 use crate::ap33772s::Ap33772s;
+use crate::ap33772s::ThermalResistances;
+use crate::ap33772s::Thresholds;
 use crate::commands::command_map::Command;
 use crate::commands::configuration::status::Status;
 use crate::commands::configuration::system_control::SystemControl;
@@ -100,13 +100,13 @@ impl<I2C: I2c> Ap33772s<I2C> {
         Ok(requested_power)
     }
     #[maybe_async::maybe_async]
-    pub async fn get_statistics(&mut self) -> Result<ap33772s::AP33772SStatistics, Ap33772sError> {
+    pub async fn get_statistics(&mut self) -> Result<ap33772s::Statistics, Ap33772sError> {
         let current = self.get_current().await?;
         let voltage = self.get_voltage().await?;
         let temperature = self.get_temperature().await?;
         let requested_voltage = self.get_requested_voltage().await?;
         let requested_current = self.get_requested_current().await?;
-        Ok(ap33772s::AP33772SStatistics {
+        Ok(ap33772s::Statistics {
             current,
             voltage,
             temperature,
@@ -129,15 +129,13 @@ impl<I2C: I2c> Ap33772s<I2C> {
 
 impl<I2C: I2c> Ap33772s<I2C> {
     #[maybe_async::maybe_async]
-    pub async fn get_thermal_resistances(
-        &mut self,
-    ) -> Result<AP33772SThermalResistances, Ap33772sError> {
+    pub async fn get_thermal_resistances(&mut self) -> Result<ThermalResistances, Ap33772sError> {
         let resistance_25 = self.read_two_byte_command::<ThermalResistance25>().await?;
         let resistance_50 = self.read_two_byte_command::<ThermalResistance50>().await?;
         let resistance_75 = self.read_two_byte_command::<ThermalResistance75>().await?;
         let resistance_100 = self.read_two_byte_command::<ThermalResistance100>().await?;
 
-        Ok(AP33772SThermalResistances {
+        Ok(ThermalResistances {
             _25: resistance_25.thermal_resistance(),
             _50: resistance_50.thermal_resistance(),
             _75: resistance_75.thermal_resistance(),
@@ -145,7 +143,7 @@ impl<I2C: I2c> Ap33772s<I2C> {
         })
     }
     #[maybe_async::maybe_async]
-    pub async fn get_thresholds(&mut self) -> Result<AP33772SThresholds, Ap33772sError> {
+    pub async fn get_thresholds(&mut self) -> Result<Thresholds, Ap33772sError> {
         let over_voltage_threshold = self
             .read_one_byte_command::<OverVoltageProtectionThreshold>()
             .await?;
@@ -163,7 +161,7 @@ impl<I2C: I2c> Ap33772s<I2C> {
             .threshold()
             .or(Err(Ap33772sError::DataMalformed))?;
         let de_rating_threshold = self.read_one_byte_command::<DeRatingThreshold>().await?;
-        Ok(AP33772SThresholds {
+        Ok(Thresholds {
             over_voltage: over_voltage_threshold.voltage(),
             over_current: over_current_threshold.current(),
             over_temperature: over_temperature_protection_threshold.temperature(),

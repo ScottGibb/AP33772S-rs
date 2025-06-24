@@ -9,7 +9,7 @@ use crate::hal::I2c;
 
 impl<I2C: I2c> Ap33772s<I2C> {
     #[maybe_async::maybe_async]
-    pub async fn write_one_byte_command(
+    pub(crate) async fn write_one_byte_command(
         &mut self,
         command: impl WriteOneByteCommand,
     ) -> Result<(), Ap33772sError> {
@@ -21,7 +21,7 @@ impl<I2C: I2c> Ap33772s<I2C> {
         Ok(())
     }
     #[maybe_async::maybe_async]
-    pub async fn read_one_byte_command<CommandRegister>(
+    pub(crate) async fn read_one_byte_command<CommandRegister>(
         &mut self,
     ) -> Result<CommandRegister, Ap33772sError>
     where
@@ -36,7 +36,7 @@ impl<I2C: I2c> Ap33772s<I2C> {
     }
 
     #[maybe_async::maybe_async]
-    pub async fn read_two_byte_command<CommandRegister>(
+    pub(crate) async fn read_two_byte_command<CommandRegister>(
         &mut self,
     ) -> Result<CommandRegister, Ap33772sError>
     where
@@ -53,7 +53,7 @@ impl<I2C: I2c> Ap33772s<I2C> {
     }
 
     #[maybe_async::maybe_async]
-    pub async fn write_two_byte_command(
+    pub(crate) async fn write_two_byte_command(
         &mut self,
         command: impl WriteTwoByteCommand,
     ) -> Result<(), Ap33772sError> {

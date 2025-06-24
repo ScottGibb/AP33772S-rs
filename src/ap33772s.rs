@@ -11,8 +11,8 @@ use uom::si::f32::ElectricalResistance;
 use uom::si::f32::Power;
 use uom::si::f32::ThermodynamicTemperature;
 
-#[derive(Debug)]
-pub struct AP33772SStatistics {
+#[derive(Debug, Clone, PartialEq)]
+pub struct Statistics {
     pub current: ElectricCurrent,
     pub voltage: ElectricPotential,
     pub power: Power,
@@ -23,16 +23,16 @@ pub struct AP33772SStatistics {
     pub requested_power: Power,
 }
 
-#[derive(Debug)]
-pub struct AP33772SThermalResistances {
+#[derive(Debug, Clone, PartialEq)]
+pub struct ThermalResistances {
     pub _25: ElectricalResistance,
     pub _50: ElectricalResistance,
     pub _75: ElectricalResistance,
     pub _100: ElectricalResistance,
 }
 
-#[derive(Debug)]
-pub struct AP33772SThresholds {
+#[derive(Debug, Clone, PartialEq)]
+pub struct Thresholds {
     pub over_voltage: ElectricPotential,
     pub under_voltage: UnderVoltageThreshold,
     pub over_current: ElectricCurrent,

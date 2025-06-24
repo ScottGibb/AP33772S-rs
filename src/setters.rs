@@ -6,7 +6,7 @@ use uom::si::f32::ElectricPotential;
 use super::hal::*;
 use crate::Ap33772sError;
 use crate::ap33772s::{
-    AP33772SThermalResistances, AP33772SThresholds, Ap33772s, CurrentSelection, PowerDataObject,
+    Ap33772s, CurrentSelection, PowerDataObject, ThermalResistances, Thresholds,
 };
 use crate::commands::configuration::system_control::{SystemControl, VoltageOutputControl};
 use crate::commands::data_objects::all_source_power_data_object::{
@@ -77,7 +77,7 @@ impl<I2C: I2c> Ap33772s<I2C> {
     #[maybe_async::maybe_async]
     pub async fn set_thermal_resistances(
         &mut self,
-        resistances: AP33772SThermalResistances,
+        resistances: ThermalResistances,
     ) -> Result<(), Ap33772sError> {
         let resistance_25 = ThermalResistance25::builder()
             .with_raw_thermal_resistance(convert_resistance_to_raw_resistance(resistances._25)?)
@@ -99,10 +99,7 @@ impl<I2C: I2c> Ap33772s<I2C> {
     }
 
     #[maybe_async::maybe_async]
-    pub async fn set_thresholds(
-        &mut self,
-        thresholds: AP33772SThresholds,
-    ) -> Result<(), Ap33772sError> {
+    pub async fn set_thresholds(&mut self, thresholds: Thresholds) -> Result<(), Ap33772sError> {
         let over_voltage_threshold: OverVoltageProtectionThreshold =
             OverVoltageProtectionThreshold::builder()
                 .with_raw_voltage(
