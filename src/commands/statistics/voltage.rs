@@ -1,9 +1,8 @@
+use crate::commands::command_map::Command;
+use crate::impl_two_byte_read_command;
 use bitbybit::bitfield;
 use uom::si::electric_potential::millivolt;
 use uom::si::f32::ElectricPotential;
-
-use crate::commands::command_map::Command;
-use crate::impl_two_byte_read_command;
 
 /// This struct represents the voltage of the AP33772S device.
 /// It contains the raw voltage value and provides a method to convert it to millivolts.
@@ -11,6 +10,7 @@ use crate::impl_two_byte_read_command;
 /// Datasheet Name: VOLTAGE
 #[bitfield(u16, default = 0x0)]
 #[derive(Debug, PartialEq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct Voltage {
     #[bits(0..=15, r)]
     /// The raw voltage value.

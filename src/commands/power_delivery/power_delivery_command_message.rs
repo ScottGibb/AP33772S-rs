@@ -1,12 +1,11 @@
-use bitbybit::bitfield;
-
-use crate::impl_one_byte_write_command;
-
 use super::command_map::Command;
+use crate::impl_one_byte_write_command;
+use bitbybit::bitfield;
 
 /// Command: PD_CMDMSG
 #[bitfield(u8, default = 0x00)]
 #[derive(Debug, PartialEq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct PowerDeliveryCommandMessage {
     /// Issue Hard Reset Command
     #[bit(0, w)]

@@ -1,9 +1,8 @@
+use crate::commands::command_map::Command;
+use crate::{impl_one_byte_read_command, impl_one_byte_write_command};
 use bitbybit::bitfield;
 use uom::si::electric_potential::millivolt;
 use uom::si::f32::ElectricPotential;
-
-use crate::commands::command_map::Command;
-use crate::{impl_one_byte_read_command, impl_one_byte_write_command};
 
 /// The MinimumSelectionVoltage command retrieves the minimum selection voltage
 /// of the AP33772S. This voltage is used to determine the minimum voltage that can be selected
@@ -18,6 +17,7 @@ use crate::{impl_one_byte_read_command, impl_one_byte_write_command};
 /// /// Datasheet Name: VSELMIN
 #[bitfield(u8, default = 0x19)]
 #[derive(Debug, PartialEq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct MinimumSelectionVoltage {
     /// The raw voltage value representing the minimum selection voltage. The `raw_voltage` is represented with
     /// LSB as 200mV

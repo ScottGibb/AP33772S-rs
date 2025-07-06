@@ -13,6 +13,7 @@ use num_enum::{IntoPrimitive, TryFromPrimitive};
 /// //TODO FIll this in
 /// ```
 #[derive(Debug, IntoPrimitive, TryFromPrimitive, PartialEq, Clone, Copy)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[repr(u8)]
 #[non_exhaustive] //TODO: Look to remove once we have full command map
 pub enum Command {

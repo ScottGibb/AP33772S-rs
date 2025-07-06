@@ -17,6 +17,7 @@ use uom::si::f32::ElectricCurrent;
 /// Datasheet Name: IREQ
 #[bitfield(u16, default = 0x0000)]
 #[derive(Debug, PartialEq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct CurrentRequested {
     /// The raw current value.
     ///

@@ -1,9 +1,9 @@
-use bitbybit::{bitenum, bitfield};
-
 use crate::commands::data_objects::all_source_power_data_object::PowerType;
+use bitbybit::{bitenum, bitfield};
 
 #[bitfield(u16, default = 0x00)]
 #[derive(Debug, PartialEq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct SourcePowerDataObject {
     #[bits(0..=7, r)]
     pub max_voltage: u8,
@@ -22,6 +22,7 @@ pub struct SourcePowerDataObject {
 /// For AVS APDO (bit\[14\]=1)
 #[bitenum(u2, exhaustive = true)]
 #[derive(Debug, PartialEq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum MinimumVoltage {
     Reserved = 0,
     _3_3 = 1,
@@ -38,6 +39,7 @@ pub enum MinimumVoltage {
 
 #[bitenum(u4, exhaustive = true)]
 #[derive(Debug, PartialEq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum SourcePowerCurrent {
     LessThan1_24 = 0,
     _1_24To1_49 = 1,

@@ -1,9 +1,8 @@
+use super::command_map::Command;
+use crate::impl_two_byte_read_command;
 use bitbybit::bitfield;
 use uom::si::electric_potential::millivolt;
 use uom::si::f32::ElectricPotential;
-
-use super::command_map::Command;
-use crate::impl_two_byte_read_command;
 
 /// This struct represents the requested voltage of the AP33772S device.
 /// It contains the raw voltage value and provides a method to convert it to millivolts.
@@ -19,6 +18,7 @@ use crate::impl_two_byte_read_command;
 /// Datasheet Name: VREQ
 #[bitfield(u16, default = 0x0000)]
 #[derive(Debug, PartialEq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct VoltageRequested {
     /// The raw voltage value.
     /// he latest requested voltage; LSB 50mV The value depends on the

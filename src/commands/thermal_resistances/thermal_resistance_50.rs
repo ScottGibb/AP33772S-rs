@@ -1,8 +1,6 @@
-use bitbybit::bitfield;
-
-use crate::{impl_two_byte_read_command, impl_two_byte_write_command};
-
 use super::command_map::Command;
+use crate::{impl_two_byte_read_command, impl_two_byte_write_command};
+use bitbybit::bitfield;
 use uom::si::electrical_resistance::ohm;
 use uom::si::f32::ElectricalResistance;
 
@@ -20,6 +18,7 @@ use uom::si::f32::ElectricalResistance;
 /// Datasheet Name: TR50
 #[bitfield(u16, default = 0x1041)]
 #[derive(Debug, PartialEq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct ThermalResistance50 {
     /// Raw thermal resistance value in LSB (Ω)
     ///

@@ -1,10 +1,9 @@
-use bitbybit::bitenum;
-use uom::si::{electric_potential::millivolt, f32::ElectricPotential};
-
 use crate::commands::{
     data_objects::extended_power_range_data_object::ExtendedPowerRangeDataObject,
     power_delivery::power_delivery_request_message::PowerDataObject,
 };
+use bitbybit::bitenum;
+use uom::si::{electric_potential::millivolt, f32::ElectricPotential};
 
 use super::source_power_data_object::SourcePowerDataObject;
 
@@ -95,6 +94,7 @@ impl AllSourceDataPowerDataObject {
 
 #[bitenum(u1, exhaustive = true)]
 #[derive(Debug, PartialEq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum PowerType {
     Fixed = 0,
     Adjustable = 1,

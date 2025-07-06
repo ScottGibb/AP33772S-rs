@@ -32,6 +32,7 @@ pub struct ThermalResistances {
 }
 
 #[derive(Debug, Clone, PartialEq)]
+
 pub struct Thresholds {
     pub over_voltage: ElectricPotential,
     pub under_voltage: UnderVoltageThreshold,

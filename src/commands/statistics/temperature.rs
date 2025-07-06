@@ -1,9 +1,8 @@
+use crate::commands::command_map::Command;
+use crate::impl_one_byte_read_command;
 use bitbybit::bitfield;
 use uom::si::f32::ThermodynamicTemperature;
 use uom::si::thermodynamic_temperature::degree_celsius;
-
-use crate::commands::command_map::Command;
-use crate::impl_one_byte_read_command;
 
 /// This struct represents the temperature of the AP33772S device.
 /// It contains the raw temperature value and provides a method to convert it to degrees Celsius.
@@ -14,6 +13,7 @@ use crate::impl_one_byte_read_command;
 /// Datasheet Name: TEMP
 #[bitfield(u8, default = 0x19)]
 #[derive(Debug, PartialEq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct Temperature {
     #[bits(0..=7, r)]
     raw_temperature: u8,

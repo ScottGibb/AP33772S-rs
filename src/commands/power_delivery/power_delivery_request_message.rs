@@ -1,13 +1,12 @@
-use core::fmt::{self};
-
+use super::command_map::Command;
 use crate::impl_two_byte_write_command;
 use bitbybit::{bitenum, bitfield};
+use core::fmt::{self};
 use num_enum::{IntoPrimitive, TryFromPrimitive};
-
-use super::command_map::Command;
 
 #[bitfield(u16, default = 0x0000)]
 #[derive(Debug, PartialEq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct PowerDeliveryRequestMessage {
     #[bits(0..=7, w)]
     pub voltage_selection: u8, // Handle the different units depending on the power mode
@@ -18,6 +17,7 @@ pub struct PowerDeliveryRequestMessage {
 }
 
 #[derive(Debug, PartialEq, PartialOrd, TryFromPrimitive, IntoPrimitive)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[bitenum(u4, exhaustive = false)]
 #[repr(u8)]
 pub enum PowerDataObject {
@@ -37,6 +37,7 @@ pub enum PowerDataObject {
 }
 
 #[derive(Debug, PartialEq, PartialOrd, TryFromPrimitive, IntoPrimitive)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[bitenum(u4, exhaustive = true)]
 #[repr(u8)]
 pub enum CurrentSelection {

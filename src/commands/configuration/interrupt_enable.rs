@@ -1,8 +1,6 @@
-use bitbybit::bitfield;
-
-use crate::{impl_one_byte_read_command, impl_one_byte_write_command};
-
 use crate::commands::command_map::Command;
+use crate::{impl_one_byte_read_command, impl_one_byte_write_command};
+use bitbybit::bitfield;
 
 /// The AP33772S supports a level-triggered interrupt signal through the INT pin to the host MCU.
 /// The [Interrupt Enable](crate::commands::configuration::interrupt_enable::InterruptEnable)
@@ -12,6 +10,7 @@ use crate::commands::command_map::Command;
 /// Datasheet Name: MASK
 #[bitfield(u8, default = 0x03)]
 #[derive(Debug, PartialEq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct InterruptEnable {
     /// Started Status
     ///

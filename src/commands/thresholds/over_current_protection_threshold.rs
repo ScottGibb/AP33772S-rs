@@ -1,8 +1,7 @@
-use bitbybit::bitfield;
-use uom::si::{electric_current::milliampere, f32::ElectricCurrent};
-
 use super::command_map::Command;
 use crate::{impl_one_byte_read_command, impl_one_byte_write_command};
+use bitbybit::bitfield;
+use uom::si::{electric_current::milliampere, f32::ElectricCurrent};
 
 /// The OCPTHR register is defined as the OCP Threshold Current that triggers OCP protection function.
 /// The OCP Threshold Current is 110% of the OCPTHR current value. The default value for the OCPTHR is
@@ -16,6 +15,7 @@ use crate::{impl_one_byte_read_command, impl_one_byte_write_command};
 /// // Datasheet Name: OCPTHR
 #[bitfield(u8, default = 0x00)]
 #[derive(Debug, PartialEq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct OverCurrentProtectionThreshold {
     #[bits(0..=7, rw)]
     raw_current: u8,

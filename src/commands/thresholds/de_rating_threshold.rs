@@ -11,6 +11,7 @@ use uom::si::thermodynamic_temperature::degree_celsius;
 /// // Datasheet Name: DRTHR
 #[bitfield(u8, default = 0x78)]
 #[derive(Debug, PartialEq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct DeRatingThreshold {
     /// The temperature threshold triggers De-Rating function; the default value for DRTHR is 78h (120°C)
     #[bits(0..=7, rw)]

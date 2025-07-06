@@ -1,8 +1,6 @@
-use uom::si::f32::ElectricalResistance;
-
-use crate::Ap33772sError;
-
 use super::command_map;
+use crate::Ap33772sError;
+use uom::si::f32::ElectricalResistance;
 
 pub mod thermal_resistance_100;
 pub mod thermal_resistance_25;

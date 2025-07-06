@@ -1,7 +1,5 @@
 use bitbybit::bitfield;
-
 use crate::{impl_one_byte_read_command, impl_one_byte_write_command};
-
 use crate::commands::command_map::Command;
 
 /// The AP33772S supports a Protection Mode Configuration register that defines the
@@ -10,6 +8,7 @@ use crate::commands::command_map::Command;
 /// Datasheet Name: CONFIG
 #[bitfield(u8, default = 0xF8)]
 #[derive(Debug, PartialEq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct ProtectionModeConfiguration {
     // /// Reserved
     // #[bits(0..=2, rw)]

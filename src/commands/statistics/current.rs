@@ -1,9 +1,8 @@
+use crate::commands::command_map::Command;
+use crate::impl_one_byte_read_command;
 use bitbybit::bitfield;
 use uom::si::electric_current::milliampere;
 use uom::si::f32::ElectricCurrent;
-
-use crate::commands::command_map::Command;
-use crate::impl_one_byte_read_command;
 
 /// This struct represents the current of the AP33772S device.
 /// It contains the raw current value and provides a method to convert it to milliamperes.
@@ -11,6 +10,7 @@ use crate::impl_one_byte_read_command;
 /// Datasheet Name: CURRENT
 #[bitfield(u8, default = 0x0)]
 #[derive(Debug, PartialEq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct Current {
     /// The raw current value.
     ///

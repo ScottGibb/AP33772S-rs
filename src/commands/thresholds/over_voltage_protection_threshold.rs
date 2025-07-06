@@ -1,10 +1,9 @@
 use crate::Ap33772sError;
+use crate::commands::command_map::Command;
+use crate::{impl_one_byte_read_command, impl_one_byte_write_command};
 use bitbybit::bitfield;
 use uom::si::electric_potential::millivolt;
 use uom::si::f32::ElectricPotential;
-
-use crate::commands::command_map::Command;
-use crate::{impl_one_byte_read_command, impl_one_byte_write_command};
 
 /// This command is used to read and write the Over Voltage Protection (OVP) Threshold Voltage.
 /// The OVP Threshold Voltage is used to set the over voltage protection threshold for the AP33772S
@@ -16,6 +15,7 @@ use crate::{impl_one_byte_read_command, impl_one_byte_write_command};
 /// Datasheet Name: OVPTHR
 #[bitfield(u8, default = 0x19)]
 #[derive(Debug, PartialEq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct OverVoltageProtectionThreshold {
     #[bits(0..=7, rw)]
     /// The raw voltage value.
@@ -29,7 +29,7 @@ impl OverVoltageProtectionThreshold {
         let scaled_voltage = self.raw_voltage() as u16 * Self::VOLTAGE_RESOLUTION;
         ElectricPotential::new::<millivolt>(f32::from(scaled_voltage))
     }
-    /// TODO: Look to generigy and combine into a helper function
+    // TODO: Look to generigy and combine into a helper function
     // TODO: Consider Better Error Handling of the different conversion failures
     pub fn convert_voltage_to_raw_voltage(voltage: ElectricPotential) -> Result<u8, Ap33772sError> {
         if !voltage.is_finite() || !voltage.is_sign_positive() {

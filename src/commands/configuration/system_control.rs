@@ -1,9 +1,7 @@
+use crate::commands::command_map::Command;
+use crate::{impl_one_byte_read_command, impl_one_byte_write_command};
 use bitbybit::{bitenum, bitfield};
 use num_enum::{IntoPrimitive, TryFromPrimitive};
-
-use crate::{impl_one_byte_read_command, impl_one_byte_write_command};
-
-use crate::commands::command_map::Command;
 
 /// The System Control register defines the system control options.
 /// It includes the [VOutControl](crate::commands::configuration::system_control::VoltageOutputControl) which control the output voltage.
@@ -12,6 +10,7 @@ use crate::commands::command_map::Command;
 /// Datasheet Name: SYSTEM
 #[bitfield(u8, default = 0x10)]
 #[derive(Debug, PartialEq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct SystemControl {
     /// VOUT Control Switch
     /// See [VOutControl](crate::commands::configuration::system_control::VoltageOutputControl) for more details.
@@ -46,6 +45,7 @@ pub struct SystemControl {
 /// Datasheet Name: CMDVER
 #[bitenum(u2, exhaustive = false)]
 #[derive(Debug, PartialEq, Default)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[repr(u8)]
 pub enum CommandVersion {
     #[default]
@@ -61,6 +61,7 @@ pub enum CommandVersion {
 /// Datasheet Name: VOUTCTL
 #[bitenum(u2, exhaustive = false)]
 #[derive(Debug, PartialEq, Default, TryFromPrimitive, IntoPrimitive)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[repr(u8)]
 pub enum VoltageOutputControl {
     #[default]
