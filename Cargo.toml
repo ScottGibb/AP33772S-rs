@@ -8,7 +8,7 @@ repository = "https://github.com/ScottGibb/AP33772S-rs"
 license = "Apache-2.0"
 
 [features]
-default = ["sync", "advanced", "defmt"]
+default = ["sync"]
 sync = ["dep:embedded-hal", "maybe-async/is_sync"]
 async = ["dep:embedded-hal-async"]
 defmt = ["dep:defmt"]

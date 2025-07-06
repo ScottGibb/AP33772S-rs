@@ -1,5 +1,9 @@
-//! This is a placeholder crate to reserve the `ap33772` namespace.
-//! Actual functionality will be published in a future release.
+//! This crate provides an interface for the AP33772S I2C device. It supports both synchronous and asynchronous operations.
+//! It is designed to be used in embedded systems, and it can be compiled for both `no_std` and `std` environments.
+//! There are two modes the driver can run in normal and advanced mode.
+//! Advanced mode can be enabled by setting the `advanced` feature flag. This allows full access to the underlying registers and exposes
+//! the full functionality of the AP33772S device. The normal mode is a simplified version
+//! that provides a higher-level interface for common operations.
 #![no_std]
 #![deny(unsafe_code)]
 
