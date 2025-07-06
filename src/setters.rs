@@ -8,7 +8,7 @@ use crate::Ap33772sError;
 use crate::ap33772s::{
     Ap33772s, CurrentSelection, PowerDataObject, ThermalResistances, Thresholds,
 };
-use crate::commands::configuration::system_control::{SystemControl, VoltageOutputControl};
+use crate::commands::configuration::system_control::SystemControl;
 use crate::commands::data_objects::all_source_power_data_object::{
     AllSourceDataPowerDataObject, PowerType,
 };
@@ -20,6 +20,8 @@ use crate::commands::thresholds::over_current_protection_threshold::OverCurrentP
 use crate::commands::thresholds::over_temperature_protection_threshold::OverTemperatureProtectionThreshold;
 use crate::commands::thresholds::over_voltage_protection_threshold::OverVoltageProtectionThreshold;
 use crate::commands::thresholds::under_voltage_protection_threshold::UnderVoltageProtectionThreshold;
+
+pub use crate::commands::configuration::system_control::VoltageOutputControl;
 
 impl<I2C: I2c> Ap33772s<I2C> {
     #[maybe_async::maybe_async]

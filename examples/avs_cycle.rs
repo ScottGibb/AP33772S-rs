@@ -2,7 +2,7 @@
 /// by the Centy Labs example for the AP33772S. [Centy Labs Example](https://github.com/CentyLab/AP33772S-CentyLab/blob/main/examples/AVScycle/AVScycle.ino)
 use ap33772s_rs::{
     ap33772s::{Ap33772s, CurrentSelection, PowerDataObject},
-    commands::configuration::system_control::VoltageOutputControl,
+    setters::VoltageOutputControl,
 };
 use uom::si::{electric_potential::millivolt, f32::ElectricPotential};
 use utils::setup_i2c;

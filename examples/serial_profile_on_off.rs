@@ -1,9 +1,10 @@
-use ap33772s_rs::{
-    ap33772s::Ap33772s, commands::configuration::system_control::VoltageOutputControl,
-};
+use ap33772s_rs::{ap33772s::Ap33772s, setters::VoltageOutputControl};
 
 const COMMANDS: [&str; 3] = ["Profile", "On", "Off"];
 
+/// This example shows how to toggle the Serial Profile On and Off using the AP33772S device.
+/// It is inspired by the Centy Labs example for the AP33772S.
+/// [Centy Labs Example](https://github.com/CentyLab/AP33772S-CentyLab/blob/main/examples/SerialProfileOnOff/SerialProfileOnOff.ino)
 fn main() {
     let i2c = utils::setup_i2c().expect("Failed to set up I2C");
     let mut ap33772s = Ap33772s::new_default(i2c).expect("Failed to create AP33772S instance");
