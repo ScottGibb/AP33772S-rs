@@ -37,8 +37,8 @@ impl<I2C: I2c> Ap33772s<I2C> {
     pub async fn send_power_delivery_request(
         &mut self,
         power_data_object_index: PowerDataObject,
-        current_selection: CurrentSelection,
         voltage_selection: Option<ElectricPotential>,
+        current_selection: CurrentSelection,
         data_objects: &AllSourceDataPowerDataObject,
     ) -> Result<(), Ap33772sError> {
         let power_type = data_objects.get_power_mode(&power_data_object_index);

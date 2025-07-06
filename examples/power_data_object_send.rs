@@ -74,8 +74,8 @@ fn main() {
     ap33772s
         .send_power_delivery_request(
             power_data_object_index,
-            current_selection,
             voltage,
+            current_selection,
             &power_delivery_capabilities,
         )
         .expect("Failed to send Power Delivery Request");

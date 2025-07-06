@@ -23,8 +23,8 @@ fn main() {
     ap33772s
         .send_power_delivery_request(
             index,
-            current_selection,
             voltage_selection,
+            current_selection,
             &power_delivery_capabilities,
         )
         .expect("Failed to send power delivery request");
@@ -41,8 +41,8 @@ fn main() {
     ap33772s
         .send_power_delivery_request(
             index,
-            current_selection,
             voltage_selection,
+            current_selection,
             &power_delivery_capabilities,
         )
         .expect("Failed to send power delivery request");

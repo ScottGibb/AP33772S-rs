@@ -87,7 +87,17 @@ jobs:
       - name: Build State Query
         run: |
           cargo build --example state_query --no-default-features --features sync
+      - name: Build AVS Cycle
+        run: |
+          cargo build --example avs_cycle --no-default-features --features sync
+      - name: Build AVS Fixed
+        run: |
+          cargo build --example avs_fixed --no-default-features --features sync
+      - name: Build Serial Profile On Off
+        run: |
+          cargo build --example serial_profile_on_off --no-default-features --features sync
 
+          
   build-docs:
     name: Build Documentation
     runs-on: ubuntu-latest
