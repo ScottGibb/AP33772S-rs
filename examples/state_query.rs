@@ -7,9 +7,9 @@ fn main() {
 
     // Read The Status Register
     let status = ap33772s.get_status().expect("Failed to get status");
-    println!("Status: {:?}", status);
+    println!("Status: {status:?}");
 
     // Read the State of the Device
     let stats = ap33772s.get_statistics().expect("Should not fail");
-    println!("State {:?}", stats);
+    println!("State {stats:?}");
 }

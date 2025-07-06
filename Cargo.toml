@@ -24,6 +24,11 @@ bitbybit = "1.3.3"
 num_enum = {version ="0.7.3", default-features = false}
 uom = { version = "0.37.0",default-features = false, features = ["f32", "si"] }
 
+[package.metadata.docs.rs]
+no-default-features = false   
+all-features = false            
+# no need to set features here because default already includes sync
+# This is to ensures the docs build correctly on crates.io.
 
 [dev-dependencies]
 utils ={ path = "./utils"}
