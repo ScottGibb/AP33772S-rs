@@ -97,7 +97,6 @@ jobs:
         run: |
           cargo build --example serial_profile_on_off --no-default-features --features sync
 
-          
   build-docs:
     name: Build Documentation
     runs-on: ubuntu-latest
