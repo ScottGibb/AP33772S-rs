@@ -19,10 +19,9 @@ pub struct SourcePowerDataObject {
 }
 
 /// VOLTAGE_MIN
-/// For AVS APDO (bit[14]=1)
+/// For AVS APDO (bit\[14\]=1)
 #[bitenum(u2, exhaustive = true)]
 #[derive(Debug, PartialEq)]
-
 pub enum MinimumVoltage {
     Reserved = 0,
     _3_3 = 1,

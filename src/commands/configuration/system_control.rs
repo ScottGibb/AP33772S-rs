@@ -6,7 +6,7 @@ use crate::{impl_one_byte_read_command, impl_one_byte_write_command};
 use crate::commands::command_map::Command;
 
 /// The System Control register defines the system control options.
-/// It includes the [VOutControl](crate::commands::configuration::system_control::VOutControl) which control the output voltage.
+/// It includes the [VOutControl](crate::commands::configuration::system_control::VoltageOutputControl) which control the output voltage.
 /// The command version is also included in this register.
 ///
 /// Datasheet Name: SYSTEM
@@ -14,7 +14,7 @@ use crate::commands::command_map::Command;
 #[derive(Debug, PartialEq)]
 pub struct SystemControl {
     /// VOUT Control Switch
-    /// See [VOutControl](crate::commands::configuration::system_control::VOutControl) for more details.
+    /// See [VOutControl](crate::commands::configuration::system_control::VoltageOutputControl) for more details.
     ///
     /// Datasheet Name: VOUTCTL
     #[bits(0..=1, rw)]

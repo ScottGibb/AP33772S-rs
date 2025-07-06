@@ -46,7 +46,7 @@ pub enum Command {
     /// The SystemControl register is defined as the system information and control options that request specific functions.
     ///  See [SystemControl](crate::commands::configuration::system_control::SystemControl) for more details
     ///  By default, the VOUT MOS switches are controlled by the AP33772S.
-    ///  Writing the [VOutControl](crate::commands::configuration::system_control::VOutControl) parameter can force the VOUT MOS switches to turn OFF/ON.
+    ///  Writing the [VOutControl](crate::commands::configuration::system_control::VoltageOutputControl) parameter can force the VOUT MOS switches to turn OFF/ON.
     ///
     /// Datasheet Name: SYSTEM
     SystemControl = 0x06,
