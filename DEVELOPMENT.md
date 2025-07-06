@@ -7,7 +7,9 @@ At the moment there is [Continuous Build](./.github/workflows/continuous-build.y
 [Dependabot](./.github/dependabot.yaml) is also used to check when dependencies need updated and ensure we are always up to date with the latest crates.
 
 [MegaLinter](./.mega-linter.yaml) is also used throughout the project and can be used locally (see below) but also runs on GitHub to ensure we catch inconsistencies.
+
 ### Project Linting
+
 The project is linted using [MegaLinter](https://megalinter.io/latest/) which provides a variety of linters that will not only check rust code but documentation and other types of files as well. Ensuring a consistent standard. Developers can run this locally as well via the following command:
 
 ```bash
