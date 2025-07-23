@@ -52,6 +52,9 @@ pub struct Ap33772s<I2C: I2c> {
 }
 
 impl<I2C: I2c> Ap33772s<I2C> {
+    /// The I2C address of the AP33772S device.
+    /// This address is used for communication with the device over I2C.
+    /// The address is defined in the AP33772S datasheet.
     pub const ADDRESS: u8 = 0x52;
 
     pub fn new(i2c: I2C) -> Self {
