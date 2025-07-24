@@ -96,6 +96,7 @@ jobs:
       - name: Build Serial Profile On Off
         run: |
           cargo build --example serial_profile_on_off --no-default-features --features sync
+  
 
   build-docs:
     name: Build Documentation
@@ -119,3 +120,5 @@ jobs:
       - name: build advanced docs
         run: |
           cargo doc --no-default-features --features "sync advanced"
+
+  
