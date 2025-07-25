@@ -158,3 +158,30 @@ jobs:
             echo "A PR with formatting fixes has been created. Please merge it before proceeding."
             exit 1
           fi
+
+  ESP32C3_Example:
+    name: Build ESP32C3 Example
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        action:
+          - command: fmt
+            args: --all -- --check
+          - command: clippy
+            args:  -- -D warnings
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@v1
+        with:
+          target: riscv32imac-unknown-none-elf
+          toolchain: stable
+          components: rust-src, rustfmt, clippy
+      - name: Enable caching
+        uses: Swatinem/rust-cache@v2
+      - name: Run command
+        run: |
+          cd examples/esp32c3 &
+          cargo ${{ matrix.action.command }} ${{ matrix.action.args }}

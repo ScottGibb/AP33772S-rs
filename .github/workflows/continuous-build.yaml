@@ -48,8 +48,8 @@ jobs:
       - name: Build with advanced feature
         run: cargo build --no-default-features --features "async advanced"
 
-  build-examples:
-    name: Build Vendor Inspired examples
+  build-os-examples:
+    name: Build OS Sync Vendor Inspired examples
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -97,6 +97,32 @@ jobs:
         run: |
           cargo build --example serial_profile_on_off --no-default-features --features sync
   
+  build-async-examples:
+    name: Build Async ESP32 Vendor Inspired examples
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@v1
+        with:
+          target: riscv32imac-unknown-none-elf
+          toolchain: stable
+          components: rust-src, rustfmt, clippy
+      - name: Build ESP32C3 Example
+        run: |
+          cd examples/esp32c3
+          cargo build --no-default-features --features async
 
   build-docs:
     name: Build Documentation
