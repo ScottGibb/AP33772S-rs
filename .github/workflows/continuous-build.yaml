@@ -122,7 +122,7 @@ jobs:
       - name: Build ESP32C3 Example
         run: |
           cd examples/esp32c3
-          cargo build --no-default-features --features async
+          cargo build
 
   build-docs:
     name: Build Documentation

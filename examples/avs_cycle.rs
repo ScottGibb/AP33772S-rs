@@ -13,7 +13,7 @@ fn main() {
     loop {
         // Set the MMOS Switch
         ap33772s
-            .set_voltage_out_override(VoltageOutputControl::ForceOn)
+            .override_output_voltage(VoltageOutputControl::ForceOn)
             .unwrap();
 
         let power_data_objects = ap33772s

@@ -1,7 +1,7 @@
-use bitbybit::bitfield;
 use crate::{
     commands::command_map::Command, impl_one_byte_read_command, impl_one_byte_write_command,
 };
+use bitbybit::bitfield;
 
 /// The AP33772S supports a Power Delivery Configuration register that defines the
 /// system configuration options that enable specific modules.

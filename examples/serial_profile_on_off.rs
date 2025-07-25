@@ -25,13 +25,13 @@ fn main() {
         }
         "On" => {
             ap33772s
-                .set_voltage_out_override(VoltageOutputControl::ForceOn)
+                .override_output_voltage(VoltageOutputControl::ForceOn)
                 .expect("Failed to set MMOS Switch");
             println!("MMOS Switch set to Force On");
         }
         "Off" => {
             ap33772s
-                .set_voltage_out_override(VoltageOutputControl::ForceOff)
+                .override_output_voltage(VoltageOutputControl::ForceOff)
                 .expect("Failed to set MMOS Switch");
             println!("MMOS Switch set to Force Off");
         }

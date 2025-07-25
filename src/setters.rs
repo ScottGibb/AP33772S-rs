@@ -13,6 +13,7 @@ use crate::commands::data_objects::all_source_power_data_object::{
     AllSourceDataPowerDataObject, PowerType,
 };
 use crate::commands::power_delivery::power_delivery_request_message::PowerDeliveryRequestMessage;
+use crate::commands::statistics::minimum_selection_voltage::MinimumSelectionVoltage;
 use crate::commands::thermal_resistances::convert_resistance_to_raw_resistance;
 use crate::commands::thermal_resistances::thermal_resistance_25::ThermalResistance25;
 use crate::commands::thresholds::de_rating_threshold::DeRatingThreshold;
@@ -25,7 +26,7 @@ pub use crate::commands::configuration::system_control::VoltageOutputControl;
 
 impl<I2C: I2c> Ap33772s<I2C> {
     #[maybe_async::maybe_async]
-    pub async fn set_voltage_out_override(
+    pub async fn override_output_voltage(
         &mut self,
         voltage_output: VoltageOutputControl,
     ) -> Result<(), Ap33772sError> {
@@ -33,6 +34,19 @@ impl<I2C: I2c> Ap33772s<I2C> {
             .with_v_out_control(voltage_output)
             .build();
         self.write_one_byte_command(system_control).await?;
+        Ok(())
+    }
+    #[maybe_async::maybe_async]
+    pub async fn set_minimum_selection_voltage(
+        &mut self,
+        voltage: ElectricPotential,
+    ) -> Result<(), Ap33772sError> {
+        let raw_voltage = MinimumSelectionVoltage::convert_voltage_to_raw_voltage(voltage)?;
+        let minimum_selection_voltage = MinimumSelectionVoltage::builder()
+            .with_raw_voltage(raw_voltage)
+            .build();
+        self.write_one_byte_command(minimum_selection_voltage)
+            .await?;
         Ok(())
     }
     #[maybe_async::maybe_async]

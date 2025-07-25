@@ -12,7 +12,7 @@ fn main() {
     let mut ap33772s = Ap33772s::new_default(i2c).expect("Failed to create AP33772S instance");
 
     ap33772s
-        .set_voltage_out_override(VoltageOutputControl::ForceOn)
+        .override_output_voltage(VoltageOutputControl::ForceOn)
         .expect("Failed to set MMOS Switch");
 
     let power_data_objects = ap33772s
