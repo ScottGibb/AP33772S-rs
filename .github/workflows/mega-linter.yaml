@@ -169,7 +169,7 @@ jobs:
           - command: fmt
             args: --all -- --check
           - command: clippy
-            args:  -- -D warnings
+            args: -- -D warnings
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
