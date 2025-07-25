@@ -6,7 +6,8 @@
     holding buffers for the duration of a data transfer."
 )]
 
-use esp_hal::clock::CpuClock;
+use esp_hal::i2c::master::Config;
+use esp_hal::{clock::CpuClock, i2c::master::I2c};
 use esp_hal::timer::systimer::SystemTimer;
 
 use defmt::info;
@@ -21,7 +22,7 @@ use panic_rtt_target as _;
 esp_bootloader_esp_idf::esp_app_desc!();
 
 #[esp_hal_embassy::main]
-async fn main(spawner: Spawner) {
+async fn main(_spawner: Spawner) {
     // generator version: 0.5.0
 
     rtt_target::rtt_init_defmt!();
@@ -34,8 +35,8 @@ async fn main(spawner: Spawner) {
 
     info!("Embassy initialized!");
 
-    // TODO: Spawn some tasks
-    let _ = spawner;
+    // Create an I2C Bus for the AP33772S device
+    let i2c = I2c::new(peripherals.I2C0, Config::default()).expect("Failed to Create I2C").into_async();
 
     loop {
         info!("Hello world!");
