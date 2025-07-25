@@ -15,5 +15,5 @@ pub struct VDCTHR {
 // TODO: Solve this mystery register
 // Doesnt show up in datasheet but is in the arduino vendor support examples
 
-impl_one_byte_read_command!(VDCTHR, Command::VDCTHR);
-impl_one_byte_write_command!(VDCTHR, Command::VDCTHR);
+impl_one_byte_read_command!(VDCTHR, Command::Vdcthr);
+impl_one_byte_write_command!(VDCTHR, Command::Vdcthr);

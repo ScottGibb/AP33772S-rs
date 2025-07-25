@@ -1,5 +1,3 @@
-use core::u8;
-
 use uom::ConversionFactor;
 use uom::si::f32::ElectricPotential;
 

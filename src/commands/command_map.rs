@@ -121,9 +121,13 @@ pub enum Command {
     ///
     /// Datasheet Name: OTPTHR
     OverTemperatureProtectionThreshold = 0x1A,
+    /// The De-Rating Threshold is defined as the de-rating threshold of the AP33772S.
+    /// See [DeRatingThreshold](crate::commands::thresholds::de_rating_threshold::DeRatingThreshold) for more details
+    ///
+    /// Datasheet Name: DRTHR
     DeRatingThreshold = 0x1B,
     /// Datasheet Name: VDCTHR. not found in datasheet but found in arduino sketch
-    VDCTHR = 0x1C,
+    Vdcthr = 0x1C,
     /// Get All PD Source Power Capabilities (PDO1 to PDO13)
     ///
     /// Command: SRCPDO
