@@ -41,5 +41,3 @@ MARKDOWN_MARKDOWNLINT_ARGUMENTS:
   # - --enable MD04 MD007 MD026 MD029 MD033 MD036
 # # TODO: Fix the above megalinter command
 
-#  Linter Configuration
-MARKDOWN_MARKDOWNLINT_CONFIG_FILE: .markdownlint.json
