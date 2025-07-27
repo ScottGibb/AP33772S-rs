@@ -15,9 +15,7 @@ This is a no-std rust crate for the AP33772S USB C Power Delivery chip by Diodes
 - asynchronous mode through embedded-hal-async
 - Advanced mode for low level register access.
 - Examples using the FT232H Breakout Board and a Mac or Linux device.
-
 ### Quick Start
-
 To run the examples quickly simply run the following commands:
 
 ```bash
@@ -25,13 +23,9 @@ cargo run --example <example script name> --no-default-features --features sync
 ```
 
 `sync` feature is required so that the FT232H Breakout board can be used on your dev machine. See [DEVELOPMENT.md](./DEVELOPMENT.md) for more details.
-
 ## Development
-
 In terms of development, the driver aims to follow the latest rust standards and PRs are more than welcome to improve or extend existing functionality. The project also contains GitHub Workflows to try and automate updates and testing. Please read [DEVELOPMENT.md](./DEVELOPMENT.md) for more details.
-
 ## Datasheets
-
 The datasheets are also stored in this repository for convenience purposes. They are listed below:
 
 - [AP33772S Datasheet](./docs/AP33772S.pdf)
