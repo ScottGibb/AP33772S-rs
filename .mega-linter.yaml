@@ -40,4 +40,3 @@ MARKDOWN_MARKDOWNLINT_ARGUMENTS:
   - MD013
   # - --enable MD04 MD007 MD026 MD029 MD033 MD036
 # # TODO: Fix the above megalinter command
-
