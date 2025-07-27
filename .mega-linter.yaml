@@ -34,9 +34,7 @@ GITHUB_COMMENT_REPORTER: true
 GITHUB_STATUS_REPORTER: true
 VALIDATE_ALL_CODEBASE: true
 OUTPUT_DETAIL: detailed
-# Disable Line Length on markdown files and reenable markdown lint rules
+# Disable Line Length on markdown files
 MARKDOWN_MARKDOWNLINT_ARGUMENTS:
   - --disable
   - MD013
-  # - --enable MD04 MD007 MD026 MD029 MD033 MD036
-# # TODO: Fix the above megalinter command
