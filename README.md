@@ -4,15 +4,12 @@
 [![Continuous Build](https://github.com/ScottGibb/AP33772S-rs/actions/workflows/continuous-build.yaml/badge.svg)](https://github.com/ScottGibb/AP33772S-rs/actions/workflows/continuous-build.yaml)
 
 ## Under Development
-
 This crate is still under heavy development and thus can and will change. Plans are to stabilise the API, however this will take time.
 
 ## Summary
-
 This is a no-std rust crate for the AP33772S USB C Power Delivery chip by Diodes Incorporated. It attempts to be a fully featured driver offering low level register access through the `advanced` feature flag. However high level APIs with getters and setters can also be used and are encouraged to do so. The driver is cross platform thanks to the great work from the embedded-hal crate.  Async rust can also be utilised, thus supporting both async and sync modes of operation.
 
 ### Features
-
 - no-std compliant
 - synchronous mode through embedded-hal
 - asynchronous mode through embedded-hal-async
