@@ -1,5 +1,5 @@
 use crate::commands::command_map::Command;
-use crate::impl_one_byte_read_command;
+use crate::{Ap33772sError, impl_one_byte_read_command};
 use bitbybit::bitfield;
 use uom::si::electric_current::milliampere;
 use uom::si::f32::ElectricCurrent;
@@ -22,9 +22,11 @@ pub struct Current {
 impl Current {
     pub const CURRENT_RESOLUTION: u16 = 24; // mA
     /// Returns the current value in milliamperes.
-    pub fn current(&self) -> ElectricCurrent {
-        let scaled_current = u16::from(self.raw_current()) * Self::CURRENT_RESOLUTION;
-        ElectricCurrent::new::<milliampere>(f32::from(scaled_current))
+    pub fn current(&self) -> Result<ElectricCurrent, Ap33772sError> {
+        u16::from(self.raw_current())
+            .checked_mul(Self::CURRENT_RESOLUTION)
+            .ok_or(Ap33772sError::ConversionFailed)
+            .map(|scaled_current| ElectricCurrent::new::<milliampere>(f32::from(scaled_current)))
     }
 }
 impl_one_byte_read_command!(Current, Command::Current);

@@ -22,7 +22,7 @@ impl Temperature {
     /// Returns the temperature value in degrees Celsius.
     pub fn temperature(&self) -> ThermodynamicTemperature {
         let scaled_temperature = f32::from(self.raw_temperature());
-        ThermodynamicTemperature::new::<degree_celsius>(scaled_temperature)
+        ThermodynamicTemperature::new::<degree_celsius>(scaled_temperature) // Temperature is already in degrees Celsius
     }
 }
 

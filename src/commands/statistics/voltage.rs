@@ -1,5 +1,5 @@
 use crate::commands::command_map::Command;
-use crate::impl_two_byte_read_command;
+use crate::{Ap33772sError, impl_two_byte_read_command};
 use bitbybit::bitfield;
 use uom::si::electric_potential::millivolt;
 use uom::si::f32::ElectricPotential;
@@ -22,9 +22,11 @@ pub struct Voltage {
 impl Voltage {
     pub const VOLTAGE_RESOLUTION: u16 = 80; //mV
     /// Returns the voltage value in millivolts.
-    pub fn voltage(&self) -> ElectricPotential {
-        let scaled_voltage = self.raw_voltage() * Self::VOLTAGE_RESOLUTION;
-        ElectricPotential::new::<millivolt>(f32::from(scaled_voltage))
+    pub fn voltage(&self) -> Result<ElectricPotential, Ap33772sError> {
+        self.raw_voltage()
+            .checked_mul(Self::VOLTAGE_RESOLUTION)
+            .map(|scaled_voltage| ElectricPotential::new::<millivolt>(f32::from(scaled_voltage)))
+            .ok_or(Ap33772sError::ConversionFailed)
     }
 }
 

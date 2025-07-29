@@ -1,5 +1,5 @@
 use crate::commands::command_map::Command;
-use crate::{impl_one_byte_read_command, impl_one_byte_write_command};
+use crate::{Ap33772sError, impl_one_byte_read_command, impl_one_byte_write_command};
 use bitbybit::bitfield;
 use uom::si::electric_potential::millivolt;
 use uom::si::f32::ElectricPotential;
@@ -29,17 +29,16 @@ pub struct MinimumSelectionVoltage {
 impl MinimumSelectionVoltage {
     const SELECTION_VOLTAGE_RESOLUTION: u16 = 200; // mV
     /// Returns the minimum selection voltage in millivolts.
-    pub fn voltage(&self) -> ElectricPotential {
+    pub fn voltage(&self) -> Result<ElectricPotential, Ap33772sError> {
         Self::convert_raw_voltage_to_voltage(self.raw_voltage())
     }
     pub fn convert_voltage_to_raw_voltage(
         voltage: ElectricPotential,
     ) -> Result<u8, crate::Ap33772sError> {
-        if !voltage.is_finite() || !voltage.is_sign_positive() {
+        if !voltage.is_finite() || voltage.is_sign_negative() {
             return Err(crate::Ap33772sError::ConversionFailed);
         }
-        let raw_value =
-            voltage.get::<millivolt>() / (Self::SELECTION_VOLTAGE_RESOLUTION as u8) as f32;
+        let raw_value = voltage.get::<millivolt>() / f32::from(Self::SELECTION_VOLTAGE_RESOLUTION);
 
         if raw_value > u8::MAX as f32 {
             return Err(crate::Ap33772sError::ConversionFailed);
@@ -47,9 +46,13 @@ impl MinimumSelectionVoltage {
 
         Ok(raw_value as u8)
     }
-    pub fn convert_raw_voltage_to_voltage(raw_voltage: u8) -> ElectricPotential {
-        let scaled_voltage = u16::from(raw_voltage) * Self::SELECTION_VOLTAGE_RESOLUTION;
-        ElectricPotential::new::<millivolt>(f32::from(scaled_voltage))
+    pub fn convert_raw_voltage_to_voltage(
+        raw_voltage: u8,
+    ) -> Result<ElectricPotential, Ap33772sError> {
+        u16::from(raw_voltage)
+            .checked_mul(Self::SELECTION_VOLTAGE_RESOLUTION)
+            .map(|scaled| ElectricPotential::new::<millivolt>(f32::from(scaled)))
+            .ok_or(crate::Ap33772sError::ConversionFailed)
     }
 }
 
