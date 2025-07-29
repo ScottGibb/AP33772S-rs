@@ -1,5 +1,5 @@
 use super::command_map::Command;
-use crate::{impl_one_byte_read_command, impl_one_byte_write_command};
+use crate::{Ap33772sError, impl_one_byte_read_command, impl_one_byte_write_command};
 use bitbybit::bitfield;
 use uom::si::{electric_current::milliampere, f32::ElectricCurrent};
 
@@ -25,9 +25,11 @@ impl OverCurrentProtectionThreshold {
     const CURRENT_RESOLUTION: u16 = 50; // mA
 
     /// Returns the current value in milliampere.
-    pub fn current(&self) -> ElectricCurrent {
-        let scaled_current = u16::from(self.raw_current()) * Self::CURRENT_RESOLUTION;
-        ElectricCurrent::new::<milliampere>(f32::from(scaled_current))
+    pub fn current(&self) -> Result<ElectricCurrent, Ap33772sError> {
+        u16::from(self.raw_current())
+            .checked_mul(Self::CURRENT_RESOLUTION)
+            .ok_or(Ap33772sError::ConversionFailed)
+            .map(|scaled_current| ElectricCurrent::new::<milliampere>(f32::from(scaled_current)))
     }
     /// TODO: Look to generigy and combine into a helper function
     // TODO: Consider Better Error Handling of the different conversion failures
@@ -39,7 +41,7 @@ impl OverCurrentProtectionThreshold {
         }
         let raw_value = current.get::<milliampere>() / Self::CURRENT_RESOLUTION as f32;
 
-        if raw_value > u8::MAX as f32 {
+        if raw_value > f32::from(u8::MAX) {
             return Err(crate::Ap33772sError::ConversionFailed);
         }
 

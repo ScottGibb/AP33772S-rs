@@ -25,9 +25,11 @@ pub struct OverVoltageProtectionThreshold {
 impl OverVoltageProtectionThreshold {
     const VOLTAGE_RESOLUTION: u16 = 80; //mV
     /// Scales the raw voltage value to millivolts.
-    pub fn voltage(&self) -> ElectricPotential {
-        let scaled_voltage = self.raw_voltage() as u16 * Self::VOLTAGE_RESOLUTION;
-        ElectricPotential::new::<millivolt>(f32::from(scaled_voltage))
+    pub fn voltage(&self) -> Result<ElectricPotential, Ap33772sError> {
+        u16::from(self.raw_voltage())
+            .checked_mul(Self::VOLTAGE_RESOLUTION)
+            .ok_or(Ap33772sError::ConversionFailed)
+            .map(|scaled_voltage| ElectricPotential::new::<millivolt>(f32::from(scaled_voltage)))
     }
     // TODO: Look to generigy and combine into a helper function
     // TODO: Consider Better Error Handling of the different conversion failures

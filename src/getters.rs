@@ -162,8 +162,8 @@ impl<I2C: I2c> Ap33772s<I2C> {
             .or(Err(Ap33772sError::DataMalformed))?;
         let de_rating_threshold = self.read_one_byte_command::<DeRatingThreshold>().await?;
         Ok(Thresholds {
-            over_voltage: over_voltage_threshold.voltage(),
-            over_current: over_current_threshold.current(),
+            over_voltage: over_voltage_threshold.voltage()?,
+            over_current: over_current_threshold.current()?,
             over_temperature: over_temperature_protection_threshold.temperature(),
             under_voltage: under_voltage_threshold,
             derating: de_rating_threshold.temperature(),
