@@ -12,6 +12,7 @@ use uom::si::f32::Power;
 use uom::si::f32::ThermodynamicTemperature;
 
 #[derive(Debug, Clone, PartialEq)]
+// #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct Statistics {
     pub current: ElectricCurrent,
     pub voltage: ElectricPotential,
@@ -24,6 +25,7 @@ pub struct Statistics {
 }
 
 #[derive(Debug, Clone, PartialEq)]
+// #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct ThermalResistances {
     pub _25: ElectricalResistance,
     pub _50: ElectricalResistance,
@@ -32,7 +34,7 @@ pub struct ThermalResistances {
 }
 
 #[derive(Debug, Clone, PartialEq)]
-
+// #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct Thresholds {
     pub over_voltage: ElectricPotential,
     pub under_voltage: UnderVoltageThreshold,
@@ -79,6 +81,7 @@ impl<I2C: I2c> Ap33772s<I2C> {
         }
         Ok(())
     }
+
     #[maybe_async::maybe_async]
     pub async fn hard_reset(&mut self) -> Result<(), Ap33772sError> {
         let power_delivery_command_message = PowerDeliveryCommandMessage::builder()

@@ -1,7 +1,7 @@
 use super::hal::*;
 use crate::Ap33772sError;
-use crate::ap33772s;
 use crate::ap33772s::Ap33772s;
+use crate::ap33772s::Statistics;
 use crate::ap33772s::ThermalResistances;
 use crate::ap33772s::Thresholds;
 use crate::commands::command_map::Command;
@@ -100,13 +100,13 @@ impl<I2C: I2c> Ap33772s<I2C> {
         Ok(requested_power)
     }
     #[maybe_async::maybe_async]
-    pub async fn get_statistics(&mut self) -> Result<ap33772s::Statistics, Ap33772sError> {
+    pub async fn get_statistics(&mut self) -> Result<Statistics, Ap33772sError> {
         let current = self.get_current().await?;
         let voltage = self.get_voltage().await?;
         let temperature = self.get_temperature().await?;
         let requested_voltage = self.get_requested_voltage().await?;
         let requested_current = self.get_requested_current().await?;
-        Ok(ap33772s::Statistics {
+        Ok(Statistics {
             current,
             voltage,
             temperature,

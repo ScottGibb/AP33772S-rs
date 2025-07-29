@@ -7,14 +7,14 @@
 )]
 
 use esp_hal::i2c::master::Config;
-use esp_hal::{clock::CpuClock, i2c::master::I2c};
 use esp_hal::timer::systimer::SystemTimer;
+use esp_hal::{clock::CpuClock, i2c::master::I2c};
 
+use ap33772s_rs::ap33772s::Ap33772s;
+use defmt::error;
 use defmt::info;
-
 use embassy_executor::Spawner;
 use embassy_time::{Duration, Timer};
-
 use panic_rtt_target as _;
 
 // This creates a default app-descriptor required by the esp-idf bootloader.
@@ -36,12 +36,36 @@ async fn main(_spawner: Spawner) {
     info!("Embassy initialized!");
 
     // Create an I2C Bus for the AP33772S device
-    let i2c = I2c::new(peripherals.I2C0, Config::default()).expect("Failed to Create I2C").into_async();
+    let i2c = I2c::new(peripherals.I2C0, Config::default())
+        .expect("Failed to Create I2C")
+        .into_async();
+
+    let mut ap33772s = Ap33772s::new(i2c); // Skip the initialization check for this example
 
     loop {
-        info!("Hello world!");
-        Timer::after(Duration::from_secs(1)).await;
-    }
+        info!("Checking if AP33772S is present...");
+        match ap33772s.is_device_present().await {
+            Ok(_) => {
+                info!("AP33772S is present!");
 
+                // Read the Status Register
+                match ap33772s.get_status().await {
+                    Ok(status) => info!("Status: {:?}", status),
+                    Err(e) => error!("Failed to read status: {:?}", e),
+                }
+
+                // Read the State of the Device
+                match ap33772s.get_statistics().await {
+                    Ok(stats) => info!("State: {:?}", stats),
+                    Err(e) => error!("Failed to read statistics: {:?}", e),
+                }
+
+                Timer::after(Duration::from_secs(1)).await;
+            }
+            Err(e) => {
+                info!("AP33772S is not present: {:?}", e);
+            }
+        }
+    }
     // for inspiration have a look at the examples at https://github.com/esp-rs/esp-hal/tree/esp-hal-v1.0.0-rc.0/examples/src/bin
 }
