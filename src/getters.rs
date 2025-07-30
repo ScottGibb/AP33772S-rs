@@ -85,12 +85,12 @@ impl<I2C: I2c> Ap33772s<I2C> {
     #[maybe_async::maybe_async]
     pub async fn get_requested_voltage(&mut self) -> Result<ElectricPotential, Ap33772sError> {
         let requested_voltage = self.read_two_byte_command::<VoltageRequested>().await?;
-        Ok(requested_voltage.voltage())
+        requested_voltage.voltage()
     }
     #[maybe_async::maybe_async]
     pub async fn get_requested_current(&mut self) -> Result<ElectricCurrent, Ap33772sError> {
         let requested_current = self.read_two_byte_command::<CurrentRequested>().await?;
-        Ok(requested_current.current())
+        requested_current.current()
     }
     #[maybe_async::maybe_async]
     pub async fn get_requested_power(&mut self) -> Result<uom::si::f32::Power, Ap33772sError> {

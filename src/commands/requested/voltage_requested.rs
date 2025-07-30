@@ -1,5 +1,5 @@
 use super::command_map::Command;
-use crate::impl_two_byte_read_command;
+use crate::{Ap33772sError, impl_two_byte_read_command};
 use bitbybit::bitfield;
 use uom::si::electric_potential::millivolt;
 use uom::si::f32::ElectricPotential;
@@ -33,9 +33,14 @@ impl VoltageRequested {
     pub const VOLTAGE_RESOLUTION: u16 = 50; //mV
     /// Returns the voltage value in millivolts.
     ///
-    pub fn voltage(&self) -> ElectricPotential {
-        let scaled_voltage = self.raw_voltage() * Self::VOLTAGE_RESOLUTION;
-        ElectricPotential::new::<millivolt>(f32::from(scaled_voltage))
+    pub fn voltage(&self) -> Result<ElectricPotential, Ap33772sError> {
+        let scaled_voltage = self
+            .raw_voltage()
+            .checked_mul(Self::VOLTAGE_RESOLUTION)
+            .ok_or(Ap33772sError::ConversionFailed)?;
+        Ok(ElectricPotential::new::<millivolt>(f32::from(
+            scaled_voltage,
+        )))
     }
 }
 impl_two_byte_read_command!(VoltageRequested, Command::VoltageRequested);
