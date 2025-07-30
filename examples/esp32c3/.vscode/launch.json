@@ -23,7 +23,7 @@
                     "rttChannelFormats": [
                         {
                             "channelNumber": 0,
-                            "dataFormat": "Defmt",
+                            "dataFormat": "Defmt"
                         }
                     ],
                 }
