@@ -26,7 +26,7 @@ pub struct ThermalResistance100 {
     raw_thermal_resistance: u16,
 }
 impl ThermalResistance100 {
-    /// Returns the thermal resistance value in ohms at 25 degrees Celsius.
+    /// Returns the thermal resistance value in ohms at 100 degrees Celsius.
     pub fn thermal_resistance(&self) -> ElectricalResistance {
         ElectricalResistance::new::<ohm>(f32::from(self.raw_thermal_resistance()))
     }
