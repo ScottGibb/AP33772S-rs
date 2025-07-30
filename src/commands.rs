@@ -13,4 +13,3 @@ pub mod thermal_resistances;
 pub mod thresholds;
 
 pub mod macros;
-
