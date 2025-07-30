@@ -4,7 +4,7 @@ use bitbybit::bitfield;
 use uom::si::electrical_resistance::ohm;
 use uom::si::f32::ElectricalResistance;
 
-/// This command is used to read and write the thermal resistance value at 50 degrees Celsius.
+/// This command is used to read and write the thermal resistance value at 100 degrees Celsius.
 /// It is represented as a 16-bit unsigned integer in ohms (Ω). The default value is set to 0x03CE,
 /// which corresponds to 974 Ω. As for the AP33772S Sink Controller Evaluation Board, a negative temperature
 /// coefficient (NTC) thermistor is used. It is stated that
