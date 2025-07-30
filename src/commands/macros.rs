@@ -30,7 +30,7 @@ macro_rules! impl_one_byte_read_command {
 #[macro_export]
 macro_rules! impl_two_byte_write_command {
     ($type:ty, $address:expr) => {
-        impl $crate::commands::traits::WriteTwoByteCommand for $type {
+        impl $crate::communications::traits::WriteTwoByteCommand for $type {
             fn raw_value(&self) -> u16 {
                 self.raw_value()
             }
@@ -44,7 +44,7 @@ macro_rules! impl_two_byte_write_command {
 #[macro_export]
 macro_rules! impl_two_byte_read_command {
     ($type:ty, $address:expr) => {
-        impl $crate::commands::traits::ReadTwoByteCommand for $type {
+        impl $crate::communications::traits::ReadTwoByteCommand for $type {
             fn new_with_raw_value(raw_value: u16) -> Self {
                 Self::new_with_raw_value(raw_value)
             }
