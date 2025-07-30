@@ -1,8 +1,7 @@
-use ap33772s::Ap33772s;
-use ap33772s_rs::ap33772s::Ap33772s;
 /// This is a simple example for the Raspberry Pi using the AP33772S driver.
 /// It sets up the I2C communication and sends a power delivery request to the AP33772S device.
 /// The example is designed to run on a Raspberry Pi with the AP33772S
+use ap33772s_rs::ap33772s::Ap33772s;
 use rppal::i2c::I2c;
 fn main() {
     let i2c = I2c::new().expect("Failed to set up I2C");
