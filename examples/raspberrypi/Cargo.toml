@@ -1,0 +1,10 @@
+[package]
+name = "raspberrypi"
+description = "Example for the Raspberry Pi using the AP33772S driver"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+ap33772s-rs = { path = "../../", default-features = false, features = ["sync"] }
+rppal = { version = "0.22.1", features = ["hal"] }
+[workspace]

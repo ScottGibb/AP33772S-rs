@@ -8,6 +8,11 @@ Within this directory are a set of examples for different platforms the goal bei
 
 The AP33772S Breakout board that is being used is from [CentyLab](https://github.com/CentyLab) and can be found on their on line [shop](https://hackaday.io/project/201953-rotopd-usb-c-pd-31-breakout-i2c).
 
+Other examples can be found here:
+
+- [ESP32C3](./esp32c3/)
+- [Raspberry Pi](./raspberrypi/README.md)
+
 ### FT232H Setup
 
 In order to use the FT232H breakout Board with rust you must do the following setup:
