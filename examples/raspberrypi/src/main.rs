@@ -5,7 +5,7 @@ use ap33772s_rs::ap33772s::Ap33772s;
 /// The example is designed to run on a Raspberry Pi with the AP33772S
 use rppal::i2c::I2c;
 fn main() {
-    let i2c = i2c::new().expect("Failed to set up I2C");
+    let i2c = I2c::new().expect("Failed to set up I2C");
     let mut ap33772s = Ap33772s::new_default(i2c).expect("Failed to create AP33772S instance");
 
     let status = ap33772s.get_status().expect("Failed to get status");
