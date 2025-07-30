@@ -6,8 +6,8 @@ use uom::si::f32::ElectricalResistance;
 
 /// This command is used to read and write the thermal resistance value at 25 degrees Celsius.
 /// It is represented as a 16-bit unsigned integer in ohms (Ω). The default value is set to 0x2710,
-/// which corresponds to 10 kΩ. As for the AP33772S Sink Controller Evaulation Board, a neagtive temperature
-/// coefficient (NTC) thermistor is used. It Is Stated that
+/// which corresponds to 10 kΩ. As for the AP33772S Sink Controller Evaluation Board, a negative temperature
+/// coefficient (NTC) thermistor is used. It is stated that
 ///
 /// "A 10kΩ NTC (negative temperature coefficient) thermistor is connected to the OTP pin and grounded nearby
 /// the potential hot spot. The characteristic data of the NTC thermistor’s temperature and resistance values
