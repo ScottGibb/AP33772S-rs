@@ -38,6 +38,8 @@ async fn main(_spawner: Spawner) {
     // Create an I2C Bus for the AP33772S device
     let i2c = I2c::new(peripherals.I2C0, Config::default())
         .expect("Failed to Create I2C")
+        .with_scl(peripherals.GPIO8)
+        .with_sda(peripherals.GPIO9)
         .into_async();
 
     let mut ap33772s = Ap33772s::new(i2c); // Skip the initialization check for this example
@@ -50,13 +52,17 @@ async fn main(_spawner: Spawner) {
 
                 // Read the Status Register
                 match ap33772s.get_status().await {
-                    Ok(status) => info!("Status: {:?}", status),
+                    Ok(status) =>
+                        /*info!("Status: {:?}", status)*/
+                        {}
                     Err(e) => error!("Failed to read status: {:?}", e),
                 }
 
                 // Read the State of the Device
                 match ap33772s.get_statistics().await {
-                    Ok(stats) => info!("State: {:?}", stats),
+                    Ok(stats) =>
+                        /*info!("State: {:?}", stats) */
+                        {}
                     Err(e) => error!("Failed to read statistics: {:?}", e),
                 }
 
@@ -64,6 +70,7 @@ async fn main(_spawner: Spawner) {
             }
             Err(e) => {
                 info!("AP33772S is not present: {:?}", e);
+                Timer::after(Duration::from_secs(2)).await;
             }
         }
     }
