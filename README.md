@@ -13,6 +13,8 @@ This crate is still under heavy development and thus can and will change. Plans 
 
 This is a no-std rust crate for the AP33772S USB C Power Delivery chip by Diodes Incorporated. It attempts to be a fully featured driver offering low level register access through the `advanced` feature flag. However high level APIs with getters and setters can also be used and are encouraged to do so. The driver is cross platform thanks to the great work from the embedded-hal crate.  Async rust can also be utilised, thus supporting both async and sync modes of operation.
 
+It is also advised to have a glance through the [Understanding the USB C PD Specification](./docs/understanding-the-usb-c-pd-specification.md) Notes provided. As this will hoepfully provide further insight into how to use this chip and the driver provided.
+
 ### Features
 
 - no-std compliant
