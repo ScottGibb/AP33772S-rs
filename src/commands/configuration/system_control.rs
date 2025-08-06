@@ -46,7 +46,6 @@ pub struct SystemControl {
 #[bitenum(u2, exhaustive = false)]
 #[derive(Debug, PartialEq, Default)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
-#[repr(u8)]
 pub enum CommandVersion {
     #[default]
     V1_0 = 0,
@@ -60,8 +59,8 @@ pub enum CommandVersion {
 ///
 /// Datasheet Name: VOUTCTL
 #[bitenum(u2, exhaustive = false)]
-#[derive(Debug, PartialEq, Default, TryFromPrimitive, IntoPrimitive)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
+#[derive(Debug, PartialEq, Default, TryFromPrimitive, IntoPrimitive)]
 #[repr(u8)]
 pub enum VoltageOutputControl {
     #[default]

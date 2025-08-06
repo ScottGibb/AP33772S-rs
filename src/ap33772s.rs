@@ -75,7 +75,7 @@ impl<I2C: I2c> Ap33772s<I2C> {
         let system_control = self.read_one_byte_command::<SystemControl>().await?;
         let command_version = system_control
             .command_version()
-            .map_err(|_| Ap33772sError::DeviceNotFound)?;
+            .map_err(|raw_command_version| Ap33772sError::DeviceNotFound(raw_command_version))?;
         if command_version != CommandVersion::V1_0 {
             return Err(Ap33772sError::WrongCommandVersion);
         }
