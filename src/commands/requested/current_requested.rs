@@ -29,8 +29,18 @@ pub struct CurrentRequested {
     raw_current: u16,
 }
 
+/// Full Resolution Required is: 5000mA based on the datasheet with CURRENT_SEL being 5.00A
+/// 16 Bit Unsigned Integer is 0 - 65535
+/// 10mA Resolution means:
+/// - 0 = 0mA
+/// - 1 = 10mA
+/// - 2 = 20mA
+/// - ...
+/// - 500 = 5000mA
+///  This means the multiplication should never surpass u16 and thus should be a checked multiplication
 impl CurrentRequested {
     pub const CURRENT_RESOLUTION: u16 = 10; // mA
+
     /// Returns the current value in milliamperes.
     pub fn current(&self) -> Result<ElectricCurrent, Ap33772sError> {
         let scaled_current = self

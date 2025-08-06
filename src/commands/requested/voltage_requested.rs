@@ -29,10 +29,19 @@ pub struct VoltageRequested {
     raw_voltage: u16,
 }
 
+// Maximum Voltage of 30V (30000 mV) with 50mV resolution
+// U16 can hold values up to 65535
+// 0 = 0mV
+// 1 = 50mV
+// 2 = 100mV
+// ...
+// 600 = 30000mV (30V)
+// This means the maximum raw value is 600
+// 600 * 50 = 30000mV
+// Therefore the voltage should be checked multiplied
 impl VoltageRequested {
     pub const VOLTAGE_RESOLUTION: u16 = 50; //mV
     /// Returns the voltage value in millivolts.
-    ///
     pub fn voltage(&self) -> Result<ElectricPotential, Ap33772sError> {
         let scaled_voltage = self
             .raw_voltage()

@@ -19,11 +19,21 @@ pub struct Current {
     raw_current: u8,
 }
 
+/// Full Resolution Required is: 5000mA based on the datasheet with CURRENT_SEL being 5.00A
+/// 8 Bit Unsigned Integer is 0 - 255
+/// 24mA Resolution means:
+/// - 0 = 0mA
+/// - 1 = 24mA
+/// - 2 = 48mA
+/// - ...
+/// - 208 = 4992mA
+/// - 209 = 5016mA
+///  This means the multiplication should never surpass u8 and thus should be a checked multiplication
 impl Current {
-    pub const CURRENT_RESOLUTION: u16 = 24; // mA
+    pub const CURRENT_RESOLUTION: u8 = 24; // mA
     /// Returns the current value in milliamperes.
     pub fn current(&self) -> Result<ElectricCurrent, Ap33772sError> {
-        u16::from(self.raw_current())
+        self.raw_current()
             .checked_mul(Self::CURRENT_RESOLUTION)
             .ok_or(Ap33772sError::ConversionFailed)
             .map(|scaled_current| ElectricCurrent::new::<milliampere>(f32::from(scaled_current)))

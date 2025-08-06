@@ -19,6 +19,16 @@ pub struct Voltage {
     raw_voltage: u16,
 }
 
+// Maximum Voltage of 30000 mV (30V) with 80mV resolution
+// U16 can hold values up to 65535
+// 0 = 0mV
+// 1 = 80mV
+// 2 = 160mV
+// ...
+// 375 = 30000mV (30V)
+// This means the maximum raw value is 375
+// 375 * 80 = 30000mV
+// Therefore the voltage should be checked multiplied
 impl Voltage {
     pub const VOLTAGE_RESOLUTION: u16 = 80; //mV
     /// Returns the voltage value in millivolts.
