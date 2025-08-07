@@ -3,7 +3,10 @@ use utils::setup_i2c;
 
 fn main() {
     let i2c = setup_i2c().expect("Failed to set up I2C");
-    let mut ap33772s = Ap33772s::new_default(i2c).unwrap();
+    let mut ap33772s = match Ap33772s::new_default(i2c) {
+        Ok(device) => device,
+        Err(e) => panic!("Failed to create AP33772S device: {e}"),
+    };
 
     // Read The Status Register
     let status = ap33772s.get_status().expect("Failed to get status");
