@@ -47,7 +47,6 @@ mod hal {
     pub use embedded_hal_async::i2c::SevenBitAddress;
 }
 #[derive(PartialEq, Clone, Debug)]
-#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[non_exhaustive]
 pub enum Ap33772sError {
     InvalidCommand,
