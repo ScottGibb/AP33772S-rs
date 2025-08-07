@@ -7,6 +7,7 @@
 )]
 
 use esp_hal::i2c::master::Config;
+use esp_hal::time::Rate;
 use esp_hal::timer::systimer::SystemTimer;
 use esp_hal::{clock::CpuClock, i2c::master::I2c};
 
@@ -36,7 +37,7 @@ async fn main(_spawner: Spawner) {
     info!("Embassy initialized!");
 
     // Create an I2C Bus for the AP33772S device
-    let i2c = I2c::new(peripherals.I2C0, Config::default())
+    let i2c = I2c::new(peripherals.I2C0, Config::default().with_frequency(Rate::from_hz(100_000)))
         .expect("Failed to Create I2C")
         .with_scl(peripherals.GPIO8)
         .with_sda(peripherals.GPIO9)
