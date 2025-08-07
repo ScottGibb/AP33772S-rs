@@ -48,7 +48,7 @@ pub struct SystemControl {
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum CommandVersion {
     #[default]
-    V1_0 = 0,
+    V1_0 = 1,
 }
 
 /// The AP33772S supports four VOUT Control modes.
