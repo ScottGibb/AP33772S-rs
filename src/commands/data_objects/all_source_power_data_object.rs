@@ -15,26 +15,38 @@ pub struct AllSourceDataPowerDataObject {
     pub extended_power: [ExtendedPowerRangeDataObject; MAX_EXTENDED_POWER_DATA_OBJECTS],
 }
 
-// TODO: Figure out why this Display Implementation isnt working with Display
 impl core::fmt::Display for AllSourceDataPowerDataObject {
     fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-        write!(
-            f,
-            "AllSourceDataPowerDataObject {{\n source_power: {:#?}, \n extended_power: {:#?} \n}}",
-            self.source_power, self.extended_power
-        )
+        writeln!(f, "AllSourceDataPowerDataObject {{")?;
+        writeln!(f, "  source_power: [")?;
+        for (i, power_obj) in self.source_power.iter().enumerate() {
+            writeln!(f, "    [{}]: {}", i, power_obj)?;
+        }
+        writeln!(f, "  ]")?;
+        writeln!(f, "  extended_power: [")?;
+        for (i, power_obj) in self.extended_power.iter().enumerate() {
+            writeln!(f, "    [{}]: {}", i, power_obj)?;
+        }
+        writeln!(f, "  ]")?;
+        write!(f, "}}")
     }
 }
 
 #[cfg(feature = "defmt")]
 impl defmt::Format for AllSourceDataPowerDataObject {
     fn format(&self, f: defmt::Formatter) {
-        defmt::write!(
-            f,
-            "AllSourceDataPowerDataObject {{\n source_power: {:#?}, \n extended_power: {:#?} \n}}",
-            self.source_power,
-            self.extended_power
-        );
+        defmt::write!(f, "AllSourceDataPowerDataObject {{\n");
+        defmt::write!(f, "  source_power: [\n");
+        for i in 0..MAX_SOURCE_POWER_DATA_OBJECTS {
+            defmt::write!(f, "    [{}]: {}\n", i, self.source_power[i]);
+        }
+        defmt::write!(f, "  ]\n");
+        defmt::write!(f, "  extended_power: [\n");
+        for i in 0..MAX_EXTENDED_POWER_DATA_OBJECTS {
+            defmt::write!(f, "    [{}]: {}\n", i, self.extended_power[i]);
+        }
+        defmt::write!(f, "  ]\n");
+        defmt::write!(f, "}}");
     }
 }
 
