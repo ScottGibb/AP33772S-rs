@@ -1,9 +1,6 @@
 use super::hal::*;
 use crate::Ap33772sError;
 use crate::ap33772s::Ap33772s;
-use crate::ap33772s::Statistics;
-use crate::ap33772s::ThermalResistances;
-use crate::ap33772s::Thresholds;
 use crate::commands::command_map::Command;
 use crate::commands::configuration::status::Status;
 use crate::commands::configuration::system_control::SystemControl;
@@ -24,6 +21,9 @@ use crate::commands::thresholds::over_current_protection_threshold::OverCurrentP
 use crate::commands::thresholds::over_temperature_protection_threshold;
 use crate::commands::thresholds::over_voltage_protection_threshold::OverVoltageProtectionThreshold;
 use crate::commands::thresholds::under_voltage_protection_threshold::UnderVoltageProtectionThreshold;
+use crate::types::Statistics;
+use crate::types::ThermalResistances;
+use crate::types::Thresholds;
 
 use crate::commands::requested::current_requested::CurrentRequested;
 use crate::commands::requested::voltage_requested::VoltageRequested;

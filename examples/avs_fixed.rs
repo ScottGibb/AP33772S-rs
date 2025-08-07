@@ -1,9 +1,9 @@
+use ap33772s_rs::types::units::*;
 use ap33772s_rs::{
-    ap33772s::{Ap33772s, CurrentSelection, PowerDataObject},
+    ap33772s::Ap33772s,
     setters::VoltageOutputControl,
+    types::{CurrentSelection, PowerDataObject},
 };
-use uom::si::{electric_potential::millivolt, f32::ElectricPotential};
-
 // This another example inspired by the Centy Labs example for the AP33772S.
 // [Centy Labs Example](https://github.com/CentyLab/AP33772S-CentyLab/blob/main/examples/AVSfixed/AVSfixed.ino)
 fn main() {

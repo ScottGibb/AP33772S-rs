@@ -16,6 +16,7 @@ compile_error!("You must enable either the sync or async feature. Please choose 
 pub mod ap33772s;
 pub mod getters;
 pub mod setters;
+pub mod types;
 
 #[cfg_attr(docsrs, doc(cfg(feature = "advanced")))]
 #[cfg(feature = "advanced")]

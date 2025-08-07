@@ -20,12 +20,12 @@ impl core::fmt::Display for AllSourceDataPowerDataObject {
         writeln!(f, "AllSourceDataPowerDataObject {{")?;
         writeln!(f, "  source_power: [")?;
         for (i, power_obj) in self.source_power.iter().enumerate() {
-            writeln!(f, "    [{}]: {}", i, power_obj)?;
+            writeln!(f, "    [{i}]: {power_obj}")?;
         }
         writeln!(f, "  ]")?;
         writeln!(f, "  extended_power: [")?;
         for (i, power_obj) in self.extended_power.iter().enumerate() {
-            writeln!(f, "    [{}]: {}", i, power_obj)?;
+            writeln!(f, "    [{i}]: {power_obj}")?;
         }
         writeln!(f, "  ]")?;
         write!(f, "}}")

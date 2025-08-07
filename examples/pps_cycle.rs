@@ -1,9 +1,6 @@
-use ap33772s_rs::{
-    ap33772s::{Ap33772s, CurrentSelection, PowerDataObject},
-    setters::VoltageOutputControl,
-};
-use uom::si::{electric_potential::millivolt, f32::ElectricPotential};
-
+use ap33772s_rs::types::units::*;
+use ap33772s_rs::types::{CurrentSelection, PowerDataObject};
+use ap33772s_rs::{ap33772s::Ap33772s, setters::VoltageOutputControl};
 // This example shows how to cycle through the Adjustable Voltage Supply (AVS).
 // It is inspired by the Centy Labs example for the AP33772S.
 // [Centy Labs Example](https://github.com/CentyLab/AP33772S-CentyLab/blob/main/examples/PPScycle/PPScycle.ino)
