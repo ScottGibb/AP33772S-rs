@@ -12,6 +12,12 @@ use crate::commands::data_objects::extended_power_range_data_object::ExtendedPow
 use crate::commands::data_objects::source_power_data_object::SourcePowerDataObject;
 use crate::commands::power_delivery::power_delivery_message_result::PowerDeliveryMessageResult;
 use crate::commands::power_delivery::power_delivery_message_result::PowerDeliveryResponse;
+use crate::commands::requested::current_requested::CurrentRequested;
+use crate::commands::requested::voltage_requested::VoltageRequested;
+use crate::commands::statistics::current::Current;
+use crate::commands::statistics::minimum_selection_voltage::MinimumSelectionVoltage;
+use crate::commands::statistics::temperature::Temperature;
+use crate::commands::statistics::voltage::Voltage;
 use crate::commands::thermal_resistances::thermal_resistance_25::ThermalResistance25;
 use crate::commands::thermal_resistances::thermal_resistance_50::ThermalResistance50;
 use crate::commands::thermal_resistances::thermal_resistance_75::ThermalResistance75;
@@ -24,17 +30,7 @@ use crate::commands::thresholds::under_voltage_protection_threshold::UnderVoltag
 use crate::types::Statistics;
 use crate::types::ThermalResistances;
 use crate::types::Thresholds;
-
-use crate::commands::requested::current_requested::CurrentRequested;
-use crate::commands::requested::voltage_requested::VoltageRequested;
-use crate::commands::statistics::current::Current;
-use crate::commands::statistics::minimum_selection_voltage::MinimumSelectionVoltage;
-use crate::commands::statistics::temperature::Temperature;
-use crate::commands::statistics::voltage::Voltage;
-
-use uom::si::f32::ElectricCurrent;
-use uom::si::f32::ElectricPotential;
-use uom::si::f32::ThermodynamicTemperature;
+use crate::types::units::*;
 
 impl<I2C: I2c> Ap33772s<I2C> {
     #[maybe_async::maybe_async]
@@ -76,7 +72,7 @@ impl<I2C: I2c> Ap33772s<I2C> {
     }
 
     #[maybe_async::maybe_async]
-    pub async fn get_power(&mut self) -> Result<uom::si::f32::Power, Ap33772sError> {
+    pub async fn get_power(&mut self) -> Result<Power, Ap33772sError> {
         let current = self.get_current().await?;
         let voltage = self.get_voltage().await?;
         let power = current * voltage;
@@ -93,7 +89,7 @@ impl<I2C: I2c> Ap33772s<I2C> {
         requested_current.current()
     }
     #[maybe_async::maybe_async]
-    pub async fn get_requested_power(&mut self) -> Result<uom::si::f32::Power, Ap33772sError> {
+    pub async fn get_requested_power(&mut self) -> Result<Power, Ap33772sError> {
         let requested_voltage = self.get_requested_voltage().await?;
         let requested_current = self.get_requested_current().await?;
         let requested_power = requested_voltage * requested_current;
