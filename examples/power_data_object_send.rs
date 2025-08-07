@@ -10,13 +10,13 @@ fn main() {
 
     // Read The Status Register
     let status = ap33772s.get_status().expect("Failed to get status");
-    println!("Status: {status:?}");
+    println!("Status: {status}");
 
     // Get the Power Source Delivery Capabilities
     let power_delivery_capabilities = ap33772s
         .get_all_source_power_capabilities()
         .expect("Failed to get Power Source Delivery Capabilities");
-    println!("Capabilities: {power_delivery_capabilities:?}");
+    println!("Capabilities: {power_delivery_capabilities}");
 
     // Select the Power Data Object Index
     println!("Enter Power Object Index (1-13):");
@@ -31,7 +31,7 @@ fn main() {
     }
     let power_data_object_index = PowerDataObject::try_from(power_data_object_index - 1)
         .expect("The Power Data Object Index must be between 1 and 13");
-    println!(" Power Data Object Index: {power_data_object_index:?}");
+    println!(" Power Data Object Index: {power_data_object_index}");
 
     // Check of the Power Data Object Index is not a fixed type //TODO: Replace this
     let fixed = if power_data_object_index >= PowerDataObject::ExtendedPowerRange9 {
@@ -68,7 +68,7 @@ fn main() {
     let current_selection = CurrentSelection::try_from(current_selection)
         .expect("Invalid Current Selection, must be between 0 and 7");
 
-    println!("Current Selected: {current_selection:?}");
+    println!("Current Selected: {current_selection}");
 
     // Request the Power Delivery
     ap33772s
@@ -85,5 +85,5 @@ fn main() {
         .get_statistics()
         .expect("Failed to get Current Statistics");
 
-    println!("Current Statistics: {current_statistics:?}");
+    println!("Current Statistics: {current_statistics}");
 }

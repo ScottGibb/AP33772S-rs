@@ -7,13 +7,13 @@ fn main() {
 
     // Read The Status Register
     let status = ap33772s.get_status().expect("Failed to get status");
-    println!("Status: {status:?}");
+    println!("Status: {status}");
 
     // Get the Power Source Delivery Capabilities
     let power_delivery_capabilities = ap33772s
         .get_all_source_power_capabilities()
         .expect("Failed to get Power Source Delivery Capabilities");
-    println!("Capabilities: {power_delivery_capabilities:?}");
+    println!("Capabilities: {power_delivery_capabilities}");
 
     // Switch Between PDO Indexexes 1 and 2
     println!("Switching to Power Data Object Index 1 with 5A or more current selection...");
@@ -30,10 +30,10 @@ fn main() {
         .expect("Failed to send power delivery request");
 
     println!(
-        "Switched to Power Data Object Index {index:?} with current selection {current_selection:?}"
+        "Switched to Power Data Object Index {index} with current selection {current_selection}"
     );
     let stats = ap33772s.get_statistics().expect("Failed to get statistics");
-    println!("Statistics: {stats:?}");
+    println!("Statistics: {stats}");
     println!("Switching to Power Data Object Index 2 with 3A current selection...");
     let index = PowerDataObject::StandardPowerRange2;
     let current_selection = CurrentSelection::_3A;
@@ -47,8 +47,8 @@ fn main() {
         )
         .expect("Failed to send power delivery request");
     println!(
-        "Switched to Power Data Object Index {index:?} with current selection {current_selection:?}"
+        "Switched to Power Data Object Index {index} with current selection {current_selection}"
     );
     let stats = ap33772s.get_statistics().expect("Failed to get statistics");
-    println!("Statistics: {stats:?}");
+    println!("Statistics: {stats}");
 }

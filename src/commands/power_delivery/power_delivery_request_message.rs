@@ -1,7 +1,6 @@
 use super::command_map::Command;
 use crate::impl_two_byte_write_command;
 use bitbybit::{bitenum, bitfield};
-use core::fmt::{self};
 use num_enum::{IntoPrimitive, TryFromPrimitive};
 
 #[bitfield(u16, default = 0x0000)]
@@ -34,6 +33,27 @@ pub enum PowerDataObject {
     ExtendedPowerRange11 = 0x0A,
     ExtendedPowerRange12 = 0x0B,
     ExtendedPowerRange13 = 0x0C,
+}
+
+impl core::fmt::Display for PowerDataObject {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        let s = match self {
+            PowerDataObject::StandardPowerRange1 => "Standard Power Range 1",
+            PowerDataObject::StandardPowerRange2 => "Standard Power Range 2",
+            PowerDataObject::StandardPowerRange3 => "Standard Power Range 3",
+            PowerDataObject::StandardPowerRange4 => "Standard Power Range 4",
+            PowerDataObject::StandardPowerRange5 => "Standard Power Range 5",
+            PowerDataObject::StandardPowerRange6 => "Standard Power Range 6",
+            PowerDataObject::StandardPowerRange7 => "Standard Power Range 7",
+            PowerDataObject::ExtendedPowerRange8 => "Extended Power Range 8",
+            PowerDataObject::ExtendedPowerRange9 => "Extended Power Range 9",
+            PowerDataObject::ExtendedPowerRange10 => "Extended Power Range 10",
+            PowerDataObject::ExtendedPowerRange11 => "Extended Power Range 11",
+            PowerDataObject::ExtendedPowerRange12 => "Extended Power Range 12",
+            PowerDataObject::ExtendedPowerRange13 => "Extended Power Range 13",
+        };
+        write!(f, "{s}")
+    }
 }
 
 #[derive(Debug, PartialEq, PartialOrd, TryFromPrimitive, IntoPrimitive)]
@@ -76,8 +96,8 @@ pub const CURRENT_SELECTIONS: [CurrentSelection; 16] = [
     CurrentSelection::_4_5A,
     CurrentSelection::_5AOrMore,
 ];
-impl fmt::Display for CurrentSelection {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+impl core::fmt::Display for CurrentSelection {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         use CurrentSelection::*;
         let s = match self {
             _1A => "1A",
