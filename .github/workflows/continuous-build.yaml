@@ -47,6 +47,8 @@ jobs:
         run: cargo build --no-default-features --features async
       - name: Build with advanced feature
         run: cargo build --no-default-features --features "async advanced"
+      - name: Build with defmt feature
+        run: cargo build --no-default-features --features "async defmt"
 
   build-os-examples:
     name: Build OS Sync Vendor Inspired examples
