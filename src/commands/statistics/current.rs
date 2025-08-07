@@ -28,6 +28,7 @@ pub struct Current {
 /// - ...
 /// - 208 = 4992mA
 /// - 209 * 24 = 5016mA this requires U16
+///
 /// This means the multiplication should never surpass u16 and thus should be a checked multiplication
 impl Current {
     pub const CURRENT_RESOLUTION: u16 = 24; // mA
