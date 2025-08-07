@@ -3,7 +3,6 @@ use bitbybit::{bitenum, bitfield};
 
 #[bitfield(u16, default = 0x00)]
 #[derive(Debug, PartialEq)]
-#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct SourcePowerDataObject {
     #[bits(0..=7, r)]
     pub max_voltage: u8,
@@ -57,4 +56,33 @@ pub enum SourcePowerCurrent {
     _4_25To4_49 = 13,
     _4_50To4_99 = 14,
     MoreThan5 = 15,
+}
+
+impl core::fmt::Display for SourcePowerDataObject {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        write!(
+            f,
+            "SourcePowerDataObject {{ max_voltage: {}, minimum_voltage: {:?}, max_current: {:?}, source_power_type: {:?}, is_detected: {} }}",
+            self.max_voltage(),
+            self.minimum_voltage(),
+            self.max_current(),
+            self.source_power_type(),
+            self.is_detected()
+        )
+    }
+}
+
+#[cfg(feature = "defmt")]
+impl defmt::Format for SourcePowerDataObject {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(
+            f,
+            "SourcePowerDataObject {{ max_voltage: {}, minimum_voltage: {:?}, max_current: {:?}, source_power_type: {:?}, is_detected: {} }}",
+            self.max_voltage(),
+            self.minimum_voltage(),
+            self.max_current(),
+            self.source_power_type(),
+            self.is_detected()
+        )
+    }
 }

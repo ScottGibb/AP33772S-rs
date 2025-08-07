@@ -15,6 +15,29 @@ pub struct AllSourceDataPowerDataObject {
     pub extended_power: [ExtendedPowerRangeDataObject; MAX_EXTENDED_POWER_DATA_OBJECTS],
 }
 
+// TODO: Figure out why this Display Implementation isnt working with Display
+impl core::fmt::Display for AllSourceDataPowerDataObject {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        write!(
+            f,
+            "AllSourceDataPowerDataObject {{\n source_power: {:#?}, \n extended_power: {:#?} \n}}",
+            self.source_power, self.extended_power
+        )
+    }
+}
+
+#[cfg(feature = "defmt")]
+impl defmt::Format for AllSourceDataPowerDataObject {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(
+            f,
+            "AllSourceDataPowerDataObject {{\n source_power: {:#?}, \n extended_power: {:#?} \n}}",
+            self.source_power,
+            self.extended_power
+        );
+    }
+}
+
 impl Default for AllSourceDataPowerDataObject {
     fn default() -> Self {
         AllSourceDataPowerDataObject {

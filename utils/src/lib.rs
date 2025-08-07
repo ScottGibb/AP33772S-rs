@@ -4,7 +4,7 @@ use ftdi::Device;
 use ftdi_embedded_hal::{self as hal, I2c};
 use std::error::Error;
 pub fn setup_i2c() -> Result<I2c<Device>, Box<dyn Error>> {
-    const BAUDRATE: u32 = 10_000;
+    const BAUDRATE: u32 = 1_000;
     // Change these for your device
     const DEVICE_VID: u16 = 0x0403;
     const DEVICE_PID: u16 = 0x6014;

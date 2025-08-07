@@ -4,7 +4,6 @@ use bitbybit::bitfield;
 
 #[bitfield(u16, default = 0x00)]
 #[derive(Debug, PartialEq)]
-#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct ExtendedPowerRangeDataObject {
     #[bits(0..=7, r)]
     pub max_voltage: u8,
@@ -17,4 +16,33 @@ pub struct ExtendedPowerRangeDataObject {
     pub source_power_type: PowerType,
     #[bit(15, r)]
     pub is_detected: bool,
+}
+
+impl core::fmt::Display for ExtendedPowerRangeDataObject {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        write!(
+            f,
+            "ExtendedPowerRangeDataObject {{ max_voltage: {}, minimum_voltage: {:?}, max_current: {:?}, source_power_type: {:?}, is_detected: {} }}",
+            self.max_voltage(),
+            self.minimum_voltage(),
+            self.max_current(),
+            self.source_power_type(),
+            self.is_detected()
+        )
+    }
+}
+
+#[cfg(feature = "defmt")]
+impl defmt::Format for ExtendedPowerRangeDataObject {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(
+            f,
+            "ExtendedPowerRangeDataObject {{ max_voltage: {}, minimum_voltage: {:?}, max_current: {:?}, source_power_type: {:?}, is_detected: {} }}",
+            self.max_voltage(),
+            self.minimum_voltage(),
+            self.max_current(),
+            self.source_power_type(),
+            self.is_detected()
+        )
+    }
 }
