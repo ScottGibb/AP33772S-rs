@@ -10,7 +10,6 @@ use num_enum::{IntoPrimitive, TryFromPrimitive};
 /// Datasheet Name: SYSTEM
 #[bitfield(u8, default = 0x10)]
 #[derive(Debug, PartialEq)]
-#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct SystemControl {
     /// VOUT Control Switch
     /// See [VOutControl](crate::commands::configuration::system_control::VoltageOutputControl) for more details.
@@ -70,3 +69,26 @@ pub enum VoltageOutputControl {
 }
 impl_one_byte_read_command!(SystemControl, Command::SystemControl);
 impl_one_byte_write_command!(SystemControl, Command::SystemControl);
+
+impl core::fmt::Display for SystemControl {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        write!(
+            f,
+            "SystemControl {{\n v_out_control: {:?}, command_version: {:?}\n }}",
+            self.v_out_control(),
+            self.command_version()
+        )
+    }
+}
+
+#[cfg(feature = "defmt")]
+impl defmt::Format for SystemControl {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(
+            f,
+            "SystemControl {{\n v_out_control: {:?}, command_version: {:?}\n }}",
+            self.v_out_control(),
+            self.command_version()
+        );
+    }
+}

@@ -8,7 +8,6 @@ use bitbybit::bitfield;
 /// Datasheet Name: STATUS
 #[bitfield(u8, default = 0x00)]
 #[derive(Debug, PartialEq)]
-// #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct Status {
     /// Detect if the System has started.
     /// Allow [System Configuration Register](crate::commands::configuration::protection_mode_configuration::ProtectionModeConfiguration)
@@ -52,6 +51,8 @@ pub struct Status {
     // reserved: bool,
 }
 impl_one_byte_read_command!(Status, Command::Status);
+
+// Custom Formatting done here so we can see the internals of the struct otherwise bitbybit supersedes and a raw value is printed
 
 impl core::fmt::Display for Status {
     fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {

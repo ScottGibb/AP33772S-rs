@@ -8,7 +8,6 @@ use bitbybit::bitfield;
 /// Datasheet Name: CONFIG
 #[bitfield(u8, default = 0xF8)]
 #[derive(Debug, PartialEq)]
-#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct ProtectionModeConfiguration {
     // /// Reserved
     // #[bits(0..=2, rw)]
@@ -42,3 +41,43 @@ pub struct ProtectionModeConfiguration {
 
 impl_one_byte_write_command!(ProtectionModeConfiguration, Command::SystemConfiguration);
 impl_one_byte_read_command!(ProtectionModeConfiguration, Command::SystemConfiguration);
+
+impl core::fmt::Display for ProtectionModeConfiguration {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        write!(
+            f,
+            "ProtectionModeConfiguration {{\n\
+             under_voltage_protection_enabled: {},\n\
+             over_voltage_protection_enabled: {},\n\
+             over_current_protection_enabled: {},\n\
+             over_temperature_protection_enabled: {},\n\
+             derating_function_enabled: {}\n\
+             }}",
+            self.under_voltage_protection_enabled(),
+            self.over_voltage_protection_enabled(),
+            self.over_current_protection_enabled(),
+            self.over_temperature_protection_enabled(),
+            self.derating_function_enabled()
+        )
+    }
+}
+#[cfg(feature = "defmt")]
+impl defmt::Format for ProtectionModeConfiguration {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(
+            f,
+            "ProtectionModeConfiguration {{\n
+             under_voltage_protection_enabled: {},\n\
+             over_voltage_protection_enabled: {},\n\
+             over_current_protection_enabled: {},\n\
+             over_temperature_protection_enabled: {},\n\
+             derating_function_enabled: {}\n\
+             }}",
+            self.under_voltage_protection_enabled(),
+            self.over_voltage_protection_enabled(),
+            self.over_current_protection_enabled(),
+            self.over_temperature_protection_enabled(),
+            self.derating_function_enabled()
+        );
+    }
+}

@@ -16,7 +16,6 @@ use num_enum::{IntoPrimitive, TryFromPrimitive};
 /// Datasheet Name: OPMODE
 #[bitfield(u8, default = 0x00)]
 #[derive(Debug, PartialEq)]
-#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct OperationMode {
     /// Leagacy Source Connected
     ///
@@ -59,8 +58,8 @@ pub enum DeRatingMode {
 /// When `ConfigurationChannel::Two`, the CC2 is connected to the CC line.
 #[bitenum(u1, exhaustive = true)]
 #[derive(Debug, PartialEq, Default, TryFromPrimitive, IntoPrimitive)]
-#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[repr(u8)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum ConfigurationChannel {
     #[default]
     One = 0,
@@ -68,3 +67,40 @@ pub enum ConfigurationChannel {
 }
 
 impl_one_byte_read_command!(OperationMode, Command::OperationMode);
+
+impl core::fmt::Display for OperationMode {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        write!(
+            f,
+            "OperationMode {{\n\
+             legacy_source_connected: {},\n\
+             power_delivery_source_connected: {},\n\
+             derating_mode: {:?},\n\
+             configuration_channel: {:?}\n\
+             }}",
+            self.legacy_source_connected(),
+            self.power_delivery_source_connected(),
+            self.derating_mode(),
+            self.configuration_channel()
+        )
+    }
+}
+
+#[cfg(feature = "defmt")]
+impl defmt::Format for OperationMode {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(
+            f,
+            "OperationMode {{\n\
+             legacy_source_connected: {},\n\
+             power_delivery_source_connected: {},\n\
+             derating_mode: {:?},\n\
+             configuration_channel: {:?}\n\
+             }}",
+            self.legacy_source_connected(),
+            self.power_delivery_source_connected(),
+            self.derating_mode(),
+            self.configuration_channel()
+        );
+    }
+}

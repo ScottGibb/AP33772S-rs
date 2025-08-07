@@ -10,7 +10,6 @@ use bitbybit::bitfield;
 /// Datasheet Name: MASK
 #[bitfield(u8, default = 0x03)]
 #[derive(Debug, PartialEq)]
-#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct InterruptEnable {
     /// Started Status
     ///
@@ -54,3 +53,51 @@ pub struct InterruptEnable {
 
 impl_one_byte_write_command!(InterruptEnable, Command::InterruptEnableMask);
 impl_one_byte_read_command!(InterruptEnable, Command::InterruptEnableMask);
+
+impl core::fmt::Display for InterruptEnable {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        write!(
+            f,
+            "InterruptEnable {{\n\
+             started: {},\n\
+             i2c_ready: {},\n\
+             new_power_data_object: {},\n\
+             under_voltage_protection: {},\n\
+             over_voltage_protection: {},\n\
+             over_current_protection: {},\n\
+             over_temperature_protection: {}\n\
+             }}",
+            self.started(),
+            self.i2c_ready(),
+            self.new_power_data_object(),
+            self.under_voltage_protection(),
+            self.over_voltage_protection(),
+            self.over_current_protection(),
+            self.over_temperature_protection()
+        )
+    }
+}
+#[cfg(feature = "defmt")]
+impl defmt::Format for InterruptEnable {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(
+            f,
+            "InterruptEnable {{\n\
+             started: {},\n\
+             i2c_ready: {},\n\
+             new_power_data_object: {},\n\
+             under_voltage_protection: {},\n\
+             over_voltage_protection: {},\n\
+             over_current_protection: {},\n\
+             over_temperature_protection: {}\n\
+             }}",
+            self.started(),
+            self.i2c_ready(),
+            self.new_power_data_object(),
+            self.under_voltage_protection(),
+            self.over_voltage_protection(),
+            self.over_current_protection(),
+            self.over_temperature_protection()
+        );
+    }
+}

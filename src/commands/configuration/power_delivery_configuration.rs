@@ -9,7 +9,6 @@ use bitbybit::bitfield;
 /// Datasheet Name: PDCONFIG
 #[bitfield(u8, default = 0x03)]
 #[derive(Debug, PartialEq)]
-#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct PowerDeliveryConfiguration {
     /// Extended Power Delivery Enabled
     ///
@@ -40,3 +39,32 @@ impl_one_byte_read_command!(
     PowerDeliveryConfiguration,
     Command::PowerDeliveryConfiguration
 );
+
+impl core::fmt::Display for PowerDeliveryConfiguration {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        write!(
+            f,
+            "PowerDeliveryConfiguration {{\n\
+             extended_power_delivery_enabled: {},\n\
+             programmable_power_delivery_and_adjustable_power_supply_enabled: {}\n\
+             }}",
+            self.extended_power_delivery_enabled(),
+            self.programmable_power_delivery_and_adjustable_power_supply_enabled()
+        )
+    }
+}
+
+#[cfg(feature = "defmt")]
+impl defmt::Format for PowerDeliveryConfiguration {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(
+            f,
+            "PowerDeliveryConfiguration {{\n\
+             extended_power_delivery_enabled: {},\n\
+             programmable_power_delivery_and_adjustable_power_supply_enabled: {}\n\
+             }}",
+            self.extended_power_delivery_enabled(),
+            self.programmable_power_delivery_and_adjustable_power_supply_enabled()
+        );
+    }
+}
