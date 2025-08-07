@@ -10,7 +10,6 @@ fn main() {
     // Read The Status Register
     let status = ap33772s.get_status().expect("Failed to get status");
     println!("Status: {status:?}");
-
     // Get the Power Source Delivery Capabilities
     let power_delivery_capabilities = ap33772s
         .get_all_source_power_capabilities()

@@ -8,7 +8,7 @@ use bitbybit::bitfield;
 /// Datasheet Name: STATUS
 #[bitfield(u8, default = 0x00)]
 #[derive(Debug, PartialEq)]
-#[cfg_attr(feature = "defmt", derive(defmt::Format))]
+// #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct Status {
     /// Detect if the System has started.
     /// Allow [System Configuration Register](crate::commands::configuration::protection_mode_configuration::ProtectionModeConfiguration)
@@ -52,3 +52,35 @@ pub struct Status {
     // reserved: bool,
 }
 impl_one_byte_read_command!(Status, Command::Status);
+
+impl core::fmt::Display for Status {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        write!(
+            f,
+            "Status {{\n started: {}, \n i2c_ready: {}, \n new_power_data_object: {}, \n under_voltage_protection: {}, \n over_voltage_protection: {}, \n over_current_protection: {}, \n over_temperature_protection: {}\n }}",
+            self.started(),
+            self.i2c_ready(),
+            self.new_power_data_object(),
+            self.under_voltage_protection(),
+            self.over_voltage_protection(),
+            self.over_current_protection(),
+            self.over_temperature_protection()
+        )
+    }
+}
+#[cfg(feature = "defmt")]
+impl defmt::Format for Status {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(
+            f,
+            "Status {{\n started: {}, \n i2c_ready: {}, \n new_power_data_object: {}, \n under_voltage_protection: {}, \n over_voltage_protection: {}, \n over_current_protection: {}, \n over_temperature_protection: {}\n }}",
+            self.started(),
+            self.i2c_ready(),
+            self.new_power_data_object(),
+            self.under_voltage_protection(),
+            self.over_voltage_protection(),
+            self.over_current_protection(),
+            self.over_temperature_protection()
+        );
+    }
+}

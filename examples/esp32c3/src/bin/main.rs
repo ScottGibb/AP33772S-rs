@@ -37,11 +37,14 @@ async fn main(_spawner: Spawner) {
     info!("Embassy initialized!");
 
     // Create an I2C Bus for the AP33772S device
-    let i2c = I2c::new(peripherals.I2C0, Config::default().with_frequency(Rate::from_hz(100_000)))
-        .expect("Failed to Create I2C")
-        .with_scl(peripherals.GPIO8)
-        .with_sda(peripherals.GPIO9)
-        .into_async();
+    let i2c = I2c::new(
+        peripherals.I2C0,
+        Config::default().with_frequency(Rate::from_hz(100_000)),
+    )
+    .expect("Failed to Create I2C")
+    .with_scl(peripherals.GPIO8)
+    .with_sda(peripherals.GPIO9)
+    .into_async();
 
     let mut ap33772s = Ap33772s::new(i2c); // Skip the initialization check for this example
 
@@ -54,35 +57,16 @@ async fn main(_spawner: Spawner) {
                 // Read the Status Register
                 match ap33772s.get_status().await {
                     Ok(status) => {
-                        info!("Status:");
-                        info!("Started: {}", status.started());
-                        info!("I2C Ready: {}", status.i2c_ready());
-                        info!("New Power Data Object: {}", status.new_power_data_object());
-                        info!(
-                            "Under Voltage Protection: {}",
-                            status.under_voltage_protection()
-                        );
-                        info!(
-                            "Over Voltage Protection: {}",
-                            status.over_voltage_protection()
-                        );
-                        info!(
-                            "Over Current Protection: {}",
-                            status.over_current_protection()
-                        );
-                        info!(
-                            "Over Temperature Protection: {}",
-                            status.over_temperature_protection()
-                        );
+                        info!("Status: {}", status);
                     }
                     Err(e) => error!("Failed to read status: {:?}", e),
                 }
 
-                // // Read the State of the Device
-                // match ap33772s.get_statistics().await {
-                //     Ok(stats) => info!("State: {}", stats.current),
-                //     Err(e) => error!("Failed to read statistics: {:?}", e),
-                // }
+                // // // Read the State of the Device
+                match ap33772s.get_statistics().await {
+                    Ok(stats) => info!("State: {}", stats),
+                    Err(e) => error!("Failed to read statistics: {:?}", e),
+                }
 
                 Timer::after(Duration::from_secs(1)).await;
             }

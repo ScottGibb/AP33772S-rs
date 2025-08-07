@@ -23,6 +23,61 @@ pub struct Statistics {
     pub requested_power: Power,
 }
 
+impl core::fmt::Display for Statistics {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        use uom::si::{
+            electric_current::ampere, electric_potential::volt, power::watt,
+            thermodynamic_temperature::degree_celsius,
+        };
+
+        write!(f, "Statistics {{\n")?;
+        write!(f, "  current: {:.3} A\n", self.current.get::<ampere>())?;
+        write!(f, "  voltage: {:.3} V\n", self.voltage.get::<volt>())?;
+        write!(f, "  power: {:.3} W\n", self.power.get::<watt>())?;
+        write!(
+            f,
+            "  temperature: {:.2} °C\n",
+            self.temperature.get::<degree_celsius>()
+        )?;
+        write!(
+            f,
+            "  requested_voltage: {:.3} V\n",
+            self.requested_voltage.get::<volt>()
+        )?;
+        write!(
+            f,
+            "  requested_current: {:.3} A\n",
+            self.requested_current.get::<ampere>()
+        )?;
+        write!(
+            f,
+            "  requested_power: {:.3} W\n",
+            self.requested_power.get::<watt>()
+        )?;
+        write!(f, "}}")
+    }
+}
+
+#[cfg(feature = "defmt")]
+impl defmt::Format for Statistics {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(
+            f,
+            "Statistics {{\n  current: {} A\n  voltage: {} V\n  power: {} W\n  temperature: {} °C\n  requested_voltage: {} V\n  requested_current: {} A\n  requested_power: {} W\n}}",
+            self.current.get::<uom::si::electric_current::ampere>(),
+            self.voltage.get::<uom::si::electric_potential::volt>(),
+            self.power.get::<uom::si::power::watt>(),
+            self.temperature
+                .get::<uom::si::thermodynamic_temperature::degree_celsius>(),
+            self.requested_voltage
+                .get::<uom::si::electric_potential::volt>(),
+            self.requested_current
+                .get::<uom::si::electric_current::ampere>(),
+            self.requested_power.get::<uom::si::power::watt>()
+        );
+    }
+}
+
 #[derive(Debug, Clone, PartialEq)]
 // #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct ThermalResistances {
