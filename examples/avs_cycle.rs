@@ -1,9 +1,8 @@
-use ap33772s_rs::types::units::*;
+use ap33772s_rs::types::{VoltageOutputControl, units::*};
 /// The following example shows how to cycle through the Adjustable Voltage Supply (AVS). It is inspired
 /// by the Centy Labs example for the AP33772S. [Centy Labs Example](https://github.com/CentyLab/AP33772S-CentyLab/blob/main/examples/AVScycle/AVScycle.ino)
 use ap33772s_rs::{
     ap33772s::Ap33772s,
-    setters::VoltageOutputControl,
     types::{CurrentSelection, PowerDataObject},
 };
 use utils::setup_i2c;

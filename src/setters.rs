@@ -4,10 +4,6 @@ use super::hal::*;
 use crate::Ap33772sError;
 use crate::ap33772s::Ap33772s;
 use crate::commands::configuration::system_control::SystemControl;
-pub use crate::commands::configuration::system_control::VoltageOutputControl;
-use crate::commands::data_objects::all_source_power_data_object::{
-    AllSourceDataPowerDataObject, PowerType,
-};
 use crate::commands::power_delivery::power_delivery_request_message::PowerDeliveryRequestMessage;
 use crate::commands::statistics::minimum_selection_voltage::MinimumSelectionVoltage;
 use crate::commands::thermal_resistances::convert_resistance_to_raw_resistance;

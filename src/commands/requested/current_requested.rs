@@ -36,8 +36,8 @@ pub struct CurrentRequested {
 /// - 1 = 10mA
 /// - 2 = 20mA
 /// - ...
-/// - 500 = 5000mA
-///  This means the multiplication should never surpass u16 and thus should be a checked multiplication
+/// - 500 = 5000mA U16 is required
+/// This means the multiplication should never surpass u16 and thus should be a checked multiplication
 impl CurrentRequested {
     pub const CURRENT_RESOLUTION: u16 = 10; // mA
 

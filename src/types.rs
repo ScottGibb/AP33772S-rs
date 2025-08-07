@@ -1,10 +1,15 @@
 // Types required by the Getters and Setters
 // Expose the requireed types for the functions to be used externally.
+pub use crate::commands::configuration::status::Status;
+pub use crate::commands::configuration::system_control::VoltageOutputControl;
+pub use crate::commands::data_objects::all_source_power_data_object::AllSourceDataPowerDataObject;
 pub use crate::commands::data_objects::all_source_power_data_object::PowerType;
+pub use crate::commands::data_objects::extended_power_range_data_object::ExtendedPowerRangeDataObject;
+pub use crate::commands::data_objects::source_power_data_object::SourcePowerDataObject;
+pub use crate::commands::power_delivery::power_delivery_message_result::PowerDeliveryResponse;
 pub use crate::commands::power_delivery::power_delivery_request_message::{
     CURRENT_SELECTIONS, CurrentSelection, PowerDataObject,
 };
-
 pub mod units {
     pub use uom::si::electric_current::ampere;
     pub use uom::si::electric_current::milliampere;

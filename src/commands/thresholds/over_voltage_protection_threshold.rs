@@ -30,13 +30,13 @@ pub struct OverVoltageProtectionThreshold {
 // ...
 // 375 = 30000mV (30V)
 // This means the maximum raw value is 375
-// 375 * 80 = 30000mV
+// 375 * 80 = 30000mV U16 is required
 // Therefore the voltage should be checked multiplied
 impl OverVoltageProtectionThreshold {
-    const VOLTAGE_RESOLUTION: u8 = 80; //mV
+    const VOLTAGE_RESOLUTION: u16 = 80; //mV
     /// Scales the raw voltage value to millivolts.
     pub fn voltage(&self) -> Result<ElectricPotential, Ap33772sError> {
-        self.raw_voltage()
+        u16::from(self.raw_voltage())
             .checked_mul(Self::VOLTAGE_RESOLUTION)
             .ok_or(Ap33772sError::ConversionFailed)
             .map(|scaled_voltage| ElectricPotential::new::<millivolt>(f32::from(scaled_voltage)))

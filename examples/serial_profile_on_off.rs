@@ -1,4 +1,4 @@
-use ap33772s_rs::{ap33772s::Ap33772s, setters::VoltageOutputControl};
+use ap33772s_rs::{ap33772s::Ap33772s, types::VoltageOutputControl};
 
 const COMMANDS: [&str; 5] = ["Profile", "On", "Off", "exit", "quit"];
 

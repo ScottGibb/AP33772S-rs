@@ -29,14 +29,14 @@ pub struct OverCurrentProtectionThreshold {
 // ...
 // 100 = 5000mA (5A)
 // This means the maximum raw value is 100
-// 100 * 50 = 5000mA
+// 100 * 50 = 5000mA U16 required
 // Therefore the current should be checked multiplied
 impl OverCurrentProtectionThreshold {
-    const CURRENT_RESOLUTION: u8 = 50; // mA
+    const CURRENT_RESOLUTION: u16 = 50; // mA
 
     /// Returns the current value in milliampere.
     pub fn current(&self) -> Result<ElectricCurrent, Ap33772sError> {
-        self.raw_current()
+        u16::from(self.raw_current())
             .checked_mul(Self::CURRENT_RESOLUTION)
             .ok_or(Ap33772sError::ConversionFailed)
             .map(|scaled_current| ElectricCurrent::new::<milliampere>(f32::from(scaled_current)))

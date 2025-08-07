@@ -2,16 +2,13 @@ use super::hal::*;
 use crate::Ap33772sError;
 use crate::ap33772s::Ap33772s;
 use crate::commands::command_map::Command;
-use crate::commands::configuration::status::Status;
 use crate::commands::configuration::system_control::SystemControl;
-use crate::commands::configuration::system_control::VoltageOutputControl;
 use crate::commands::data_objects::all_source_power_data_object::AllSourceDataPowerDataObject;
 use crate::commands::data_objects::all_source_power_data_object::MAX_EXTENDED_POWER_DATA_OBJECTS;
 use crate::commands::data_objects::all_source_power_data_object::MAX_SOURCE_POWER_DATA_OBJECTS;
 use crate::commands::data_objects::extended_power_range_data_object::ExtendedPowerRangeDataObject;
 use crate::commands::data_objects::source_power_data_object::SourcePowerDataObject;
 use crate::commands::power_delivery::power_delivery_message_result::PowerDeliveryMessageResult;
-use crate::commands::power_delivery::power_delivery_message_result::PowerDeliveryResponse;
 use crate::commands::requested::current_requested::CurrentRequested;
 use crate::commands::requested::voltage_requested::VoltageRequested;
 use crate::commands::statistics::current::Current;
@@ -27,9 +24,12 @@ use crate::commands::thresholds::over_current_protection_threshold::OverCurrentP
 use crate::commands::thresholds::over_temperature_protection_threshold;
 use crate::commands::thresholds::over_voltage_protection_threshold::OverVoltageProtectionThreshold;
 use crate::commands::thresholds::under_voltage_protection_threshold::UnderVoltageProtectionThreshold;
+use crate::types::PowerDeliveryResponse;
 use crate::types::Statistics;
+use crate::types::Status;
 use crate::types::ThermalResistances;
 use crate::types::Thresholds;
+use crate::types::VoltageOutputControl;
 use crate::types::units::*;
 
 impl<I2C: I2c> Ap33772s<I2C> {

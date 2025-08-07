@@ -27,13 +27,13 @@ pub struct Current {
 /// - 2 = 48mA
 /// - ...
 /// - 208 = 4992mA
-/// - 209 = 5016mA
-///  This means the multiplication should never surpass u8 and thus should be a checked multiplication
+/// - 209 * 24 = 5016mA this requires U16
+/// This means the multiplication should never surpass u16 and thus should be a checked multiplication
 impl Current {
-    pub const CURRENT_RESOLUTION: u8 = 24; // mA
+    pub const CURRENT_RESOLUTION: u16 = 24; // mA
     /// Returns the current value in milliamperes.
     pub fn current(&self) -> Result<ElectricCurrent, Ap33772sError> {
-        self.raw_current()
+        u16::from(self.raw_current())
             .checked_mul(Self::CURRENT_RESOLUTION)
             .ok_or(Ap33772sError::ConversionFailed)
             .map(|scaled_current| ElectricCurrent::new::<milliampere>(f32::from(scaled_current)))

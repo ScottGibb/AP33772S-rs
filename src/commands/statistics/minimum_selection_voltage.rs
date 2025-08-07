@@ -27,7 +27,7 @@ pub struct MinimumSelectionVoltage {
 }
 
 impl MinimumSelectionVoltage {
-    const SELECTION_VOLTAGE_RESOLUTION: u8 = 200; // mV
+    const SELECTION_VOLTAGE_RESOLUTION: u16 = 200; // mV
     /// Returns the minimum selection voltage in millivolts.
     pub fn voltage(&self) -> Result<ElectricPotential, Ap33772sError> {
         Self::convert_raw_voltage_to_voltage(self.raw_voltage())
@@ -49,7 +49,7 @@ impl MinimumSelectionVoltage {
     pub fn convert_raw_voltage_to_voltage(
         raw_voltage: u8,
     ) -> Result<ElectricPotential, Ap33772sError> {
-        raw_voltage
+        u16::from(raw_voltage)
             .checked_mul(Self::SELECTION_VOLTAGE_RESOLUTION)
             .map(|scaled| ElectricPotential::new::<millivolt>(f32::from(scaled)))
             .ok_or(crate::Ap33772sError::ConversionFailed)
