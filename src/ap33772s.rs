@@ -1,5 +1,4 @@
 use crate::Ap33772sError;
-use crate::commands::configuration::system_control::CommandVersion;
 use crate::commands::configuration::system_control::SystemControl;
 use crate::commands::power_delivery::power_delivery_command_message::PowerDeliveryCommandMessage;
 use crate::commands::thresholds::under_voltage_protection_threshold::UnderVoltageThreshold;
