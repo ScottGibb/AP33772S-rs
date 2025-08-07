@@ -1,0 +1,55 @@
+name: Continuous Test
+
+on:
+  push:
+  pull_request:
+    branches: [main]
+
+jobs:
+  test-sync:
+    name: Test with sync feature
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+      - name: Test (sync)
+        run: cargo test --no-default-features --features sync
+      - name: Test with advanced feature
+        run: cargo test --no-default-features --features "sync advanced"
+      - name: Test with defmt
+        run: cargo test --no-default-features --features "sync defmt"
+      - name: Test docs
+        run: cargo test --no-default-features --features "sync docs"
+
+
+  test-async:
+    name: Test with Async feature
+    runs-on: ${{ matrix.os }}
+    steps:
+        - uses: actions/checkout@v4
+        - name: Cache
+          uses: actions/cache@v4
+          with:
+            path: |
+              ~/.cargo/registry
+              ~/.cargo/git
+              target
+            key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+        - name: Test (async)
+          run: cargo test --no-default-features --features async
+        - name: Test with advanced feature
+          run: cargo test --no-default-features --features "async advanced"
+        - name: Test with defmt
+          run: cargo test --no-default-features --features "async defmt"
+        - name: Test docs
+          run: cargo test --no-default-features --features "async docs"
