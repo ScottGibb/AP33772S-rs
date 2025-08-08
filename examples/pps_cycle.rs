@@ -6,7 +6,7 @@ use utils::setup_delay;
 // It is inspired by the Centy Labs example for the AP33772S.
 // [Centy Labs Example](https://github.com/CentyLab/AP33772S-CentyLab/blob/main/examples/PPScycle/PPScycle.ino)
 fn main() {
-    let i2c = utils::setup_i2c().expect("Failed to set up I2C");
+    let i2c = utils::setup_i2c(1_0000).expect("Failed to set up I2C");
     let delay = setup_delay();
     let mut ap33772s =
         Ap33772s::new_default(i2c, delay).expect("Failed to create AP33772S instance");

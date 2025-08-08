@@ -4,8 +4,7 @@ use ftdi::Device;
 use ftdi_embedded_hal::Delay;
 use ftdi_embedded_hal::{self as hal, I2c};
 use std::error::Error;
-pub fn setup_i2c() -> Result<I2c<Device>, Box<dyn Error>> {
-    const BAUDRATE: u32 = 1_000;
+pub fn setup_i2c(baudrate: u32) -> Result<I2c<Device>, Box<dyn Error>> {
     // Change these for your device
     const DEVICE_VID: u16 = 0x0403;
     const DEVICE_PID: u16 = 0x6014;
@@ -15,7 +14,7 @@ pub fn setup_i2c() -> Result<I2c<Device>, Box<dyn Error>> {
         .open()?;
 
     // Next initialise the HAL with the device and the Baudrate
-    let hal = match hal::FtHal::init_freq(device, BAUDRATE) {
+    let hal = match hal::FtHal::init_freq(device, baudrate) {
         Ok(hal) => hal,
         Err(err) => {
             eprintln!("Failed to initialise HAL: {err}");
