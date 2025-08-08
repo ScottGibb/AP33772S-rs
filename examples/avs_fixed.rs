@@ -3,13 +3,16 @@ use ap33772s_rs::{
     ap33772s::Ap33772s,
     types::{CurrentSelection, PowerDataObject},
 };
+use utils::setup_delay;
 // This another example inspired by the Centy Labs example for the AP33772S.
 // [Centy Labs Example](https://github.com/CentyLab/AP33772S-CentyLab/blob/main/examples/AVSfixed/AVSfixed.ino)
 fn main() {
-    let adjustable_voltage_supply = ElectricPotential::new::<millivolt>(16000.0);
+    let delay = setup_delay();
     let i2c = utils::setup_i2c().expect("Failed to set up I2C");
-    let mut ap33772s = Ap33772s::new_default(i2c).expect("Failed to create AP33772S instance");
+    let mut ap33772s =
+        Ap33772s::new_default(i2c, delay).expect("Failed to create AP33772S instance");
 
+    let adjustable_voltage_supply = ElectricPotential::new::<millivolt>(16000.0);
     // Set the MMOS Switch
     ap33772s
         .override_output_voltage(VoltageOutputControl::ForceOn)

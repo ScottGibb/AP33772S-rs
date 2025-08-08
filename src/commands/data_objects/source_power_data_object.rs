@@ -105,7 +105,8 @@ impl defmt::Format for SourcePowerDataObject {
             f,
             "SourcePowerDataObject {{ max_voltage: {:?}, minimum_voltage: {:?}, max_current: {:?} A, source_power_type: {:?}, is_detected: {} }}",
             self.max_voltage()
-                .map_err(|_| core::fmt::Error)?
+                .map_err(|_| core::fmt::Error)
+                .unwrap() //TODO: Fix this
                 .get::<volt>(),
             self.minimum_voltage(),
             self.max_current(),

@@ -16,7 +16,7 @@ use crate::types::units::*;
 use crate::types::*;
 use uom::ConversionFactor;
 
-impl<I2C: I2c> Ap33772s<I2C> {
+impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
     #[maybe_async::maybe_async]
     pub async fn override_output_voltage(
         &mut self,
@@ -79,7 +79,7 @@ impl<I2C: I2c> Ap33772s<I2C> {
     }
 }
 
-impl<I2C: I2c> Ap33772s<I2C> {
+impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
     #[maybe_async::maybe_async]
     pub async fn set_thermal_resistances(
         &mut self,

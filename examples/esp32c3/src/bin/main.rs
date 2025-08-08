@@ -15,7 +15,7 @@ use ap33772s_rs::ap33772s::Ap33772s;
 use defmt::error;
 use defmt::info;
 use embassy_executor::Spawner;
-use embassy_time::{Duration, Timer};
+use embassy_time::{Delay, Duration, Timer};
 use panic_rtt_target as _;
 
 // This creates a default app-descriptor required by the esp-idf bootloader.
@@ -45,8 +45,8 @@ async fn main(_spawner: Spawner) {
     .with_scl(peripherals.GPIO8)
     .with_sda(peripherals.GPIO9)
     .into_async();
-
-    let mut ap33772s = Ap33772s::new(i2c); // Skip the initialization check for this example
+    let delay = embassy_time::Delay;
+    let mut ap33772s = Ap33772s::new(i2c, delay); // Skip the initialization check for this example
 
     loop {
         info!("Checking if AP33772S is present...");
@@ -59,19 +59,19 @@ async fn main(_spawner: Spawner) {
                     Ok(status) => {
                         info!("Status: {}", status);
                     }
-                    Err(e) => error!("Failed to read status: {:?}", e),
+                    Err(e) => error!("Failed to read status: {}", e),
                 }
 
                 // // // Read the State of the Device
                 match ap33772s.get_statistics().await {
                     Ok(stats) => info!("State: {}", stats),
-                    Err(e) => error!("Failed to read statistics: {:?}", e),
+                    Err(e) => error!("Failed to read statistics: {}", e),
                 }
 
                 Timer::after(Duration::from_secs(1)).await;
             }
             Err(e) => {
-                info!("AP33772S is not present: {:?}", e);
+                info!("AP33772S is not present: {}", e);
                 Timer::after(Duration::from_secs(2)).await;
             }
         }

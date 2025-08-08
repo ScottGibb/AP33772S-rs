@@ -34,7 +34,7 @@ use crate::types::Thresholds;
 use crate::types::VoltageOutputControl;
 use crate::types::units::*;
 
-impl<I2C: I2c> Ap33772s<I2C> {
+impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
     #[maybe_async::maybe_async]
     pub async fn get_status(&mut self) -> Result<Status, Ap33772sError> {
         self.read_one_byte_command::<Status>().await
@@ -72,7 +72,7 @@ impl<I2C: I2c> Ap33772s<I2C> {
     }
 }
 
-impl<I2C: I2c> Ap33772s<I2C> {
+impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
     #[maybe_async::maybe_async]
     pub async fn get_voltage_out_override(
         &mut self,
@@ -137,7 +137,7 @@ impl<I2C: I2c> Ap33772s<I2C> {
     }
 }
 
-impl<I2C: I2c> Ap33772s<I2C> {
+impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
     #[maybe_async::maybe_async]
     pub async fn get_thermal_resistances(&mut self) -> Result<ThermalResistances, Ap33772sError> {
         let resistance_25 = self.read_two_byte_command::<ThermalResistance25>().await?;

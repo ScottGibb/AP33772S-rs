@@ -85,7 +85,7 @@ impl defmt::Format for Statistics {
             self.temperature.get::<degree_celsius>(),
             self.requested_voltage.get::<volt>(),
             self.requested_current.get::<ampere>(),
-            self.requested_power.get::watt>()
+            self.requested_power.get::<watt>()
         );
     }
 }
@@ -159,5 +159,20 @@ impl core::fmt::Display for Thresholds {
             self.derating.get::<degree_celsius>()
         )?;
         write!(f, "}}")
+    }
+}
+
+#[cfg(feature = "defmt")]
+impl defmt::Format for Thresholds {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(
+            f,
+            "Thresholds {{\n  over_voltage: {} V\n  under_voltage: {:?}\n  over_current: {} A\n  over_temperature: {} °C\n  derating: {} °C\n}}",
+            self.over_voltage.get::<volt>(),
+            self.under_voltage,
+            self.over_current.get::<ampere>(),
+            self.over_temperature.get::<degree_celsius>(),
+            self.derating.get::<degree_celsius>(),
+        );
     }
 }

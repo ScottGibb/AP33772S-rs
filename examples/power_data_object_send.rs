@@ -1,11 +1,12 @@
 use ap33772s_rs::ap33772s::Ap33772s;
 use ap33772s_rs::types::units::*;
 use ap33772s_rs::types::{CURRENT_SELECTIONS, CurrentSelection, PowerDataObject, PowerType};
-use utils::setup_i2c;
+use utils::{setup_delay, setup_i2c};
 
 fn main() {
     let i2c = setup_i2c().expect("Failed to set up I2C");
-    let mut ap33772s = Ap33772s::new_default(i2c).unwrap();
+    let delay = setup_delay();
+    let mut ap33772s = Ap33772s::new_default(i2c, delay).expect("Failed to setup AP33772S");
 
     // Read The Status Register
     let status = ap33772s.get_status().expect("Failed to get status");

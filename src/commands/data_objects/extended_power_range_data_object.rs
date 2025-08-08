@@ -63,7 +63,8 @@ impl defmt::Format for ExtendedPowerRangeDataObject {
             f,
             "ExtendedPowerRangeDataObject {{ max_voltage: {}, minimum_voltage: {:?}, max_current: {:?}, source_power_type: {:?}, is_detected: {} }}",
             self.max_voltage()
-                .map_err(|_| core::fmt::Error)?
+                .map_err(|_| core::fmt::Error)
+                .unwrap() //Fix this
                 .get::<volt>(),
             self.minimum_voltage(),
             self.max_current(),

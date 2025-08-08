@@ -12,26 +12,27 @@ use crate::types::{
 /// Represents the AP33772S device.
 /// It provides methods for interacting with the device over I2C.
 /// See The [GitHub Repo](https://github.com/ScottGibb/AP33772S-rs) for examples on how to use the API.
-pub struct Ap33772s<I2C: I2c> {
+pub struct Ap33772s<I2C: I2c, D: DelayNs> {
     pub(crate) i2c: I2C,
+    pub(crate) delay: D,
 }
 
-impl<I2C: I2c> Ap33772s<I2C> {
+impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
     /// The I2C address of the AP33772S device.
     /// This address is used for communication with the device over I2C.
     /// The address is defined in the AP33772S datasheet.
     pub const ADDRESS: SevenBitAddress = 0x52;
 
     /// Creates a new instance of the AP33772S device. This Instance has no initialisation with the I2C bus.
-    pub fn new(i2c: I2C) -> Self {
-        Self { i2c }
+    pub fn new(i2c: I2C, delay: D) -> Self {
+        Self { i2c, delay }
     }
 
     /// Creates a new instance of the AP33772S device and checks if the device is present on the bus.
     /// TODO: Integrate Setting of Thermal Resistance and Thresholds matching RotoPD Board
     #[maybe_async::maybe_async]
-    pub async fn new_default(i2c: I2C) -> Result<Self, Ap33772sError> {
-        let mut device = Self::new(i2c);
+    pub async fn new_default(i2c: I2C, delay: D) -> Result<Self, Ap33772sError> {
+        let mut device = Self::new(i2c, delay);
         device.is_device_present().await?;
         // TODO: Initialize Thermal Resistances and Thresholds
         Ok(device)
@@ -121,5 +122,29 @@ impl core::fmt::Display for Ap33772sError {
             }
             Ap33772sError::InvalidRequest => write!(f, "Invalid request"),
         }
+    }
+}
+
+#[cfg(feature = "defmt")]
+impl defmt::Format for Ap33772sError {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(
+            f,
+            "AP33772S Error: {}",
+            match self {
+                Ap33772sError::I2c(err) => defmt::write!(f, "I2C error: {:?}", err),
+                Ap33772sError::ConversionFailed => defmt::write!(f, "Conversion error"),
+                Ap33772sError::DataMalformed(value) =>
+                    defmt::write!(f, "Malformed Data error: {:?}", value),
+                Ap33772sError::WrongCommandVersion(value) => {
+                    defmt::write!(
+                        f,
+                        "Device not found. Raw value at command version location: {:?}",
+                        value
+                    )
+                }
+                Ap33772sError::InvalidRequest => defmt::write!(f, "Invalid request"),
+            }
+        );
     }
 }

@@ -1,6 +1,7 @@
 /// This module provides utility functions for setting up I2C communication
 // with the AP33772S device using the FT232H USB to I2C bridge.
 use ftdi::Device;
+use ftdi_embedded_hal::Delay;
 use ftdi_embedded_hal::{self as hal, I2c};
 use std::error::Error;
 pub fn setup_i2c() -> Result<I2c<Device>, Box<dyn Error>> {
@@ -30,4 +31,9 @@ pub fn setup_i2c() -> Result<I2c<Device>, Box<dyn Error>> {
         }
     };
     Ok(i2c)
+}
+
+pub fn setup_delay() -> Delay {
+    // Create a delay instance for the FT232H
+    Delay::new()
 }
