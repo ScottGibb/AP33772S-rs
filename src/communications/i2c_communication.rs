@@ -3,8 +3,8 @@
 use super::traits::{
     ReadOneByteCommand, ReadTwoByteCommand, WriteOneByteCommand, WriteTwoByteCommand,
 };
-use crate::Ap33772sError;
 use crate::ap33772s::Ap33772s;
+use crate::ap33772s::Ap33772sError;
 use crate::hal::I2c;
 
 impl<I2C: I2c> Ap33772s<I2C> {

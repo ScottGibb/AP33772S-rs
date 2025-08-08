@@ -1,8 +1,8 @@
 use super::command_map::Command;
-use crate::{Ap33772sError, impl_two_byte_read_command};
+use crate::ap33772s::Ap33772sError;
+use crate::impl_two_byte_read_command;
+use crate::types::units::*;
 use bitbybit::bitfield;
-use uom::si::electric_potential::millivolt;
-use uom::si::f32::ElectricPotential;
 
 /// This struct represents the requested voltage of the AP33772S device.
 /// It contains the raw voltage value and provides a method to convert it to millivolts.

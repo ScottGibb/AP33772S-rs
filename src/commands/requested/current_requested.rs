@@ -1,8 +1,8 @@
 use super::command_map::Command;
-use crate::{Ap33772sError, impl_two_byte_read_command};
+use crate::ap33772s::Ap33772sError;
+use crate::impl_two_byte_read_command;
+use crate::types::units::*;
 use bitbybit::bitfield;
-use uom::si::electric_current::milliampere;
-use uom::si::f32::ElectricCurrent;
 
 /// This struct represents the requested current of the AP33772S device.
 /// It contains the raw current value and provides a method to convert it to milliamperes.

@@ -1,8 +1,8 @@
 use super::command_map::Command;
+use crate::ap33772s::Ap33772sError;
+use crate::types::units::*;
 use crate::{impl_one_byte_read_command, impl_one_byte_write_command};
 use bitbybit::bitfield;
-use uom::si::f32::ThermodynamicTemperature;
-use uom::si::thermodynamic_temperature::degree_celsius;
 
 /// The OTPTHR register is defined as the OTP Threshold Temperature (°C) that triggers OTP protection function.
 /// The default value for the OTPTHR is 78h (120°C).
@@ -26,14 +26,14 @@ impl OverTemperatureProtectionThreshold {
     // TODO: Consider Better Error Handling of the different conversion failures
     pub fn convert_temperature_to_raw_temperature(
         temperature: ThermodynamicTemperature,
-    ) -> Result<u8, crate::Ap33772sError> {
+    ) -> Result<u8, Ap33772sError> {
         if !temperature.is_finite() || !temperature.is_sign_positive() {
-            return Err(crate::Ap33772sError::ConversionFailed);
+            return Err(Ap33772sError::ConversionFailed);
         }
         let raw_value = temperature.get::<degree_celsius>() as u16;
 
         if raw_value > u8::MAX as u16 {
-            return Err(crate::Ap33772sError::ConversionFailed);
+            return Err(Ap33772sError::ConversionFailed);
         }
 
         Ok(raw_value as u8)

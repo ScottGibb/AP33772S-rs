@@ -47,38 +47,3 @@ mod hal {
     pub use embedded_hal_async::i2c::I2c;
     pub use embedded_hal_async::i2c::SevenBitAddress;
 }
-#[derive(PartialEq, Clone, Debug)]
-#[non_exhaustive]
-pub enum Ap33772sError {
-    InvalidCommand,
-    I2c(hal::ErrorKind),
-    ConversionFailed,
-    DataMalformed,
-    WrongCommandVersion(u8), // The value stored at the command version location
-}
-
-impl<E: hal::Error> From<E> for Ap33772sError {
-    fn from(e: E) -> Self {
-        Ap33772sError::I2c(e.kind())
-    }
-}
-
-// Allows Error Bubbling when working with both std and no-std rust
-impl core::error::Error for Ap33772sError {}
-
-impl core::fmt::Display for Ap33772sError {
-    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-        match self {
-            Ap33772sError::I2c(err) => write!(f, "I2C error: {err:?}"),
-            Ap33772sError::InvalidCommand => write!(f, "Invalid command"),
-            Ap33772sError::ConversionFailed => write!(f, "Conversion error"),
-            Ap33772sError::DataMalformed => write!(f, "Malformed Data error"),
-            Ap33772sError::WrongCommandVersion(value) => {
-                write!(
-                    f,
-                    "Device not found. Raw value at command version location: {value}"
-                )
-            }
-        }
-    }
-}

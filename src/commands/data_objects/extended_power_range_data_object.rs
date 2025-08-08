@@ -1,10 +1,8 @@
 use super::source_power_data_object::{MinimumVoltage, SourcePowerCurrent};
-use crate::{Ap33772sError, commands::data_objects::all_source_power_data_object::PowerType};
+use crate::ap33772s::Ap33772sError;
+use crate::commands::data_objects::all_source_power_data_object::PowerType;
+use crate::types::units::*;
 use bitbybit::bitfield;
-use uom::si::{
-    electric_potential::{millivolt, volt},
-    f32::ElectricPotential,
-};
 
 #[bitfield(u16, default = 0x00)]
 #[derive(Debug, PartialEq)]

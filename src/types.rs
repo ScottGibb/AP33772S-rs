@@ -1,5 +1,5 @@
-// Types required by the Getters and Setters
-// Expose the requireed types for the functions to be used externally.
+//! Types required by the Getters and Setters
+//! Expose the requireed types for the functions to be used externally.
 pub use crate::commands::configuration::status::Status;
 pub use crate::commands::configuration::system_control::VoltageOutputControl;
 pub use crate::commands::data_objects::all_source_power_data_object::AllSourceDataPowerDataObject;

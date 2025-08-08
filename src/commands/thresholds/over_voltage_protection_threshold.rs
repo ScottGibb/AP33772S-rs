@@ -1,9 +1,8 @@
-use crate::Ap33772sError;
+use crate::ap33772s::Ap33772sError;
 use crate::commands::command_map::Command;
+use crate::types::units::*;
 use crate::{impl_one_byte_read_command, impl_one_byte_write_command};
 use bitbybit::bitfield;
-use uom::si::electric_potential::millivolt;
-use uom::si::f32::ElectricPotential;
 
 /// This command is used to read and write the Over Voltage Protection (OVP) Threshold Voltage.
 /// The OVP Threshold Voltage is used to set the over voltage protection threshold for the AP33772S

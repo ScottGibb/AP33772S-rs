@@ -1,8 +1,8 @@
+use crate::ap33772s::Ap33772sError;
 use crate::commands::command_map::Command;
-use crate::{Ap33772sError, impl_one_byte_read_command, impl_one_byte_write_command};
+use crate::types::units::*;
+use crate::{impl_one_byte_read_command, impl_one_byte_write_command};
 use bitbybit::bitfield;
-use uom::si::electric_potential::millivolt;
-use uom::si::f32::ElectricPotential;
 
 /// The MinimumSelectionVoltage command retrieves the minimum selection voltage
 /// of the AP33772S. This voltage is used to determine the minimum voltage that can be selected
@@ -32,16 +32,14 @@ impl MinimumSelectionVoltage {
     pub fn voltage(&self) -> Result<ElectricPotential, Ap33772sError> {
         Self::convert_raw_voltage_to_voltage(self.raw_voltage())
     }
-    pub fn convert_voltage_to_raw_voltage(
-        voltage: ElectricPotential,
-    ) -> Result<u8, crate::Ap33772sError> {
+    pub fn convert_voltage_to_raw_voltage(voltage: ElectricPotential) -> Result<u8, Ap33772sError> {
         if !voltage.is_finite() || voltage.is_sign_negative() {
-            return Err(crate::Ap33772sError::ConversionFailed);
+            return Err(Ap33772sError::ConversionFailed);
         }
         let raw_value = voltage.get::<millivolt>() / f32::from(Self::SELECTION_VOLTAGE_RESOLUTION);
 
         if raw_value > u8::MAX as f32 {
-            return Err(crate::Ap33772sError::ConversionFailed);
+            return Err(Ap33772sError::ConversionFailed);
         }
 
         Ok(raw_value as u8)
@@ -52,7 +50,7 @@ impl MinimumSelectionVoltage {
         u16::from(raw_voltage)
             .checked_mul(Self::SELECTION_VOLTAGE_RESOLUTION)
             .map(|scaled| ElectricPotential::new::<millivolt>(f32::from(scaled)))
-            .ok_or(crate::Ap33772sError::ConversionFailed)
+            .ok_or(Ap33772sError::ConversionFailed)
     }
 }
 

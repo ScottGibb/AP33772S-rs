@@ -1,6 +1,8 @@
+//! This module provides methods to read various statistics from the AP33772S device.
+//! It includes methods to get the current, voltage, temperature, power,
 use super::hal::*;
-use crate::Ap33772sError;
 use crate::ap33772s::Ap33772s;
+use crate::ap33772s::Ap33772sError;
 use crate::commands::command_map::Command;
 use crate::commands::configuration::system_control::SystemControl;
 use crate::commands::data_objects::all_source_power_data_object::AllSourceDataPowerDataObject;
@@ -35,8 +37,7 @@ use crate::types::units::*;
 impl<I2C: I2c> Ap33772s<I2C> {
     #[maybe_async::maybe_async]
     pub async fn get_status(&mut self) -> Result<Status, Ap33772sError> {
-        let status = self.read_one_byte_command::<Status>().await?;
-        Ok(status)
+        self.read_one_byte_command::<Status>().await
     }
 }
 /// This module provides methods to read various statistics from the AP33772S device.
@@ -47,10 +48,9 @@ impl<I2C: I2c> Ap33772s<I2C> {
         &mut self,
     ) -> Result<VoltageOutputControl, Ap33772sError> {
         let system_control = self.read_one_byte_command::<SystemControl>().await?;
-        let v_out_control = system_control
+        system_control
             .v_out_control()
-            .map_err(|_| Ap33772sError::DataMalformed)?;
-        Ok(v_out_control)
+            .map_err(|invalid_data| Ap33772sError::DataMalformed(invalid_data))
     }
 
     #[maybe_async::maybe_async]
@@ -155,7 +155,7 @@ impl<I2C: I2c> Ap33772s<I2C> {
             .await?;
         let under_voltage_threshold = under_voltage_threshold
             .threshold()
-            .or(Err(Ap33772sError::DataMalformed))?;
+            .map_err(|invalid_data| Ap33772sError::DataMalformed(invalid_data))?;
         let de_rating_threshold = self.read_one_byte_command::<DeRatingThreshold>().await?;
         Ok(Thresholds {
             over_voltage: over_voltage_threshold.voltage()?,
@@ -210,6 +210,6 @@ impl<I2C: I2c> Ap33772s<I2C> {
 
         power_delivery_request_result
             .response()
-            .or(Err(Ap33772sError::DataMalformed))
+            .map_err(|invalid_data| Ap33772sError::DataMalformed(invalid_data))
     }
 }

@@ -1,8 +1,7 @@
-use uom::ConversionFactor;
-
+//! This module specifically handles all Setter methods of the device and is focused on
+//! setting the AP33772S in different states and modes
 use super::hal::*;
-use crate::Ap33772sError;
-use crate::ap33772s::Ap33772s;
+use crate::ap33772s::{Ap33772s, Ap33772sError};
 use crate::commands::configuration::system_control::SystemControl;
 use crate::commands::power_delivery::power_delivery_request_message::PowerDeliveryRequestMessage;
 use crate::commands::statistics::minimum_selection_voltage::MinimumSelectionVoltage;
@@ -15,6 +14,7 @@ use crate::commands::thresholds::over_voltage_protection_threshold::OverVoltageP
 use crate::commands::thresholds::under_voltage_protection_threshold::UnderVoltageProtectionThreshold;
 use crate::types::units::*;
 use crate::types::*;
+use uom::ConversionFactor;
 
 impl<I2C: I2c> Ap33772s<I2C> {
     #[maybe_async::maybe_async]
@@ -25,8 +25,7 @@ impl<I2C: I2c> Ap33772s<I2C> {
         let system_control: SystemControl = SystemControl::builder()
             .with_v_out_control(voltage_output)
             .build();
-        self.write_one_byte_command(system_control).await?;
-        Ok(())
+        self.write_one_byte_command(system_control).await
     }
     #[maybe_async::maybe_async]
     pub async fn set_minimum_selection_voltage(
@@ -37,9 +36,7 @@ impl<I2C: I2c> Ap33772s<I2C> {
         let minimum_selection_voltage = MinimumSelectionVoltage::builder()
             .with_raw_voltage(raw_voltage)
             .build();
-        self.write_one_byte_command(minimum_selection_voltage)
-            .await?;
-        Ok(())
+        self.write_one_byte_command(minimum_selection_voltage).await
     }
     #[maybe_async::maybe_async]
     pub async fn send_power_delivery_request(
@@ -59,8 +56,8 @@ impl<I2C: I2c> Ap33772s<I2C> {
                 .with_power_data_object_index(power_data_object_index)
                 .build()
         } else {
-            let voltage_selection = voltage_selection.ok_or(Ap33772sError::DataMalformed)?;
-            let scaling_value = scaling_value.ok_or(Ap33772sError::DataMalformed)?;
+            let voltage_selection = voltage_selection.ok_or(Ap33772sError::InvalidRequest)?;
+            let scaling_value = scaling_value.ok_or(Ap33772sError::InvalidRequest)?;
             let scaled_voltage = scaling_value * voltage_selection;
 
             // Check for overflow
@@ -76,8 +73,7 @@ impl<I2C: I2c> Ap33772s<I2C> {
                 .with_power_data_object_index(power_data_object_index)
                 .build()
         };
-        self.write_two_byte_command(delivery_message).await?;
-        Ok(())
+        self.write_two_byte_command(delivery_message).await
     }
 }
 
@@ -102,8 +98,7 @@ impl<I2C: I2c> Ap33772s<I2C> {
         let resistance_100 = ThermalResistance25::builder()
             .with_raw_thermal_resistance(convert_resistance_to_raw_resistance(resistances._100)?)
             .build();
-        self.write_two_byte_command(resistance_100).await?;
-        Ok(())
+        self.write_two_byte_command(resistance_100).await
     }
 
     #[maybe_async::maybe_async]
@@ -150,7 +145,6 @@ impl<I2C: I2c> Ap33772s<I2C> {
                 thresholds.derating,
             )?)
             .build();
-        self.write_one_byte_command(derating_threshold).await?;
-        Ok(())
+        self.write_one_byte_command(derating_threshold).await
     }
 }
