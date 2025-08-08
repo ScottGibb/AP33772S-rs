@@ -38,8 +38,10 @@ impl<I2C: I2c> Ap33772s<I2C> {
             .build();
         self.write_one_byte_command(minimum_selection_voltage).await
     }
+
     #[maybe_async::maybe_async]
-    pub async fn send_power_delivery_request(
+    #[cfg_attr(feature = "advanced", visibility::make(pub))]
+    pub(crate) async fn send_power_delivery_request(
         &mut self,
         power_data_object_index: PowerDataObject,
         voltage_selection: Option<ElectricPotential>,
@@ -47,7 +49,6 @@ impl<I2C: I2c> Ap33772s<I2C> {
         data_objects: &AllSourceDataPowerDataObject,
     ) -> Result<(), Ap33772sError> {
         let power_type = data_objects.get_power_mode(&power_data_object_index);
-        let scaling_value = data_objects.get_voltage_scaling(&power_data_object_index);
         let delivery_message = if power_type == PowerType::Fixed {
             // If we are in fixed PDO Mode, the voltage selection is not needed.
             PowerDeliveryRequestMessage::builder()
@@ -56,6 +57,7 @@ impl<I2C: I2c> Ap33772s<I2C> {
                 .with_power_data_object_index(power_data_object_index)
                 .build()
         } else {
+            let scaling_value = data_objects.get_voltage_scaling(&power_data_object_index);
             let voltage_selection = voltage_selection.ok_or(Ap33772sError::InvalidRequest)?;
             let scaling_value = scaling_value.ok_or(Ap33772sError::InvalidRequest)?;
             let scaled_voltage = scaling_value * voltage_selection;

@@ -39,9 +39,39 @@ impl<I2C: I2c> Ap33772s<I2C> {
     pub async fn get_status(&mut self) -> Result<Status, Ap33772sError> {
         self.read_one_byte_command::<Status>().await
     }
+
+    #[maybe_async::maybe_async]
+    pub async fn get_statistics(&mut self) -> Result<Statistics, Ap33772sError> {
+        let current = self.get_current().await?;
+        let voltage = self.get_voltage().await?;
+        let temperature = self.get_temperature().await?;
+        let requested_voltage = self.get_requested_voltage().await?;
+        let requested_current = self.get_requested_current().await?;
+        Ok(Statistics {
+            current,
+            voltage,
+            temperature,
+            power: current * voltage,
+            requested_voltage,
+            requested_current,
+            requested_power: requested_voltage * requested_current,
+        })
+    }
+    #[maybe_async::maybe_async]
+    #[cfg_attr(feature = "advanced", visibility::make(pub))]
+    pub(crate) async fn get_power_delivery_request_result(
+        &mut self,
+    ) -> Result<PowerDeliveryResponse, Ap33772sError> {
+        let power_delivery_request_result = self
+            .read_one_byte_command::<PowerDeliveryMessageResult>()
+            .await?;
+
+        power_delivery_request_result
+            .response()
+            .map_err(Ap33772sError::DataMalformed)
+    }
 }
-/// This module provides methods to read various statistics from the AP33772S device.
-/// It includes methods to get the current, voltage, temperature, power,
+
 impl<I2C: I2c> Ap33772s<I2C> {
     #[maybe_async::maybe_async]
     pub async fn get_voltage_out_override(
@@ -95,23 +125,7 @@ impl<I2C: I2c> Ap33772s<I2C> {
         let requested_power = requested_voltage * requested_current;
         Ok(requested_power)
     }
-    #[maybe_async::maybe_async]
-    pub async fn get_statistics(&mut self) -> Result<Statistics, Ap33772sError> {
-        let current = self.get_current().await?;
-        let voltage = self.get_voltage().await?;
-        let temperature = self.get_temperature().await?;
-        let requested_voltage = self.get_requested_voltage().await?;
-        let requested_current = self.get_requested_current().await?;
-        Ok(Statistics {
-            current,
-            voltage,
-            temperature,
-            power: current * voltage,
-            requested_voltage,
-            requested_current,
-            requested_power: requested_voltage * requested_current,
-        })
-    }
+
     #[maybe_async::maybe_async]
     pub async fn get_minimum_selection_voltage(
         &mut self,
@@ -198,18 +212,5 @@ impl<I2C: I2c> Ap33772s<I2C> {
         }
 
         Ok(data_object)
-    }
-
-    #[maybe_async::maybe_async]
-    pub async fn get_power_delivery_request_result(
-        &mut self,
-    ) -> Result<PowerDeliveryResponse, Ap33772sError> {
-        let power_delivery_request_result = self
-            .read_one_byte_command::<PowerDeliveryMessageResult>()
-            .await?;
-
-        power_delivery_request_result
-            .response()
-            .map_err(Ap33772sError::DataMalformed)
     }
 }

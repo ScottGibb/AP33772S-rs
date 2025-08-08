@@ -21,14 +21,15 @@ fn main() {
     let index = PowerDataObject::StandardPowerRange1;
     let current_selection = CurrentSelection::_5AOrMore;
     let voltage_selection = None; // No voltage selection needed for fixed PDOs
-    ap33772s
-        .send_power_delivery_request(
+    let response = ap33772s
+        .negotiate_power_delivery(
             index,
             voltage_selection,
             current_selection,
             &power_delivery_capabilities,
         )
         .expect("Failed to send power delivery request");
+    println!("Power Delivery request Response: {response:?}");
 
     println!(
         "Switched to Power Data Object Index {index} with current selection {current_selection}"
@@ -39,14 +40,16 @@ fn main() {
     let index = PowerDataObject::StandardPowerRange2;
     let current_selection = CurrentSelection::_3A;
     let voltage_selection = None; // No voltage selection needed for fixed PDOs
-    ap33772s
-        .send_power_delivery_request(
+    let response = ap33772s
+        .negotiate_power_delivery(
             index,
             voltage_selection,
             current_selection,
             &power_delivery_capabilities,
         )
         .expect("Failed to send power delivery request");
+    println!("Power Delivery request Response: {response:?}");
+
     println!(
         "Switched to Power Data Object Index {index} with current selection {current_selection}"
     );

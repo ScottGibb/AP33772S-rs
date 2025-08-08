@@ -70,14 +70,15 @@ fn main() {
     println!("Current Selected: {current_selection}");
 
     // Request the Power Delivery
-    ap33772s
-        .send_power_delivery_request(
+    let response = ap33772s
+        .negotiate_power_delivery(
             power_data_object_index,
             voltage,
             current_selection,
             &power_delivery_capabilities,
         )
         .expect("Failed to send Power Delivery Request");
+    println!("Power Delivery request Response: {response:?}");
 
     // Read the Current Statistics
     let current_statistics = ap33772s

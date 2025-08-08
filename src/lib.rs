@@ -33,6 +33,7 @@ mod communications;
 #[cfg_attr(docsrs, doc(cfg(feature = "sync")))]
 #[cfg(feature = "sync")]
 mod hal {
+    pub use embedded_hal::delay::DelayNs;
     pub use embedded_hal::i2c::Error;
     pub use embedded_hal::i2c::ErrorKind;
     pub use embedded_hal::i2c::I2c;
@@ -42,6 +43,7 @@ mod hal {
 #[cfg_attr(docsrs, doc(cfg(feature = "async")))]
 #[cfg(feature = "async")]
 mod hal {
+    pub use embedded_hal_async::delay::DelayNs;
     pub use embedded_hal_async::i2c::Error;
     pub use embedded_hal_async::i2c::ErrorKind;
     pub use embedded_hal_async::i2c::I2c;

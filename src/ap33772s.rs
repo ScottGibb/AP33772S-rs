@@ -4,6 +4,10 @@ use super::hal::*;
 use crate::commands::configuration::system_control::SystemControl;
 use crate::commands::power_delivery::power_delivery_command_message::PowerDeliveryCommandMessage;
 use crate::hal;
+use crate::types::units::*;
+use crate::types::{
+    AllSourceDataPowerDataObject, CurrentSelection, PowerDataObject, PowerDeliveryResponse,
+};
 
 /// Represents the AP33772S device.
 /// It provides methods for interacting with the device over I2C.
@@ -53,6 +57,25 @@ impl<I2C: I2c> Ap33772s<I2C> {
             .build();
         self.write_one_byte_command(power_delivery_command_message)
             .await
+    }
+
+    #[maybe_async::maybe_async]
+    pub async fn negotiate_power_delivery(
+        &mut self,
+        power_data_object_index: PowerDataObject,
+        voltage_selection: Option<ElectricPotential>,
+        current_selection: CurrentSelection,
+        data_objects: &AllSourceDataPowerDataObject,
+    ) -> Result<PowerDeliveryResponse, Ap33772sError> {
+        self.send_power_delivery_request(
+            power_data_object_index,
+            voltage_selection,
+            current_selection,
+            data_objects,
+        )
+        .await?;
+
+        self.get_power_delivery_request_result().await
     }
 }
 

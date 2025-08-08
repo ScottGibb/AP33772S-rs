@@ -23,14 +23,15 @@ fn main() {
         // Increase the voltage using the first extended power range data object
         for voltage in (15000..=30000).step_by(1000) {
             // Send a power delivery request with the current voltage
-            ap33772s
-                .send_power_delivery_request(
+            let response = ap33772s
+                .negotiate_power_delivery(
                     PowerDataObject::ExtendedPowerRange8,
                     Some(ElectricPotential::new::<millivolt>(voltage as f32)),
                     CurrentSelection::_3A,
                     &power_data_objects,
                 )
                 .expect("Failed to send power delivery request");
+            println!("Power Delivery request Response: {response:?}");
 
             // Wait for a while to observe the change
             std::thread::sleep(std::time::Duration::from_secs(2));

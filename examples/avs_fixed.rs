@@ -20,14 +20,15 @@ fn main() {
         .expect("Failed to get power data object indices");
 
     loop {
-        ap33772s
-            .send_power_delivery_request(
+        let response = ap33772s
+            .negotiate_power_delivery(
                 PowerDataObject::ExtendedPowerRange8,
                 Some(adjustable_voltage_supply),
                 CurrentSelection::_3A,
                 &power_data_objects,
             )
             .expect("Failed to send power delivery request");
+        println!("Power Delivery request Response: {response:?}");
 
         std::thread::sleep(std::time::Duration::from_secs(1)); // Call AVS every second to stop the charger from disconnecting if no sink
     }

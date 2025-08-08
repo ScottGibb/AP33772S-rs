@@ -17,14 +17,15 @@ fn main() {
         .expect("Failed to get power data object indices");
     for voltage in (3600..=20000).step_by(100) {
         // Set the Power Data Object
-        ap33772s
-            .send_power_delivery_request(
+        let response = ap33772s
+            .negotiate_power_delivery(
                 PowerDataObject::StandardPowerRange1,
                 Some(ElectricPotential::new::<millivolt>(voltage as f32)),
                 CurrentSelection::_1A,
                 &power_data_objects,
             )
             .expect("Failed to send power delivery request");
+        println!("Power Delivery request Response: {response:?}");
 
         // Wait for a while to observe the change
         std::thread::sleep(std::time::Duration::from_secs(2));
