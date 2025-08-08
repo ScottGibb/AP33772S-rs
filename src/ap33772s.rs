@@ -26,7 +26,7 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     /// The address is defined in the AP33772S datasheet.
     /// Creates a new instance of the AP33772S device. This Instance has no initialisation with the I2C bus.
     pub fn new(i2c: I2C, delay: D) -> Self {
-        Self { i2c, delay }
+        todo!("Not implemented Yet")
     }
     /// Creates a new instance of the AP33772S device and checks if the device is present on the bus.
     /// TODO: Integrate Setting of Thermal Resistance and Thresholds matching RotoPD Board. This also handles the timings required for initialisation by using the provided hals delay method
@@ -35,6 +35,7 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
         let mut device = Self::new(i2c, delay);
         device.is_device_present().await?;
         // TODO: Initialize Thermal Resistances and Thresholds
+        todo!("Not implemented Yet");
         Ok(device)
     }
 }
