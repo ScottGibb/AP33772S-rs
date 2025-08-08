@@ -124,6 +124,7 @@ impl defmt::Format for ThermalResistances {
         );
     }
 }
+// TODO: Check this
 impl Default for ThermalResistances {
     fn default() -> Self {
         ThermalResistances {
@@ -187,7 +188,7 @@ impl defmt::Format for Thresholds {
         );
     }
 }
-
+// TODO: Check this
 impl Default for Thresholds {
     fn default() -> Self {
         Thresholds {
