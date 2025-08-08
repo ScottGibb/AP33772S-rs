@@ -12,4 +12,5 @@ pub mod statistics;
 pub mod thermal_resistances;
 pub mod thresholds;
 
-pub mod macros;
+// Keep macros private - they should not be exposed to end users
+mod macros;
