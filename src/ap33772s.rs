@@ -29,7 +29,7 @@ impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
     }
 
     /// Creates a new instance of the AP33772S device and checks if the device is present on the bus.
-    /// TODO: Integrate Setting of Thermal Resistance and Thresholds matching RotoPD Board
+    /// TODO: Integrate Setting of Thermal Resistance and Thresholds matching RotoPD Board. This also handles the timings required for initialisation by using the provided hals delay method
     #[maybe_async::maybe_async]
     pub async fn new_default(i2c: I2C, delay: D) -> Result<Self, Ap33772sError> {
         let mut device = Self::new(i2c, delay);
@@ -79,7 +79,7 @@ impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
             data_objects,
         )
         .await?;
-        self.delay.delay_ms(3);
+        self.delay.delay_ms(3); // Value chosen from the [Datasheet](../docs/AP33772S-Raspberry-Pi-I2C-User-Guide.pdf) 
         self.get_power_delivery_request_result().await
     }
 }
