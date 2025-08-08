@@ -3,7 +3,7 @@ use crate::impl_one_byte_read_command;
 use bitbybit::bitfield;
 
 /// The host MCU, working as an I2C master, can access the status of the AP33772S through the STATUS register.
-///  The STATUS register will be reset to 0 after a read operation.
+/// The STATUS register will be reset to 0 after a read operation.
 ///
 /// Datasheet Name: STATUS
 #[bitfield(u8, default = 0x00)]
@@ -11,7 +11,7 @@ use bitbybit::bitfield;
 pub struct Status {
     /// Detect if the System has started.
     /// Allow [System Configuration Register](crate::commands::configuration::protection_mode_configuration::ProtectionModeConfiguration)
-    /// to be updated within 100ms
+    /// to be updated within 100ms of connection.
     ///
     /// Datasheet Name: STARTED_MSK
     #[bit(0, r)]
