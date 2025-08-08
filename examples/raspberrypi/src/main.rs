@@ -5,7 +5,7 @@ use ap33772s_rs::ap33772s::Ap33772s;
 use rppal::i2c::I2c;
 fn main() {
     let i2c = I2c::new().expect("Failed to set up I2C");
-    println(
+    println!(
         "I2C Clock Speed: {}",
         i2c.get_clock_speed().expect("Failed to get clock speed"),
     );
