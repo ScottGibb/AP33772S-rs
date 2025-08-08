@@ -1,7 +1,6 @@
 use crate::commands::command_map::Command;
 use crate::impl_one_byte_read_command;
 use bitbybit::{bitenum, bitfield};
-use num_enum::{IntoPrimitive, TryFromPrimitive};
 
 /// The OperationMode register is defined as the AP33772S’s operation mode.
 ///
@@ -42,9 +41,8 @@ pub struct OperationMode {
 
 /// The AP33772S supports two operation modes: Normal and Derating.
 #[bitenum(u1, exhaustive = true)]
-#[derive(Debug, PartialEq, Default, TryFromPrimitive, IntoPrimitive)]
+#[derive(Debug, PartialEq, Default)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
-#[repr(u8)]
 pub enum DeRatingMode {
     #[default]
     Normal = 0,
@@ -57,7 +55,7 @@ pub enum DeRatingMode {
 ///
 /// When `ConfigurationChannel::Two`, the CC2 is connected to the CC line.
 #[bitenum(u1, exhaustive = true)]
-#[derive(Debug, PartialEq, Default, TryFromPrimitive, IntoPrimitive)]
+#[derive(Debug, PartialEq, Default)]
 #[repr(u8)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum ConfigurationChannel {

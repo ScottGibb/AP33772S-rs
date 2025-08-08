@@ -29,7 +29,7 @@ fn main() {
         panic!("Power Delivery Index must be between 1 and 13");
     }
     let power_data_object_index = PowerDataObject::try_from(power_data_object_index - 1)
-        .expect("The Power Data Object Index must be between 1 and 13");
+        .expect("Invalid Power Data Object Index");
     println!(" Power Data Object Index: {power_data_object_index}");
 
     // Check of the Power Data Object Index is not a fixed type //TODO: Replace this

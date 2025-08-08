@@ -50,7 +50,7 @@ impl<I2C: I2c> Ap33772s<I2C> {
         let system_control = self.read_one_byte_command::<SystemControl>().await?;
         system_control
             .v_out_control()
-            .map_err(|invalid_data| Ap33772sError::DataMalformed(invalid_data))
+            .map_err(Ap33772sError::DataMalformed)
     }
 
     #[maybe_async::maybe_async]
@@ -155,7 +155,7 @@ impl<I2C: I2c> Ap33772s<I2C> {
             .await?;
         let under_voltage_threshold = under_voltage_threshold
             .threshold()
-            .map_err(|invalid_data| Ap33772sError::DataMalformed(invalid_data))?;
+            .map_err(Ap33772sError::DataMalformed)?;
         let de_rating_threshold = self.read_one_byte_command::<DeRatingThreshold>().await?;
         Ok(Thresholds {
             over_voltage: over_voltage_threshold.voltage()?,
@@ -176,7 +176,7 @@ impl<I2C: I2c> Ap33772s<I2C> {
         self.i2c
             .write_read(
                 Self::ADDRESS,
-                &[u8::from(Command::AllSourcesPowerDataObject)],
+                &[Command::AllSourcesPowerDataObject as u8],
                 &mut buff,
             )
             .await?;
@@ -210,6 +210,6 @@ impl<I2C: I2c> Ap33772s<I2C> {
 
         power_delivery_request_result
             .response()
-            .map_err(|invalid_data| Ap33772sError::DataMalformed(invalid_data))
+            .map_err(Ap33772sError::DataMalformed)
     }
 }

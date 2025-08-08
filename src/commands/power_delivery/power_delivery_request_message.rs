@@ -1,7 +1,6 @@
 use super::command_map::Command;
-use crate::impl_two_byte_write_command;
+use crate::{ap33772s::Ap33772sError, impl_two_byte_write_command};
 use bitbybit::{bitenum, bitfield};
-use num_enum::{IntoPrimitive, TryFromPrimitive};
 
 #[bitfield(u16, default = 0x0000)]
 #[derive(Debug, PartialEq)]
@@ -15,10 +14,9 @@ pub struct PowerDeliveryRequestMessage {
     pub power_data_object_index: PowerDataObject,
 }
 
-#[derive(Debug, PartialEq, PartialOrd, TryFromPrimitive, IntoPrimitive)]
+#[derive(Debug, PartialEq, PartialOrd)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[bitenum(u4, exhaustive = false)]
-#[repr(u8)]
 pub enum PowerDataObject {
     StandardPowerRange1 = 0x00,
     StandardPowerRange2 = 0x01,
@@ -33,6 +31,31 @@ pub enum PowerDataObject {
     ExtendedPowerRange11 = 0x0A,
     ExtendedPowerRange12 = 0x0B,
     ExtendedPowerRange13 = 0x0C,
+}
+
+impl TryFrom<u8> for PowerDataObject {
+    type Error = Ap33772sError;
+
+    /// Converts a u8 value to a PowerDataObject enum variant.
+    /// Returns an error if the value doesn't correspond to a valid variant.
+    fn try_from(value: u8) -> Result<Self, Self::Error> {
+        match value {
+            0x00 => Ok(PowerDataObject::StandardPowerRange1),
+            0x01 => Ok(PowerDataObject::StandardPowerRange2),
+            0x02 => Ok(PowerDataObject::StandardPowerRange3),
+            0x03 => Ok(PowerDataObject::StandardPowerRange4),
+            0x04 => Ok(PowerDataObject::StandardPowerRange5),
+            0x05 => Ok(PowerDataObject::StandardPowerRange6),
+            0x06 => Ok(PowerDataObject::StandardPowerRange7),
+            0x07 => Ok(PowerDataObject::ExtendedPowerRange8),
+            0x08 => Ok(PowerDataObject::ExtendedPowerRange9),
+            0x09 => Ok(PowerDataObject::ExtendedPowerRange10),
+            0x0A => Ok(PowerDataObject::ExtendedPowerRange11),
+            0x0B => Ok(PowerDataObject::ExtendedPowerRange12),
+            0x0C => Ok(PowerDataObject::ExtendedPowerRange13),
+            _ => Err(Ap33772sError::ConversionFailed),
+        }
+    }
 }
 
 impl core::fmt::Display for PowerDataObject {
@@ -56,10 +79,9 @@ impl core::fmt::Display for PowerDataObject {
     }
 }
 
-#[derive(Debug, PartialEq, PartialOrd, TryFromPrimitive, IntoPrimitive)]
+#[derive(Debug, PartialEq, PartialOrd)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[bitenum(u4, exhaustive = true)]
-#[repr(u8)]
 pub enum CurrentSelection {
     _1A = 0,
     _1_25A = 1,
@@ -78,6 +100,35 @@ pub enum CurrentSelection {
     _4_5A = 14,
     _5AOrMore = 15,
 }
+
+impl TryFrom<u8> for CurrentSelection {
+    type Error = Ap33772sError;
+
+    /// Converts a u8 value to a CurrentSelection enum variant.
+    /// Returns an error if the value doesn't correspond to a valid variant.
+    fn try_from(value: u8) -> Result<Self, Self::Error> {
+        match value {
+            0 => Ok(CurrentSelection::_1A),
+            1 => Ok(CurrentSelection::_1_25A),
+            2 => Ok(CurrentSelection::_1_5A),
+            3 => Ok(CurrentSelection::_1_75A),
+            4 => Ok(CurrentSelection::_2A),
+            5 => Ok(CurrentSelection::_2_25A),
+            6 => Ok(CurrentSelection::_2_5A),
+            7 => Ok(CurrentSelection::_2_75A),
+            8 => Ok(CurrentSelection::_3A),
+            9 => Ok(CurrentSelection::_3_25A),
+            10 => Ok(CurrentSelection::_3_5A),
+            11 => Ok(CurrentSelection::_3_75A),
+            12 => Ok(CurrentSelection::_4A),
+            13 => Ok(CurrentSelection::_4_25A),
+            14 => Ok(CurrentSelection::_4_5A),
+            15 => Ok(CurrentSelection::_5AOrMore),
+            _ => Err(Ap33772sError::ConversionFailed),
+        }
+    }
+}
+
 pub const CURRENT_SELECTIONS: [CurrentSelection; 16] = [
     CurrentSelection::_1A,
     CurrentSelection::_1_25A,

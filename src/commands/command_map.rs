@@ -1,5 +1,3 @@
-use num_enum::{IntoPrimitive, TryFromPrimitive};
-
 /// This module defines the command map for the AP33772S device, including various commands
 /// for configuration, power delivery, and status management.
 /// The `Command` enum represents the different commands that can be sent to the device,
@@ -13,9 +11,8 @@ use num_enum::{IntoPrimitive, TryFromPrimitive};
 /// // // In the case of writing to Registers, you can use the `write_one_byte_command` method
 /// //TODO FIll this in
 /// ```
-#[derive(Debug, IntoPrimitive, TryFromPrimitive, PartialEq, Clone, Copy)]
+#[derive(Debug, PartialEq, Clone, Copy)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
-#[repr(u8)]
 #[non_exhaustive] //TODO: Look to remove once we have full command map
 pub enum Command {
     /// Command Associated with the STATUS Register
