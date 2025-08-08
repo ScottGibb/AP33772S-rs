@@ -17,6 +17,9 @@ pub enum Ap33772sError {
     /// This can occur when there is another device on the bus using the same I2C Address. Specifically the u8 returns the value
     /// thats supposed to be the command version of the device.
     WrongCommandVersion(u8), // The value stored at the command version location
+    /// This can occur when the device has not booted correctly. Potentially a timing issue and the device hasnt
+    /// had enough time to power up correctly
+    InitialisationFailure,
 }
 
 impl<E: hal::Error> From<E> for Ap33772sError {
@@ -40,6 +43,7 @@ impl core::fmt::Display for Ap33772sError {
                     "Device not found. Raw value at command version location: {value}"
                 )
             }
+            Ap33772sError::InitialisationFailure => write!(f, "Failed to initialise correctly!"),
             Ap33772sError::InvalidRequest => write!(f, "Invalid request"),
         }
     }

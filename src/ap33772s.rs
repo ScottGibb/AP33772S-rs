@@ -7,6 +7,7 @@ use crate::error::Ap33772sError;
 use crate::types::units::*;
 use crate::types::{
     AllSourceDataPowerDataObject, CurrentSelection, PowerDataObject, PowerDeliveryResponse,
+    ThermalResistances, Thresholds,
 };
 
 /// Represents the AP33772S device.
@@ -19,29 +20,10 @@ pub struct Ap33772s<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: Inpu
     pub(crate) interrupt_pin: P,
 }
 
+/// This impl block represents the the initialisation methods for when no interrupts are used. This approach uses a
+/// delay approach which is dependent on the users HAL
 #[cfg(not(feature = "interrupts"))]
-impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<I2C, D> {
-    /// The I2C address of the AP33772S device.
-    /// This address is used for communication with the device over I2C.
-    /// The address is defined in the AP33772S datasheet.
-    /// Creates a new instance of the AP33772S device. This Instance has no initialisation with the I2C bus.
-    pub fn new(i2c: I2C, delay: D) -> Self {
-        todo!("Not implemented Yet")
-    }
-    /// Creates a new instance of the AP33772S device and checks if the device is present on the bus.
-    /// TODO: Integrate Setting of Thermal Resistance and Thresholds matching RotoPD Board. This also handles the timings required for initialisation by using the provided hals delay method
-    #[maybe_async::maybe_async]
-    pub async fn new_default(i2c: I2C, delay: D) -> Result<Self, Ap33772sError> {
-        let mut device = Self::new(i2c, delay);
-        device.is_device_present().await?;
-        // TODO: Initialize Thermal Resistances and Thresholds
-        todo!("Not implemented Yet");
-        Ok(device)
-    }
-}
-
-#[cfg(feature = "interrupts")]
-impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<I2C, D> {
+impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
     /// The I2C address of the AP33772S device.
     /// This address is used for communication with the device over I2C.
     /// The address is defined in the AP33772S datasheet.
@@ -55,7 +37,43 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     pub async fn new_default(i2c: I2C, delay: D) -> Result<Self, Ap33772sError> {
         let mut device = Self::new(i2c, delay);
         device.is_device_present().await?;
+
+        // Check if device has started
+        if device.get_status()?.started() {
+            device.delay.delay_ms(100); // Initial delay to allow the device to power up
+            device
+                .set_thermal_resistances(ThermalResistances::default())
+                .await?;
+            device.set_thresholds(Thresholds::default()).await?;
+        } else {
+            return Err(Ap33772sError::InitialisationFailure);
+        }
+        Ok(device)
+    }
+}
+
+#[cfg(feature = "interrupts")]
+impl<I2C: I2c, D: DelayNs, P: InputPin> Ap33772s<I2C, D, P> {
+    /// The I2C address of the AP33772S device.
+    /// This address is used for communication with the device over I2C.
+    /// The address is defined in the AP33772S datasheet.
+    /// Creates a new instance of the AP33772S device. This Instance has no initialisation with the I2C bus.
+    pub fn new(i2c: I2C, delay: D, interrupt_pin: P) -> Self {
+        todo!("Not implemented Yet");
+        Self {
+            i2c,
+            delay,
+            interrupt_pin,
+        }
+    }
+    /// Creates a new instance of the AP33772S device and checks if the device is present on the bus.
+    /// TODO: Integrate Setting of Thermal Resistance and Thresholds matching RotoPD Board. This also handles the timings required for initialisation by using the provided hals delay method
+    #[maybe_async::maybe_async]
+    pub async fn new_default(i2c: I2C, delay: D, interrupt_pin: P) -> Result<Self, Ap33772sError> {
+        let mut device = Self::new(i2c, delay, interrupt_pin);
+        device.is_device_present().await?;
         // TODO: Initialize Thermal Resistances and Thresholds
+        todo!("Not implemented Yet");
         Ok(device)
     }
 }

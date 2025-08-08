@@ -124,7 +124,16 @@ impl defmt::Format for ThermalResistances {
         );
     }
 }
-
+impl Default for ThermalResistances {
+    fn default() -> Self {
+        ThermalResistances {
+            _25: ElectricalResistance::new::<milliohm>(1000.0),
+            _50: ElectricalResistance::new::<milliohm>(500.0),
+            _75: ElectricalResistance::new::<milliohm>(333.33),
+            _100: ElectricalResistance::new::<milliohm>(250.0),
+        }
+    }
+}
 pub use crate::commands::thresholds::under_voltage_protection_threshold::UnderVoltageThreshold;
 
 #[derive(Debug, Clone, PartialEq)]
@@ -176,5 +185,17 @@ impl defmt::Format for Thresholds {
             self.over_temperature.get::<degree_celsius>(),
             self.derating.get::<degree_celsius>(),
         );
+    }
+}
+
+impl Default for Thresholds {
+    fn default() -> Self {
+        Thresholds {
+            over_voltage: ElectricPotential::new::<volt>(20.0),
+            under_voltage: UnderVoltageThreshold::default(),
+            over_current: ElectricCurrent::new::<ampere>(3.0),
+            over_temperature: ThermodynamicTemperature::new::<degree_celsius>(100.0),
+            derating: ThermodynamicTemperature::new::<degree_celsius>(80.0),
+        }
     }
 }

@@ -23,10 +23,11 @@ pub struct UnderVoltageProtectionThreshold {
 
 /// The UnderVoltageThreshold enum defines the possible values for the UVP threshold.
 /// The UVP Threshold Voltage is UVPTHR percentage (%) of [VoltageRequested](crate::commands::requested::voltage_requested::VoltageRequested)
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Default)]
 #[bitenum(u4, exhaustive = false)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum UnderVoltageThreshold {
+    #[default]
     EightyPercent = 0,
     SeventyFivePercent = 1,
     SeventyPercent = 2,
