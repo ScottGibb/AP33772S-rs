@@ -1,5 +1,5 @@
 use super::command_map;
-use crate::ap33772s::Ap33772sError;
+use crate::error::Ap33772sError;
 use uom::si::f32::ElectricalResistance;
 
 pub mod thermal_resistance_100;

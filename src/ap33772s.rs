@@ -3,7 +3,7 @@
 use super::hal::*;
 use crate::commands::configuration::system_control::SystemControl;
 use crate::commands::power_delivery::power_delivery_command_message::PowerDeliveryCommandMessage;
-use crate::hal;
+use crate::error::Ap33772sError;
 use crate::types::units::*;
 use crate::types::{
     AllSourceDataPowerDataObject, CurrentSelection, PowerDataObject, PowerDeliveryResponse,
@@ -12,22 +12,22 @@ use crate::types::{
 /// Represents the AP33772S device.
 /// It provides methods for interacting with the device over I2C.
 /// See The [GitHub Repo](https://github.com/ScottGibb/AP33772S-rs) for examples on how to use the API.
-pub struct Ap33772s<I2C: I2c, D: DelayNs> {
+pub struct Ap33772s<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> {
     pub(crate) i2c: I2C,
     pub(crate) delay: D,
+    #[cfg(feature = "interrupts")]
+    pub(crate) interrupt_pin: P,
 }
 
-impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
+#[cfg(not(feature = "interrupts"))]
+impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<I2C, D> {
     /// The I2C address of the AP33772S device.
     /// This address is used for communication with the device over I2C.
     /// The address is defined in the AP33772S datasheet.
-    pub const ADDRESS: SevenBitAddress = 0x52;
-
     /// Creates a new instance of the AP33772S device. This Instance has no initialisation with the I2C bus.
     pub fn new(i2c: I2C, delay: D) -> Self {
         Self { i2c, delay }
     }
-
     /// Creates a new instance of the AP33772S device and checks if the device is present on the bus.
     /// TODO: Integrate Setting of Thermal Resistance and Thresholds matching RotoPD Board. This also handles the timings required for initialisation by using the provided hals delay method
     #[maybe_async::maybe_async]
@@ -37,7 +37,30 @@ impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
         // TODO: Initialize Thermal Resistances and Thresholds
         Ok(device)
     }
+}
 
+#[cfg(feature = "interrupts")]
+impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<I2C, D> {
+    /// The I2C address of the AP33772S device.
+    /// This address is used for communication with the device over I2C.
+    /// The address is defined in the AP33772S datasheet.
+    /// Creates a new instance of the AP33772S device. This Instance has no initialisation with the I2C bus.
+    pub fn new(i2c: I2C, delay: D) -> Self {
+        Self { i2c, delay }
+    }
+    /// Creates a new instance of the AP33772S device and checks if the device is present on the bus.
+    /// TODO: Integrate Setting of Thermal Resistance and Thresholds matching RotoPD Board. This also handles the timings required for initialisation by using the provided hals delay method
+    #[maybe_async::maybe_async]
+    pub async fn new_default(i2c: I2C, delay: D) -> Result<Self, Ap33772sError> {
+        let mut device = Self::new(i2c, delay);
+        device.is_device_present().await?;
+        // TODO: Initialize Thermal Resistances and Thresholds
+        Ok(device)
+    }
+}
+
+impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<I2C, D> {
+    pub const ADDRESS: SevenBitAddress = 0x52;
     /// Checks if the device is present on the I2C bus. It checks an command register of the device and matches with the expected value.
     #[maybe_async::maybe_async]
     pub async fn is_device_present(&mut self) -> Result<(), Ap33772sError> {
@@ -81,74 +104,5 @@ impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
         .await?;
         self.delay.delay_ms(3); // Value chosen from the [Datasheet](../docs/AP33772S-Raspberry-Pi-I2C-User-Guide.pdf) 
         self.get_power_delivery_request_result().await
-    }
-}
-
-/// Represents the different errors that can occur while interacting with the AP33772S device.
-#[derive(PartialEq, Clone, Debug)]
-#[non_exhaustive]
-pub enum Ap33772sError {
-    /// Represents an I2C Error this is specifcally a low level bus communication error
-    I2c(hal::ErrorKind),
-    /// Represents a conversion error, this can happen if the data being converted is in the wrong scale/format
-    ConversionFailed,
-    /// Represents a data malformed error, this can happen if the data being received is
-    /// not in the expected format. Usuaully will occur if a reserved bit is being used and
-    /// the enum cannot represent the state correctly. The u8 inside the error represents the value that was not expected
-    DataMalformed(u8),
-    /// This can occur when sending a Power Request and the arguments to the function are not correct
-    InvalidRequest,
-    /// This can occur when there is another device on the bus using the same I2C Address. Specifically the u8 returns the value
-    /// thats supposed to be the command version of the device.
-    WrongCommandVersion(u8), // The value stored at the command version location
-}
-
-impl<E: hal::Error> From<E> for Ap33772sError {
-    fn from(e: E) -> Self {
-        Ap33772sError::I2c(e.kind())
-    }
-}
-
-// Allows Error Bubbling when working with both std and no-std rust
-impl core::error::Error for Ap33772sError {}
-
-impl core::fmt::Display for Ap33772sError {
-    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-        match self {
-            Ap33772sError::I2c(err) => write!(f, "I2C error: {err:?}"),
-            Ap33772sError::ConversionFailed => write!(f, "Conversion error"),
-            Ap33772sError::DataMalformed(_value) => write!(f, "Malformed Data error"),
-            Ap33772sError::WrongCommandVersion(value) => {
-                write!(
-                    f,
-                    "Device not found. Raw value at command version location: {value}"
-                )
-            }
-            Ap33772sError::InvalidRequest => write!(f, "Invalid request"),
-        }
-    }
-}
-
-#[cfg(feature = "defmt")]
-impl defmt::Format for Ap33772sError {
-    fn format(&self, f: defmt::Formatter) {
-        defmt::write!(
-            f,
-            "AP33772S Error: {}",
-            match self {
-                Ap33772sError::I2c(err) => defmt::write!(f, "I2C error: {:?}", err),
-                Ap33772sError::ConversionFailed => defmt::write!(f, "Conversion error"),
-                Ap33772sError::DataMalformed(value) =>
-                    defmt::write!(f, "Malformed Data error: {:?}", value),
-                Ap33772sError::WrongCommandVersion(value) => {
-                    defmt::write!(
-                        f,
-                        "Device not found. Raw value at command version location: {:?}",
-                        value
-                    )
-                }
-                Ap33772sError::InvalidRequest => defmt::write!(f, "Invalid request"),
-            }
-        );
     }
 }

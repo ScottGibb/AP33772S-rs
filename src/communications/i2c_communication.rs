@@ -5,11 +5,11 @@ use super::traits::{
     ReadOneByteCommand, ReadTwoByteCommand, WriteOneByteCommand, WriteTwoByteCommand,
 };
 use crate::ap33772s::Ap33772s;
-use crate::ap33772s::Ap33772sError;
+use crate::error::Ap33772sError;
 use crate::hal::DelayNs;
 use crate::hal::I2c;
 
-impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
+impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<I2C, D> {
     #[maybe_async::maybe_async]
     pub async fn write_one_byte_command(
         &mut self,

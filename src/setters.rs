@@ -1,7 +1,7 @@
 //! This module specifically handles all Setter methods of the device and is focused on
 //! setting the AP33772S in different states and modes
 use super::hal::*;
-use crate::ap33772s::{Ap33772s, Ap33772sError};
+use crate::ap33772s::Ap33772s;
 use crate::commands::configuration::system_control::SystemControl;
 use crate::commands::power_delivery::power_delivery_request_message::PowerDeliveryRequestMessage;
 use crate::commands::statistics::minimum_selection_voltage::MinimumSelectionVoltage;
@@ -12,11 +12,12 @@ use crate::commands::thresholds::over_current_protection_threshold::OverCurrentP
 use crate::commands::thresholds::over_temperature_protection_threshold::OverTemperatureProtectionThreshold;
 use crate::commands::thresholds::over_voltage_protection_threshold::OverVoltageProtectionThreshold;
 use crate::commands::thresholds::under_voltage_protection_threshold::UnderVoltageProtectionThreshold;
+use crate::error::Ap33772sError;
 use crate::types::units::*;
 use crate::types::*;
 use uom::ConversionFactor;
 
-impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
+impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<I2C, D> {
     #[maybe_async::maybe_async]
     pub async fn override_output_voltage(
         &mut self,
@@ -79,7 +80,7 @@ impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
     }
 }
 
-impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
+impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<I2C, D> {
     #[maybe_async::maybe_async]
     pub async fn set_thermal_resistances(
         &mut self,

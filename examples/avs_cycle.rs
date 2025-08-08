@@ -9,7 +9,7 @@ use utils::{setup_delay, setup_i2c};
 fn main() {
     let i2c = setup_i2c(1_000).expect("Failed to set up I2C");
     let delay = setup_delay();
-    let mut ap33772s = Ap33772s::new_default(i2c, delay).unwrap();
+    let mut ap33772s = Ap33772s::new_default(i2c, delay).expect("Failed to initialise device");
 
     loop {
         // Set the MMOS Switch

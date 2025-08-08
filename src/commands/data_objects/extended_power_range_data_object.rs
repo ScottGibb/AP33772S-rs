@@ -1,6 +1,6 @@
 use super::source_power_data_object::{MinimumVoltage, SourcePowerCurrent};
-use crate::ap33772s::Ap33772sError;
 use crate::commands::data_objects::all_source_power_data_object::PowerType;
+use crate::error::Ap33772sError;
 use crate::types::units::*;
 use bitbybit::bitfield;
 

@@ -12,6 +12,7 @@ default = ["sync"]
 sync = ["dep:embedded-hal", "maybe-async/is_sync"]
 async = ["dep:embedded-hal-async"]
 defmt = ["dep:defmt"]
+interrupts = []
 advanced = [] # Used to enable lower level register access
 
 [dependencies]

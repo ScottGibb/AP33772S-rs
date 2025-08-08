@@ -2,7 +2,6 @@
 //! It includes methods to get the current, voltage, temperature, power,
 use super::hal::*;
 use crate::ap33772s::Ap33772s;
-use crate::ap33772s::Ap33772sError;
 use crate::commands::command_map::Command;
 use crate::commands::configuration::system_control::SystemControl;
 use crate::commands::data_objects::all_source_power_data_object::AllSourceDataPowerDataObject;
@@ -26,6 +25,7 @@ use crate::commands::thresholds::over_current_protection_threshold::OverCurrentP
 use crate::commands::thresholds::over_temperature_protection_threshold;
 use crate::commands::thresholds::over_voltage_protection_threshold::OverVoltageProtectionThreshold;
 use crate::commands::thresholds::under_voltage_protection_threshold::UnderVoltageProtectionThreshold;
+use crate::error::Ap33772sError;
 use crate::types::PowerDeliveryResponse;
 use crate::types::Statistics;
 use crate::types::Status;
@@ -34,7 +34,7 @@ use crate::types::Thresholds;
 use crate::types::VoltageOutputControl;
 use crate::types::units::*;
 
-impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
+impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<I2C, D> {
     #[maybe_async::maybe_async]
     pub async fn get_status(&mut self) -> Result<Status, Ap33772sError> {
         self.read_one_byte_command::<Status>().await
@@ -72,7 +72,7 @@ impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
     }
 }
 
-impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
+impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<I2C, D> {
     #[maybe_async::maybe_async]
     pub async fn get_voltage_out_override(
         &mut self,
@@ -137,7 +137,7 @@ impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
     }
 }
 
-impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
+impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<I2C, D> {
     #[maybe_async::maybe_async]
     pub async fn get_thermal_resistances(&mut self) -> Result<ThermalResistances, Ap33772sError> {
         let resistance_25 = self.read_two_byte_command::<ThermalResistance25>().await?;

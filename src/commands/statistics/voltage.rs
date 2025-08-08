@@ -1,5 +1,5 @@
-use crate::ap33772s::Ap33772sError;
 use crate::commands::command_map::Command;
+use crate::error::Ap33772sError;
 use crate::impl_two_byte_read_command;
 use crate::types::units::*;
 use bitbybit::bitfield;
