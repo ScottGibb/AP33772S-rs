@@ -60,6 +60,10 @@ impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
             .await
     }
 
+    /// This function negotiates power delivery with the connected device.
+    /// It does include a delay in which the result will be read from the device. The dalay is handled
+    /// by the hal provided. If the user wishes to ignore this delay, they should use the
+    /// driver in `advanced` mode by enabled the `advanced` feature.
     #[maybe_async::maybe_async]
     pub async fn negotiate_power_delivery(
         &mut self,
@@ -75,7 +79,7 @@ impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
             data_objects,
         )
         .await?;
-
+        self.delay.delay_ms(3);
         self.get_power_delivery_request_result().await
     }
 }
