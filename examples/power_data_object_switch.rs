@@ -3,13 +3,14 @@ use ap33772s_rs::types::{CurrentSelection, PowerDataObject};
 use utils::{setup_delay, setup_i2c};
 
 fn main() {
-    let i2c = setup_i2c(1_0000).expect("Failed to set up I2C");
+    let i2c = setup_i2c(1_000).expect("Failed to set up I2C");
     let delay = setup_delay();
-    let mut ap33772s = Ap33772s::new_default(i2c, delay).unwrap();
+    let mut ap33772s =
+        Ap33772s::new_default(i2c, delay).expect("Failed to create AP33772S instance");
 
     // Read The Status Register
-    let status = ap33772s.get_status().expect("Failed to get status");
-    println!("Status: {status}");
+    // let status = ap33772s.get_status().expect("Failed to get status");
+    // println!("Status: {status}");
 
     // Get the Power Source Delivery Capabilities
     let power_delivery_capabilities = ap33772s
