@@ -7,6 +7,9 @@ use crate::commands::power_delivery::power_delivery_request_message::PowerDelive
 use crate::commands::statistics::minimum_selection_voltage::MinimumSelectionVoltage;
 use crate::commands::thermal_resistances::convert_resistance_to_raw_resistance;
 use crate::commands::thermal_resistances::thermal_resistance_25::ThermalResistance25;
+use crate::commands::thermal_resistances::thermal_resistance_50::ThermalResistance50;
+use crate::commands::thermal_resistances::thermal_resistance_75::ThermalResistance75;
+use crate::commands::thermal_resistances::thermal_resistance_100::ThermalResistance100;
 use crate::commands::thresholds::de_rating_threshold::DeRatingThreshold;
 use crate::commands::thresholds::over_current_protection_threshold::OverCurrentProtectionThreshold;
 use crate::commands::thresholds::over_temperature_protection_threshold::OverTemperatureProtectionThreshold;
@@ -90,15 +93,15 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
             .with_raw_thermal_resistance(convert_resistance_to_raw_resistance(resistances._25)?)
             .build();
         self.write_two_byte_command(resistance_25).await?;
-        let resistance_50 = ThermalResistance25::builder()
+        let resistance_50 = ThermalResistance50::builder()
             .with_raw_thermal_resistance(convert_resistance_to_raw_resistance(resistances._50)?)
             .build();
         self.write_two_byte_command(resistance_50).await?;
-        let resistance_75 = ThermalResistance25::builder()
+        let resistance_75 = ThermalResistance75::builder()
             .with_raw_thermal_resistance(convert_resistance_to_raw_resistance(resistances._75)?)
             .build();
         self.write_two_byte_command(resistance_75).await?;
-        let resistance_100 = ThermalResistance25::builder()
+        let resistance_100 = ThermalResistance100::builder()
             .with_raw_thermal_resistance(convert_resistance_to_raw_resistance(resistances._100)?)
             .build();
         self.write_two_byte_command(resistance_100).await
