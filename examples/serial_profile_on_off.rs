@@ -1,13 +1,14 @@
-use ap33772s_rs::types::units::*;
+use ap33772s_rs::types::{PowerDataObject, units::*};
 use ap33772s_rs::{ap33772s::Ap33772s, types::VoltageOutputControl};
 use utils::setup_delay;
 use utils::setup_i2c;
-const COMMANDS: [&str; 7] = [
+const COMMANDS: [&str; 8] = [
     "Profile",
     "On",
     "Off",
     "Temperature",
     "Statistics",
+    "Maximum",
     "exit",
     "quit",
 ];
@@ -62,6 +63,14 @@ fn main() {
             "Statistics" => {
                 let statistics = ap33772s.get_statistics().expect("Failed to get statistics");
                 println!("Current Statistics: {statistics}");
+            }
+            "Maximum" => {
+                let power_data_object = PowerDataObject::StandardPowerRange7;
+                println!("Requesting Maximum Power Delivery on {}", power_data_object);
+                let result = ap33772s
+                    .negotiate_maximum_power_delivery(power_data_object)
+                    .expect("Failed to negotiate maximum power delivery");
+                println!("Maximum Power Delivery Response: {result:?}");
             }
             _ => {
                 println!("Invalid command");

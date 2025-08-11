@@ -47,6 +47,7 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     pub(crate) async fn send_power_delivery_request(
         &mut self,
         power_data_object_index: PowerDataObject,
+        // If the Power Data Object is in Fixed Mode, the voltage selection is not needed.
         voltage_selection: Option<ElectricPotential>,
         current_selection: CurrentSelection,
         data_objects: &AllSourceDataPowerDataObject,
@@ -77,6 +78,22 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
                 .with_power_data_object_index(power_data_object_index)
                 .build()
         };
+        self.write_two_byte_command(delivery_message).await
+    }
+
+    #[maybe_async::maybe_async]
+    #[cfg_attr(feature = "advanced", visibility::make(pub))]
+    /// Will Attempt to get the maximum Power Output from the Power Data Object provided
+    pub(crate) async fn send_maximum_power_delivery_request(
+        &mut self,
+        power_data_object_index: PowerDataObject,
+    ) -> Result<(), Ap33772sError> {
+        // Special message outlined in the AP33772S Datasheet Page 22
+        let delivery_message = PowerDeliveryRequestMessage::builder()
+            .with_voltage_selection(0xFF) // No Voltage Selection in Fixed Mode
+            .with_current_selection(CurrentSelection::_5AOrMore)
+            .with_power_data_object_index(power_data_object_index)
+            .build();
         self.write_two_byte_command(delivery_message).await
     }
 }

@@ -18,6 +18,7 @@ use crate::types::{
 /// See The [GitHub Repo](https://github.com/ScottGibb/AP33772S-rs) for examples on how to use the API.
 pub struct Ap33772s<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> {
     pub(crate) i2c: I2C,
+    #[cfg(not(feature = "interrupts"))]
     pub(crate) delay: D,
     #[cfg(feature = "interrupts")]
     pub(crate) interrupt_pin: P,
@@ -91,6 +92,20 @@ impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
             data_objects,
         )
         .await?;
+        self.delay.delay_ms(
+            u32::try_from(Self::NEGOTIATE_TIMING_DELAY.as_millis())
+                .expect("This should not fail, HAL Duration Type Conversions"),
+        );
+        self.get_power_delivery_request_result().await
+    }
+
+    #[maybe_async::maybe_async]
+    pub async fn negotiate_maximum_power_delivery(
+        &mut self,
+        power_data_object_index: PowerDataObject,
+    ) -> Result<PowerDeliveryResponse, Ap33772sError> {
+        self.send_maximum_power_delivery_request(power_data_object_index)
+            .await?;
         self.delay.delay_ms(
             u32::try_from(Self::NEGOTIATE_TIMING_DELAY.as_millis())
                 .expect("This should not fail, HAL Duration Type Conversions"),
