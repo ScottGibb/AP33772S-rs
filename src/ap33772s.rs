@@ -31,24 +31,37 @@ impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
     pub fn new(i2c: I2C, delay: D) -> Self {
         Self { i2c, delay }
     }
-    /// Creates a new instance of the AP33772S device and checks if the device is present on the bus.
-    /// TODO: Integrate Setting of Thermal Resistance and Thresholds matching RotoPD Board. This also handles the timings required for initialisation by using the provided hals delay method
+    /// Creates a new instance of the AP33772S device, checks if the device is present on the bus and is in the correct state for first boot initialisation.
+    /// Then sets the threshold values for the device using the default values
+    ///
+    /// IMPORTANT: This function must be called after the device is powered on, if it is called after the device is powered on, it will fail to initialise.
+    /// The device may still work subsequently
     #[maybe_async::maybe_async]
     pub async fn new_default(i2c: I2C, delay: D) -> Result<Self, Ap33772sError> {
         let mut device = Self::new(i2c, delay);
         device.is_device_present().await?;
 
-        // Check if device has started
-        if device.get_status()?.started() {
-            device.delay.delay_ms(100); // Initial delay to allow the device to power up
-            device
-                .set_thermal_resistances(ThermalResistances::default())
-                .await?;
-            device.set_thresholds(Thresholds::default()).await?;
+        let device_status = device.get_status()?;
+        if device_status.i2c_ready() == true
+            && device_status.started() == true
+            && device_status.new_power_data_object() == true
+        {
+            Self::initialise(&mut device).await?;
         } else {
+            // Device May already be initialised, to do a fresh install, the user must fully power cycle the device
+            device.hard_reset().await?; // This does not fully power cycle the RotoPD board due to the device being powered by the STEMMA connector
+            Self::initialise(&mut device).await?;
             return Err(Ap33772sError::InitialisationFailure);
         }
         Ok(device)
+    }
+    #[maybe_async::maybe_async]
+    async fn initialise(device: &mut Self) -> Result<(), Ap33772sError> {
+        device.delay.delay_ms(100); // Initial delay to allow the device to power up
+        device
+            .set_thermal_resistances(ThermalResistances::default())?
+            .await;
+        device.set_thresholds(Thresholds::default()).await
     }
 }
 
@@ -92,7 +105,8 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
         Ok(())
     }
 
-    /// Performs a hard reset on the device.
+    /// Performs a hard reset on the device. This will completely reset the device and put it in a fresh state
+    /// and require the I2C connection to be severed on the RotoPD board.
     #[maybe_async::maybe_async]
     pub async fn hard_reset(&mut self) -> Result<(), Ap33772sError> {
         let power_delivery_command_message = PowerDeliveryCommandMessage::builder()

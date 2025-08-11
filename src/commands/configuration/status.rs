@@ -52,8 +52,10 @@ pub struct Status {
 }
 impl_one_byte_read_command!(Status, Command::Status);
 
+impl Status {
+    pub const RESET: Status = Status::new_with_raw_value(0x00);
+}
 // Custom Formatting done here so we can see the internals of the struct otherwise bitbybit supersedes and a raw value is printed
-
 impl core::fmt::Display for Status {
     fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         write!(
@@ -69,6 +71,7 @@ impl core::fmt::Display for Status {
         )
     }
 }
+
 #[cfg(feature = "defmt")]
 impl defmt::Format for Status {
     fn format(&self, f: defmt::Formatter) {

@@ -17,8 +17,8 @@ pub enum Ap33772sError {
     /// This can occur when there is another device on the bus using the same I2C Address. Specifically the u8 returns the value
     /// thats supposed to be the command version of the device.
     WrongCommandVersion(u8), // The value stored at the command version location
-    /// This can occur when the device has not booted correctly. Potentially a timing issue and the device hasnt
-    /// had enough time to power up correctly
+    /// This can occur when the device has not booted correctly Or the device is already initialised. If this is the case it
+    /// could be solved by performing a `hard reset` followed by unplugging both the Stemma Connector if using the RotoPD and the USB C PD Device
     InitialisationFailure,
 }
 
