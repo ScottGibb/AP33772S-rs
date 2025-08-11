@@ -2,7 +2,15 @@ use ap33772s_rs::types::units::*;
 use ap33772s_rs::{ap33772s::Ap33772s, types::VoltageOutputControl};
 use utils::setup_delay;
 use utils::setup_i2c;
-const COMMANDS: [&str; 6] = ["Profile", "On", "Off", "Temperature", "exit", "quit"];
+const COMMANDS: [&str; 7] = [
+    "Profile",
+    "On",
+    "Off",
+    "Temperature",
+    "Statistics",
+    "exit",
+    "quit",
+];
 
 /// This example shows how to toggle the Serial Profile On and Off using the AP33772S device.
 /// It is inspired by the Centy Labs example for the AP33772S.
@@ -45,10 +53,15 @@ fn main() {
                 break;
             }
             "Temperature" => {
-                let temperature: ThermodynamicTemperature = ap33772s
+                let temperature = ap33772s
                     .get_temperature()
-                    .expect("Failed to get temperature");
-                println!("Current Temperature: {temperature:?}");
+                    .expect("Failed to get temperature")
+                    .get::<degree_celsius>();
+                println!("Current Temperature: {:.2}°C", temperature);
+            }
+            "Statistics" => {
+                let statistics = ap33772s.get_statistics().expect("Failed to get statistics");
+                println!("Current Statistics: {statistics}");
             }
             _ => {
                 println!("Invalid command");
