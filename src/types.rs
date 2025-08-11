@@ -11,6 +11,14 @@ pub use crate::commands::power_delivery::power_delivery_message_result::PowerDel
 pub use crate::commands::power_delivery::power_delivery_request_message::{
     CURRENT_SELECTIONS, CurrentSelection, PowerDataObject,
 };
+use crate::commands::thermal_resistances::thermal_resistance_25::ThermalResistance25;
+use crate::commands::thermal_resistances::thermal_resistance_50::ThermalResistance50;
+use crate::commands::thermal_resistances::thermal_resistance_75::ThermalResistance75;
+use crate::commands::thermal_resistances::thermal_resistance_100::ThermalResistance100;
+use crate::commands::thresholds::de_rating_threshold::DeRatingThreshold;
+use crate::commands::thresholds::over_current_protection_threshold::OverCurrentProtectionThreshold;
+use crate::commands::thresholds::over_temperature_protection_threshold::OverTemperatureProtectionThreshold;
+use crate::commands::thresholds::over_voltage_protection_threshold::OverVoltageProtectionThreshold;
 pub use crate::error::Ap33772sError;
 pub mod units {
     pub use uom::si::electric_current::ampere;
@@ -124,14 +132,14 @@ impl defmt::Format for ThermalResistances {
         );
     }
 }
-// TODO: Check this
 impl Default for ThermalResistances {
+    /// Default values are taken from the AP33772S Registers which have known compile time default values
     fn default() -> Self {
         ThermalResistances {
-            _25: ElectricalResistance::new::<milliohm>(1000.0),
-            _50: ElectricalResistance::new::<milliohm>(500.0),
-            _75: ElectricalResistance::new::<milliohm>(333.33),
-            _100: ElectricalResistance::new::<milliohm>(250.0),
+            _25: ThermalResistance25::default().thermal_resistance(),
+            _50: ThermalResistance50::default().thermal_resistance(),
+            _75: ThermalResistance75::default().thermal_resistance(),
+            _100: ThermalResistance100::default().thermal_resistance(),
         }
     }
 }
@@ -188,15 +196,20 @@ impl defmt::Format for Thresholds {
         );
     }
 }
-// TODO: Check this
+
 impl Default for Thresholds {
+    /// Default values are derrived from the AP33772S Registers which have known compile time default values
     fn default() -> Self {
         Thresholds {
-            over_voltage: ElectricPotential::new::<volt>(20.0),
+            over_voltage: OverVoltageProtectionThreshold::default()
+                .voltage()
+                .expect("This Should Not fail - Value Taken Directly from Datasheet Register"),
             under_voltage: UnderVoltageThreshold::default(),
-            over_current: ElectricCurrent::new::<ampere>(3.0),
-            over_temperature: ThermodynamicTemperature::new::<degree_celsius>(100.0),
-            derating: ThermodynamicTemperature::new::<degree_celsius>(80.0),
+            over_current: OverCurrentProtectionThreshold::default()
+                .current()
+                .expect("This Should Not fail - Value Taken Directly from Datasheet Register"),
+            over_temperature: OverTemperatureProtectionThreshold::default().temperature(),
+            derating: DeRatingThreshold::default().temperature(),
         }
     }
 }

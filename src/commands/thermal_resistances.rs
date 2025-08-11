@@ -1,7 +1,6 @@
 use super::command_map;
 use crate::error::Ap33772sError;
-use uom::si::f32::ElectricalResistance;
-
+use crate::types::units::*;
 pub mod thermal_resistance_100;
 pub mod thermal_resistance_25;
 pub mod thermal_resistance_50;
@@ -16,7 +15,7 @@ pub fn convert_resistance_to_raw_resistance(
         return Err(Ap33772sError::ConversionFailed);
     }
 
-    let raw_value = resistance.get::<uom::si::electrical_resistance::ohm>();
+    let raw_value = resistance.get::<ohm>();
 
     if raw_value > u16::MAX as f32 {
         return Err(Ap33772sError::ConversionFailed);
