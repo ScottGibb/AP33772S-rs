@@ -1,7 +1,5 @@
 use super::standard_power_range_data_object::StandardPowerRangeDataObject;
-use crate::commands::data_objects::source_power_range_data_object::{
-    PowerType, SourcePowerRangeDataObject,
-};
+use crate::commands::data_objects::source_power_range_data_object::SourcePowerRangeDataObject;
 use crate::commands::{
     data_objects::extended_power_range_data_object::ExtendedPowerRangeDataObject,
     power_delivery::power_delivery_request_message::PowerDataObject,

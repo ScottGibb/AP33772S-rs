@@ -58,7 +58,7 @@ fn main() {
                     .get_temperature()
                     .expect("Failed to get temperature")
                     .get::<degree_celsius>();
-                println!("Current Temperature: {:.2}°C", temperature);
+                println!("Current Temperature: {temperature:.2}°C");
             }
             "Statistics" => {
                 let statistics = ap33772s.get_statistics().expect("Failed to get statistics");
@@ -66,7 +66,7 @@ fn main() {
             }
             "Maximum" => {
                 let power_data_object = PowerDataObject::StandardPowerRange7;
-                println!("Requesting Maximum Power Delivery on {}", power_data_object);
+                println!("Requesting Maximum Power Delivery on {power_data_object}");
                 let result = ap33772s
                     .negotiate_maximum_power_delivery(power_data_object)
                     .expect("Failed to negotiate maximum power delivery");

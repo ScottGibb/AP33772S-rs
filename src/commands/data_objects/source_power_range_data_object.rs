@@ -30,10 +30,10 @@ impl core::fmt::Display for SourcePowerRangeDataObject {
     fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         match self {
             SourcePowerRangeDataObject::Standard(data_object) => {
-                write!(f, "Standard({})", data_object)
+                write!(f, "Standard({data_object})")
             }
             SourcePowerRangeDataObject::Extended(data_object) => {
-                write!(f, "Extended({})", data_object)
+                write!(f, "Extended({data_object})")
             }
         }
     }
@@ -59,13 +59,13 @@ pub enum PeakCurrent {
 
 impl From<u2> for PeakCurrent {
     fn from(value: u2) -> Self {
-        let peak_current = match value.value() {
+        
+        match value.value() {
             0 => PeakCurrent::ConditionOne,
             1 => PeakCurrent::ConditionTwo,
             2 => PeakCurrent::ConditionThree,
             3 => PeakCurrent::ConditionFour,
             _ => unreachable!("This will never happen due to rust type safety"),
-        };
-        peak_current
+        }
     }
 }
