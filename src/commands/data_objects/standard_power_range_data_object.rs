@@ -1,6 +1,7 @@
-use crate::commands::data_objects::all_source_power_data_object::PowerType;
-use crate::error::Ap33772sError;
 use crate::types::units::*;
+use crate::{
+    commands::data_objects::source_power_range_data_object::PowerType, error::Ap33772sError,
+};
 use bitbybit::{bitenum, bitfield};
 
 #[bitfield(u16, default = 0x00)]
@@ -30,7 +31,7 @@ pub struct StandardPowerRangeDataObject {
 /// 300 * 100 = 30000mV
 /// Therefore the voltage should be checked multiplied and stored in a U16
 impl StandardPowerRangeDataObject {
-    const VOLTAGE_RESOLUTION: u16 = 100; // mV per Unit
+    pub const VOLTAGE_RESOLUTION: u16 = 100; // mV per Unit
 
     pub fn max_voltage(&self) -> Result<ElectricPotential, Ap33772sError> {
         let scaled_voltage = u16::from(self.raw_max_voltage())
@@ -86,7 +87,7 @@ impl core::fmt::Display for StandardPowerRangeDataObject {
     fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         write!(
             f,
-            "SourcePowerDataObject {{ max_voltage: {:?} V, minimum_voltage: {:?}, max_current: {:?} A, source_power_type: {:?}, is_detected: {} }}",
+            "StandardPowerDataObject {{ max_voltage: {:?} V, minimum_voltage: {:?}, max_current: {:?} A, source_power_type: {:?}, is_detected: {} }}",
             self.max_voltage()
                 .map_err(|_| core::fmt::Error)?
                 .get::<volt>(),
@@ -103,7 +104,7 @@ impl defmt::Format for StandardPowerRangeDataObject {
     fn format(&self, f: defmt::Formatter) {
         defmt::write!(
             f,
-            "SourcePowerDataObject {{ max_voltage: {:?}, minimum_voltage: {:?}, max_current: {:?} A, source_power_type: {:?}, is_detected: {} }}",
+            "StandardPowerDataObject {{ max_voltage: {:?}, minimum_voltage: {:?}, max_current: {:?} A, source_power_type: {:?}, is_detected: {} }}",
             self.max_voltage()
                 .map_err(|_| core::fmt::Error)
                 .unwrap() //TODO: Fix this

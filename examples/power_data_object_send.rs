@@ -20,9 +20,10 @@ fn main() {
 
         // Ask the User for the PDO Index they want to select
         let power_data_object_index = get_power_data_object_index_from_user();
-
+        let power_data_object =
+            power_delivery_capabilities.get_power_data_object(&power_data_object_index);
         // Check of the Power Data Object Index is not a fixed type
-        let power_type = power_delivery_capabilities.get_power_mode(&power_data_object_index);
+        let power_type = power_data_object.get_power_type();
 
         // If the Power Data Object is Adjustable, get the chosen voltage
         let voltage = if power_type == PowerType::Adjustable {
@@ -34,7 +35,7 @@ fn main() {
         // Get Current Selection from the user
         let current_selection = get_current_selection_from_user();
         println!("Selected PDO: {power_data_object_index}, Voltage: {voltage:?}, Current: {current_selection} with
-        Power Data Object: {power_delivery_capabilities}
+        Power Data Object: {power_data_object}
         ");
         // Request the Power Delivery
         let response = ap33772s

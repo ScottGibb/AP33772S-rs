@@ -18,7 +18,6 @@ use crate::commands::thresholds::under_voltage_protection_threshold::UnderVoltag
 use crate::error::Ap33772sError;
 use crate::types::units::*;
 use crate::types::*;
-use uom::ConversionFactor;
 
 impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<I2C, D> {
     #[maybe_async::maybe_async]
@@ -52,8 +51,9 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
         current_selection: CurrentSelection,
         data_objects: &AllSourceDataPowerDataObject,
     ) -> Result<(), Ap33772sError> {
-        let power_type = data_objects.get_power_mode(&power_data_object_index);
-        let delivery_message = if power_type == PowerType::Fixed {
+        let data_object = data_objects.get_power_data_object(&power_data_object_index);
+
+        let delivery_message = if data_object.get_power_type() == PowerType::Fixed {
             // If we are in fixed PDO Mode, the voltage selection is not needed.
             PowerDeliveryRequestMessage::builder()
                 .with_voltage_selection(0)
@@ -61,16 +61,14 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
                 .with_power_data_object_index(power_data_object_index)
                 .build()
         } else {
-            let scaling_value = data_objects.get_voltage_scaling(&power_data_object_index);
+            let scaling_value = f32::from(data_object.get_voltage_resolution());
             let voltage_selection = voltage_selection.ok_or(Ap33772sError::InvalidRequest)?;
-            let scaling_value = scaling_value.ok_or(Ap33772sError::InvalidRequest)?;
-            let scaled_voltage = scaling_value * voltage_selection;
-
+            let scaled_voltage = scaling_value * voltage_selection.get::<millivolt>();
             // Check for overflow
-            let scaled_voltage = if scaled_voltage.value.value() > f32::from(u8::MAX) {
+            let scaled_voltage = if scaled_voltage > f32::from(u8::MAX) {
                 Err(Ap33772sError::ConversionFailed)
             } else {
-                Ok(scaled_voltage.value.value() as u8)
+                Ok(scaled_voltage as u8)
             }?;
 
             PowerDeliveryRequestMessage::builder()
