@@ -60,7 +60,7 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
         command: impl WriteTwoByteCommand,
     ) -> Result<(), Ap33772sError> {
         let command_address = command.get_command() as u8;
-        let data = command.raw_value().to_be_bytes();
+        let data = command.raw_value().to_le_bytes();
         self.i2c
             .write(Self::ADDRESS, &[command_address, data[0], data[1]])
             .await?;
