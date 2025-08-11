@@ -5,21 +5,27 @@ use crate::commands::{
 use bitbybit::bitenum;
 use uom::si::{electric_potential::millivolt, f32::ElectricPotential};
 
-use super::source_power_data_object::SourcePowerDataObject;
+use super::source_power_data_object::StandardPowerRangeDataObject;
 
 pub(crate) const MAX_SOURCE_POWER_DATA_OBJECTS: usize = 7;
 pub(crate) const MAX_EXTENDED_POWER_DATA_OBJECTS: usize = 5;
 #[derive(Debug, PartialEq, Clone)]
 pub struct AllSourceDataPowerDataObject {
-    pub source_power: [SourcePowerDataObject; MAX_SOURCE_POWER_DATA_OBJECTS],
+    pub standard_power: [StandardPowerRangeDataObject; MAX_SOURCE_POWER_DATA_OBJECTS],
     pub extended_power: [ExtendedPowerRangeDataObject; MAX_EXTENDED_POWER_DATA_OBJECTS],
+}
+
+#[derive(Debug, PartialEq, Clone)]
+pub enum SourcePowerRangeDataObject {
+    Standard(StandardPowerRangeDataObject),
+    Extended(ExtendedPowerRangeDataObject),
 }
 
 impl core::fmt::Display for AllSourceDataPowerDataObject {
     fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         writeln!(f, "AllSourceDataPowerDataObject {{")?;
         writeln!(f, "  source_power: [")?;
-        for (i, power_obj) in self.source_power.iter().enumerate() {
+        for (i, power_obj) in self.standard_power.iter().enumerate() {
             writeln!(f, "    [{i}]: {power_obj}")?;
         }
         writeln!(f, "  ]")?;
@@ -53,7 +59,8 @@ impl defmt::Format for AllSourceDataPowerDataObject {
 impl Default for AllSourceDataPowerDataObject {
     fn default() -> Self {
         AllSourceDataPowerDataObject {
-            source_power: [SourcePowerDataObject::default(); MAX_SOURCE_POWER_DATA_OBJECTS],
+            standard_power: [StandardPowerRangeDataObject::default();
+                MAX_SOURCE_POWER_DATA_OBJECTS],
             extended_power: [ExtendedPowerRangeDataObject::default();
                 MAX_EXTENDED_POWER_DATA_OBJECTS],
         }
@@ -73,7 +80,7 @@ impl AllSourceDataPowerDataObject {
             | PowerDataObject::StandardPowerRange5
             | PowerDataObject::StandardPowerRange6
             | PowerDataObject::StandardPowerRange7 => {
-                self.source_power[power_index].source_power_type()
+                self.standard_power[power_index].source_power_type()
             }
             PowerDataObject::ExtendedPowerRange8
             | PowerDataObject::ExtendedPowerRange9
@@ -81,7 +88,7 @@ impl AllSourceDataPowerDataObject {
             | PowerDataObject::ExtendedPowerRange11
             | PowerDataObject::ExtendedPowerRange12
             | PowerDataObject::ExtendedPowerRange13 => {
-                self.source_power[power_index - MAX_SOURCE_POWER_DATA_OBJECTS].source_power_type()
+                self.standard_power[power_index - MAX_SOURCE_POWER_DATA_OBJECTS].source_power_type()
             }
         }
     }
@@ -98,7 +105,7 @@ impl AllSourceDataPowerDataObject {
             | PowerDataObject::StandardPowerRange5
             | PowerDataObject::StandardPowerRange6
             | PowerDataObject::StandardPowerRange7 => {
-                let power_type = self.source_power[power_index].source_power_type();
+                let power_type = self.standard_power[power_index].source_power_type();
                 if power_type == PowerType::Adjustable {
                     Some(ElectricPotential::new::<millivolt>(f32::from(
                         Self::STANDARD_POWER_RANGE_RESOLUTION,

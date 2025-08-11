@@ -8,7 +8,7 @@ use crate::commands::data_objects::all_source_power_data_object::AllSourceDataPo
 use crate::commands::data_objects::all_source_power_data_object::MAX_EXTENDED_POWER_DATA_OBJECTS;
 use crate::commands::data_objects::all_source_power_data_object::MAX_SOURCE_POWER_DATA_OBJECTS;
 use crate::commands::data_objects::extended_power_range_data_object::ExtendedPowerRangeDataObject;
-use crate::commands::data_objects::source_power_data_object::SourcePowerDataObject;
+use crate::commands::data_objects::source_power_data_object::StandardPowerRangeDataObject;
 use crate::commands::power_delivery::power_delivery_message_result::PowerDeliveryMessageResult;
 use crate::commands::requested::current_requested::CurrentRequested;
 use crate::commands::requested::voltage_requested::VoltageRequested;
@@ -197,8 +197,8 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
         let mut data_object = AllSourceDataPowerDataObject::default();
 
         for i in 0..MAX_SOURCE_POWER_DATA_OBJECTS {
-            data_object.source_power[i] =
-                SourcePowerDataObject::new_with_raw_value(u16::from_le_bytes([
+            data_object.standard_power[i] =
+                StandardPowerRangeDataObject::new_with_raw_value(u16::from_le_bytes([
                     buff[2 * i],
                     buff[2 * i + 1],
                 ]));

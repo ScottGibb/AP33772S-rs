@@ -1,5 +1,8 @@
 //! This module outlines the AP33772S device. Specifically the top level methods and structure of the device.
 //!
+#[cfg(not(feature = "interrupts"))]
+use core::time::Duration;
+
 use super::hal::*;
 use crate::commands::configuration::system_control::SystemControl;
 use crate::commands::power_delivery::power_delivery_command_message::PowerDeliveryCommandMessage;
@@ -24,6 +27,8 @@ pub struct Ap33772s<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: Inpu
 /// delay approach which is dependent on the users HAL
 #[cfg(not(feature = "interrupts"))]
 impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
+    const NEGOTIATE_TIMING_DELAY: Duration = Duration::from_millis(30);
+    const BOOT_UP_DELAY: Duration = Duration::from_millis(100);
     /// The I2C address of the AP33772S device.
     /// This address is used for communication with the device over I2C.
     /// The address is defined in the AP33772S datasheet.
@@ -57,11 +62,40 @@ impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
     }
     #[maybe_async::maybe_async]
     async fn initialise(device: &mut Self) -> Result<(), Ap33772sError> {
-        device.delay.delay_ms(100); // Initial delay to allow the device to power up
+        device.delay.delay_ms(
+            u32::try_from(Self::BOOT_UP_DELAY.as_millis())
+                .expect("This should not fail, HAL Duration Type Conversions"),
+        ); // Initial delay to allow the device to power up
         device
             .set_thermal_resistances(ThermalResistances::default())?
             .await;
         device.set_thresholds(Thresholds::default()).await
+    }
+
+    /// This function negotiates power delivery with the connected device.
+    /// It does include a delay in which the result will be read from the device. The delay is handled
+    /// by the hal provided. If the user wishes to ignore this delay, they should use the
+    /// driver in `advanced` mode by enabled the `advanced` feature.
+    #[maybe_async::maybe_async]
+    pub async fn negotiate_power_delivery(
+        &mut self,
+        power_data_object_index: PowerDataObject,
+        voltage_selection: Option<ElectricPotential>,
+        current_selection: CurrentSelection,
+        data_objects: &AllSourceDataPowerDataObject,
+    ) -> Result<PowerDeliveryResponse, Ap33772sError> {
+        self.send_power_delivery_request(
+            power_data_object_index,
+            voltage_selection,
+            current_selection,
+            data_objects,
+        )
+        .await?;
+        self.delay.delay_ms(
+            u32::try_from(Self::NEGOTIATE_TIMING_DELAY.as_millis())
+                .expect("This should not fail, HAL Duration Type Conversions"),
+        );
+        self.get_power_delivery_request_result().await
     }
 }
 
@@ -114,28 +148,5 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
             .build();
         self.write_one_byte_command(power_delivery_command_message)
             .await
-    }
-
-    /// This function negotiates power delivery with the connected device.
-    /// It does include a delay in which the result will be read from the device. The dalay is handled
-    /// by the hal provided. If the user wishes to ignore this delay, they should use the
-    /// driver in `advanced` mode by enabled the `advanced` feature.
-    #[maybe_async::maybe_async]
-    pub async fn negotiate_power_delivery(
-        &mut self,
-        power_data_object_index: PowerDataObject,
-        voltage_selection: Option<ElectricPotential>,
-        current_selection: CurrentSelection,
-        data_objects: &AllSourceDataPowerDataObject,
-    ) -> Result<PowerDeliveryResponse, Ap33772sError> {
-        self.send_power_delivery_request(
-            power_data_object_index,
-            voltage_selection,
-            current_selection,
-            data_objects,
-        )
-        .await?;
-        self.delay.delay_ms(3); // Value chosen from the [Datasheet](../docs/AP33772S-Raspberry-Pi-I2C-User-Guide.pdf) 
-        self.get_power_delivery_request_result().await
     }
 }

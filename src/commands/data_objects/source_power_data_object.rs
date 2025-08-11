@@ -5,7 +5,7 @@ use bitbybit::{bitenum, bitfield};
 
 #[bitfield(u16, default = 0x00)]
 #[derive(Debug, PartialEq)]
-pub struct SourcePowerDataObject {
+pub struct StandardPowerRangeDataObject {
     #[bits(0..=7, r)]
     pub raw_max_voltage: u8,
     #[bits(8..=9, r)]
@@ -29,7 +29,7 @@ pub struct SourcePowerDataObject {
 /// This means the maximum raw value is 300
 /// 300 * 100 = 30000mV
 /// Therefore the voltage should be checked multiplied and stored in a U16
-impl SourcePowerDataObject {
+impl StandardPowerRangeDataObject {
     const VOLTAGE_RESOLUTION: u16 = 100; // mV per Unit
 
     pub fn max_voltage(&self) -> Result<ElectricPotential, Ap33772sError> {
@@ -82,7 +82,7 @@ pub enum SourcePowerCurrent {
     MoreThan5 = 15,
 }
 
-impl core::fmt::Display for SourcePowerDataObject {
+impl core::fmt::Display for StandardPowerRangeDataObject {
     fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         write!(
             f,
@@ -99,7 +99,7 @@ impl core::fmt::Display for SourcePowerDataObject {
 }
 
 #[cfg(feature = "defmt")]
-impl defmt::Format for SourcePowerDataObject {
+impl defmt::Format for StandardPowerRangeDataObject {
     fn format(&self, f: defmt::Formatter) {
         defmt::write!(
             f,
