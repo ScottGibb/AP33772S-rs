@@ -1,7 +1,8 @@
-use super::standard_power_range_data_object::{MinimumVoltage, SourcePowerCurrent};
-use crate::commands::data_objects::source_power_range_data_object::PowerType;
+use super::standard_power_range_data_object::SourcePowerCurrent;
+use crate::commands::data_objects::source_power_range_data_object::{PeakCurrent, PowerType};
 use crate::error::Ap33772sError;
 use crate::types::units::*;
+use arbitrary_int::u2;
 use bitbybit::bitfield;
 
 #[bitfield(u16, default = 0x00)]
@@ -10,8 +11,7 @@ pub struct ExtendedPowerRangeDataObject {
     #[bits(0..=7, r)]
     pub raw_max_voltage: u8,
     #[bits(8..=9, r)]
-    // This is either Minimum Voltage or Peak Current.... TODO: Find out a way to handle this
-    pub minimum_voltage: MinimumVoltage,
+    pub minimum_voltage_or_peak_current: u2,
     #[bits(10..=13, r)]
     pub max_current: SourcePowerCurrent,
     #[bit(14, r)]
@@ -39,16 +39,53 @@ impl ExtendedPowerRangeDataObject {
             scaled_voltage,
         )))
     }
+
+    pub fn peak_current(&self) -> Option<PeakCurrent> {
+        match self.source_power_type() {
+            PowerType::Fixed => Some(PeakCurrent::from(self.minimum_voltage_or_peak_current())),
+            PowerType::Adjustable => None,
+        }
+    }
+    pub fn minimum_voltage(&self) -> Option<MinimumVoltage> {
+        match self.source_power_type() {
+            PowerType::Fixed => None,
+            PowerType::Adjustable => {
+                Some(MinimumVoltage::from(self.minimum_voltage_or_peak_current()))
+            }
+        }
+    }
 }
+
+#[derive(Debug, PartialEq)]
+pub enum MinimumVoltage {
+    Reserved = 0,
+    Fifteen = 1,
+    FifteenLessThanVoltageMinimumLessThanTwenty = 2,
+    Others = 3,
+}
+
+impl From<u2> for MinimumVoltage {
+    fn from(value: u2) -> Self {
+        match value.value() {
+            0 => MinimumVoltage::Reserved,
+            1 => MinimumVoltage::Fifteen,
+            2 => MinimumVoltage::FifteenLessThanVoltageMinimumLessThanTwenty,
+            3 => MinimumVoltage::Others,
+            _ => unreachable!("This will never happen due to rust type safety"),
+        }
+    }
+}
+
 impl core::fmt::Display for ExtendedPowerRangeDataObject {
     fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         write!(
             f,
-            "ExtendedPowerRangeDataObject {{ max_voltage: {:?}, minimum_voltage: {:?}, max_current: {:?}, source_power_type: {:?}, is_detected: {} }}",
+            "ExtendedPowerRangeDataObject {{ max_voltage: {:?}, minimum_voltage: {:?}, peak_current: {:?}, max_current: {:?}, source_power_type: {:?}, is_detected: {} }}",
             self.max_voltage()
                 .map_err(|_| core::fmt::Error)?
                 .get::<volt>(),
             self.minimum_voltage(),
+            self.peak_current(),
             self.max_current(),
             self.source_power_type(),
             self.is_detected()
@@ -66,7 +103,7 @@ impl defmt::Format for ExtendedPowerRangeDataObject {
                 .map_err(|_| core::fmt::Error)
                 .unwrap() //Fix this
                 .get::<volt>(),
-            self.minimum_voltage(),
+            self.minimum_voltage_or_peak_current(),
             self.max_current(),
             self.source_power_type(),
             self.is_detected()

@@ -1,3 +1,4 @@
+use arbitrary_int::u2;
 use bitbybit::bitenum;
 
 use crate::types::{ExtendedPowerRangeDataObject, StandardPowerRangeDataObject};
@@ -44,4 +45,27 @@ impl core::fmt::Display for SourcePowerRangeDataObject {
 pub enum PowerType {
     Fixed = 0,
     Adjustable = 1,
+}
+
+// TODO: Add
+#[bitenum(u2, exhaustive = true)]
+#[derive(Debug, PartialEq)]
+pub enum PeakCurrent {
+    ConditionOne = 0,
+    ConditionTwo = 1,
+    ConditionThree = 2,
+    ConditionFour = 3,
+}
+
+impl From<u2> for PeakCurrent {
+    fn from(value: u2) -> Self {
+        let peak_current = match value.value() {
+            0 => PeakCurrent::ConditionOne,
+            1 => PeakCurrent::ConditionTwo,
+            2 => PeakCurrent::ConditionThree,
+            3 => PeakCurrent::ConditionFour,
+            _ => unreachable!("This will never happen due to rust type safety"),
+        };
+        peak_current
+    }
 }
