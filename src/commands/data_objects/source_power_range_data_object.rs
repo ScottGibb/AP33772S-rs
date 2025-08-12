@@ -1,7 +1,8 @@
 use arbitrary_int::u2;
 use bitbybit::bitenum;
 
-use crate::types::{ExtendedPowerRangeDataObject, StandardPowerRangeDataObject};
+use crate::types::api_commands::{ExtendedPowerRangeDataObject, StandardPowerRangeDataObject};
+
 #[derive(Debug, PartialEq, Clone)]
 pub enum SourcePowerRangeDataObject {
     Standard(StandardPowerRangeDataObject),
@@ -59,7 +60,6 @@ pub enum PeakCurrent {
 
 impl From<u2> for PeakCurrent {
     fn from(value: u2) -> Self {
-        
         match value.value() {
             0 => PeakCurrent::ConditionOne,
             1 => PeakCurrent::ConditionTwo,

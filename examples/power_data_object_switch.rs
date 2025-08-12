@@ -1,5 +1,7 @@
-use ap33772s_rs::ap33772s::Ap33772s;
-use ap33772s_rs::types::{CurrentSelection, PowerDataObject};
+use ap33772s_rs::{
+    ap33772s::Ap33772s,
+    types::api_commands::{CurrentSelection, PowerDataObject},
+};
 use utils::{setup_delay, setup_i2c};
 
 fn main() {

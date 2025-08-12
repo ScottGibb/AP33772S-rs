@@ -1,10 +1,12 @@
-use ap33772s_rs::types::{VoltageOutputControl, units::*};
-/// The following example shows how to cycle through the Adjustable Voltage Supply (AVS). It is inspired
-/// by the Centy Labs example for the AP33772S. [Centy Labs Example](https://github.com/CentyLab/AP33772S-CentyLab/blob/main/examples/AVScycle/AVScycle.ino)
 use ap33772s_rs::{
     ap33772s::Ap33772s,
-    types::{CurrentSelection, PowerDataObject},
+    types::{
+        api_commands::{CurrentSelection, PowerDataObject, VoltageOutputControl},
+        units::*,
+    },
 };
+/// The following example shows how to cycle through the Adjustable Voltage Supply (AVS). It is inspired
+/// by the Centy Labs example for the AP33772S. [Centy Labs Example](https://github.com/CentyLab/AP33772S-CentyLab/blob/main/examples/AVScycle/AVScycle.ino)
 use utils::{setup_delay, setup_i2c};
 fn main() {
     let i2c = setup_i2c(1_000).expect("Failed to set up I2C");

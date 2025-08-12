@@ -1,9 +1,12 @@
-use ap33772s_rs::types::{PowerDataObject, units::*};
-use ap33772s_rs::{ap33772s::Ap33772s, types::VoltageOutputControl};
+use ap33772s_rs::ap33772s::Ap33772s;
+use ap33772s_rs::types::api_commands::PowerDataObject;
+use ap33772s_rs::types::api_commands::VoltageOutputControl;
+use ap33772s_rs::types::units::*;
 use utils::setup_delay;
 use utils::setup_i2c;
-const COMMANDS: [&str; 8] = [
+const COMMANDS: [&str; 9] = [
     "Profile",
+    "OpMode",
     "On",
     "Off",
     "Temperature",
@@ -36,6 +39,12 @@ fn main() {
                     .get_all_source_power_capabilities()
                     .expect("Failed to get power data object indices");
                 println!("Available Power Data Objects: {power_data_objects}");
+            }
+            "OpMode" => {
+                let operating_mode = ap33772s
+                    .get_operating_mode()
+                    .expect("Failed to get operating mode");
+                println!("Current Operating Mode: {operating_mode}");
             }
             "On" => {
                 ap33772s

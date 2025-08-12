@@ -22,19 +22,19 @@ pub struct StandardPowerRangeDataObject {
     pub is_detected: bool,
 }
 
-/// Maximum Voltage of 30V (30000 mV) with 100mV resolution
+/// Maximum Voltage of 21 (21000 mV) with 100mV resolution
 /// U16 can hold values up to 65535
 /// 0 = 0mV
 /// 1 = 100mV
 /// 2 = 200mV
 /// ...
-/// 300 = 30000mV (30V)
-/// This means the maximum raw value is 300
-/// 300 * 100 = 30000mV
+/// 210 = 21000mV (21V)
+/// This means the maximum raw value is 210
+/// 210 * 100 = 21000mV
 /// Therefore the voltage should be checked multiplied and stored in a U16
 impl StandardPowerRangeDataObject {
     pub const VOLTAGE_RESOLUTION: u16 = 100; // mV per Unit
-
+    pub const MAXIMUM_VOLTAGE: u16 = 21000; // mV
     pub fn max_voltage(&self) -> Result<ElectricPotential, Ap33772sError> {
         let scaled_voltage = u16::from(self.raw_max_voltage())
             .checked_mul(Self::VOLTAGE_RESOLUTION)

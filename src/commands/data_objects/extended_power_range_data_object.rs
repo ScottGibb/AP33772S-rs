@@ -19,18 +19,19 @@ pub struct ExtendedPowerRangeDataObject {
     #[bit(15, r)]
     pub is_detected: bool,
 }
-/// Maximum Voltage of 30V (30000 mV) with 200mV resolution
+/// Maximum Voltage of 28V (28000 mV) with 200mV resolution
 /// U8 can hold values up to 255
 /// 0 = 0mV
 /// 1 = 200mV
 /// 2 = 400mV
 /// ...
-/// 150 = 30000mV (30V)
-/// This means the maximum raw value is 150
-/// 150 * 200 = 30000mV U16 is required
+/// 140 = 28000mV (28V)
+/// This means the maximum raw value is 140
+/// 140 * 200 = 28000mV U16 is required
 /// Therefore the voltage should be checked multiplied
 impl ExtendedPowerRangeDataObject {
     pub const VOLTAGE_RESOLUTION: u16 = 200; // mV per Unit
+    pub const MAXIMUM_VOLTAGE: u16 = 28000; // mV
     pub fn max_voltage(&self) -> Result<ElectricPotential, Ap33772sError> {
         let scaled_voltage = u16::from(self.raw_max_voltage())
             .checked_mul(Self::VOLTAGE_RESOLUTION)

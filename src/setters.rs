@@ -16,6 +16,9 @@ use crate::commands::thresholds::over_temperature_protection_threshold::OverTemp
 use crate::commands::thresholds::over_voltage_protection_threshold::OverVoltageProtectionThreshold;
 use crate::commands::thresholds::under_voltage_protection_threshold::UnderVoltageProtectionThreshold;
 use crate::error::Ap33772sError;
+
+// Public API Types
+use crate::types::api_commands::*;
 use crate::types::units::*;
 use crate::types::*;
 

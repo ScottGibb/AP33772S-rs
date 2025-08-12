@@ -6,12 +6,11 @@ use core::time::Duration;
 use super::hal::*;
 use crate::commands::configuration::system_control::SystemControl;
 use crate::commands::power_delivery::power_delivery_command_message::PowerDeliveryCommandMessage;
-use crate::error::Ap33772sError;
+
+// Public API Types
+use crate::types::api_commands::*;
 use crate::types::units::*;
-use crate::types::{
-    AllSourceDataPowerDataObject, CurrentSelection, PowerDataObject, PowerDeliveryResponse,
-    ThermalResistances, Thresholds,
-};
+use crate::types::*;
 
 /// Represents the AP33772S device.
 /// It provides methods for interacting with the device over I2C.

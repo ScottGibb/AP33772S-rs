@@ -1,6 +1,10 @@
-use ap33772s_rs::ap33772s::Ap33772s;
-use ap33772s_rs::types::{CURRENT_SELECTIONS, CurrentSelection, PowerDataObject, PowerType};
-use ap33772s_rs::types::{Status, units::*};
+use ap33772s_rs::{
+    ap33772s::Ap33772s,
+    types::{
+        api_commands::{CURRENT_SELECTIONS, CurrentSelection, PowerDataObject, PowerType, Status},
+        units::*,
+    },
+};
 use utils::{setup_delay, setup_i2c};
 
 fn main() {
@@ -93,9 +97,8 @@ fn get_current_selection_from_user() -> CurrentSelection {
     std::io::stdin()
         .read_line(&mut input)
         .expect("Failed to read line");
-    let error_message = format!(
-        "Invalid Current Selection, must be between 0 and {last_current_selections_index}"
-    );
+    let error_message =
+        format!("Invalid Current Selection, must be between 0 and {last_current_selections_index}");
     let current_selection: u8 = input.trim().parse().expect(&error_message);
     let current_selection = CurrentSelection::try_from(current_selection).expect(&error_message);
     println!("Current Selected: {current_selection}");
