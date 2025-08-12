@@ -1,4 +1,5 @@
 use ap33772s_rs::ap33772s::Ap33772s;
+use ap33772s_rs::types::PowerDeliveryMode;
 use ap33772s_rs::types::api_commands::PowerDataObject;
 use ap33772s_rs::types::api_commands::VoltageOutputControl;
 use ap33772s_rs::types::units::*;
@@ -24,7 +25,12 @@ fn main() {
     let delay = setup_delay();
     let mut ap33772s =
         Ap33772s::new_default(i2c, delay).expect("Failed to create AP33772S instance");
-
+    ap33772s
+        .set_power_delivery_mode(PowerDeliveryMode {
+            extended_power_range_mode_enabled: true,
+            programmable_power_supply_adjustable_voltage_supply_enabled: true,
+        })
+        .expect("Failed to set Power Delivery Mode");
     loop {
         println!("Enter the Command:");
         println!("{COMMANDS:?}");

@@ -1,4 +1,4 @@
-use crate::hal;
+use crate::{hal, types::api_commands::PowerDataObject};
 
 /// Represents the different errors that can occur while interacting with the AP33772S device.
 #[derive(PartialEq, Clone, Debug)]
@@ -20,6 +20,9 @@ pub enum Ap33772sError {
     /// This can occur when the device has not booted correctly Or the device is already initialised. If this is the case it
     /// could be solved by performing a `hard reset` followed by unplugging both the Stemma Connector if using the RotoPD and the USB C PD Device
     InitialisationFailure,
+    /// This is a preemptive error that can occur when the user tries to negotiate with the device to use a Power Data Object that is not detected
+    /// Inside this error contains the Power Data Object that was not detected
+    PowerDataObjectNotDetected(PowerDataObject),
 }
 
 impl<E: hal::Error> From<E> for Ap33772sError {
@@ -45,6 +48,12 @@ impl core::fmt::Display for Ap33772sError {
             }
             Ap33772sError::InitialisationFailure => write!(f, "Failed to initialise correctly!"),
             Ap33772sError::InvalidRequest => write!(f, "Invalid request"),
+            Ap33772sError::PowerDataObjectNotDetected(power_data_object) => {
+                write!(
+                    f,
+                    "Power Data Object not detected on source: {power_data_object:?}"
+                )
+            }
         }
     }
 }

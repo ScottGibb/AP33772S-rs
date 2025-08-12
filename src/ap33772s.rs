@@ -84,6 +84,15 @@ impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
         current_selection: CurrentSelection,
         data_objects: &AllSourceDataPowerDataObject,
     ) -> Result<PowerDeliveryResponse, Ap33772sError> {
+        // Check to see if PDO requested is available on the Source, return early if not
+        for pdo in &data_objects.power_data_objects {
+            if !pdo.is_detected() {
+                return Err(Ap33772sError::PowerDataObjectNotDetected(
+                    power_data_object_index,
+                ));
+            }
+        }
+
         self.send_power_delivery_request(
             power_data_object_index,
             voltage_selection,

@@ -10,7 +10,7 @@ pub enum SourcePowerRangeDataObject {
 }
 
 impl SourcePowerRangeDataObject {
-    pub fn get_voltage_resolution(&self) -> u16 {
+    pub fn voltage_resolution(&self) -> u16 {
         match self {
             SourcePowerRangeDataObject::Standard(_) => {
                 StandardPowerRangeDataObject::VOLTAGE_RESOLUTION
@@ -20,10 +20,16 @@ impl SourcePowerRangeDataObject {
             }
         }
     }
-    pub fn get_power_type(&self) -> PowerType {
+    pub fn source_power_type(&self) -> PowerType {
         match self {
             SourcePowerRangeDataObject::Standard(data_object) => data_object.source_power_type(),
             SourcePowerRangeDataObject::Extended(data_object) => data_object.source_power_type(),
+        }
+    }
+    pub fn is_detected(&self) -> bool {
+        match self {
+            SourcePowerRangeDataObject::Standard(data_object) => data_object.is_detected(),
+            SourcePowerRangeDataObject::Extended(data_object) => data_object.is_detected(),
         }
     }
 }

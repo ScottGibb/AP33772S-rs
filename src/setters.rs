@@ -72,7 +72,7 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     ) -> Result<(), Ap33772sError> {
         let data_object = data_objects.get_power_data_object(&power_data_object_index);
 
-        let delivery_message = if data_object.get_power_type() == PowerType::Fixed {
+        let delivery_message = if data_object.source_power_type() == PowerType::Fixed {
             // If we are in fixed PDO Mode, the voltage selection is not needed.
             PowerDeliveryRequestMessage::builder()
                 .with_voltage_selection(0)
@@ -80,7 +80,7 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
                 .with_power_data_object_index(power_data_object_index)
                 .build()
         } else {
-            let scaling_value = f32::from(data_object.get_voltage_resolution());
+            let scaling_value = f32::from(data_object.voltage_resolution());
             let voltage_selection = voltage_selection.ok_or(Ap33772sError::InvalidRequest)?;
             let scaled_voltage = scaling_value * voltage_selection.get::<millivolt>();
             // Check for overflow
