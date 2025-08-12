@@ -6,11 +6,11 @@
 pub mod command_map;
 pub mod configuration;
 pub mod data_objects;
+pub mod misc;
 pub mod power_delivery;
 pub mod requested;
 pub mod statistics;
 pub mod thermal_resistances;
 pub mod thresholds;
-
 // Keep macros private - they should not be exposed to end users
 mod macros;

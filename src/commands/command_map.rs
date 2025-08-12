@@ -178,4 +178,6 @@ pub enum Command {
     /// Result and status of PD request or command message
     /// Command: PD_MSGRLT
     PowerDeliveryMessageResult = 0x33,
+    /// Datasheet Name: GPIO. not found in datasheet but found in Raspberry Pi I2C User Guide
+    Gpio = 0x52,
 }
