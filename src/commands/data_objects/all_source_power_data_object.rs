@@ -6,7 +6,7 @@ use crate::commands::{
 };
 
 pub(crate) const MAX_SOURCE_POWER_DATA_OBJECTS: usize = 7;
-pub(crate) const MAX_EXTENDED_POWER_DATA_OBJECTS: usize = 5;
+pub(crate) const MAX_EXTENDED_POWER_DATA_OBJECTS: usize = 6;
 
 #[derive(Debug, PartialEq, Clone)]
 pub struct AllSourceDataPowerDataObject {
@@ -43,6 +43,7 @@ impl Default for AllSourceDataPowerDataObject {
     fn default() -> Self {
         AllSourceDataPowerDataObject {
             power_data_objects: [
+                // Source Standard Power Data Objects 1-7
                 SourcePowerRangeDataObject::Standard(StandardPowerRangeDataObject::default()),
                 SourcePowerRangeDataObject::Standard(StandardPowerRangeDataObject::default()),
                 SourcePowerRangeDataObject::Standard(StandardPowerRangeDataObject::default()),
@@ -50,6 +51,8 @@ impl Default for AllSourceDataPowerDataObject {
                 SourcePowerRangeDataObject::Standard(StandardPowerRangeDataObject::default()),
                 SourcePowerRangeDataObject::Standard(StandardPowerRangeDataObject::default()),
                 SourcePowerRangeDataObject::Standard(StandardPowerRangeDataObject::default()),
+                // Source Extended Power Data Objects 8-13
+                SourcePowerRangeDataObject::Extended(ExtendedPowerRangeDataObject::default()),
                 SourcePowerRangeDataObject::Extended(ExtendedPowerRangeDataObject::default()),
                 SourcePowerRangeDataObject::Extended(ExtendedPowerRangeDataObject::default()),
                 SourcePowerRangeDataObject::Extended(ExtendedPowerRangeDataObject::default()),

@@ -42,6 +42,13 @@ pub mod units {
     pub use uom::si::thermodynamic_temperature::degree_celsius;
 }
 use units::*;
+
+#[derive(Debug, Clone, PartialEq)]
+pub struct PowerDeliveryMode {
+    pub programmable_power_supply_adjustable_voltage_supply_enabled: bool,
+    pub extended_power_range_mode_enabled: bool,
+}
+
 #[derive(Debug, Clone, PartialEq)]
 pub struct Statistics {
     pub current: ElectricCurrent,

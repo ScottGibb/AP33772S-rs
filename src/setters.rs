@@ -2,6 +2,7 @@
 //! setting the AP33772S in different states and modes
 use super::hal::*;
 use crate::ap33772s::Ap33772s;
+use crate::commands::configuration::power_delivery_configuration::PowerDeliveryConfiguration;
 use crate::commands::configuration::system_control::SystemControl;
 use crate::commands::power_delivery::power_delivery_request_message::PowerDeliveryRequestMessage;
 use crate::commands::statistics::minimum_selection_voltage::MinimumSelectionVoltage;
@@ -43,6 +44,20 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
             .with_raw_voltage(raw_voltage)
             .build();
         self.write_one_byte_command(minimum_selection_voltage).await
+    }
+
+    #[maybe_async::maybe_async]
+    pub async fn set_power_delivery_mode(
+        &mut self,
+        mode: PowerDeliveryMode,
+    ) -> Result<(), Ap33772sError> {
+        let command = PowerDeliveryConfiguration::builder()
+            .with_extended_power_delivery_enabled(mode.extended_power_range_mode_enabled)
+            .with_programmable_power_delivery_and_adjustable_power_supply_enabled(
+                mode.programmable_power_supply_adjustable_voltage_supply_enabled,
+            )
+            .build();
+        self.write_one_byte_command(command).await
     }
 
     #[maybe_async::maybe_async]

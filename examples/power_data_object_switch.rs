@@ -4,6 +4,7 @@ use ap33772s_rs::{
 };
 use utils::{setup_delay, setup_i2c};
 
+/// This example is Designed to work with the Macbook Pro M4 Charger - it may also work on others
 fn main() {
     let i2c = setup_i2c(1_000).expect("Failed to set up I2C");
     let delay = setup_delay();
@@ -11,8 +12,8 @@ fn main() {
         Ap33772s::new_default(i2c, delay).expect("Failed to create AP33772S instance");
 
     // Read The Status Register
-    // let status = ap33772s.get_status().expect("Failed to get status");
-    // println!("Status: {status}");
+    let status = ap33772s.get_status().expect("Failed to get status");
+    println!("Status: {status}");
 
     // Get the Power Source Delivery Capabilities
     let power_delivery_capabilities = ap33772s
@@ -20,30 +21,23 @@ fn main() {
         .expect("Failed to get Power Source Delivery Capabilities");
     println!("Capabilities: {power_delivery_capabilities}");
 
-    // Switch Between PDO Indexexes 1 and 2
-    println!("Switching to Power Data Object Index 1 with 5A or more current selection...");
-    let index = PowerDataObject::StandardPowerRange1;
-    let current_selection = CurrentSelection::_5AOrMore;
-    let voltage_selection = None; // No voltage selection needed for fixed PDOs
-    let response = ap33772s
-        .negotiate_power_delivery(
-            index,
-            voltage_selection,
-            current_selection,
-            &power_delivery_capabilities,
-        )
-        .expect("Failed to send power delivery request");
-    println!("Power Delivery request Response: {response:?}");
-
-    println!(
-        "Switched to Power Data Object Index {index} with current selection {current_selection}"
-    );
-    let stats = ap33772s.get_statistics().expect("Failed to get statistics");
-    println!("Statistics: {stats}");
-    println!("Switching to Power Data Object Index 2 with 3A current selection...");
     let index = PowerDataObject::StandardPowerRange2;
     let current_selection = CurrentSelection::_3A;
+    println!("Switching to {index} with current selection {current_selection}");
+    let response = ap33772s
+        .negotiate_power_delivery(index, None, current_selection, &power_delivery_capabilities)
+        .expect("Failed to send power delivery request");
+    println!("Power Delivery request Response: {response:?}");
+    let stats = ap33772s.get_statistics().expect("Failed to get statistics");
+    println!("Statistics: {stats}");
+
+    // Pause Between Switching
+    std::thread::sleep(std::time::Duration::from_secs(2));
+
+    let index = PowerDataObject::StandardPowerRange4;
+    let current_selection = CurrentSelection::_5AOrMore;
     let voltage_selection = None; // No voltage selection needed for fixed PDOs
+    println!("Switching to {index} with current selection {current_selection}");
     let response = ap33772s
         .negotiate_power_delivery(
             index,
@@ -53,10 +47,6 @@ fn main() {
         )
         .expect("Failed to send power delivery request");
     println!("Power Delivery request Response: {response:?}");
-
-    println!(
-        "Switched to Power Data Object Index {index} with current selection {current_selection}"
-    );
     let stats = ap33772s.get_statistics().expect("Failed to get statistics");
     println!("Statistics: {stats}");
 }

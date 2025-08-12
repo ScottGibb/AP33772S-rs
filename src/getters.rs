@@ -4,6 +4,7 @@ use super::hal::*;
 use crate::ap33772s::Ap33772s;
 use crate::commands::command_map::Command;
 use crate::commands::configuration::operation_mode::OperationMode;
+use crate::commands::configuration::power_delivery_configuration::PowerDeliveryConfiguration;
 use crate::commands::configuration::system_control::SystemControl;
 use crate::commands::data_objects::all_source_power_data_object::AllSourceDataPowerDataObject;
 use crate::commands::data_objects::all_source_power_data_object::MAX_EXTENDED_POWER_DATA_OBJECTS;
@@ -42,6 +43,20 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     #[maybe_async::maybe_async]
     pub async fn get_operating_mode(&mut self) -> Result<OperationMode, Ap33772sError> {
         self.read_one_byte_command::<OperationMode>().await
+    }
+
+    #[maybe_async::maybe_async]
+    pub async fn get_power_delivery_configuration(
+        &mut self,
+    ) -> Result<PowerDeliveryMode, Ap33772sError> {
+        let command_result = self
+            .read_one_byte_command::<PowerDeliveryConfiguration>()
+            .await?;
+        Ok(PowerDeliveryMode {
+            programmable_power_supply_adjustable_voltage_supply_enabled: command_result
+                .programmable_power_delivery_and_adjustable_power_supply_enabled(),
+            extended_power_range_mode_enabled: command_result.extended_power_delivery_enabled(),
+        })
     }
 
     #[maybe_async::maybe_async]
