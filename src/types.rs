@@ -17,6 +17,7 @@ pub mod api_commands {
         CURRENT_SELECTIONS, CurrentSelection, PowerDataObject,
     };
 }
+
 use crate::commands::thermal_resistances::thermal_resistance_25::ThermalResistance25;
 use crate::commands::thermal_resistances::thermal_resistance_50::ThermalResistance50;
 use crate::commands::thermal_resistances::thermal_resistance_75::ThermalResistance75;
@@ -47,6 +48,22 @@ use units::*;
 pub struct PowerDeliveryMode {
     pub programmable_power_supply_adjustable_voltage_supply_enabled: bool,
     pub extended_power_range_mode_enabled: bool,
+}
+impl core::fmt::Display for PowerDeliveryMode {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        writeln!(f, "PowerDeliveryMode {{")?;
+        writeln!(
+            f,
+            "  programmable_power_supply_adjustable_voltage_supply_enabled: {}",
+            self.programmable_power_supply_adjustable_voltage_supply_enabled
+        )?;
+        writeln!(
+            f,
+            "  extended_power_range_mode_enabled: {}",
+            self.extended_power_range_mode_enabled
+        )?;
+        write!(f, "}}")
+    }
 }
 
 #[derive(Debug, Clone, PartialEq)]

@@ -31,7 +31,11 @@ fn main() {
 
         // If the Power Data Object is Adjustable, get the chosen voltage
         let voltage = if power_type == PowerType::Adjustable {
-            Some(get_chosen_voltage_from_user())
+            let mode = ap33772s
+                .get_power_delivery_configuration()
+                .expect("Failed to get power delivery configuration");
+            println!("The Power Data Object selected is Adjustable, the system mode is {mode}");
+            get_chosen_voltage_from_user()
         } else {
             None
         };
@@ -81,16 +85,26 @@ fn get_power_data_object_index_from_user() -> PowerDataObject {
     power_data_object_index
 }
 
-fn get_chosen_voltage_from_user() -> ElectricPotential {
-    println!(
-        "The power data object selected is Adjustable, please enter the voltage in milivolts (mV)"
-    );
+fn get_chosen_voltage_from_user() -> Option<ElectricPotential> {
+    println!("The Power Data Object selected is Adjustable, Do you want a custom Voltage? (Y/N)");
     let mut input = String::new();
     std::io::stdin()
         .read_line(&mut input)
         .expect("Failed to read line");
-    let raw_voltage: f32 = input.trim().parse().expect("Invalid input");
-    ElectricPotential::new::<millivolt>(raw_voltage)
+
+    if input.trim().eq_ignore_ascii_case("y") {
+        println!(
+            "The power data object selected is Adjustable, please enter the voltage in milivolts (mV)"
+        );
+        input.clear();
+        std::io::stdin()
+            .read_line(&mut input)
+            .expect("Failed to read line");
+        let raw_voltage: u32 = input.trim().parse().expect("Invalid input");
+        Some(ElectricPotential::new::<millivolt>(raw_voltage as f32))
+    } else {
+        None
+    }
 }
 
 fn get_current_selection_from_user() -> CurrentSelection {
