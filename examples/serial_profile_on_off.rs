@@ -80,7 +80,7 @@ fn main() {
                 println!("Current Statistics: {statistics}");
             }
             "Maximum" => {
-                let power_data_object = PowerDataObject::StandardPowerRange7;
+                let power_data_object = PowerDataObject::StandardPowerRange4;
                 println!("Requesting Maximum Power Delivery on {power_data_object}");
                 let result = ap33772s
                     .negotiate_maximum_power_delivery(power_data_object)
