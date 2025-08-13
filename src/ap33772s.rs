@@ -27,7 +27,7 @@ pub struct Ap33772s<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: Inpu
 /// delay approach which is dependent on the users HAL
 #[cfg(not(feature = "interrupts"))]
 impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
-    const NEGOTIATE_TIMING_DELAY: Duration = Duration::from_millis(30);
+    const NEGOTIATE_TIMING_DELAY: Duration = Duration::from_millis(50);
     const BOOT_UP_DELAY: Duration = Duration::from_millis(100);
     /// The I2C address of the AP33772S device.
     /// This address is used for communication with the device over I2C.
@@ -85,12 +85,13 @@ impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
         data_objects: &AllSourceDataPowerDataObject,
     ) -> Result<PowerDeliveryResponse, Ap33772sError> {
         // Check to see if PDO requested is available on the Source, return early if not
-        for pdo in &data_objects.power_data_objects {
-            if !pdo.is_detected() {
-                return Err(Ap33772sError::PowerDataObjectNotDetected(
-                    power_data_object_index,
-                ));
-            }
+        if !data_objects
+            .get_power_data_object(power_data_object_index)
+            .is_detected()
+        {
+            return Err(Ap33772sError::PowerDataObjectNotDetected(
+                power_data_object_index,
+            ));
         }
 
         self.send_power_delivery_request(

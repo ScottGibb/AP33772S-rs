@@ -35,7 +35,7 @@ fn main() {
     std::thread::sleep(std::time::Duration::from_secs(2));
 
     let index = PowerDataObject::StandardPowerRange4;
-    let current_selection = CurrentSelection::_5AOrMore;
+    let current_selection = CurrentSelection::Maximum;
     let voltage_selection = None; // No voltage selection needed for fixed PDOs
     println!("Switching to {index} with current selection {current_selection}");
     let response = ap33772s

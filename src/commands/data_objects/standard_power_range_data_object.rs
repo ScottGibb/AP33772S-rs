@@ -1,10 +1,12 @@
-use crate::commands::data_objects::source_power_range_data_object::PeakCurrent;
+use crate::commands::data_objects::source_power_range_data_object::{
+    PeakCurrent, SourcePowerCurrent,
+};
 use crate::types::units::*;
 use crate::{
     commands::data_objects::source_power_range_data_object::PowerType, error::Ap33772sError,
 };
 use arbitrary_int::u2;
-use bitbybit::{bitenum, bitfield};
+use bitbybit::bitfield;
 
 #[bitfield(u16, default = 0x00)]
 #[derive(Debug, PartialEq)]
@@ -12,7 +14,6 @@ pub struct StandardPowerRangeDataObject {
     #[bits(0..=7, r)]
     pub raw_max_voltage: u8,
     #[bits(8..=9, r)]
-    // This is either Minimum Voltage or Peak Current.... TODO: Find out a way to handle this
     pub minimum_voltage_or_peak_current: u2,
     #[bits(10..=13, r)]
     pub max_current: SourcePowerCurrent,
@@ -78,28 +79,6 @@ impl From<u2> for MinimumVoltage {
             _ => unreachable!("This will never happen due to rust type safety"),
         }
     }
-}
-
-#[bitenum(u4, exhaustive = true)]
-#[derive(Debug, PartialEq)]
-#[cfg_attr(feature = "defmt", derive(defmt::Format))]
-pub enum SourcePowerCurrent {
-    LessThan1_24 = 0,
-    _1_24To1_49 = 1,
-    _1_50To1_74 = 2,
-    _1_75To1_99 = 3,
-    _2_00To2_24 = 4,
-    _2_25To2_49 = 5,
-    _2_50To2_74 = 6,
-    _2_75To2_99 = 7,
-    _3_00To3_24 = 8,
-    _3_25To3_49 = 9,
-    _3_50To3_74 = 10,
-    _3_75To3_99 = 11,
-    _4_00To4_24 = 12,
-    _4_25To4_49 = 13,
-    _4_50To4_99 = 14,
-    MoreThan5 = 15,
 }
 
 impl core::fmt::Display for StandardPowerRangeDataObject {

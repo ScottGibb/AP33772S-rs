@@ -19,41 +19,47 @@ pub struct PowerDeliveryRequestMessage {
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[bitenum(u4, exhaustive = false)]
 pub enum PowerDataObject {
-    StandardPowerRange1 = 0x00,
-    StandardPowerRange2 = 0x01,
-    StandardPowerRange3 = 0x02,
-    StandardPowerRange4 = 0x03,
-    StandardPowerRange5 = 0x04,
-    StandardPowerRange6 = 0x05,
-    StandardPowerRange7 = 0x06,
-    ExtendedPowerRange8 = 0x07,
-    ExtendedPowerRange9 = 0x08,
-    ExtendedPowerRange10 = 0x09,
-    ExtendedPowerRange11 = 0x0A,
-    ExtendedPowerRange12 = 0x0B,
-    ExtendedPowerRange13 = 0x0C,
+    StandardPowerRange1 = 1,
+    StandardPowerRange2 = 2,
+    StandardPowerRange3 = 3,
+    StandardPowerRange4 = 4,
+    StandardPowerRange5 = 5,
+    StandardPowerRange6 = 6,
+    StandardPowerRange7 = 7,
+    ExtendedPowerRange8 = 8,
+    ExtendedPowerRange9 = 9,
+    ExtendedPowerRange10 = 10,
+    ExtendedPowerRange11 = 11,
+    ExtendedPowerRange12 = 12,
+    ExtendedPowerRange13 = 13,
 }
 
-impl TryFrom<u8> for PowerDataObject {
+impl From<PowerDataObject> for usize {
+    fn from(value: PowerDataObject) -> Self {
+        value as usize
+    }
+}
+
+impl TryFrom<usize> for PowerDataObject {
     type Error = Ap33772sError;
 
-    /// Converts a u8 value to a PowerDataObject enum variant.
+    /// Converts a usize value to a PowerDataObject enum variant.
     /// Returns an error if the value doesn't correspond to a valid variant.
-    fn try_from(value: u8) -> Result<Self, Self::Error> {
+    fn try_from(value: usize) -> Result<Self, Self::Error> {
         match value {
-            0x00 => Ok(PowerDataObject::StandardPowerRange1),
-            0x01 => Ok(PowerDataObject::StandardPowerRange2),
-            0x02 => Ok(PowerDataObject::StandardPowerRange3),
-            0x03 => Ok(PowerDataObject::StandardPowerRange4),
-            0x04 => Ok(PowerDataObject::StandardPowerRange5),
-            0x05 => Ok(PowerDataObject::StandardPowerRange6),
-            0x06 => Ok(PowerDataObject::StandardPowerRange7),
-            0x07 => Ok(PowerDataObject::ExtendedPowerRange8),
-            0x08 => Ok(PowerDataObject::ExtendedPowerRange9),
-            0x09 => Ok(PowerDataObject::ExtendedPowerRange10),
-            0x0A => Ok(PowerDataObject::ExtendedPowerRange11),
-            0x0B => Ok(PowerDataObject::ExtendedPowerRange12),
-            0x0C => Ok(PowerDataObject::ExtendedPowerRange13),
+            0 => Ok(PowerDataObject::StandardPowerRange1),
+            1 => Ok(PowerDataObject::StandardPowerRange2),
+            2 => Ok(PowerDataObject::StandardPowerRange3),
+            3 => Ok(PowerDataObject::StandardPowerRange4),
+            4 => Ok(PowerDataObject::StandardPowerRange5),
+            5 => Ok(PowerDataObject::StandardPowerRange6),
+            6 => Ok(PowerDataObject::StandardPowerRange7),
+            7 => Ok(PowerDataObject::ExtendedPowerRange8),
+            8 => Ok(PowerDataObject::ExtendedPowerRange9),
+            9 => Ok(PowerDataObject::ExtendedPowerRange10),
+            10 => Ok(PowerDataObject::ExtendedPowerRange11),
+            11 => Ok(PowerDataObject::ExtendedPowerRange12),
+            12 => Ok(PowerDataObject::ExtendedPowerRange13),
             _ => Err(Ap33772sError::ConversionFailed),
         }
     }
@@ -99,15 +105,15 @@ pub enum CurrentSelection {
     _4A = 12,
     _4_25A = 13,
     _4_5A = 14,
-    _5AOrMore = 15,
+    Maximum = 15,
 }
 
-impl TryFrom<u8> for CurrentSelection {
+impl TryFrom<usize> for CurrentSelection {
     type Error = Ap33772sError;
 
     /// Converts a u8 value to a CurrentSelection enum variant.
     /// Returns an error if the value doesn't correspond to a valid variant.
-    fn try_from(value: u8) -> Result<Self, Self::Error> {
+    fn try_from(value: usize) -> Result<Self, Self::Error> {
         match value {
             0 => Ok(CurrentSelection::_1A),
             1 => Ok(CurrentSelection::_1_25A),
@@ -124,7 +130,7 @@ impl TryFrom<u8> for CurrentSelection {
             12 => Ok(CurrentSelection::_4A),
             13 => Ok(CurrentSelection::_4_25A),
             14 => Ok(CurrentSelection::_4_5A),
-            15 => Ok(CurrentSelection::_5AOrMore),
+            15 => Ok(CurrentSelection::Maximum),
             _ => Err(Ap33772sError::ConversionFailed),
         }
     }
@@ -146,7 +152,7 @@ pub const CURRENT_SELECTIONS: [CurrentSelection; 16] = [
     CurrentSelection::_4A,
     CurrentSelection::_4_25A,
     CurrentSelection::_4_5A,
-    CurrentSelection::_5AOrMore,
+    CurrentSelection::Maximum,
 ];
 impl core::fmt::Display for CurrentSelection {
     fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
@@ -167,7 +173,7 @@ impl core::fmt::Display for CurrentSelection {
             _4A => "4A",
             _4_25A => "4.25A",
             _4_5A => "4.5A",
-            _5AOrMore => "5A or > 5A ",
+            Maximum => "5A or > 5A ",
         };
         write!(f, "{s}")
     }

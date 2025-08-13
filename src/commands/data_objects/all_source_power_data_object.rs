@@ -64,8 +64,18 @@ impl Default for AllSourceDataPowerDataObject {
 }
 
 impl AllSourceDataPowerDataObject {
-    pub fn get_power_data_object(&self, index: &PowerDataObject) -> &SourcePowerRangeDataObject {
-        let index: usize = u8::from(index.raw_value()).into();
+    pub fn get_power_data_object(&self, index: PowerDataObject) -> &SourcePowerRangeDataObject {
+        // These assertions should never fire, but we include them for safety. The PowerDataObjects are always in the range 1-13
+        assert!(
+            usize::from(index) < self.power_data_objects.len(),
+            "Index out of bounds for power data objects"
+        );
+        assert_ne!(
+            usize::from(index),
+            0,
+            "Power Data Object Should never be zero!"
+        );
+        let index = usize::from(index) - 1;
         &self.power_data_objects[index]
     }
 }

@@ -70,7 +70,7 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
         current_selection: CurrentSelection,
         data_objects: &AllSourceDataPowerDataObject,
     ) -> Result<(), Ap33772sError> {
-        let data_object = data_objects.get_power_data_object(&power_data_object_index);
+        let data_object = data_objects.get_power_data_object(power_data_object_index);
 
         let delivery_message = if data_object.source_power_type() == PowerType::Fixed {
             // If we are in fixed PDO Mode, the voltage selection is not needed.
@@ -109,7 +109,7 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
         // Special message outlined in the AP33772S Datasheet Page 22
         let delivery_message = PowerDeliveryRequestMessage::builder()
             .with_voltage_selection(0xFF) // No Voltage Selection in Fixed Mode
-            .with_current_selection(CurrentSelection::_5AOrMore)
+            .with_current_selection(CurrentSelection::Maximum)
             .with_power_data_object_index(power_data_object_index)
             .build();
         self.write_two_byte_command(delivery_message).await

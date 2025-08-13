@@ -25,7 +25,7 @@ fn main() {
         // Ask the User for the PDO Index they want to select
         let power_data_object_index = get_power_data_object_index_from_user();
         let power_data_object =
-            power_delivery_capabilities.get_power_data_object(&power_data_object_index);
+            power_delivery_capabilities.get_power_data_object(power_data_object_index);
         // Check of the Power Data Object Index is not a fixed type
         let power_type = power_data_object.source_power_type();
 
@@ -42,15 +42,19 @@ fn main() {
         Power Data Object: {power_data_object}
         ");
         // Request the Power Delivery
-        let response = ap33772s
-            .negotiate_power_delivery(
-                power_data_object_index,
-                voltage,
-                current_selection,
-                &power_delivery_capabilities,
-            )
-            .expect("Failed to send Power Delivery Request");
-        println!("Power Delivery request Response: {response:?}");
+        let response = ap33772s.negotiate_power_delivery(
+            power_data_object_index,
+            voltage,
+            current_selection,
+            &power_delivery_capabilities,
+        );
+        match response {
+            Ok(response) => println!("Power Delivery request Response: {response:?}"),
+            Err(err) => {
+                println!("Failed to send Power Delivery Request: {err}");
+                continue; // Skip to the next iteration if there was an error
+            }
+        }
 
         // Read the System Statistics
         let system_statistics = ap33772s
@@ -66,7 +70,7 @@ fn get_power_data_object_index_from_user() -> PowerDataObject {
     std::io::stdin()
         .read_line(&mut input)
         .expect("Failed to read line");
-    let power_data_object_index: u8 = input.trim().parse().expect("Invalid input");
+    let power_data_object_index: usize = input.trim().parse().expect("Invalid input");
     if !(0..=12).contains(&power_data_object_index) {
         panic!("Power Delivery Index must be between 0 and 12");
     }
@@ -99,7 +103,7 @@ fn get_current_selection_from_user() -> CurrentSelection {
         .expect("Failed to read line");
     let error_message =
         format!("Invalid Current Selection, must be between 0 and {last_current_selections_index}");
-    let current_selection: u8 = input.trim().parse().expect(&error_message);
+    let current_selection: usize = input.trim().parse().expect(&error_message);
     let current_selection = CurrentSelection::try_from(current_selection).expect(&error_message);
     println!("Current Selected: {current_selection}");
     current_selection

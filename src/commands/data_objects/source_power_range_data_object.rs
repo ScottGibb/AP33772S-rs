@@ -75,3 +75,25 @@ impl From<u2> for PeakCurrent {
         }
     }
 }
+
+#[bitenum(u4, exhaustive = true)]
+#[derive(Debug, PartialEq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
+pub enum SourcePowerCurrent {
+    LessThan1_24 = 0,
+    _1_24To1_49 = 1,
+    _1_50To1_74 = 2,
+    _1_75To1_99 = 3,
+    _2_00To2_24 = 4,
+    _2_25To2_49 = 5,
+    _2_50To2_74 = 6,
+    _2_75To2_99 = 7,
+    _3_00To3_24 = 8,
+    _3_25To3_49 = 9,
+    _3_50To3_74 = 10,
+    _3_75To3_99 = 11,
+    _4_00To4_24 = 12,
+    _4_25To4_49 = 13,
+    _4_50To4_99 = 14,
+    Maximum = 15,
+}
