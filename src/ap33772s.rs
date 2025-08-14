@@ -1,4 +1,7 @@
 //! This module outlines the AP33772S device. Specifically the top level methods and structure of the device.
+//! The device can operate in multiple modes specifically in respect to using `interrupts` or using a delay
+//! based approach. The default is to use a delay based approach which can be bypassed using the `advanced` feature
+//! which allows for the entire commands to be exposed to the end user.
 //!
 #[cfg(not(feature = "interrupts"))]
 use core::time::Duration;
@@ -17,8 +20,10 @@ use crate::types::*;
 /// See The [GitHub Repo](https://github.com/ScottGibb/AP33772S-rs) for examples on how to use the API.
 pub struct Ap33772s<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> {
     pub(crate) i2c: I2C,
+    /// The underlying delay mechanism required for the USB C Power Delivery negotiation
     #[cfg(not(feature = "interrupts"))]
     pub(crate) delay: D,
+    /// The InputPin assigned for the Interrupt signal. This pin will go high when the AP33772S is ready for communication
     #[cfg(feature = "interrupts")]
     pub(crate) interrupt_pin: P,
 }
@@ -108,6 +113,8 @@ impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
         self.get_power_delivery_request_result().await
     }
 
+    /// Performs a negotiation with the AP33772S device to change its current state to the configuration provided. Uses the `self.delay` to
+    /// wait for the response. Wether the delay is blocking or not is dependent on HAL thats implements the `Delay` trait.
     #[maybe_async::maybe_async]
     pub async fn negotiate_maximum_power_delivery(
         &mut self,
