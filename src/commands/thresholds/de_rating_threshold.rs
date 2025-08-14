@@ -1,5 +1,5 @@
 use super::command_map::Command;
-use crate::error::Ap33772sError;
+use crate::errors::Ap33772sError;
 use crate::types::units::*;
 use crate::{impl_one_byte_read_command, impl_one_byte_write_command};
 use bitbybit::bitfield;

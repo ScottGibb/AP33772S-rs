@@ -1,7 +1,7 @@
 //! Types required by the Getters and Setters
-//! Expose the requireed types for the functions to be used externally.
+//! This module exposes the requireed types for the functions to be used externally.
 
-/// Public Imports
+/// Module Reexports the internal api command types that are used for the getters and setters
 pub mod api_commands {
     pub use crate::commands::configuration::operation_mode::{
         ConfigurationChannel, DeRatingMode, OperationMode,
@@ -14,7 +14,7 @@ pub mod api_commands {
     pub use crate::commands::data_objects::standard_power_range_data_object::StandardPowerRangeDataObject;
     pub use crate::commands::power_delivery::power_delivery_message_result::PowerDeliveryResponse;
     pub use crate::commands::power_delivery::power_delivery_request_message::{
-        CURRENT_SELECTIONS, OperatingCurrentSelection, PowerDataObject,
+        OperatingCurrentSelection, PowerDataObject,
     };
 }
 
@@ -26,7 +26,9 @@ use crate::commands::thresholds::de_rating_threshold::DeRatingThreshold;
 use crate::commands::thresholds::over_current_protection_threshold::OverCurrentProtectionThreshold;
 use crate::commands::thresholds::over_temperature_protection_threshold::OverTemperatureProtectionThreshold;
 use crate::commands::thresholds::over_voltage_protection_threshold::OverVoltageProtectionThreshold;
-pub use crate::error::Ap33772sError;
+pub use crate::errors::Ap33772sError;
+
+/// This particular module is responsible for exposing the relevant UOM types for use with this library.
 pub mod units {
     pub use uom::si::electric_current::ampere;
     pub use uom::si::electric_current::milliampere;
@@ -44,6 +46,17 @@ pub mod units {
 }
 use units::*;
 
+/// This struct represents the Power Delivery Modes and specifically,
+/// allows the user to query if Adjustable Voltage Supply and or Extended Power Supply
+/// is enabled and supported by the Type C device plugged into the AP33772S.
+/// Use the following method to get this struct
+///
+///  **Getter**
+/// `crate::getters::get_power_delivery_configuration()`
+///
+/// **Setter**
+/// `crate::setters::set_power_delivery_configuration()`
+///
 #[derive(Debug, Clone, PartialEq)]
 pub struct PowerDeliveryMode {
     pub programmable_power_supply_adjustable_voltage_supply_enabled: bool,
@@ -66,11 +79,17 @@ impl core::fmt::Display for PowerDeliveryMode {
     }
 }
 
+/// The statistics struct contains all the current information about the device
+/// specifically outlining what its doing currently and what its being requested to do
 #[derive(Debug, Clone, PartialEq)]
 pub struct Statistics {
+    /// The operating Current
     pub current: ElectricCurrent,
+    /// The operating Voltage
     pub voltage: ElectricPotential,
+    /// The operating Power
     pub power: Power,
+    /// The Current Temperature
     pub temperature: ThermodynamicTemperature,
 
     pub requested_voltage: ElectricPotential,
@@ -130,11 +149,16 @@ impl defmt::Format for Statistics {
     }
 }
 
+/// The Thermal Resistances for the Negative Temperature Coefficeint Resister (NTC)
 #[derive(Debug, Clone, PartialEq)]
 pub struct ThermalResistances {
+    /// The Resistance at 25 degrees (celsius)
     pub _25: ElectricalResistance,
+    /// The Temperature at 25 degrees (celsius)
     pub _50: ElectricalResistance,
+    /// The Temperature at 50 degrees (celsius)
     pub _75: ElectricalResistance,
+    /// The Temperature at 100 degrees (celsius)
     pub _100: ElectricalResistance,
 }
 
@@ -175,12 +199,22 @@ impl Default for ThermalResistances {
 }
 pub use crate::commands::thresholds::under_voltage_protection_threshold::UnderVoltageThreshold;
 
+/// The Thresholds for the AP33772S for the different fault protections. All thresholds when applied will result in
+/// the corresponding flags in the [Status](crate::commands::configuration::status::Status) being set
 #[derive(Debug, Clone, PartialEq)]
 pub struct Thresholds {
+    /// The over voltage threshold in which the load will be disconnected through MOS Switch and the system will enter
+    /// a fault state
     pub over_voltage: ElectricPotential,
+    /// The minimum voltage at which point if the device goes below, the AP33772S will enter a fault state and disconnect
+    /// the load
     pub under_voltage: UnderVoltageThreshold,
+    /// The current at which the device will turn off the power to the load and enter a fault state
     pub over_current: ElectricCurrent,
+    /// The temperature at which the MOSFET Switch will be turned off disconnecting the load, entering a fault states
     pub over_temperature: ThermodynamicTemperature,
+    /// The Hot Spot Temperature in which the device will lower the input current by 50% in an attempt to cool
+    /// the AP33772S down.
     pub derating: ThermodynamicTemperature,
 }
 

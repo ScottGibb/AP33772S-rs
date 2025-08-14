@@ -1,5 +1,5 @@
 use super::command_map::Command;
-use crate::error::Ap33772sError;
+use crate::errors::Ap33772sError;
 use crate::impl_two_byte_write_command;
 use crate::types::units::*;
 use bitbybit::{bitenum, bitfield};
@@ -160,13 +160,6 @@ impl TryFrom<usize> for OperatingCurrentSelection {
     }
 }
 
-pub const CURRENT_SELECTIONS: [OperatingCurrentSelection; 16] = {
-    use OperatingCurrentSelection::*;
-    [
-        _1A, _1_25A, _1_5A, _1_75A, _2A, _2_25A, _2_5A, _2_75A, _3A, _3_25A, _3_5A, _3_75A, _4A,
-        _4_25A, _4_5A, Maximum,
-    ]
-};
 impl core::fmt::Display for OperatingCurrentSelection {
     fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         use OperatingCurrentSelection::*;

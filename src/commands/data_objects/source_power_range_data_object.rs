@@ -3,7 +3,7 @@ use bitbybit::bitenum;
 
 use crate::commands::data_objects::extended_power_range_data_object::MinimumVoltage as ExtendedMinimumVoltage;
 use crate::commands::data_objects::standard_power_range_data_object::MinimumVoltage as StandardMinimumVoltage;
-use crate::error::{Ap33772sError, RequestError};
+use crate::errors::{Ap33772sError, RequestError};
 use crate::types::api_commands::{ExtendedPowerRangeDataObject, StandardPowerRangeDataObject};
 use crate::types::units::*;
 #[derive(Debug, PartialEq, Clone)]
@@ -93,11 +93,16 @@ impl core::fmt::Display for SourcePowerRangeDataObject {
     }
 }
 
+/// The different operational modes that the USB C Specification Supports
 #[bitenum(u1, exhaustive = true)]
 #[derive(Debug, PartialEq)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum PowerType {
+    /// In this mode, Programmable Power Supply (PPS) is not used and the voltage will at a fixed rate defined
+    /// by the Power Data Object
     Fixed = 0,
+    /// In this mode, Programmable Power Supply (PPS) can be used and the voltage can be tweaked dependent on
+    /// the configuration of the Power Data Object
     Adjustable = 1,
 }
 

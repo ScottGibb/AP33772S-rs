@@ -14,9 +14,9 @@ compile_error!("You cannot use both sync and async features at the same time. Pl
 compile_error!("You must enable either the sync or async feature. Please choose one.");
 
 pub mod ap33772s;
-pub mod error;
-pub mod getters;
-pub mod setters;
+mod errors;
+mod getters;
+mod setters;
 pub mod types;
 
 // Expose all underlying registers and communication methods for full access

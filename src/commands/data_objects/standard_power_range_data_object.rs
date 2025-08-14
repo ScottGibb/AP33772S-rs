@@ -3,7 +3,7 @@ use crate::commands::data_objects::source_power_range_data_object::{
 };
 use crate::types::units::*;
 use crate::{
-    commands::data_objects::source_power_range_data_object::PowerType, error::Ap33772sError,
+    commands::data_objects::source_power_range_data_object::PowerType, errors::Ap33772sError,
 };
 use arbitrary_int::u2;
 use bitbybit::bitfield;

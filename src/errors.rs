@@ -1,3 +1,4 @@
+//! This Module contains all the public facing Errors that can occur when using this driver
 use crate::{hal, types::api_commands::PowerDataObject};
 
 /// Represents the different errors that can occur while interacting with the AP33772S device.
@@ -26,8 +27,11 @@ pub enum Ap33772sError {
     PowerDataObjectNotDetected(PowerDataObject),
 }
 
+/// This Error is specifically an internal error that is used before communication with the device is taken.
+/// The eror enum catches incompatible configurations and notifies the user accordingly.
 #[derive(PartialEq, Clone, Debug)]
 #[non_exhaustive]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum RequestError {
     MissingArgument,
     VoltageOutOfRange,

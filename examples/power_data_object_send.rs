@@ -1,14 +1,18 @@
 use ap33772s_rs::{
     ap33772s::Ap33772s,
     types::{
-        api_commands::{
-            CURRENT_SELECTIONS, OperatingCurrentSelection, PowerDataObject, PowerType, Status,
-        },
+        api_commands::{OperatingCurrentSelection, PowerDataObject, PowerType, Status},
         units::*,
     },
 };
 use utils::{setup_delay, setup_i2c};
-
+pub const CURRENT_SELECTIONS: [OperatingCurrentSelection; 16] = {
+    use OperatingCurrentSelection::*;
+    [
+        _1A, _1_25A, _1_5A, _1_75A, _2A, _2_25A, _2_5A, _2_75A, _3A, _3_25A, _3_5A, _3_75A, _4A,
+        _4_25A, _4_5A, Maximum,
+    ]
+};
 fn main() {
     let i2c = setup_i2c(1_000).expect("Failed to set up I2C");
     let delay = setup_delay();

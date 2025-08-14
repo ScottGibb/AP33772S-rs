@@ -5,7 +5,7 @@ use super::traits::{
     ReadOneByteCommand, ReadTwoByteCommand, WriteOneByteCommand, WriteTwoByteCommand,
 };
 use crate::ap33772s::Ap33772s;
-use crate::error::Ap33772sError;
+use crate::errors::Ap33772sError;
 use crate::hal::DelayNs;
 use crate::hal::I2c;
 

@@ -1,7 +1,7 @@
 use crate::commands::data_objects::source_power_range_data_object::{
     PeakCurrent, PowerType, SourceMaximumCurrent,
 };
-use crate::error::Ap33772sError;
+use crate::errors::Ap33772sError;
 use crate::types::units::*;
 use arbitrary_int::u2;
 use bitbybit::bitfield;
