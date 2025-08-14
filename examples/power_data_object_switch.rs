@@ -1,6 +1,6 @@
 use ap33772s_rs::{
     ap33772s::Ap33772s,
-    types::api_commands::{CurrentSelection, PowerDataObject},
+    types::api_commands::{OperatingCurrentSelection, PowerDataObject},
 };
 use utils::{setup_delay, setup_i2c};
 
@@ -22,7 +22,7 @@ fn main() {
     println!("Capabilities: {power_delivery_capabilities}");
 
     let index = PowerDataObject::StandardPowerRange2;
-    let current_selection = CurrentSelection::_3A;
+    let current_selection = OperatingCurrentSelection::_3A;
     println!("Switching to {index} with current selection {current_selection}");
     let response = ap33772s
         .negotiate_power_delivery(index, None, current_selection, &power_delivery_capabilities)
@@ -35,7 +35,7 @@ fn main() {
     std::thread::sleep(std::time::Duration::from_secs(2));
 
     let index = PowerDataObject::StandardPowerRange4;
-    let current_selection = CurrentSelection::Maximum;
+    let current_selection = OperatingCurrentSelection::Maximum;
     let voltage_selection = None; // No voltage selection needed for fixed PDOs
     println!("Switching to {index} with current selection {current_selection}");
     let response = ap33772s

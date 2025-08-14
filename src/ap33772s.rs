@@ -81,7 +81,7 @@ impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
         &mut self,
         power_data_object_index: PowerDataObject,
         voltage_selection: Option<ElectricPotential>,
-        current_selection: CurrentSelection,
+        current_selection: OperatingCurrentSelection,
         data_objects: &AllSourceDataPowerDataObject,
     ) -> Result<PowerDeliveryResponse, Ap33772sError> {
         // Check to see if PDO requested is available on the Source, return early if not

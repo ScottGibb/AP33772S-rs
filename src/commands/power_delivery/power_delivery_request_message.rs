@@ -10,7 +10,7 @@ pub struct PowerDeliveryRequestMessage {
     #[bits(0..=7, w)]
     pub voltage_selection: u8, // Handle the different units depending on the power mode
     #[bits(8..=11, w)]
-    pub current_selection: CurrentSelection,
+    pub current_selection: OperatingCurrentSelection,
     #[bits(12..=15, w)]
     pub power_data_object_index: PowerDataObject,
 }
@@ -89,7 +89,7 @@ impl core::fmt::Display for PowerDataObject {
 #[derive(Debug, PartialEq, PartialOrd)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[bitenum(u4, exhaustive = true)]
-pub enum CurrentSelection {
+pub enum OperatingCurrentSelection {
     _1A = 0,
     _1_25A = 1,
     _1_5A = 2,
@@ -108,55 +108,55 @@ pub enum CurrentSelection {
     Maximum = 15,
 }
 
-impl TryFrom<usize> for CurrentSelection {
+impl TryFrom<usize> for OperatingCurrentSelection {
     type Error = Ap33772sError;
 
     /// Converts a u8 value to a CurrentSelection enum variant.
     /// Returns an error if the value doesn't correspond to a valid variant.
     fn try_from(value: usize) -> Result<Self, Self::Error> {
         match value {
-            0 => Ok(CurrentSelection::_1A),
-            1 => Ok(CurrentSelection::_1_25A),
-            2 => Ok(CurrentSelection::_1_5A),
-            3 => Ok(CurrentSelection::_1_75A),
-            4 => Ok(CurrentSelection::_2A),
-            5 => Ok(CurrentSelection::_2_25A),
-            6 => Ok(CurrentSelection::_2_5A),
-            7 => Ok(CurrentSelection::_2_75A),
-            8 => Ok(CurrentSelection::_3A),
-            9 => Ok(CurrentSelection::_3_25A),
-            10 => Ok(CurrentSelection::_3_5A),
-            11 => Ok(CurrentSelection::_3_75A),
-            12 => Ok(CurrentSelection::_4A),
-            13 => Ok(CurrentSelection::_4_25A),
-            14 => Ok(CurrentSelection::_4_5A),
-            15 => Ok(CurrentSelection::Maximum),
+            0 => Ok(OperatingCurrentSelection::_1A),
+            1 => Ok(OperatingCurrentSelection::_1_25A),
+            2 => Ok(OperatingCurrentSelection::_1_5A),
+            3 => Ok(OperatingCurrentSelection::_1_75A),
+            4 => Ok(OperatingCurrentSelection::_2A),
+            5 => Ok(OperatingCurrentSelection::_2_25A),
+            6 => Ok(OperatingCurrentSelection::_2_5A),
+            7 => Ok(OperatingCurrentSelection::_2_75A),
+            8 => Ok(OperatingCurrentSelection::_3A),
+            9 => Ok(OperatingCurrentSelection::_3_25A),
+            10 => Ok(OperatingCurrentSelection::_3_5A),
+            11 => Ok(OperatingCurrentSelection::_3_75A),
+            12 => Ok(OperatingCurrentSelection::_4A),
+            13 => Ok(OperatingCurrentSelection::_4_25A),
+            14 => Ok(OperatingCurrentSelection::_4_5A),
+            15 => Ok(OperatingCurrentSelection::Maximum),
             _ => Err(Ap33772sError::ConversionFailed),
         }
     }
 }
 
-pub const CURRENT_SELECTIONS: [CurrentSelection; 16] = [
-    CurrentSelection::_1A,
-    CurrentSelection::_1_25A,
-    CurrentSelection::_1_5A,
-    CurrentSelection::_1_75A,
-    CurrentSelection::_2A,
-    CurrentSelection::_2_25A,
-    CurrentSelection::_2_5A,
-    CurrentSelection::_2_75A,
-    CurrentSelection::_3A,
-    CurrentSelection::_3_25A,
-    CurrentSelection::_3_5A,
-    CurrentSelection::_3_75A,
-    CurrentSelection::_4A,
-    CurrentSelection::_4_25A,
-    CurrentSelection::_4_5A,
-    CurrentSelection::Maximum,
+pub const CURRENT_SELECTIONS: [OperatingCurrentSelection; 16] = [
+    OperatingCurrentSelection::_1A,
+    OperatingCurrentSelection::_1_25A,
+    OperatingCurrentSelection::_1_5A,
+    OperatingCurrentSelection::_1_75A,
+    OperatingCurrentSelection::_2A,
+    OperatingCurrentSelection::_2_25A,
+    OperatingCurrentSelection::_2_5A,
+    OperatingCurrentSelection::_2_75A,
+    OperatingCurrentSelection::_3A,
+    OperatingCurrentSelection::_3_25A,
+    OperatingCurrentSelection::_3_5A,
+    OperatingCurrentSelection::_3_75A,
+    OperatingCurrentSelection::_4A,
+    OperatingCurrentSelection::_4_25A,
+    OperatingCurrentSelection::_4_5A,
+    OperatingCurrentSelection::Maximum,
 ];
-impl core::fmt::Display for CurrentSelection {
+impl core::fmt::Display for OperatingCurrentSelection {
     fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-        use CurrentSelection::*;
+        use OperatingCurrentSelection::*;
         let s = match self {
             _1A => "1A",
             _1_25A => "1.25A",

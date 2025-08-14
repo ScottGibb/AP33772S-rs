@@ -14,7 +14,7 @@ pub mod api_commands {
     pub use crate::commands::data_objects::standard_power_range_data_object::StandardPowerRangeDataObject;
     pub use crate::commands::power_delivery::power_delivery_message_result::PowerDeliveryResponse;
     pub use crate::commands::power_delivery::power_delivery_request_message::{
-        CURRENT_SELECTIONS, CurrentSelection, PowerDataObject,
+        CURRENT_SELECTIONS, OperatingCurrentSelection, PowerDataObject,
     };
 }
 

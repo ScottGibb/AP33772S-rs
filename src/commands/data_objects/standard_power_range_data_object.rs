@@ -1,5 +1,5 @@
 use crate::commands::data_objects::source_power_range_data_object::{
-    PeakCurrent, SourcePowerCurrent,
+    PeakCurrent, SourceMaximumCurrent,
 };
 use crate::types::units::*;
 use crate::{
@@ -16,7 +16,7 @@ pub struct StandardPowerRangeDataObject {
     #[bits(8..=9, r)]
     pub minimum_voltage_or_peak_current: u2,
     #[bits(10..=13, r)]
-    pub max_current: SourcePowerCurrent,
+    pub max_current: SourceMaximumCurrent,
     #[bit(14, r)]
     pub source_power_type: PowerType,
     #[bit(15, r)]

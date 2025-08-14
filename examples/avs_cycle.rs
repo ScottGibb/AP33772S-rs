@@ -3,7 +3,9 @@ use std::time::Duration;
 use ap33772s_rs::{
     ap33772s::Ap33772s,
     types::{
-        api_commands::{CurrentSelection, PowerDataObject, PowerType, VoltageOutputControl},
+        api_commands::{
+            OperatingCurrentSelection, PowerDataObject, PowerType, VoltageOutputControl,
+        },
         units::*,
     },
 };
@@ -70,7 +72,7 @@ fn main() {
                 .negotiate_power_delivery(
                     PROGRAMMABLE_POWER_SUPPLY_POWER_DATA_OBJECT,
                     Some(ElectricPotential::new::<millivolt>(voltage as f32)),
-                    CurrentSelection::Maximum,
+                    OperatingCurrentSelection::Maximum,
                     &power_data_objects,
                 )
                 .expect("Failed to send power delivery request");

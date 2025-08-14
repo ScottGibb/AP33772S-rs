@@ -1,4 +1,4 @@
-use ap33772s_rs::types::api_commands::{CurrentSelection, PowerDataObject};
+use ap33772s_rs::types::api_commands::{OperatingCurrentSelection, PowerDataObject};
 use ap33772s_rs::types::units::*;
 use ap33772s_rs::{ap33772s::Ap33772s, types::api_commands::VoltageOutputControl};
 use utils::setup_delay;
@@ -24,7 +24,7 @@ fn main() {
             .negotiate_power_delivery(
                 PowerDataObject::StandardPowerRange1,
                 Some(ElectricPotential::new::<millivolt>(voltage as f32)),
-                CurrentSelection::_1A,
+                OperatingCurrentSelection::_1A,
                 &power_data_objects,
             )
             .expect("Failed to send power delivery request");

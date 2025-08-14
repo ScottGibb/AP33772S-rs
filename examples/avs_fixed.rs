@@ -1,7 +1,7 @@
 use ap33772s_rs::types::units::*;
 use ap33772s_rs::{
     ap33772s::Ap33772s,
-    types::api_commands::{CurrentSelection, PowerDataObject, VoltageOutputControl},
+    types::api_commands::{OperatingCurrentSelection, PowerDataObject, VoltageOutputControl},
 };
 use utils::setup_delay;
 // This another example inspired by the Centy Labs example for the AP33772S.
@@ -28,7 +28,7 @@ fn main() {
             .negotiate_power_delivery(
                 PowerDataObject::StandardPowerRange6,
                 Some(adjustable_voltage_supply),
-                CurrentSelection::_3A,
+                OperatingCurrentSelection::_3A,
                 &power_data_objects,
             )
             .expect("Failed to send power delivery request");

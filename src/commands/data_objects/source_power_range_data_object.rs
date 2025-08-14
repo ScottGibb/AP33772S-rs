@@ -41,7 +41,7 @@ impl SourcePowerRangeDataObject {
             SourcePowerRangeDataObject::Extended(data_object) => data_object.max_voltage(),
         }
     }
-    pub fn get_max_current(&self) -> SourcePowerCurrent {
+    pub fn get_max_current(&self) -> SourceMaximumCurrent {
         match self {
             SourcePowerRangeDataObject::Standard(data_object) => data_object.max_current(),
             SourcePowerRangeDataObject::Extended(data_object) => data_object.max_current(),
@@ -104,6 +104,7 @@ pub enum PowerType {
 // TODO: Add
 #[bitenum(u2, exhaustive = true)]
 #[derive(Debug, PartialEq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum PeakCurrent {
     ConditionOne = 0,
     ConditionTwo = 1,
@@ -126,7 +127,7 @@ impl From<u2> for PeakCurrent {
 #[bitenum(u4, exhaustive = true)]
 #[derive(Debug, PartialEq)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
-pub enum SourcePowerCurrent {
+pub enum SourceMaximumCurrent {
     LessThan1_24 = 0,
     _1_24To1_49 = 1,
     _1_50To1_74 = 2,

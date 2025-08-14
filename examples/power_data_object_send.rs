@@ -1,7 +1,9 @@
 use ap33772s_rs::{
     ap33772s::Ap33772s,
     types::{
-        api_commands::{CURRENT_SELECTIONS, CurrentSelection, PowerDataObject, PowerType, Status},
+        api_commands::{
+            CURRENT_SELECTIONS, OperatingCurrentSelection, PowerDataObject, PowerType, Status,
+        },
         units::*,
     },
 };
@@ -107,7 +109,7 @@ fn get_chosen_voltage_from_user() -> Option<ElectricPotential> {
     }
 }
 
-fn get_current_selection_from_user() -> CurrentSelection {
+fn get_current_selection_from_user() -> OperatingCurrentSelection {
     let last_current_selections_index = CURRENT_SELECTIONS.len() - 1;
     println!("Enter the Current you wish to select");
     println!("{CURRENT_SELECTIONS:?}");
@@ -118,7 +120,8 @@ fn get_current_selection_from_user() -> CurrentSelection {
     let error_message =
         format!("Invalid Current Selection, must be between 0 and {last_current_selections_index}");
     let current_selection: usize = input.trim().parse().expect(&error_message);
-    let current_selection = CurrentSelection::try_from(current_selection).expect(&error_message);
+    let current_selection =
+        OperatingCurrentSelection::try_from(current_selection).expect(&error_message);
     println!("Current Selected: {current_selection}");
     current_selection
 }

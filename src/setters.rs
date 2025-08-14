@@ -67,7 +67,7 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
         power_data_object_index: PowerDataObject,
         // If the Power Data Object is in Fixed Mode, the voltage selection is not needed.
         voltage_selection: Option<ElectricPotential>,
-        current_selection: CurrentSelection,
+        current_selection: OperatingCurrentSelection,
         data_objects: &AllSourceDataPowerDataObject,
     ) -> Result<(), Ap33772sError> {
         let data_object = data_objects.get_power_data_object(power_data_object_index);
@@ -117,7 +117,7 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
         // Special message outlined in the AP33772S Datasheet Page 22
         let delivery_message = PowerDeliveryRequestMessage::builder()
             .with_voltage_selection(0xFF) // No Voltage Selection in Fixed Mode
-            .with_current_selection(CurrentSelection::Maximum)
+            .with_current_selection(OperatingCurrentSelection::Maximum)
             .with_power_data_object_index(power_data_object_index)
             .build();
         self.write_two_byte_command(delivery_message).await
