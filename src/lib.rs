@@ -32,6 +32,7 @@ mod commands;
 #[cfg(not(feature = "advanced"))]
 mod communications;
 
+/// Sync Based HAL Imports
 #[cfg_attr(docsrs, doc(cfg(feature = "sync")))]
 #[cfg(feature = "sync")]
 mod hal {
@@ -44,6 +45,7 @@ mod hal {
     pub use embedded_hal::i2c::SevenBitAddress;
 }
 
+/// Aysnc Based HAL Imports
 #[cfg_attr(docsrs, doc(cfg(feature = "async")))]
 #[cfg(feature = "async")]
 mod hal {

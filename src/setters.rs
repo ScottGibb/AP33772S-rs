@@ -25,6 +25,7 @@ use crate::types::units::*;
 use crate::types::*;
 
 impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<I2C, D> {
+    /// Changes the state of the VOUT Switch, essentially controlling the power to the load
     #[maybe_async::maybe_async]
     pub async fn override_output_voltage(
         &mut self,
@@ -35,6 +36,8 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
             .build();
         self.write_one_byte_command(system_control).await
     }
+
+    /// TODO: Check to see if this was causing earlier issues with the PPS and AVS?
     #[maybe_async::maybe_async]
     pub async fn set_minimum_selection_voltage(
         &mut self,
@@ -47,6 +50,9 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
         self.write_one_byte_command(minimum_selection_voltage).await
     }
 
+    /// Configures additional modes for the USB C Power Delivery Device
+    ///
+    /// For example wether Extended Power Delivery Modes are enabled or wether Adjustable Voltage Supply can be used
     #[maybe_async::maybe_async]
     pub async fn set_power_delivery_mode(
         &mut self,
@@ -54,13 +60,16 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     ) -> Result<(), Ap33772sError> {
         let command = PowerDeliveryConfiguration::builder()
             .with_extended_power_delivery_enabled(mode.extended_power_range_mode_enabled)
-            .with_programmable_power_delivery_and_adjustable_power_supply_enabled(
+            .with_programmable_power_supply_and_adjustable_power_supply_enabled(
                 mode.programmable_power_supply_adjustable_voltage_supply_enabled,
             )
             .build();
         self.write_one_byte_command(command).await
     }
 
+    /// Send a Power Delivery Request directly to the AP33772S, this method does not check to see if the
+    /// request was applied. It does do some minor configuration checks to see if the requested message
+    /// is doable
     #[maybe_async::maybe_async]
     #[cfg_attr(feature = "advanced", visibility::make(pub))]
     pub(crate) async fn send_power_delivery_request(
@@ -80,7 +89,6 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
         }
         let delivery_message = if data_object.source_power_type() == PowerType::Fixed {
             // If we are in fixed PDO Mode, the voltage selection is not needed.
-
             PowerDeliveryRequestMessage::builder()
                 .with_voltage_selection(0)
                 .with_current_selection(current_selection)
@@ -118,9 +126,10 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
         self.write_two_byte_command(delivery_message).await
     }
 
+    /// Will Attempt to get the maximum Power Output from the Power Data Object provided
+    /// It does not check to see if this was set correctly
     #[maybe_async::maybe_async]
     #[cfg_attr(feature = "advanced", visibility::make(pub))]
-    /// Will Attempt to get the maximum Power Output from the Power Data Object provided
     pub(crate) async fn send_maximum_power_delivery_request(
         &mut self,
         power_data_object_index: PowerDataObject,
@@ -136,6 +145,9 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
 }
 
 impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<I2C, D> {
+    //TODO Missing Generic?
+
+    /// Sets the thermal resistances for the device using those provided
     #[maybe_async::maybe_async]
     pub async fn set_thermal_resistances(
         &mut self,
@@ -159,6 +171,7 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
         self.write_two_byte_command(resistance_100).await
     }
 
+    /// Sets the thresholds for the device using those provided
     #[maybe_async::maybe_async]
     pub async fn set_thresholds(&mut self, thresholds: Thresholds) -> Result<(), Ap33772sError> {
         let over_voltage_threshold: OverVoltageProtectionThreshold =

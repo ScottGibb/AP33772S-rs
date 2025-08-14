@@ -54,7 +54,7 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
             .await?;
         Ok(PowerDeliveryMode {
             programmable_power_supply_adjustable_voltage_supply_enabled: command_result
-                .programmable_power_delivery_and_adjustable_power_supply_enabled(),
+                .programmable_power_supply_and_adjustable_power_supply_enabled(),
             extended_power_range_mode_enabled: command_result.extended_power_delivery_enabled(),
         })
     }

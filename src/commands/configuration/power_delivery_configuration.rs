@@ -19,7 +19,7 @@ pub struct PowerDeliveryConfiguration {
     ///
     /// Datasheet Name: PPS_AVS_EN
     #[bit(1, rw)]
-    programmable_power_delivery_and_adjustable_power_supply_enabled: bool,
+    programmable_power_supply_and_adjustable_power_supply_enabled: bool,
     // /// Reserved bit
     // #[bit(2, rw)]
     // reserved: u1,
@@ -49,7 +49,7 @@ impl core::fmt::Display for PowerDeliveryConfiguration {
              programmable_power_delivery_and_adjustable_power_supply_enabled: {}\n\
              }}",
             self.extended_power_delivery_enabled(),
-            self.programmable_power_delivery_and_adjustable_power_supply_enabled()
+            self.programmable_power_supply_and_adjustable_power_supply_enabled()
         )
     }
 }
