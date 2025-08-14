@@ -12,8 +12,9 @@ pub enum Ap33772sError {
     /// not in the expected format. Usuaully will occur if a reserved bit is being used and
     /// the enum cannot represent the state correctly. The u8 inside the error represents the value that was not expected
     DataMalformed(u8),
-    /// This can occur when sending a Power Request and the arguments to the function are not correct
-    InvalidRequest,
+    /// This can occur when sending a Power Request and the arguments to the function are not correct, these are checked before transmitting
+    /// a PD Request Message
+    InvalidRequest(RequestError),
     /// This can occur when there is another device on the bus using the same I2C Address. Specifically the u8 returns the value
     /// thats supposed to be the command version of the device.
     WrongCommandVersion(u8), // The value stored at the command version location
@@ -25,6 +26,13 @@ pub enum Ap33772sError {
     PowerDataObjectNotDetected(PowerDataObject),
 }
 
+#[derive(PartialEq, Clone, Debug)]
+#[non_exhaustive]
+pub enum RequestError {
+    MissingArgument,
+    VoltageOutOfRange,
+    CurrentOutOfRange,
+}
 impl<E: hal::Error> From<E> for Ap33772sError {
     fn from(e: E) -> Self {
         Ap33772sError::I2c(e.kind())
@@ -47,7 +55,7 @@ impl core::fmt::Display for Ap33772sError {
                 )
             }
             Ap33772sError::InitialisationFailure => write!(f, "Failed to initialise correctly!"),
-            Ap33772sError::InvalidRequest => write!(f, "Invalid request"),
+            Ap33772sError::InvalidRequest(err) => write!(f, "Invalid request: {err:?}"),
             Ap33772sError::PowerDataObjectNotDetected(power_data_object) => {
                 write!(
                     f,

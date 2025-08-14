@@ -1,8 +1,8 @@
 use super::command_map::Command;
 use crate::error::Ap33772sError;
 use crate::impl_two_byte_write_command;
+use crate::types::units::*;
 use bitbybit::{bitenum, bitfield};
-
 #[bitfield(u16, default = 0x0000)]
 #[derive(Debug, PartialEq)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
@@ -107,6 +107,30 @@ pub enum OperatingCurrentSelection {
     _4_5A = 14,
     Maximum = 15,
 }
+impl OperatingCurrentSelection {
+    pub fn current(&self) -> ElectricCurrent {
+        use OperatingCurrentSelection::*;
+        let current = match self {
+            _1A => 1000.0,
+            _1_25A => 1250.0,
+            _1_5A => 1500.0,
+            _1_75A => 1750.0,
+            _2A => 2000.0,
+            _2_25A => 2250.0,
+            _2_5A => 2500.0,
+            _2_75A => 2750.0,
+            _3A => 3000.0,
+            _3_25A => 3250.0,
+            _3_5A => 3500.0,
+            _3_75A => 3750.0,
+            _4A => 4000.0,
+            _4_25A => 4250.0,
+            _4_5A => 4500.0,
+            Maximum => 5000.0, // or more
+        };
+        ElectricCurrent::new::<milliampere>(current)
+    }
+}
 
 impl TryFrom<usize> for OperatingCurrentSelection {
     type Error = Ap33772sError;
@@ -136,24 +160,13 @@ impl TryFrom<usize> for OperatingCurrentSelection {
     }
 }
 
-pub const CURRENT_SELECTIONS: [OperatingCurrentSelection; 16] = [
-    OperatingCurrentSelection::_1A,
-    OperatingCurrentSelection::_1_25A,
-    OperatingCurrentSelection::_1_5A,
-    OperatingCurrentSelection::_1_75A,
-    OperatingCurrentSelection::_2A,
-    OperatingCurrentSelection::_2_25A,
-    OperatingCurrentSelection::_2_5A,
-    OperatingCurrentSelection::_2_75A,
-    OperatingCurrentSelection::_3A,
-    OperatingCurrentSelection::_3_25A,
-    OperatingCurrentSelection::_3_5A,
-    OperatingCurrentSelection::_3_75A,
-    OperatingCurrentSelection::_4A,
-    OperatingCurrentSelection::_4_25A,
-    OperatingCurrentSelection::_4_5A,
-    OperatingCurrentSelection::Maximum,
-];
+pub const CURRENT_SELECTIONS: [OperatingCurrentSelection; 16] = {
+    use OperatingCurrentSelection::*;
+    [
+        _1A, _1_25A, _1_5A, _1_75A, _2A, _2_25A, _2_5A, _2_75A, _3A, _3_25A, _3_5A, _3_75A, _4A,
+        _4_25A, _4_5A, Maximum,
+    ]
+};
 impl core::fmt::Display for OperatingCurrentSelection {
     fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         use OperatingCurrentSelection::*;
