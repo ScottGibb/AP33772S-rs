@@ -58,9 +58,9 @@ impl SourcePowerRangeDataObject {
                         StandardMinimumVoltage::_3_3To5 => {
                             Ok(ElectricPotential::new::<millivolt>(5000.0))
                         }
-                        _ => return Err(Ap33772sError::ConversionFailed),
+                        _ => Err(Ap33772sError::ConversionFailed),
                     },
-                    None => return Err(Ap33772sError::InvalidRequest),
+                    None => Err(Ap33772sError::InvalidRequest),
                 }
             }
             SourcePowerRangeDataObject::Extended(data_object) => {
