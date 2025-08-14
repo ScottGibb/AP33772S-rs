@@ -27,7 +27,7 @@ pub struct Ap33772s<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: Inpu
 /// delay approach which is dependent on the users HAL
 #[cfg(not(feature = "interrupts"))]
 impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
-    const NEGOTIATE_TIMING_DELAY: Duration = Duration::from_millis(50);
+    const NEGOTIATE_TIMING_DELAY: Duration = Duration::from_millis(100);
     const BOOT_UP_DELAY: Duration = Duration::from_millis(100);
     /// The I2C address of the AP33772S device.
     /// This address is used for communication with the device over I2C.
