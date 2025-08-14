@@ -1,5 +1,7 @@
 # Development Guide
 
+When first diving into the project, I would advise having a quick look at the [Understanding the USB C Spec](./docs/understanding-the-usb-c-pd-specification.md). Its a short markdown file that contains some useful information for getting started with this device.
+
 ## Continous Integration and GitHub workflows
 
 At the moment there is [Continuous Build](./.github/workflows/continuous-build.yaml) workflow that aims to ensure the code can be compiled in both sync and async mode. This ensures that every iteration of the library can be built. Future plans are to incorporate some continuous Hardware in the Loop testing ensuring the driver works across multiple platforms. When adding extra [examples](./examples/). The developer should ensure these are being targeted in the [Continuous Build](./.github/workflows/continuous-build.yaml) workflow file. This ensures the example files are always up to date with the source code.
