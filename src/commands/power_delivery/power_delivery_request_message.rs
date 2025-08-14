@@ -15,6 +15,20 @@ pub struct PowerDeliveryRequestMessage {
     pub power_data_object_index: PowerDataObject,
 }
 
+/// The Power Data Onject (PDO) represents the different power modes that are supported in
+/// the USB C Power Delivery Specificaiton for this chip AP33772S.  The chip supports
+///
+///
+/// [StandardPowerRangeDataObject](crate::commands::data_objects::standard_power_range_data_object::StandardPowerRangeDataObject)
+///
+/// With a Maximum Voltage of 21V
+///
+/// [ExtendedPowerRangeDataObject][crate::commands::data_objects::extended_power_range_data_object::ExtendedPowerRangeDataObject]
+///
+/// with a Maximum Voltage of 28V
+///
+/// 7 Standard Power Ranges are provided along with 6 Extended Power Ranges. These are not gauranteed to be implemented by every charger
+/// The underlying PowerDataObjects linked above provide a method `is_detected()` which outlines if it can be used
 #[derive(Debug, PartialEq, PartialOrd)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[bitenum(u4, exhaustive = false)]
