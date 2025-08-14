@@ -6,7 +6,7 @@ use bitbybit::{bitenum, bitfield};
 ///
 /// When `ConfigurationChannel::One`, the CC2 is connected to the CC line. See [ConfigurationChannel](crate::commands::configuration::operation_mode::ConfigurationChannel) for more details.
 ///
-/// When `DeRatingMode::One`, the AP33772S works in de-rating (DR) mode. See [DeRatingMode](crate::commands::configuration::operation_mode::DeRatingMode) for more details.
+/// When `DeRatingMode::Normal`, the AP33772S works in de-rating (DR) mode. See [DeRatingMode](crate::commands::configuration::operation_mode::DeRatingMode) for more details.
 ///
 /// When `power_delivery_source_connected` = `true`, the AP33772S works in Power Delivery mode.
 ///
@@ -39,13 +39,18 @@ pub struct OperationMode {
     pub configuration_channel: ConfigurationChannel,
 }
 
-/// The AP33772S supports two operation modes: Normal and Derating.
+/// Wether the APP33772S will adjust the amount of current given to the device based on the de rating temperature
+///
 #[bitenum(u1, exhaustive = true)]
 #[derive(Debug, PartialEq, Default)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum DeRatingMode {
     #[default]
+    /// Current will not change unless the one of the thresholds is achieved at which point the device
+    /// will turn off VOUT via the MOS Switch.
     Normal = 0,
+    /// The Device will change the output current based on the DeRating Temperature. Once the DeRating Temperature is reached
+    /// the device will drop the current bu 50%
     Derating = 1,
 }
 
