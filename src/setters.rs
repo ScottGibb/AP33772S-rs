@@ -74,6 +74,7 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
 
         let delivery_message = if data_object.source_power_type() == PowerType::Fixed {
             // If we are in fixed PDO Mode, the voltage selection is not needed.
+
             PowerDeliveryRequestMessage::builder()
                 .with_voltage_selection(0)
                 .with_current_selection(current_selection)
@@ -89,6 +90,13 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
             } else {
                 Ok(scaled_voltage as u8)
             }?;
+
+            if voltage_selection > data_object.get_max_voltage()? {
+                return Err(Ap33772sError::InvalidRequest);
+            }
+            if voltage_selection < data_object.get_min_voltage()? {
+                return Err(Ap33772sError::InvalidRequest);
+            }
 
             PowerDeliveryRequestMessage::builder()
                 .with_voltage_selection(scaled_voltage)
