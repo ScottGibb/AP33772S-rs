@@ -2,7 +2,7 @@
 //! This module exposes the requireed types for the functions to be used externally.
 
 /// Module Reexports the internal api command types that are used for the getters and setters
-pub mod ap33772s_structures {
+pub mod command_structures {
     pub use crate::commands::configuration::operation_mode::{
         ConfigurationChannel, DeRatingMode, OperationMode,
     };

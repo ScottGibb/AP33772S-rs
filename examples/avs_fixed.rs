@@ -1,7 +1,7 @@
 use ap33772s_rs::types::units::*;
 use ap33772s_rs::{
     ap33772s::Ap33772s,
-    types::ap33772s_structures::{OperatingCurrentSelection, PowerDataObject, VoltageOutputControl},
+    types::command_structures::{OperatingCurrentSelection, PowerDataObject, VoltageOutputControl},
 };
 use utils::setup_delay;
 // This another example inspired by the Centy Labs example for the AP33772S.

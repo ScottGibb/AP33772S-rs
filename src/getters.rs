@@ -30,7 +30,7 @@ use crate::commands::thresholds::over_voltage_protection_threshold::OverVoltageP
 use crate::commands::thresholds::under_voltage_protection_threshold::UnderVoltageProtectionThreshold;
 
 // Public API Types
-use crate::types::ap33772s_structures::*;
+use crate::types::command_structures::*;
 use crate::types::units::*;
 use crate::types::*;
 

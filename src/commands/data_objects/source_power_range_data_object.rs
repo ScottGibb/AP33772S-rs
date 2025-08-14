@@ -4,7 +4,7 @@ use bitbybit::bitenum;
 use crate::commands::data_objects::extended_power_range_data_object::MinimumVoltage as ExtendedMinimumVoltage;
 use crate::commands::data_objects::standard_power_range_data_object::MinimumVoltage as StandardMinimumVoltage;
 use crate::errors::{Ap33772sError, RequestError};
-use crate::types::ap33772s_structures::{
+use crate::types::command_structures::{
     ExtendedPowerRangeDataObject, StandardPowerRangeDataObject,
 };
 use crate::types::units::*;

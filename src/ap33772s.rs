@@ -11,7 +11,7 @@ use crate::commands::configuration::system_control::SystemControl;
 use crate::commands::power_delivery::power_delivery_command_message::PowerDeliveryCommandMessage;
 
 // Public API Types
-use crate::types::ap33772s_structures::*;
+use crate::types::command_structures::*;
 use crate::types::units::*;
 use crate::types::*;
 

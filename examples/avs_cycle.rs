@@ -3,7 +3,7 @@ use std::time::Duration;
 use ap33772s_rs::{
     ap33772s::Ap33772s,
     types::{
-        ap33772s_structures::{
+        command_structures::{
             OperatingCurrentSelection, PowerDataObject, PowerType, VoltageOutputControl,
         },
         units::*,

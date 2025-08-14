@@ -1,7 +1,7 @@
 use ap33772s_rs::{
     ap33772s::Ap33772s,
     types::{
-        ap33772s_structures::{OperatingCurrentSelection, PowerDataObject, PowerType, Status},
+        command_structures::{OperatingCurrentSelection, PowerDataObject, PowerType, Status},
         units::*,
     },
 };

@@ -1,5 +1,5 @@
 //! This Module contains all the public facing Errors that can occur when using this driver
-use crate::{hal, types::ap33772s_structures::PowerDataObject};
+use crate::{hal, types::command_structures::PowerDataObject};
 
 /// Represents the different errors that can occur while interacting with the AP33772S device.
 #[derive(PartialEq, Clone, Debug)]
