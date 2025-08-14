@@ -1,8 +1,11 @@
 use arbitrary_int::u2;
 use bitbybit::bitenum;
 
+use crate::commands::data_objects::extended_power_range_data_object::MinimumVoltage as ExtendedMinimumVoltage;
+use crate::commands::data_objects::standard_power_range_data_object::MinimumVoltage as StandardMinimumVoltage;
+use crate::error::Ap33772sError;
 use crate::types::api_commands::{ExtendedPowerRangeDataObject, StandardPowerRangeDataObject};
-
+use crate::types::units::*;
 #[derive(Debug, PartialEq, Clone)]
 pub enum SourcePowerRangeDataObject {
     Standard(StandardPowerRangeDataObject),
@@ -30,6 +33,50 @@ impl SourcePowerRangeDataObject {
         match self {
             SourcePowerRangeDataObject::Standard(data_object) => data_object.is_detected(),
             SourcePowerRangeDataObject::Extended(data_object) => data_object.is_detected(),
+        }
+    }
+    pub fn get_max_voltage(&self) -> Result<ElectricPotential, Ap33772sError> {
+        match self {
+            SourcePowerRangeDataObject::Standard(data_object) => data_object.max_voltage(),
+            SourcePowerRangeDataObject::Extended(data_object) => data_object.max_voltage(),
+        }
+    }
+    pub fn get_max_current(&self) -> SourcePowerCurrent {
+        match self {
+            SourcePowerRangeDataObject::Standard(data_object) => data_object.max_current(),
+            SourcePowerRangeDataObject::Extended(data_object) => data_object.max_current(),
+        }
+    }
+    pub fn get_min_voltage(&self) -> Result<ElectricPotential, Ap33772sError> {
+        match self {
+            SourcePowerRangeDataObject::Standard(data_object) => {
+                match data_object.minimum_voltage() {
+                    Some(voltage) => match voltage {
+                        StandardMinimumVoltage::_3_3 => {
+                            Ok(ElectricPotential::new::<millivolt>(3300.0))
+                        }
+                        StandardMinimumVoltage::_3_3To5 => {
+                            Ok(ElectricPotential::new::<millivolt>(5000.0))
+                        }
+                        _ => return Err(Ap33772sError::ConversionFailed),
+                    },
+                    None => return Err(Ap33772sError::InvalidRequest),
+                }
+            }
+            SourcePowerRangeDataObject::Extended(data_object) => {
+                match data_object.minimum_voltage() {
+                    Some(voltage) => match voltage {
+                        ExtendedMinimumVoltage::Fifteen => {
+                            Ok(ElectricPotential::new::<millivolt>(15000.0))
+                        }
+                        ExtendedMinimumVoltage::FifteenLessThanVoltageMinimumLessThanTwenty => {
+                            Ok(ElectricPotential::new::<millivolt>(20000.0)) // TODO Check this!
+                        }
+                        _ => Err(Ap33772sError::ConversionFailed),
+                    },
+                    None => Err(Ap33772sError::InvalidRequest),
+                }
+            }
         }
     }
 }
