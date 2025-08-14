@@ -1,6 +1,6 @@
-use ap33772s_rs::types::api_commands::{OperatingCurrentSelection, PowerDataObject};
+use ap33772s_rs::types::ap33772s_structures::{OperatingCurrentSelection, PowerDataObject};
 use ap33772s_rs::types::units::*;
-use ap33772s_rs::{ap33772s::Ap33772s, types::api_commands::VoltageOutputControl};
+use ap33772s_rs::{ap33772s::Ap33772s, types::ap33772s_structures::VoltageOutputControl};
 use utils::setup_delay;
 // This example shows how to cycle through the Adjustable Voltage Supply (AVS).
 // It is inspired by the Centy Labs example for the AP33772S.

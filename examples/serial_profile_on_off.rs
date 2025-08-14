@@ -1,7 +1,7 @@
 use ap33772s_rs::ap33772s::Ap33772s;
 use ap33772s_rs::types::PowerDeliveryMode;
-use ap33772s_rs::types::api_commands::PowerDataObject;
-use ap33772s_rs::types::api_commands::VoltageOutputControl;
+use ap33772s_rs::types::ap33772s_structures::PowerDataObject;
+use ap33772s_rs::types::ap33772s_structures::VoltageOutputControl;
 use ap33772s_rs::types::units::*;
 use utils::setup_delay;
 use utils::setup_i2c;

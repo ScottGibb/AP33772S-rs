@@ -4,7 +4,9 @@ use bitbybit::bitenum;
 use crate::commands::data_objects::extended_power_range_data_object::MinimumVoltage as ExtendedMinimumVoltage;
 use crate::commands::data_objects::standard_power_range_data_object::MinimumVoltage as StandardMinimumVoltage;
 use crate::errors::{Ap33772sError, RequestError};
-use crate::types::api_commands::{ExtendedPowerRangeDataObject, StandardPowerRangeDataObject};
+use crate::types::ap33772s_structures::{
+    ExtendedPowerRangeDataObject, StandardPowerRangeDataObject,
+};
 use crate::types::units::*;
 #[derive(Debug, PartialEq, Clone)]
 pub enum SourcePowerRangeDataObject {

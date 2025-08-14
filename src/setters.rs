@@ -20,7 +20,7 @@ use crate::errors::Ap33772sError;
 
 use crate::errors::RequestError;
 // Public API Types
-use crate::types::api_commands::*;
+use crate::types::ap33772s_structures::*;
 use crate::types::units::*;
 use crate::types::*;
 
