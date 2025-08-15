@@ -6,7 +6,11 @@ pub mod thermal_resistance_50;
 pub mod thermal_resistance_75;
 
 // TODO: Fix This / is there a better way to do this?
-// TODO: Consider Better Error Handling of the different conversion failures
+// The following function validates that the resistance is finite and positive,
+// and ensures the value fits within a u16 before conversion. This approach is
+// chosen for simplicity and safety, as it covers the expected input range and
+// failure modes. If more granular error handling is needed in the future,
+// consider distinguishing between different failure cases.
 pub fn convert_resistance_to_raw_resistance(
     resistance: ElectricalResistance,
 ) -> Result<u16, Ap33772sError> {
