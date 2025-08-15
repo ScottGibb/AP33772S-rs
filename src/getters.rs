@@ -25,7 +25,7 @@ use crate::commands::thermal_resistances::thermal_resistance_75::ThermalResistan
 use crate::commands::thermal_resistances::thermal_resistance_100::ThermalResistance100;
 use crate::commands::thresholds::de_rating_threshold::DeRatingThreshold;
 use crate::commands::thresholds::over_current_protection_threshold::OverCurrentProtectionThreshold;
-use crate::commands::thresholds::over_temperature_protection_threshold;
+use crate::commands::thresholds::over_temperature_protection_threshold::OverTemperatureProtectionThreshold;
 use crate::commands::thresholds::over_voltage_protection_threshold::OverVoltageProtectionThreshold;
 use crate::commands::thresholds::under_voltage_protection_threshold::UnderVoltageProtectionThreshold;
 
@@ -181,9 +181,8 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
             .read_one_byte_command::<OverCurrentProtectionThreshold>()
             .await?;
         let over_temperature_protection_threshold = self
-            .read_one_byte_command::<over_temperature_protection_threshold::OverTemperatureProtectionThreshold>()
-            .await
-           ?;
+            .read_one_byte_command::<OverTemperatureProtectionThreshold>()
+            .await?;
         let under_voltage_threshold = self
             .read_one_byte_command::<UnderVoltageProtectionThreshold>()
             .await?;
