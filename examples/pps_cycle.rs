@@ -1,8 +1,8 @@
+use ap33772s_rs::ap33772s::Ap33772s;
 use ap33772s_rs::types::command_structures::{
     OperatingCurrentSelection, PowerDataObject, StandardPowerRangeDataObject,
 };
 use ap33772s_rs::types::units::*;
-use ap33772s_rs::ap33772s::Ap33772s;
 use utils::setup_delay;
 
 const PROGRAMMABLE_POWER_SUPPLY_POWER_DATA_OBJECT: PowerDataObject =
@@ -39,9 +39,7 @@ fn main() {
                 &power_data_objects,
             )
             .expect("Failed to send power delivery request");
-        println!(
-            "Power Delivery request Response: {response:?} with Voltage: {voltage} mV"
-        );
+        println!("Power Delivery request Response: {response:?} with Voltage: {voltage} mV");
 
         // Wait for a while to observe the change
         std::thread::sleep(std::time::Duration::from_secs(2));

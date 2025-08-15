@@ -15,7 +15,7 @@ use ap33772s_rs::ap33772s::Ap33772s;
 use defmt::error;
 use defmt::info;
 use embassy_executor::Spawner;
-use embassy_time::{Delay, Duration, Timer};
+use embassy_time::{Duration, Timer};
 use panic_rtt_target as _;
 
 // This creates a default app-descriptor required by the esp-idf bootloader.
