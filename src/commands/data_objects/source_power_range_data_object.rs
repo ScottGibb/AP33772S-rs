@@ -95,6 +95,20 @@ impl core::fmt::Display for SourcePowerRangeDataObject {
     }
 }
 
+#[cfg(feature = "defmt")]
+impl defmt::Format for SourcePowerRangeDataObject {
+    fn format(&self, fmt: defmt::Formatter) {
+        match self {
+            SourcePowerRangeDataObject::Standard(data_object) => {
+                defmt::write!(fmt, "Standard({:?})", data_object)
+            }
+            SourcePowerRangeDataObject::Extended(data_object) => {
+                defmt::write!(fmt, "Extended({:?})", data_object)
+            }
+        }
+    }
+}
+
 /// The different operational modes that the USB C Specification Supports
 #[bitenum(u1, exhaustive = true)]
 #[derive(Debug, PartialEq)]

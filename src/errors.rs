@@ -73,11 +73,25 @@ impl core::fmt::Display for Ap33772sError {
 #[cfg(feature = "defmt")]
 impl defmt::Format for Ap33772sError {
     fn format(&self, f: defmt::Formatter) {
+        use embedded_hal::i2c::Error;
+
         defmt::write!(
             f,
             "AP33772S Error: {}",
             match self {
-                Ap33772sError::I2c(err) => defmt::write!(f, "I2C error: {:?}", err),
+                Ap33772sError::I2c(err) => {
+                    // Convert the ErrorKind into a string for defmt
+                    let kind_str = match err.kind() {
+                        embedded_hal::i2c::ErrorKind::Bus => "Bus",
+                        embedded_hal::i2c::ErrorKind::ArbitrationLoss => "ArbitrationLoss",
+                        embedded_hal::i2c::ErrorKind::NoAcknowledge(_) => "NoAcknowledge",
+                        embedded_hal::i2c::ErrorKind::Overrun => "Overrun",
+                        embedded_hal::i2c::ErrorKind::Other => "Other",
+                        _ => "Unknown",
+                    };
+                    defmt::write!(f, "AP33772S Error: I2C error ({})", kind_str);
+                }
+
                 Ap33772sError::ConversionFailed => defmt::write!(f, "Conversion error"),
                 Ap33772sError::DataMalformed(value) =>
                     defmt::write!(f, "Malformed Data error: {:?}", value),
@@ -88,7 +102,17 @@ impl defmt::Format for Ap33772sError {
                         value
                     )
                 }
-                Ap33772sError::InvalidRequest => defmt::write!(f, "Invalid request"),
+                Ap33772sError::InvalidRequest(err) =>
+                    defmt::write!(f, "Invalid request: {:?}", err),
+                Ap33772sError::InitialisationFailure =>
+                    defmt::write!(f, "Failed to initialise correctly!"),
+                Ap33772sError::PowerDataObjectNotDetected(power_data_object) => {
+                    defmt::write!(
+                        f,
+                        "Power Data Object not detected on source: {:?}",
+                        power_data_object
+                    )
+                }
             }
         );
     }

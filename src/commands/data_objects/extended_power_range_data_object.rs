@@ -59,6 +59,7 @@ impl ExtendedPowerRangeDataObject {
 }
 
 #[derive(Debug, PartialEq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum MinimumVoltage {
     Reserved = 0,
     Fifteen = 1,
@@ -84,7 +85,7 @@ impl core::fmt::Display for ExtendedPowerRangeDataObject {
             f,
             "ExtendedPowerRangeDataObject {{ max_voltage: {:?}, minimum_voltage: {:?}, peak_current: {:?}, max_current: {:?}, source_power_type: {:?}, is_detected: {} }}",
             self.max_voltage()
-                .map_err(|_| core::fmt::Error)?
+                .unwrap_or(ElectricPotential::new::<millivolt>(f32::NEG_INFINITY))
                 .get::<volt>(),
             self.minimum_voltage(),
             self.peak_current(),
@@ -102,10 +103,9 @@ impl defmt::Format for ExtendedPowerRangeDataObject {
             f,
             "ExtendedPowerRangeDataObject {{ max_voltage: {}, minimum_voltage: {:?}, max_current: {:?}, source_power_type: {:?}, is_detected: {} }}",
             self.max_voltage()
-                .map_err(|_| core::fmt::Error)
-                .unwrap() //Fix this
+                .unwrap_or(ElectricPotential::new::<millivolt>(f32::NEG_INFINITY))
                 .get::<volt>(),
-            self.minimum_voltage_or_peak_current(),
+            self.minimum_voltage(),
             self.max_current(),
             self.source_power_type(),
             self.is_detected()

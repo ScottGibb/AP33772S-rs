@@ -62,6 +62,7 @@ impl StandardPowerRangeDataObject {
 }
 
 #[derive(Debug, PartialEq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum MinimumVoltage {
     Reserved = 0,
     _3_3 = 1,
@@ -87,8 +88,8 @@ impl core::fmt::Display for StandardPowerRangeDataObject {
             f,
             "StandardPowerDataObject {{ max_voltage: {:?} V, minimum_voltage: {:?}, peak_current: {:?}, max_current: {:?} A, source_power_type: {:?}, is_detected: {} }}",
             self.max_voltage()
-                .map_err(|_| core::fmt::Error)?
-                .get::<volt>(),
+                .unwrap_or(ElectricPotential::new::<millivolt>(f32::NEG_INFINITY))
+                .get::<millivolt>(),
             self.minimum_voltage(),
             self.peak_current(),
             self.max_current(),
@@ -105,10 +106,9 @@ impl defmt::Format for StandardPowerRangeDataObject {
             f,
             "StandardPowerDataObject {{ max_voltage: {:?}, minimum_voltage: {:?}, max_current: {:?} A, source_power_type: {:?}, is_detected: {} }}",
             self.max_voltage()
-                .map_err(|_| core::fmt::Error)
-                .unwrap() //TODO: Fix this
-                .get::<volt>(),
-            self.minimum_voltage_or_peak_current(),
+                .unwrap_or(ElectricPotential::new::<millivolt>(f32::NEG_INFINITY))
+                .get::<millivolt>(),
+            self.minimum_voltage(),
             self.max_current(),
             self.source_power_type(),
             self.is_detected()

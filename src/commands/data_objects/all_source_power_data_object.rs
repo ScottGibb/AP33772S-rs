@@ -32,7 +32,7 @@ impl defmt::Format for AllSourceDataPowerDataObject {
         defmt::write!(f, "AllSourceDataPowerDataObject {{\n");
         defmt::write!(f, "  power_data_objects: [\n");
         for (i, power_obj) in self.power_data_objects.iter().enumerate() {
-            defmt::write!(f, "    [{}]: {}\n", i, power_obj);
+            defmt::write!(f, "    [{:?}] : {=?}\n", i, power_obj);
         }
         defmt::write!(f, "  ]\n");
         defmt::write!(f, "}}");

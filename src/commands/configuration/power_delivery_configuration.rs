@@ -64,7 +64,7 @@ impl defmt::Format for PowerDeliveryConfiguration {
              programmable_power_delivery_and_adjustable_power_supply_enabled: {}\n\
              }}",
             self.extended_power_delivery_enabled(),
-            self.programmable_power_delivery_and_adjustable_power_supply_enabled()
+            self.programmable_power_supply_and_adjustable_power_supply_enabled()
         );
     }
 }
