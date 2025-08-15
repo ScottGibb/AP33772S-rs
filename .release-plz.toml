@@ -1,0 +1,4 @@
+[workspace]
+features_always_increment_minor = true
+git_release_enable=true
+git_release_draft=true
