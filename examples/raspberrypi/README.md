@@ -8,4 +8,4 @@ This is a simple minimal project in which it proves out that the driver can be u
 
 ## Hardware
 
-As for specific hardware, the [Raspberry Pi 5]() was used. However the rppal should be compatible with all Raspberry Pi based Single Board.
+As for specific hardware, the [Raspberry Pi 5](https://thepihut.com/products/raspberry-pi-5?gad_source=1&gad_campaignid=18204675107&gbraid=0AAAAADfQ4GEeTN5UPi5_6MDZ8QGLW-WfR&gclid=CjwKCAjwtfvEBhAmEiwA-DsKjufkIT6BwtRWbUpsMRx9VObQjrcosdazXlLUKDRf4MWp5vcIi9eelhoCTOoQAvD_BwE) was used. However the rppal should be compatible with all Raspberry Pi based Single Board.
