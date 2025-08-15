@@ -1,5 +1,5 @@
 //! Types required by the Getters and Setters
-//! This module exposes the requireed types for the functions to be used externally.
+//! This module exposes the required types for the functions to be used externally.
 
 /// Module Reexports the internal api command types that are used for the getters and setters
 pub mod command_structures {
