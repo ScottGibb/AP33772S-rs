@@ -2,15 +2,6 @@
 /// for configuration, power delivery, and status management.
 /// The `Command` enum represents the different commands that can be sent to the device,
 /// each associated with a specific functionality or register.
-///
-/// To use this enum, you can simple do the following:
-/// ```
-/// // In the case of reading Registers, you can use the `read_one_byte_command` method
-/// use crate::commands::statistics::voltage::Voltage;
-/// let voltage = self.read_one_byte_command::<Voltage>()?;
-/// // // In the case of writing to Registers, you can use the `write_one_byte_command` method
-/// //TODO FIll this in
-/// ```
 #[derive(Debug, PartialEq, Clone, Copy)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[non_exhaustive] //TODO: Look to remove once we have full command map
