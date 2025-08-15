@@ -10,7 +10,7 @@ At the moment there is [Continuous Build](./.github/workflows/continuous-build.y
 
 [MegaLinter](./.mega-linter.yaml) is also used throughout the project and can be used locally (see below) but also runs on GitHub to ensure we catch inconsistencies.
 
-Finally upon release, we use [Release Plz](https://release-plz.dev/docs/release-plz-in-the-wild) to create releases for both the [Github Releases](https://github.com/ScottGibb/AP33772S-rs/releases) and [Crates.io release](https://crates.io/crates/ap33772s-rs). The configuration of which can be found in the following [workflow](./.github/workflows/release-plz.yaml)
+Finally upon release, we use [Release Plz](https://release-plz.dev/docs/release-plz-in-the-wild) to create releases for both the [Github Releases](https://github.com/ScottGibb/AP33772S-rs/releases) and <!-- markdown-link-check-disable -->[Crates.io release](https://crates.io/crates/ap33772s-rs)<!-- markdown-link-check-enable -->. The configuration of which can be found in the following [workflow](./.github/workflows/release-plz.yaml)
 
 ### Project Linting
 
