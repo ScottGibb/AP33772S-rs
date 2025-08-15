@@ -1,6 +1,6 @@
 [package]
 name = "ap33772s-rs"
-version = "0.0.0"
+version = "0.0.1"
 edition = "2024"
 description = "Driver for the AP33772S USB C Power Delivery and Extended Power Supply IC. Allowing for both embedded-hal and embedded-hal-async I2C"
 authors = ["Scott Gibb <smgibb@yahoo.com>"]
