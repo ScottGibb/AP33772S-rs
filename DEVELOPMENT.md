@@ -4,11 +4,13 @@ When first diving into the project, I would advise having a quick look at the [U
 
 ## Continous Integration and GitHub workflows
 
-At the moment there is [Continuous Build](./.github/workflows/continuous-build.yaml) workflow that aims to ensure the code can be compiled in both sync and async mode. This ensures that every iteration of the library can be built. Future plans are to incorporate some continuous Hardware in the Loop testing ensuring the driver works across multiple platforms. When adding extra [examples](./examples/). The developer should ensure these are being targeted in the [Continuous Build](./.github/workflows/continuous-build.yaml) workflow file. This ensures the example files are always up to date with the source code.
+At the moment there is [Continuous Build](./.github/workflows/continuous-build.yaml) workflow that aims to ensure the code can be compiled in both sync and async mode. This ensures that every iteration of the library can be built. Future plans are to incorporate some continuous Hardware in the Loop testing ensuring the driver works across multiple platforms. When adding extra [examples](./examples/). The developer should ensure these are being targeted in the [Continuous Build](./.github/workflows/continuous-build.yaml) workflow file. This ensures the example files are always up to date with the source code. We also include a [Continuous test](./.github/workflows/continuous-test.yaml) workflow for verifying the drivers functionality works.
 
 [Dependabot](./.github/dependabot.yaml) is also used to check when dependencies need updated and ensure we are always up to date with the latest crates.
 
 [MegaLinter](./.mega-linter.yaml) is also used throughout the project and can be used locally (see below) but also runs on GitHub to ensure we catch inconsistencies.
+
+Finally upon release, we use [Release Plz](https://release-plz.dev/docs/release-plz-in-the-wild) to create releases for both the [Github Releases](https://github.com/ScottGibb/AP33772S-rs/releases) and <!-- markdown-link-check-disable -->[Crates.io release](https://crates.io/crates/ap33772s-rs)<!-- markdown-link-check-enable -->. The configuration of which can be found in the following [workflow](./.github/workflows/release-plz.yaml)
 
 ### Project Linting
 
