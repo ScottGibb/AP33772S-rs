@@ -54,7 +54,7 @@ jobs:
     steps:
       # Git Checkout
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           token: ${{ secrets.PAT || secrets.GITHUB_TOKEN }}
 
@@ -172,7 +172,7 @@ jobs:
             args: -- -D warnings
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Setup Rust
         uses: dtolnay/rust-toolchain@v1
         with:
@@ -200,7 +200,7 @@ jobs:
           #   args: -- -D warnings
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Setup Rust
         uses: dtolnay/rust-toolchain@v1
         with:
