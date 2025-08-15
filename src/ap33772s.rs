@@ -67,13 +67,16 @@ impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
     }
     #[maybe_async::maybe_async]
     async fn initialise(device: &mut Self) -> Result<(), Ap33772sError> {
-        device.delay.delay_ms(
-            u32::try_from(Self::BOOT_UP_DELAY.as_millis())
-                .expect("This should not fail, HAL Duration Type Conversions"),
-        ); // Initial delay to allow the device to power up
         device
-            .set_thermal_resistances(ThermalResistances::default())?
-            .await;
+            .delay
+            .delay_ms(
+                u32::try_from(Self::BOOT_UP_DELAY.as_millis())
+                    .expect("This should not fail, HAL Duration Type Conversions"),
+            )
+            .await; // Initial delay to allow the device to power up
+        device
+            .set_thermal_resistances(ThermalResistances::default())
+            .await?;
         device.set_thresholds(Thresholds::default()).await
     }
 
@@ -106,10 +109,12 @@ impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
             data_objects,
         )
         .await?;
-        self.delay.delay_ms(
-            u32::try_from(Self::NEGOTIATE_TIMING_DELAY.as_millis())
-                .expect("This should not fail, HAL Duration Type Conversions"),
-        );
+        self.delay
+            .delay_ms(
+                u32::try_from(Self::NEGOTIATE_TIMING_DELAY.as_millis())
+                    .expect("This should not fail, HAL Duration Type Conversions"),
+            )
+            .await;
         self.get_power_delivery_request_result().await
     }
 
@@ -122,10 +127,12 @@ impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
     ) -> Result<PowerDeliveryResponse, Ap33772sError> {
         self.send_maximum_power_delivery_request(power_data_object_index)
             .await?;
-        self.delay.delay_ms(
-            u32::try_from(Self::NEGOTIATE_TIMING_DELAY.as_millis())
-                .expect("This should not fail, HAL Duration Type Conversions"),
-        );
+        self.delay
+            .delay_ms(
+                u32::try_from(Self::NEGOTIATE_TIMING_DELAY.as_millis())
+                    .expect("This should not fail, HAL Duration Type Conversions"),
+            )
+            .await;
         self.get_power_delivery_request_result().await
     }
 }
