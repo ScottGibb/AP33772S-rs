@@ -1,0 +1,270 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+## [0.0.1](https://github.com/ScottGibb/AP33772S-rs/compare/ap33772s-rs-v0.0.0...ap33772s-rs-v0.0.1) - 2025-08-15
+
+### Fixed
+
+- Release Plz
+- fixing macros
+- fixed imports
+- fixed compilation error
+- fixing mega linter config
+- fixing codeowners
+- fixed example
+- fixed async and sync issues
+- fixing docs
+
+### Other
+
+- adapting cargo.toml
+- [MegaLinter] Apply linters automatic fixes
+- updating cargo.toml
+- updating cargo
+- [MegaLinter] Apply linters automatic fixes
+- adding link disable enable
+- Adding github release workflow
+- updating folder path
+- *(deps)* bump actions/checkout from 4 to 5
+- Fixing generic
+- removing todos
+- Apply suggestion from @Copilot
+- Fixing Markdown links
+- Fixed import
+- formatting and clippy fixes
+- Fixed workflow names
+- import path fixes
+- Update src/types.rs
+- Update src/types.rs
+- Advanced compiles and works
+- Updated examples
+- Confirmed PPS example is working
+- Fixing advanced example
+- Fixing error enum
+- Fixed defmt feature
+- Updating continuous test
+- Fixed docs and missing dependency
+- adding missing awaits
+- updating workflows
+- further renaming
+- updating imports
+- Adding documentation for derating
+- Updating more docs
+- more docs and refactoring
+- Added method specifications to the AP33772S module
+- Adding Better docs
+- Updating API
+- Added more robust error handling
+- Refactoring Current Type Names
+- Clippy fixes
+- Added min max voltage checks code
+- Added min max voltage checks
+- Increased Duration for negotiation
+- AVS Examples checked and working
+- Added AVS Checks to AVS Cycle
+- Adjustable mode confirmed working!!!
+- Testing maximum power request on the mac charger
+- Fixed indexing issue
+- Added preempt check for Negotiating power
+- Added Power Delivery Configuration to the API
+- Added another mystery register
+- Updating notes
+- Added operation Mode to the public API
+- testing switch example doesnt currently work
+- Clippy issues
+- Progress made still not 100% sure the negotiation is working as expected but does represent the state the system is in
+- Made some further progress on implementing the full registers. Requesting not fully working seem to be in the wrong state...
+- Improved all Power Capabilities struct
+- Fixed Naming conventions for Power Data Objects
+- Fixed thermal resistances
+- Fixed Setting of Thermal Resistances
+- Updating baudrates
+- Added statistics option to serial profile example
+- Further testing
+- Added default values based on register defaults
+- Added todos
+- further refactoring and added intialisation for the driver
+- Update Cargo.toml
+- Added todo macros
+- Added groundwork for interrupt feature
+- tidying up api
+- tidying up utils api
+- Added daatsheet
+- Added delay and comment to the negotiate power delivery command
+- Added delay and fixed formatters
+- Added negotiate power request method and changed visibility of get and set power request
+- docs update
+- restricting macro visibiliity
+- more refactoring and docs improvements
+- clippy issues on the docs
+- Fixing API external types and u16 conversions
+- refactored units
+- Added better types and fixed formatting for the standard API
+- refactored API into types, add cargo test for formatting and display
+- improved example doc string
+- updated workflow
+- Added continuous test for docs
+- Running examples dont think they are fully working rust code wise but starting to get numbers that I can work with.
+- Added more conversions and formatting
+- Adding Formatting trait implementations
+- Added I think Display trait to data configuration registers
+- Added Display Traits to status and statistics
+- Can get FT232 Example to work at 10000
+- Fix a clippy error
+- Cleaning up error enum for wrong device found
+- This is the correct command version
+- Adding chip description
+- Added more documentation
+- Reconfirmed all overflow checks
+- Added further error handling
+- format fix
+- remove unused import
+- Update src/commands/thermal_resistances/thermal_resistance_100.rs
+- Update src/commands/thermal_resistances/thermal_resistance_25.rs
+- Update src/commands/thermal_resistances/thermal_resistance_100.rs
+- Update src/commands/thermal_resistances/thermal_resistance_75.rs
+- Added Markdown badges
+- Added further multiplication safety
+- Added Raspberry Pi Example and updated workfow
+- Added SevenBitAddress
+- WIP defmt
+- further type safety
+- Added Markdown lint file again
+- Adding checked multi
+- remove yaml and json issue
+- update yaml
+- adding violations
+- deliberate
+- Second attempt
+- Attempting markdown fix
+- Clippy fixes
+- function naming and added missing function
+- updating action
+- [MegaLinter] Apply linters automatic fixes
+- Updating MegaLinter to check ESP32C3 Example
+- add ESP32 boilerplate
+- Adding address comment
+- Added more doc strings
+- Added lib.rs docstring
+- updating cargo version
+- Updating workflow and adding CentyLab Examples
+- added defmt as an optional dependency.
+- [MegaLinter] Apply linters automatic fixes
+- adding linter settings
+- clippy fixes and docs
+- Fixed docs and fixed compilatiion issue
+- renaming
+- best guess at implementing the last example
+- added startup configuration
+- exposed helper conversion functions
+- clippy fixes
+- removing more unwraps
+- Added try from primitives
+- Added try_froms to remove runtime panics but now have a bunch of unwraps to get rid of
+- megalinter notes
+- [MegaLinter] Apply linters automatic fixes
+- update megalinter call
+- and another
+- force an update
+- copilot suggestion
+- attempt to fix pr
+- adding deliberate error
+- [MegaLinter] Apply linters fixes
+- Added formatting issues on yaml
+- Added statuses permission
+- Aottempt two at testing megalinter workflow
+- adding formatting errors
+- Added deliberate error to etst megalinter github action
+- Added hardcoded schema
+- cargo.toml now includes utils in the workspace so now clippy and fmt detects the utils internal crate
+- Fixed linter issues
+- Update examples/startup_configuration.rs
+- Update README.md
+- Update src/getters.rs
+- Adding new_default method
+- formatting and otuput voltage override functionality
+- updating docs
+- removing extra linter file
+- Adjusting fmt command
+- removing not necessary linter
+- Fixed broken links
+- Updating workflows and examples
+- Updating workflow
+- updating build workflow
+- Added community standards
+- Added CONTRIBUTING
+- Added better repo documentation
+- adding markdown to list of format on save
+- update docs
+- updated continuous build
+- adding non exhaustive enum
+- Added final vendor support example
+- added startup configuration example
+- Implemented power data switch arduino example
+- Attempted to implement PDO Send Arduino Sketch
+- WIP
+- Some more work on the send example
+- Adjusting dependabot path
+- split apart FT232 Logic and added examples still a lot of vendor support examples to do
+- Added Arduino query example
+- Added power delivery methods
+- Implemented getter for all source power data objects
+- Added remaing getter for thresholds
+- formatting and linting
+- Added Threshold setter and commented out reserved bits makes more sense to use the bitbybit macro to prevent users from putting the system in an uknown state
+- added some work around thermal resistances
+- updated thermal resistance settings
+- remove redudant check
+- Update src/commands/configuration/power_delivery_configuration.rs
+- Update README.md
+- Update src/commands/command_map.rs
+- Added Thermal Resistances setter
+- WIP
+- Adding VSELMIN comments
+- update docs
+- clippy fixes
+- updated requested module
+- Completed most of statistics
+- adding updated getters
+- Adding datasheets
+- Addded comments to Thermal Resistances
+- adding more docs
+- more refactoring
+- docs update
+- Finished documenting configuration folder registers
+- further api tweeks
+- scope adjustments
+- removing unused
+- last threshold of the day
+- expanding thresholds
+- formatting and refactoring
+- refactorings and adding more registers
+- Added more command definitions
+- WIP
+- Added more register definitions
+- WIP
+- WIP
+- adding WIP
+- Added some registers using bitbybit crate
+- added device driver
+- added skeleton code
+
+### Removed
+
+- removed async test
+- removed old doc string
+- removed dep
+- removed invalid defmt
+- removed comment
+- removed more core library unwraps
+- removed a lot of try froms
+- removed some ugly try froms
+- removed some dead code
+- removed generics
+- removed device driver
