@@ -51,7 +51,7 @@ impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
         let mut device = Self::new(i2c, delay);
         device.is_device_present().await?;
 
-        let device_status = device.get_status()?;
+        let device_status = device.get_status().await?;
         if device_status.i2c_ready()
             && device_status.started()
             && device_status.new_power_data_object()

@@ -26,6 +26,8 @@ jobs:
         run: cargo build --no-default-features --features sync
       - name: Build with advanced feature
         run: cargo build --no-default-features --features "sync advanced"
+      - name: Build with defmt feature
+        run: cargo build --no-default-features --features "sync defmt"
 
   build-async:
     name: Build with async feature
