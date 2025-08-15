@@ -42,8 +42,6 @@ impl OverCurrentProtectionThreshold {
             .ok_or(Ap33772sError::ConversionFailed)
             .map(|scaled_current| ElectricCurrent::new::<milliampere>(f32::from(scaled_current)))
     }
-    /// TODO: Look to generigy and combine into a helper function
-    // TODO: Consider Better Error Handling of the different conversion failures
     pub fn convert_current_to_raw_current(current: ElectricCurrent) -> Result<u8, Ap33772sError> {
         if !current.is_finite() || !current.is_sign_positive() {
             return Err(Ap33772sError::ConversionFailed);

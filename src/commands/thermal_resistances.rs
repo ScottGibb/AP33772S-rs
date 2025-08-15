@@ -5,7 +5,6 @@ pub mod thermal_resistance_25;
 pub mod thermal_resistance_50;
 pub mod thermal_resistance_75;
 
-// TODO: Fix This / is there a better way to do this?
 // The following function validates that the resistance is finite and positive,
 // and ensures the value fits within a u16 before conversion. This approach is
 // chosen for simplicity and safety, as it covers the expected input range and

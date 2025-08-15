@@ -40,8 +40,6 @@ impl OverVoltageProtectionThreshold {
             .ok_or(Ap33772sError::ConversionFailed)
             .map(|scaled_voltage| ElectricPotential::new::<millivolt>(f32::from(scaled_voltage)))
     }
-    // TODO: Look to generigy and combine into a helper function
-    // TODO: Consider Better Error Handling of the different conversion failures
     pub fn convert_voltage_to_raw_voltage(voltage: ElectricPotential) -> Result<u8, Ap33772sError> {
         if !voltage.is_finite() || !voltage.is_sign_positive() {
             return Err(Ap33772sError::ConversionFailed);

@@ -24,8 +24,6 @@ impl DeRatingThreshold {
         Self::convert_raw_temperature_to_temperature(self.raw_temperature())
     }
 
-    /// Converts a temperature in degrees Celsius to the raw temperature value.
-    /// TODO: Consider Better Error Handling of the different conversion failures
     pub fn convert_temperature_to_raw_temperature(
         temperature: ThermodynamicTemperature,
     ) -> Result<u8, Ap33772sError> {

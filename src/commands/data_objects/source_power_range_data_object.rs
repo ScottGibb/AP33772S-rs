@@ -128,7 +128,6 @@ pub enum PowerType {
     Adjustable = 1,
 }
 
-// TODO: Add
 #[bitenum(u2, exhaustive = true)]
 #[derive(Debug, PartialEq)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]

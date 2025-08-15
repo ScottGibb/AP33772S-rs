@@ -37,7 +37,6 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
         self.write_one_byte_command(system_control).await
     }
 
-    /// TODO: Check to see if this was causing earlier issues with the PPS and AVS?
     #[maybe_async::maybe_async]
     pub async fn set_minimum_selection_voltage(
         &mut self,
@@ -145,8 +144,6 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
 }
 
 impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<I2C, D> {
-    //TODO Missing Generic?
-
     /// Sets the thermal resistances for the device using those provided
     #[maybe_async::maybe_async]
     pub async fn set_thermal_resistances(

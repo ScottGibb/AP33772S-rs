@@ -4,7 +4,6 @@
 /// each associated with a specific functionality or register.
 #[derive(Debug, PartialEq, Clone, Copy)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
-#[non_exhaustive] //TODO: Look to remove once we have full command map
 pub enum Command {
     /// Command Associated with the STATUS Register
     /// See [Status](crate::commands::configuration::status::Status) for more details
