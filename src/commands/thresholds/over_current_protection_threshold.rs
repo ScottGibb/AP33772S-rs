@@ -3,12 +3,13 @@ use crate::errors::Ap33772sError;
 use crate::types::units::*;
 use crate::{impl_one_byte_read_command, impl_one_byte_write_command};
 use bitbybit::bitfield;
+
 /// The OCPTHR register is defined as the OCP Threshold Current that triggers OCP protection function.
 /// The OCP Threshold Current is 110% of the OCPTHR current value. The default value for the OCPTHR is
 /// 00h and the LSB is 50mA.
 ///
 /// If the OCPTHR is set to 0, the OCP Threshold Current will be updated to 110%
-/// of the selected [Power Data Object](crate::commands::data_objects::source_power_data_object::SourcePowerDataObject)
+/// of the selected [Source Power Data Object](crate::commands::data_objects::source_power_range_data_object::SourcePowerRangeDataObject)
 /// (POD) maximum current after successful negotiation with the PD source.
 /// Please refer to the “Overcurrent Protection” section for more details
 ///
