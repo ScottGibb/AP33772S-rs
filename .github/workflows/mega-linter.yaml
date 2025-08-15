@@ -160,7 +160,7 @@ jobs:
           fi
 
   ESP32C3_Example:
-    name: Build ESP32C3 Example
+    name: Lint ESP32C3 Example
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -187,7 +187,7 @@ jobs:
           cargo ${{ matrix.action.command }} ${{ matrix.action.args }}
 
   RaspberryPi_Example:
-    name: Build ESP32C3 Example
+    name: Lint RaspberryPi Example
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
