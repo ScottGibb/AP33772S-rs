@@ -162,8 +162,8 @@ impl<I2C: I2c, D: DelayNs, P: InputPin> Ap33772s<I2C, D, P> {
         Ok(device)
     }
 }
-
-impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<I2C, D> {
+#[cfg(not(feature = "interrupts"))]
+impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
     pub const ADDRESS: SevenBitAddress = 0x52;
     /// Checks if the device is present on the I2C bus. It checks an command register of the device and matches with the expected value.
     #[maybe_async::maybe_async]
