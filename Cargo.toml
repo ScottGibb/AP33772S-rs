@@ -41,7 +41,6 @@ all-features = false
 utils ={ path = "./utils"}
 
 [workspace]
-publish = false
 
 members = [ 
    "utils",

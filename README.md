@@ -4,6 +4,7 @@
 [![Continuous Build](https://github.com/ScottGibb/AP33772S-rs/actions/workflows/continuous-build.yaml/badge.svg)](https://github.com/ScottGibb/AP33772S-rs/actions/workflows/continuous-build.yaml)
 ![Crates.io Version](https://img.shields.io/crates/v/AP33772S-rs?color=green)
 ![Crates.io Downloads (latest version)](https://img.shields.io/crates/dv/ap33772s-rs)
+[![Release Plz](https://github.com/ScottGibb/AP33772S-rs/actions/workflows/release-plz.yaml/badge.svg)](https://github.com/ScottGibb/AP33772S-rs/actions/workflows/release-plz.yaml)
 
 ## Under Development
 
