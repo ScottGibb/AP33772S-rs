@@ -1,0 +1,34 @@
+name: Continuous Test
+
+on:
+  push:
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: Run Cargo Tests
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+      - name: Install FTDI Dependencies (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get install libftdi1 libftdi1-dev -y
+      - name: Install FTDI Dependencies (MacOS)
+        if: runner.os == 'MacOS'
+        run: |
+          brew install libftdi
+      - name: Test (sync)
+        run: cargo test --no-default-features --features sync

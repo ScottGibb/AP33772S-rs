@@ -1,0 +1,69 @@
+//! This module contains the implementation of the communication methods for the AP33772S driver.
+//! It provides methods for reading and writing commands to the device using I2C communication.
+
+use super::traits::{
+    ReadOneByteCommand, ReadTwoByteCommand, WriteOneByteCommand, WriteTwoByteCommand,
+};
+use crate::ap33772s::Ap33772s;
+use crate::errors::Ap33772sError;
+use crate::hal::DelayNs;
+use crate::hal::I2c;
+
+impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<I2C, D> {
+    #[maybe_async::maybe_async]
+    pub async fn write_one_byte_command(
+        &mut self,
+        command: impl WriteOneByteCommand,
+    ) -> Result<(), Ap33772sError> {
+        let command_address = command.get_command() as u8;
+        let data = command.raw_value();
+        self.i2c
+            .write(Self::ADDRESS, &[command_address, data])
+            .await?;
+        Ok(())
+    }
+    #[maybe_async::maybe_async]
+    pub async fn read_one_byte_command<CommandRegister>(
+        &mut self,
+    ) -> Result<CommandRegister, Ap33772sError>
+    where
+        CommandRegister: ReadOneByteCommand,
+    {
+        let mut data: [u8; 1] = [0x00];
+        let command_address = CommandRegister::command() as u8;
+        self.i2c
+            .write_read(Self::ADDRESS, &[command_address], &mut data)
+            .await?;
+        Ok(CommandRegister::new_with_raw_value(data[0]))
+    }
+
+    #[maybe_async::maybe_async]
+    pub(crate) async fn read_two_byte_command<CommandRegister>(
+        &mut self,
+    ) -> Result<CommandRegister, Ap33772sError>
+    where
+        CommandRegister: ReadTwoByteCommand,
+    {
+        let mut data: [u8; 2] = [0x00; 2];
+        let command_address = CommandRegister::command() as u8;
+        self.i2c
+            .write_read(Self::ADDRESS, &[command_address], &mut data)
+            .await?;
+        Ok(CommandRegister::new_with_raw_value(u16::from_le_bytes(
+            data,
+        )))
+    }
+
+    #[maybe_async::maybe_async]
+    pub(crate) async fn write_two_byte_command(
+        &mut self,
+        command: impl WriteTwoByteCommand,
+    ) -> Result<(), Ap33772sError> {
+        let command_address = command.get_command() as u8;
+        let data = command.raw_value().to_le_bytes();
+        self.i2c
+            .write(Self::ADDRESS, &[command_address, data[0], data[1]])
+            .await?;
+        Ok(())
+    }
+}

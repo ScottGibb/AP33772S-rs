@@ -1,0 +1,152 @@
+name: Continuous Build
+
+on:
+  push:
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-sync:
+    name: Build with sync feature
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+      - name: Build (sync)
+        run: cargo build --no-default-features --features sync
+      - name: Build with advanced feature
+        run: cargo build --no-default-features --features "sync advanced"
+      - name: Build with defmt feature
+        run: cargo build --no-default-features --features "sync defmt"
+
+  build-async:
+    name: Build with async feature
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+      - name: Build
+        run: cargo build --no-default-features --features async
+      - name: Build with advanced feature
+        run: cargo build --no-default-features --features "async advanced"
+      - name: Build with defmt feature
+        run: cargo build --no-default-features --features "async defmt"
+
+  build-os-examples:
+    name: Build OS Sync Vendor Inspired examples
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    steps:
+      - name: Install FTDI Dependencies (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get install libftdi1 libftdi1-dev -y
+      - name: Install FTDI Dependencies (MacOS)
+        if: runner.os == 'MacOS'
+        run: |
+          brew install libftdi
+      - uses: actions/checkout@v4
+      - name: Cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+      - name: Build Power Data Object Query
+        run: |
+          cargo build --example power_data_object_query --no-default-features --features sync
+      - name: Build Power Data Object Send
+        run: |
+          cargo build --example power_data_object_send --no-default-features --features sync
+      - name: Build Power Data Object Switch
+        run: |
+          cargo build --example power_data_object_switch --no-default-features --features sync
+      - name: Build Startup Configuration
+        run: |
+          cargo build --example startup_configuration --no-default-features --features "sync advanced"
+      - name: Build State Query
+        run: |
+          cargo build --example state_query --no-default-features --features sync
+      - name: Build AVS Cycle
+        run: |
+          cargo build --example avs_cycle --no-default-features --features sync
+      - name: Build AVS Fixed
+        run: |
+          cargo build --example avs_fixed --no-default-features --features sync
+      - name: Build Serial Profile On Off
+        run: |
+          cargo build --example serial_profile_on_off --no-default-features --features sync
+
+  build-async-examples:
+    name: Build Async ESP32 Vendor Inspired examples
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@v1
+        with:
+          target: riscv32imac-unknown-none-elf
+          toolchain: stable
+          components: rust-src, rustfmt, clippy
+      - name: Build ESP32C3 Example
+        run: |
+          cd examples/esp32c3
+          cargo build
+
+  build-docs:
+    name: Build Documentation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+      - name: build sync docs
+        run: |
+          cargo doc --no-default-features --features sync
+      - name: build async docs
+        run: |
+          cargo doc --no-default-features --features async
+      - name: build advanced docs
+        run: |
+          cargo doc --no-default-features --features "sync advanced"
