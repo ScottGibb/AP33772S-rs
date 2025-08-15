@@ -73,8 +73,8 @@ impl core::fmt::Display for Ap33772sError {
 #[cfg(feature = "defmt")]
 impl defmt::Format for Ap33772sError {
     fn format(&self, f: defmt::Formatter) {
-        use embedded_hal::i2c::Error;
-
+        use crate::hal::Error;
+        use crate::hal::ErrorKind;
         defmt::write!(
             f,
             "AP33772S Error: {}",
@@ -82,11 +82,11 @@ impl defmt::Format for Ap33772sError {
                 Ap33772sError::I2c(err) => {
                     // Convert the ErrorKind into a string for defmt
                     let kind_str = match err.kind() {
-                        embedded_hal::i2c::ErrorKind::Bus => "Bus",
-                        embedded_hal::i2c::ErrorKind::ArbitrationLoss => "ArbitrationLoss",
-                        embedded_hal::i2c::ErrorKind::NoAcknowledge(_) => "NoAcknowledge",
-                        embedded_hal::i2c::ErrorKind::Overrun => "Overrun",
-                        embedded_hal::i2c::ErrorKind::Other => "Other",
+                        ErrorKind::Bus => "Bus",
+                        ErrorKind::ArbitrationLoss => "ArbitrationLoss",
+                        ErrorKind::NoAcknowledge(_) => "NoAcknowledge",
+                        ErrorKind::Overrun => "Overrun",
+                        ErrorKind::Other => "Other",
                         _ => "Unknown",
                     };
                     defmt::write!(f, "AP33772S Error: I2C error ({})", kind_str);
