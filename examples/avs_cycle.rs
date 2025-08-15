@@ -12,6 +12,7 @@ use ap33772s_rs::{
 use utils::{setup_delay, setup_i2c};
 
 /// The Power Data Object that supports AVS (Chosen due to Anker Power Bank supporting it on that configuration)
+/// This example currently uses PPS instead of AVS however it should work with either
 const PROGRAMMABLE_POWER_SUPPLY_POWER_DATA_OBJECT: PowerDataObject =
     PowerDataObject::StandardPowerRange6;
 

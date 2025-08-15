@@ -35,16 +35,9 @@ fn main() {
     std::thread::sleep(std::time::Duration::from_secs(2));
 
     let index = PowerDataObject::StandardPowerRange4;
-    let current_selection = OperatingCurrentSelection::Maximum;
-    let voltage_selection = None; // No voltage selection needed for fixed PDOs
-    println!("Switching to {index} with current selection {current_selection}");
+    println!("Switching to {index} with Maximum Power Delivery");
     let response = ap33772s
-        .negotiate_power_delivery(
-            index,
-            voltage_selection,
-            current_selection,
-            &power_delivery_capabilities,
-        )
+        .negotiate_maximum_power_delivery(index)
         .expect("Failed to send power delivery request");
     println!("Power Delivery request Response: {response:?}");
     let stats = ap33772s.get_statistics().expect("Failed to get statistics");

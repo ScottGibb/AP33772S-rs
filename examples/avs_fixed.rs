@@ -13,7 +13,7 @@ fn main() {
     let mut ap33772s =
         Ap33772s::new_default(i2c, delay).expect("Failed to create AP33772S instance");
 
-    let adjustable_voltage_supply = ElectricPotential::new::<millivolt>(16000.0);
+    let adjustable_voltage_supply = ElectricPotential::new::<millivolt>(16500.0);
     // Set the MMOS Switch
     ap33772s
         .override_output_voltage(VoltageOutputControl::ForceOn)
@@ -32,6 +32,11 @@ fn main() {
                 &power_data_objects,
             )
             .expect("Failed to send power delivery request");
+        println!(
+            "Power Delivery request Response: {response:?}, Current Selection: {}, Voltage: {} mV",
+            OperatingCurrentSelection::_3A,
+            adjustable_voltage_supply.get::<millivolt>()
+        );
         println!("Power Delivery request Response: {response:?}");
 
         std::thread::sleep(std::time::Duration::from_secs(1)); // Call AVS every second to stop the charger from disconnecting if no sink
