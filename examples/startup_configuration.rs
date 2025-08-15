@@ -35,8 +35,11 @@ use imports::*;
 /// registers directly as such in order to gain access to the advanced features you need to enable the `advanced` feature in your `Cargo.toml` file
 #[cfg(feature = "advanced")]
 fn main() {
-    let i2c = setup_i2c().expect("Failed to set up I2C");
-    let mut ap33772s = Ap33772s::new_default(i2c).unwrap();
+    use utils::setup_delay;
+
+    let i2c = setup_i2c(1_000).expect("Failed to set up I2C");
+    let delay = setup_delay();
+    let mut ap33772s = Ap33772s::new(i2c, delay);
 
     // Read The Status Register
     let status = ap33772s.get_status().expect("Failed to get status");
