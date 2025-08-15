@@ -262,7 +262,7 @@ impl defmt::Format for Thresholds {
 }
 
 impl Default for Thresholds {
-    /// Default values are derrived from the AP33772S Registers which have known compile time default values
+    /// Default values are derived from the AP33772S Registers which have known compile time default values
     fn default() -> Self {
         Thresholds {
             over_voltage: OverVoltageProtectionThreshold::default()
