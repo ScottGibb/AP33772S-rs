@@ -27,7 +27,8 @@ fn main() {
     std::thread::sleep(std::time::Duration::from_secs(2));
 
     println!("Beginning voltage negotiation...");
-    for voltage in (5100..=21000).step_by(StandardPowerRangeDataObject::VOLTAGE_RESOLUTION as usize)
+    for voltage in (5100..=StandardPowerRangeDataObject::MAXIMUM_VOLTAGE)
+        .step_by(StandardPowerRangeDataObject::VOLTAGE_RESOLUTION as usize)
     {
         // Set the Power Data Object
         let response = ap33772s

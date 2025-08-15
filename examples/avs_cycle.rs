@@ -4,7 +4,8 @@ use ap33772s_rs::{
     ap33772s::Ap33772s,
     types::{
         command_structures::{
-            OperatingCurrentSelection, PowerDataObject, PowerType, VoltageOutputControl,
+            ExtendedPowerRangeDataObject, OperatingCurrentSelection, PowerDataObject, PowerType,
+            VoltageOutputControl,
         },
         units::*,
     },
@@ -67,7 +68,9 @@ fn main() {
 
     loop {
         // Increase the voltage using the first extended power range data object
-        for voltage in (6000..=28000).step_by(100) {
+        for voltage in (15000..=ExtendedPowerRangeDataObject::MAXIMUM_VOLTAGE)
+            .step_by(ExtendedPowerRangeDataObject::VOLTAGE_RESOLUTION as usize)
+        {
             // Send a power delivery request with the current voltage
             let response = ap33772s
                 .negotiate_power_delivery(
