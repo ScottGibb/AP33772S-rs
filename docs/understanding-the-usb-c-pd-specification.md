@@ -31,7 +31,7 @@ When working with USB C Power Delivery and this chip (AP33772S) in particular I 
 
 ## Power Data Object
 
-From my understanding the Power Data Object (PDO) is essentially a struct that contains the key information of the power delivery mode. This defines its capablities that each PDO can do and if it is `detected` on the sink device. The Sink device being the USB Type C Power Supplier.
+A PD source will provide it's capabilities which is a list of Power Data Objects (PDOs). A PDO is a struct that contains a power mode that is available from the source e.g. fixed 15V@1A (variable voltage and cell voltage are available too). The sink device can then select the most appropriate. 
 
 ## Standard Power Range
 
@@ -41,7 +41,7 @@ Standard Power Range (SPR) defines the original power range of USB-PD, supportin
 
 Extended Power Range (EPR) significantly expands the power capabilities of USB-PD, allowing for voltages up to 28V (in the case of the AP33772S) and currents up to 5A. This enables much higher power delivery, supporting devices with greater energy demands like laptops, power tools, and displays. EPR requires electronically marked cables rated for 5A and the higher voltage, ensuring safe operation at these elevated power levels.
 
-## Adjustable Voltahe Supply (AVS) versus Programmable Power Supply (PPS)
+## Adjustable Voltagw Supply (AVS) versus Programmable Power Supply (PPS)
 
 AVS: operates in the Extended Power Supply Range specifically 15V - 28V in the case of the AP33772S.
 
