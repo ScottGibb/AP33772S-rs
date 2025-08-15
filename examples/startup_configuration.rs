@@ -48,15 +48,15 @@ fn main() {
     if status.started() && status.i2c_ready() {
         println!(" AP33772S Is up and running!")
     } else {
-        println!("Status {:?}", status);
-        panic!("AP33772 not ready...")
+        println!("Status: {}", status);
+        println!("AP33772S is not ready..., but I2C communication is working");
     }
 
     println!("Apply Startup Settings:");
 
     // Enable Interrupt
     let interrupts = InterruptEnable::new_with_raw_value(0x0F);
-    println!("Enabling Interrupts: {:?}", interrupts);
+    println!("Enabling Interrupts: {}", interrupts);
     ap33772s
         .write_one_byte_command(interrupts)
         .expect("Should not fail");
@@ -64,7 +64,7 @@ fn main() {
     // System Configuration
     let protection_mode_configuration = ProtectionModeConfiguration::new_with_raw_value(0xFC);
     println!(
-        "Setting Protection Mode Configuration: {:?}",
+        "Setting Protection Mode Configuration: {}",
         protection_mode_configuration
     );
     ap33772s
@@ -74,7 +74,7 @@ fn main() {
     // Power Delivery Configuration
     let power_delivery_configuration = PowerDeliveryConfiguration::new_with_raw_value(0x03);
     println!(
-        "Setting Power Delivery Configuration: {:?}",
+        "Setting Power Delivery Configuration: {}",
         power_delivery_configuration
     );
     ap33772s
@@ -149,7 +149,7 @@ fn main() {
     // Read Status
 
     let status = ap33772s.get_status().expect("Failed to get status");
-    println!("Status after configuration: {:?}", status);
+    println!("Status after configuration: {}", status);
 }
 
 #[cfg(not(feature = "advanced"))]
