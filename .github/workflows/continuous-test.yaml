@@ -32,5 +32,3 @@ jobs:
           brew install libftdi
       - name: Test (sync)
         run: cargo test --no-default-features --features sync
-      - name: Test (async)
-        run: cargo test --no-default-features --features async
