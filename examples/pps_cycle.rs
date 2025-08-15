@@ -2,7 +2,7 @@ use ap33772s_rs::types::command_structures::{
     OperatingCurrentSelection, PowerDataObject, StandardPowerRangeDataObject,
 };
 use ap33772s_rs::types::units::*;
-use ap33772s_rs::{ap33772s::Ap33772s, types::command_structures::VoltageOutputControl};
+use ap33772s_rs::ap33772s::Ap33772s;
 use utils::setup_delay;
 
 const PROGRAMMABLE_POWER_SUPPLY_POWER_DATA_OBJECT: PowerDataObject =
@@ -40,8 +40,7 @@ fn main() {
             )
             .expect("Failed to send power delivery request");
         println!(
-            "Power Delivery request Response: {response:?} with Voltage: {} mV",
-            voltage
+            "Power Delivery request Response: {response:?} with Voltage: {voltage} mV"
         );
 
         // Wait for a while to observe the change

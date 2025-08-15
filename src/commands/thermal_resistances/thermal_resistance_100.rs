@@ -1,4 +1,4 @@
-use super::command_map::Command;
+use crate::commands::command_map::Command;
 use crate::{impl_two_byte_read_command, impl_two_byte_write_command};
 use bitbybit::bitfield;
 use uom::si::electrical_resistance::ohm;

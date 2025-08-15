@@ -1,4 +1,4 @@
-use super::command_map::Command;
+use crate::commands::command_map::Command;
 use crate::errors::Ap33772sError;
 use crate::impl_two_byte_read_command;
 use crate::types::units::*;

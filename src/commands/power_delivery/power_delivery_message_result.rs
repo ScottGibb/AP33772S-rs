@@ -1,4 +1,4 @@
-use super::command_map::Command;
+use crate::commands::command_map::Command;
 use crate::impl_one_byte_read_command;
 use bitbybit::{bitenum, bitfield};
 

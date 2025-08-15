@@ -1,4 +1,3 @@
-use super::command_map;
 use crate::errors::Ap33772sError;
 use crate::types::units::*;
 pub mod thermal_resistance_100;
