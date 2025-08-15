@@ -41,7 +41,7 @@ Standard Power Range (SPR) defines the original power range of USB-PD, supportin
 
 Extended Power Range (EPR) significantly expands the power capabilities of USB-PD, allowing for voltages up to 28V (in the case of the AP33772S) and currents up to 5A. This enables much higher power delivery, supporting devices with greater energy demands like laptops, power tools, and displays. EPR requires electronically marked cables rated for 5A and the higher voltage, ensuring safe operation at these elevated power levels.
 
-## Adjustable Voltagw Supply (AVS) versus Programmable Power Supply (PPS)
+## Adjustable Voltage Supply (AVS) versus Programmable Power Supply (PPS)
 
 AVS: operates in the Extended Power Supply Range specifically 15V - 28V in the case of the AP33772S.
 
