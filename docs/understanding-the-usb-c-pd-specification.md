@@ -31,7 +31,7 @@ When working with USB C Power Delivery and this chip (AP33772S) in particular I 
 
 ## Power Data Object
 
-A PD source will provide it's capabilities which is a list of Power Data Objects (PDOs). A PDO is a struct that contains a power mode that is available from the source e.g. fixed 15V@1A (variable voltage and cell voltage are available too). The sink device can then select the most appropriate. 
+A PD source will provide it's capabilities which is a list of Power Data Objects (PDOs). A PDO is a struct that contains a power mode that is available from the source e.g. fixed 15V@1A (variable voltage and cell voltage are available too). The sink device can then select the most appropriate.
 
 ## Standard Power Range
 
