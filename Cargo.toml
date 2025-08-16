@@ -38,3 +38,46 @@ utils ={ path = "./utils"}
 members = [ 
    "utils",
 ]
+
+[package.metadata.docs.rs]
+dependencies = ["libftdi1", "libftdi1-dev"]
+
+# Example binaries and their required features
+# All examples require the 'sync' feature except 'startup_configuration' which also needs 'advanced'
+[[example]]
+name = "avs_cycle"
+required-features = ["sync"]
+
+[[example]]
+name = "avs_fixed"
+required-features = ["sync"]
+
+[[example]]
+name = "power_data_object_query"
+required-features = ["sync"]
+
+[[example]]
+name = "power_data_object_send"
+required-features = ["sync"]
+
+[[example]]
+name = "power_data_object_switch"
+required-features = ["sync"]
+
+[[example]]
+name = "pps_cycle"
+required-features = ["sync"]
+
+[[example]]
+name = "serial_profile_on_off"
+required-features = ["sync"]
+
+[[example]]
+name = "state_query"
+required-features = ["sync"]
+
+[[example]]
+name = "startup_configuration"
+required-features = ["sync", "advanced"]
+
+
