@@ -20,10 +20,8 @@ mod setters;
 pub mod types;
 
 // Expose all underlying registers and communication methods for full access
-#[cfg_attr(docsrs, doc(cfg(feature = "advanced")))]
 #[cfg(feature = "advanced")]
 pub mod commands;
-#[cfg_attr(docsrs, doc(cfg(feature = "advanced")))]
 #[cfg(feature = "advanced")]
 pub mod communications;
 
@@ -33,7 +31,6 @@ mod commands;
 mod communications;
 
 /// Sync Based HAL Imports
-#[cfg_attr(docsrs, doc(cfg(feature = "sync")))]
 #[cfg(feature = "sync")]
 mod hal {
     pub use embedded_hal::delay::DelayNs;
@@ -46,7 +43,6 @@ mod hal {
 }
 
 /// Aysnc Based HAL Imports
-#[cfg_attr(docsrs, doc(cfg(feature = "async")))]
 #[cfg(feature = "async")]
 mod hal {
     #[cfg(feature = "interrupts")]
