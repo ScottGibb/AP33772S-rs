@@ -19,5 +19,5 @@
       "file:///Users/scottgibb/Projects/AP33772S-rs/.mega-linter.yaml"
     ]
   },
-  "conventionalCommits.scopes": ["workflows", "vscode", "versioning"]
+  "conventionalCommits.scopes": ["workflows", "vscode", "versioning", "linting"]
 }
