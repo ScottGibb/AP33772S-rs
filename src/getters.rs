@@ -59,6 +59,7 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
         })
     }
 
+    /// Retrieves the current operational statistics of the device, including current, voltage, and temperature.
     #[maybe_async::maybe_async]
     pub async fn get_statistics(&mut self) -> Result<Statistics, Ap33772sError> {
         let current = self.get_current().await?;
@@ -77,6 +78,9 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
         })
     }
 
+    /// This function is feature gated by the `advanced` feature. This can be called after calling
+    /// [send_power_delivery_request](crate::setters::Ap33772s::send_power_delivery_request). It is recommended
+    /// to give the system time to respond before calling this function otherwise the response may be `Busy`.
     #[maybe_async::maybe_async]
     #[cfg_attr(feature = "advanced", visibility::make(pub))]
     pub(crate) async fn get_power_delivery_request_result(
@@ -199,6 +203,7 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
         })
     }
 
+    /// Requests all the Power Source Capabilities the device supports.
     #[maybe_async::maybe_async]
     pub async fn get_all_source_power_capabilities(
         &mut self,
