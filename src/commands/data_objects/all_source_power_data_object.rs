@@ -5,13 +5,18 @@ use crate::commands::{
     power_delivery::power_delivery_request_message::PowerDataObject,
 };
 
-pub(crate) const MAX_SOURCE_POWER_DATA_OBJECTS: usize = 7;
+/// The amount of Standard Power Data Objects
+pub(crate) const MAX_STANDARD_POWER_DATA_OBJECTS: usize = 7;
+/// The amount of Extended Power Data Objects
 pub(crate) const MAX_EXTENDED_POWER_DATA_OBJECTS: usize = 6;
 
+/// Represents all source power data objects for the AP33772S.
+/// Each USB C Power Supply device will have some of these objects.
+/// In the event that it does not the underlying power data objects `is_detected` methods will be false.
 #[derive(Debug, PartialEq, Clone)]
 pub struct AllSourceDataPowerDataObject {
     pub power_data_objects: [SourcePowerRangeDataObject;
-        MAX_SOURCE_POWER_DATA_OBJECTS + MAX_EXTENDED_POWER_DATA_OBJECTS],
+        MAX_STANDARD_POWER_DATA_OBJECTS + MAX_EXTENDED_POWER_DATA_OBJECTS],
 }
 
 impl core::fmt::Display for AllSourceDataPowerDataObject {
@@ -40,6 +45,7 @@ impl defmt::Format for AllSourceDataPowerDataObject {
 }
 
 impl Default for AllSourceDataPowerDataObject {
+    /// Returns an empty AllSourceDataPowerDataObject.
     fn default() -> Self {
         AllSourceDataPowerDataObject {
             power_data_objects: [
@@ -64,6 +70,7 @@ impl Default for AllSourceDataPowerDataObject {
 }
 
 impl AllSourceDataPowerDataObject {
+    /// Returns a reference to the power data object at the given index.
     pub fn get_power_data_object(&self, index: PowerDataObject) -> &SourcePowerRangeDataObject {
         // These assertions should never fire, but we include them for safety. The PowerDataObjects are always in the range 1-13
         assert!(

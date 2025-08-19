@@ -8,6 +8,10 @@ use crate::{
 use arbitrary_int::u2;
 use bitbybit::bitfield;
 
+/// Represents the standard power range for the AP33772S.
+/// Many Power supplies will support various `objects` that implement the StandardPowerRange.
+/// This contains all the necessary information to select or query what the
+/// power range capabilities are.
 #[bitfield(u16, default = 0x00)]
 #[derive(Debug, PartialEq)]
 pub struct StandardPowerRangeDataObject {
@@ -34,8 +38,15 @@ pub struct StandardPowerRangeDataObject {
 /// 210 * 100 = 21000mV
 /// Therefore the voltage should be checked multiplied and stored in a U16
 impl StandardPowerRangeDataObject {
-    pub const VOLTAGE_RESOLUTION: u16 = 100; // mV per Unit
-    pub const MAXIMUM_VOLTAGE: u16 = 21000; // mV
+    /// The Voltage Resolution defined in mV per LSB
+    pub const VOLTAGE_RESOLUTION: u16 = 100;
+    /// The Maximum Voltage that can be requested using this data object, this is not the `max_voltage` that the data object can provide,
+    /// but rather the Absolute Maximum Voltage that the Standard rage profile can support.
+    /// Use [max_voltage function](crate::commands::data_objects::standard_power_range_data_object::StandardPowerRangeDataObject::max_voltage)
+    /// to find out what value is supported.
+    /// It is is defined in mV
+    pub const ABSOLUTE_MAXIMUM_VOLTAGE: u16 = 21000; // mV
+    /// Returns the maximum voltage that can be requested using this data object.
     pub fn max_voltage(&self) -> Result<ElectricPotential, Ap33772sError> {
         let scaled_voltage = u16::from(self.raw_max_voltage())
             .checked_mul(Self::VOLTAGE_RESOLUTION)
@@ -45,12 +56,15 @@ impl StandardPowerRangeDataObject {
         )))
     }
 
+    /// Returns the peak current that can be requested using this data object.
     pub fn peak_current(&self) -> Option<PeakCurrent> {
         match self.source_power_type() {
             PowerType::Fixed => Some(PeakCurrent::from(self.minimum_voltage_or_peak_current())),
             PowerType::Adjustable => None,
         }
     }
+
+    /// Returns the minimum voltage that can be requested using this data object.
     pub fn minimum_voltage(&self) -> Option<MinimumVoltage> {
         match self.source_power_type() {
             PowerType::Fixed => None,
@@ -61,6 +75,7 @@ impl StandardPowerRangeDataObject {
     }
 }
 
+/// The supported minimum voltages for the Standard Power Range Data Object when working in Programmable Power Supply mode
 #[derive(Debug, PartialEq)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum MinimumVoltage {

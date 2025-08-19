@@ -8,7 +8,7 @@ use crate::commands::configuration::power_delivery_configuration::PowerDeliveryC
 use crate::commands::configuration::system_control::SystemControl;
 use crate::commands::data_objects::all_source_power_data_object::AllSourceDataPowerDataObject;
 use crate::commands::data_objects::all_source_power_data_object::MAX_EXTENDED_POWER_DATA_OBJECTS;
-use crate::commands::data_objects::all_source_power_data_object::MAX_SOURCE_POWER_DATA_OBJECTS;
+use crate::commands::data_objects::all_source_power_data_object::MAX_STANDARD_POWER_DATA_OBJECTS;
 use crate::commands::data_objects::extended_power_range_data_object::ExtendedPowerRangeDataObject;
 use crate::commands::data_objects::source_power_range_data_object::SourcePowerRangeDataObject;
 use crate::commands::data_objects::standard_power_range_data_object::StandardPowerRangeDataObject;
@@ -215,7 +215,7 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
             .await?;
         let mut data_object = AllSourceDataPowerDataObject::default();
 
-        for i in 0..MAX_SOURCE_POWER_DATA_OBJECTS {
+        for i in 0..MAX_STANDARD_POWER_DATA_OBJECTS {
             data_object.power_data_objects[i] = SourcePowerRangeDataObject::Standard(
                 StandardPowerRangeDataObject::new_with_raw_value(u16::from_le_bytes([
                     buff[2 * i],
@@ -223,8 +223,8 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
                 ])),
             );
         }
-        for i in MAX_SOURCE_POWER_DATA_OBJECTS
-            ..MAX_EXTENDED_POWER_DATA_OBJECTS + MAX_SOURCE_POWER_DATA_OBJECTS
+        for i in MAX_STANDARD_POWER_DATA_OBJECTS
+            ..MAX_EXTENDED_POWER_DATA_OBJECTS + MAX_STANDARD_POWER_DATA_OBJECTS
         {
             data_object.power_data_objects[i] = SourcePowerRangeDataObject::Extended(
                 ExtendedPowerRangeDataObject::new_with_raw_value(u16::from_le_bytes([

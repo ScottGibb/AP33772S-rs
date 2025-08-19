@@ -100,6 +100,10 @@ impl core::fmt::Display for PowerDataObject {
     }
 }
 
+/// Represents the different Currents the device will limit itself too. The actual current the device can support is
+/// defined by the [SourceMaximumCurrent](crate::commands::data_objects::source_power_range_data_object::SourceMaximumCurrent)
+/// If the maximum current is requested, the device will use the highest available current level. This can be requested using the
+/// [negotiate maximum power function](crate::ap33772s::Ap33772s::negotiate_maximum_power_delivery)
 #[derive(Debug, PartialEq, PartialOrd)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[bitenum(u4, exhaustive = true)]
@@ -122,6 +126,7 @@ pub enum OperatingCurrentSelection {
     Maximum = 15,
 }
 impl OperatingCurrentSelection {
+    /// Returns the Operating Current in a useable `uom` ElectricCurrent. Where 5A is the "Maximum" value
     pub fn current(&self) -> ElectricCurrent {
         use OperatingCurrentSelection::*;
         let current = match self {
