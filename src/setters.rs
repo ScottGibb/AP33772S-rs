@@ -212,10 +212,10 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     /// - [`get_all_source_power_capabilities`] to see available voltages
     /// - [`negotiate_power_delivery`] which respects this threshold
     ///
-    /// [`ElectricPotential`]: crate::types::units::ElectricPotential  
-    /// [`get_minimum_selection_voltage`]: crate::getters::Ap33772s::get_minimum_selection_voltage
-    /// [`get_all_source_power_capabilities`]: crate::getters::Ap33772s::get_all_source_power_capabilities
-    /// [`negotiate_power_delivery`]: crate::ap33772s::Ap33772s::negotiate_power_delivery
+    /// [`ElectricPotential`]: crate::units::ElectricPotential  
+    /// [`get_minimum_selection_voltage`]: crate::Ap33772s::get_minimum_selection_voltage
+    /// [`get_all_source_power_capabilities`]: crate::Ap33772s::get_all_source_power_capabilities
+    /// [`negotiate_power_delivery`]: crate::Ap33772s::negotiate_power_delivery
     #[maybe_async::maybe_async]
     pub async fn set_minimum_selection_voltage(
         &mut self,
@@ -331,7 +331,7 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     /// # Current Selection Options
     ///
     /// - [`OperatingCurrentSelection::Maximum`] - Request maximum available current
-    /// - [`OperatingCurrentSelection::Minimum`] - Request minimum operating current
+    /// - [`OperatingCurrentSelection::_1A`] - Request minimum operating current
     /// - Custom current values (device dependent)
     ///
     /// # Errors
@@ -372,8 +372,8 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     ///
     /// // Check if request was accepted
     /// match device.get_power_delivery_request_result().await? {
-    ///     PowerDeliveryResponse::Accepted => println!("Request accepted!"),
-    ///     PowerDeliveryResponse::Rejected => println!("Request rejected"),
+    ///     PowerDeliveryResponse::Success => println!("Request accepted!"),
+    ///     PowerDeliveryResponse::NotSupported => println!("Request rejected"),
     ///     _ => println!("Unexpected response"),
     /// }
     /// # Ok(())
@@ -416,7 +416,7 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     /// [`get_power_delivery_request_result`]: crate::getters::Ap33772s::get_power_delivery_request_result
     /// [`send_maximum_power_delivery_request`]: Self::send_maximum_power_delivery_request
     /// [`OperatingCurrentSelection::Maximum`]: crate::types::command_structures::OperatingCurrentSelection::Maximum
-    /// [`OperatingCurrentSelection::Minimum`]: crate::types::command_structures::OperatingCurrentSelection::Minimum
+    /// [`OperatingCurrentSelection::_1A`]: crate::types::command_structures::OperatingCurrentSelection::_1A
     /// [`RequestError::CurrentOutOfRange`]: crate::errors::RequestError::CurrentOutOfRange
     /// [`RequestError::VoltageOutOfRange`]: crate::errors::RequestError::VoltageOutOfRange
     /// [`RequestError::MissingArgument`]: crate::errors::RequestError::MissingArgument
@@ -642,11 +642,11 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     /// - [`get_operating_mode`] to check derating status
     ///
     /// [`ThermalResistances`]: crate::types::ThermalResistances
-    /// [`ElectricalResistance`]: crate::types::units::ElectricalResistance
-    /// [`get_thermal_resistances`]: crate::getters::Ap33772s::get_thermal_resistances
+    /// [`ElectricalResistance`]: crate::units::ElectricalResistance
+    /// [`get_thermal_resistances`]: crate::Ap33772s::get_thermal_resistances
     /// [`set_thresholds`]: Self::set_thresholds
-    /// [`get_temperature`]: crate::getters::Ap33772s::get_temperature
-    /// [`get_operating_mode`]: crate::getters::Ap33772s::get_operating_mode
+    /// [`get_temperature`]: crate::Ap33772s::get_temperature
+    /// [`get_operating_mode`]: crate::Ap33772s::get_operating_mode
     #[maybe_async::maybe_async]
     pub async fn set_thermal_resistances(
         &mut self,
@@ -780,13 +780,13 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     /// - [`get_temperature`] to monitor thermal conditions
     ///
     /// [`Thresholds`]: crate::types::Thresholds
-    /// [`ElectricPotential`]: crate::types::units::ElectricPotential
-    /// [`ElectricCurrent`]: crate::types::units::ElectricCurrent
-    /// [`ThermodynamicTemperature`]: crate::types::units::ThermodynamicTemperature
-    /// [`get_thresholds`]: crate::getters::Ap33772s::get_thresholds
+    /// [`ElectricPotential`]: crate::units::ElectricPotential
+    /// [`ElectricCurrent`]: crate::units::ElectricCurrent
+    /// [`ThermodynamicTemperature`]: crate::units::ThermodynamicTemperature
+    /// [`get_thresholds`]: crate::Ap33772s::get_thresholds
     /// [`set_thermal_resistances`]: Self::set_thermal_resistances
-    /// [`get_status`]: crate::getters::Ap33772s::get_status
-    /// [`get_temperature`]: crate::getters::Ap33772s::get_temperature
+    /// [`get_status`]: crate::Ap33772s::get_status
+    /// [`get_temperature`]: crate::Ap33772s::get_temperature
     #[maybe_async::maybe_async]
     pub async fn set_thresholds(&mut self, thresholds: Thresholds) -> Result<(), Ap33772sError> {
         let over_voltage_threshold: OverVoltageProtectionThreshold =

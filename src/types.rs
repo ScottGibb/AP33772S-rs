@@ -13,7 +13,7 @@
 //! - [`Thresholds`] - Protection threshold configuration
 //!
 //! ### Unit System  
-//! The [`units`] module provides strongly-typed physical quantities using the
+//! The [`crate::units`] module provides strongly-typed physical quantities using the
 //! [uom](https://docs.rs/uom) crate for type-safe unit handling.
 //!
 //! ### Command Structures
@@ -23,7 +23,7 @@
 //! ## Usage Examples
 //!
 //! ```rust,no_run
-//! use ap33772s_rs::types::{*, units::*};
+//! use ap33772s_rs::{types::*, units::*};
 //!
 //! // Create protection thresholds
 //! let thresholds = Thresholds {
@@ -191,8 +191,8 @@ pub use crate::units::*;
 /// - [`set_power_delivery_mode`] to configure these settings
 /// - [USB PD Specification](https://github.com/ScottGibb/AP33772S-rs/blob/main/docs/understanding-the-usb-c-pd-specification.md)
 ///
-/// [`get_power_delivery_configuration`]: crate::getters::Ap33772s::get_power_delivery_configuration
-/// [`set_power_delivery_mode`]: crate::setters::Ap33772s::set_power_delivery_mode
+/// [`get_power_delivery_configuration`]: crate::Ap33772s::get_power_delivery_configuration
+/// [`set_power_delivery_mode`]: crate::Ap33772s::set_power_delivery_mode
 #[derive(Debug, Clone, PartialEq)]
 pub struct PowerDeliveryMode {
     /// Enable Programmable Power Supply (PPS) and Adjustable Voltage Supply (AVS) support.
@@ -314,8 +314,8 @@ impl core::fmt::Display for PowerDeliveryMode {
 /// [`requested_voltage`]: Self::requested_voltage
 /// [`requested_current`]: Self::requested_current
 /// [`requested_power`]: Self::requested_power
-/// [`get_statistics`]: crate::getters::Ap33772s::get_statistics
-/// [`get_thresholds`]: crate::getters::Ap33772s::get_thresholds
+/// [`get_statistics`]: crate::Ap33772s::get_statistics
+/// [`get_thresholds`]: crate::Ap33772s::get_thresholds
 #[derive(Debug, Clone, PartialEq)]
 pub struct Statistics {
     /// Current output current being delivered to the load.

@@ -62,8 +62,8 @@
 //!
 //! [`negotiate_power_delivery`]: Ap33772s::negotiate_power_delivery
 //! [`negotiate_maximum_power_delivery`]: Ap33772s::negotiate_maximum_power_delivery
-//! [`get_all_source_power_capabilities`]: crate::getters::Ap33772s::get_all_source_power_capabilities
-//! [`get_statistics`]: crate::getters::Ap33772s::get_statistics
+//! [`get_all_source_power_capabilities`]: crate::Ap33772s::get_all_source_power_capabilities
+//! [`get_statistics`]: crate::Ap33772s::get_statistics
 //! [`is_device_present`]: Ap33772s::is_device_present
 //! [`hard_reset`]: Ap33772s::hard_reset
 #[cfg(not(feature = "interrupts"))]
@@ -159,7 +159,7 @@ use crate::units::*;
 /// ).await?;
 ///
 /// // Step 3: Verify negotiation success
-/// if response == PowerDeliveryResponse::Accepted {
+/// if response == PowerDeliveryResponse::Success {
 ///     println!("Power delivery negotiation successful!");
 ///     
 ///     // Step 4: Monitor the results
@@ -194,7 +194,6 @@ use crate::units::*;
 ///
 /// - [GitHub Examples](https://github.com/ScottGibb/AP33772S-rs/tree/main/examples) for complete usage examples
 /// - [Device Datasheet](https://www.diodes.com/part/view/AP33772S/) for hardware specifications
-/// - [`crate::getters`] and [`crate::setters`] for detailed API documentation
 ///
 /// [`Ap33772sError`]: crate::errors::Ap33772sError
 pub struct Ap33772s<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> {
@@ -350,8 +349,8 @@ impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
     /// - [`hard_reset`] for manual device reset
     ///
     /// [`new`]: Self::new
-    /// [`set_thermal_resistances`]: crate::setters::Ap33772s::set_thermal_resistances
-    /// [`set_thresholds`]: crate::setters::Ap33772s::set_thresholds
+    /// [`set_thermal_resistances`]: crate::Ap33772s::set_thermal_resistances
+    /// [`set_thresholds`]: crate::Ap33772s::set_thresholds
     /// [`hard_reset`]: Self::hard_reset
     #[maybe_async::maybe_async]
     pub async fn new_default(i2c: I2C, delay: D) -> Result<Self, Ap33772sError> {
@@ -433,14 +432,14 @@ impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
     /// # Current Selection Options
     ///
     /// - [`OperatingCurrentSelection::Maximum`] - Request maximum available current from PDO
-    /// - [`OperatingCurrentSelection::Minimum`] - Request minimum operating current
+    /// - [`OperatingCurrentSelection::_1A`] - Request minimum operating current
     /// - Custom values (check PDO capabilities first)
     ///
     /// # Returns
     ///
     /// Returns a [`PowerDeliveryResponse`] indicating the source's response:
-    /// - [`PowerDeliveryResponse::Accepted`] - Request accepted, power delivery active
-    /// - [`PowerDeliveryResponse::Rejected`] - Request rejected by source
+    /// - [`PowerDeliveryResponse::Success`] - Request accepted, power delivery active
+    /// - [`PowerDeliveryResponse::NotSupported`] - Request rejected by source
     /// - [`PowerDeliveryResponse::Busy`] - Source busy, retry later
     /// - Other responses per USB PD specification
     ///
@@ -455,7 +454,7 @@ impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
     /// This function includes automatic timing management:
     /// 1. Validates request parameters
     /// 2. Sends power delivery request message
-    /// 3. Waits 100ms for source processing ([`NEGOTIATE_TIMING_DELAY`])
+    /// 3. Waits 100ms for source processing
     /// 4. Reads and returns the response
     ///
     /// The delay is handled by the provided HAL delay implementation and may be
@@ -479,12 +478,12 @@ impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
     /// ).await?;
     ///
     /// match response {
-    ///     PowerDeliveryResponse::Accepted => {
+    ///     PowerDeliveryResponse::Success => {
     ///         println!("Power delivery negotiation successful!");
     ///         let stats = device.get_statistics().await?;
     ///         println!("New voltage: {:.1}V", stats.voltage.get::<volt>());
     ///     },
-    ///     PowerDeliveryResponse::Rejected => {
+    ///     PowerDeliveryResponse::NotSupported => {
     ///         println!("Power request rejected by source");
     ///     },
     ///     _ => println!("Unexpected response: {:?}", response),
@@ -506,7 +505,7 @@ impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
     ///     &capabilities
     /// ).await?;
     ///
-    /// if response == PowerDeliveryResponse::Accepted {
+    /// if response == PowerDeliveryResponse::Success {
     ///     println!("PPS voltage set to 12.5V");
     /// }
     /// # Ok(())
@@ -567,18 +566,17 @@ impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
     /// - [`get_statistics`] to monitor negotiation results
     /// - [`send_power_delivery_request`] for advanced low-level control
     ///
-    /// [`NEGOTIATE_TIMING_DELAY`]: Self::NEGOTIATE_TIMING_DELAY
     /// [`PowerDeliveryResponse`]: crate::types::command_structures::PowerDeliveryResponse
-    /// [`PowerDeliveryResponse::Accepted`]: crate::types::command_structures::PowerDeliveryResponse::Accepted
-    /// [`PowerDeliveryResponse::Rejected`]: crate::types::command_structures::PowerDeliveryResponse::Rejected
+    /// [`PowerDeliveryResponse::Success`]: crate::types::command_structures::PowerDeliveryResponse::Success
+    /// [`PowerDeliveryResponse::NotSupported`]: crate::types::command_structures::PowerDeliveryResponse::NotSupported
     /// [`PowerDeliveryResponse::Busy`]: crate::types::command_structures::PowerDeliveryResponse::Busy
     /// [`OperatingCurrentSelection::Maximum`]: crate::types::command_structures::OperatingCurrentSelection::Maximum
-    /// [`OperatingCurrentSelection::Minimum`]: crate::types::command_structures::OperatingCurrentSelection::Minimum
-    /// [`get_all_source_power_capabilities`]: crate::getters::Ap33772s::get_all_source_power_capabilities
+    /// [`OperatingCurrentSelection::_1A`]: crate::types::command_structures::OperatingCurrentSelection::_1A
+    /// [`get_all_source_power_capabilities`]: crate::Ap33772s::get_all_source_power_capabilities
     /// [`negotiate_maximum_power_delivery`]: Self::negotiate_maximum_power_delivery
-    /// [`get_statistics`]: crate::getters::Ap33772s::get_statistics
-    /// [`send_power_delivery_request`]: crate::setters::Ap33772s::send_power_delivery_request
-    /// [`get_power_delivery_request_result`]: crate::getters::Ap33772s::get_power_delivery_request_result
+    /// [`get_statistics`]: crate::Ap33772s::get_statistics
+    /// [`send_power_delivery_request`]: crate::Ap33772s::send_power_delivery_request
+    /// [`get_power_delivery_request_result`]: crate::Ap33772s::get_power_delivery_request_result
     #[maybe_async::maybe_async]
     pub async fn negotiate_power_delivery(
         &mut self,
@@ -658,12 +656,12 @@ impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
     /// ).await?;
     ///
     /// match response {
-    ///     PowerDeliveryResponse::Accepted => {
+    ///     PowerDeliveryResponse::Success => {
     ///         let stats = device.get_statistics().await?;
     ///         println!("Maximum power negotiated: {:.1}W",
     ///                  stats.requested_power.get::<watt>());
     ///     },
-    ///     PowerDeliveryResponse::Rejected => {
+    ///     PowerDeliveryResponse::NotSupported => {
     ///         println!("Maximum power request rejected");
     ///     },
     ///     _ => println!("Unexpected response: {:?}", response),
@@ -694,8 +692,8 @@ impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
     ///
     /// [`negotiate_power_delivery`]: Self::negotiate_power_delivery
     /// [`PowerDeliveryResponse`]: crate::types::command_structures::PowerDeliveryResponse
-    /// [`send_maximum_power_delivery_request`]: crate::setters::Ap33772s::send_maximum_power_delivery_request
-    /// [`get_all_source_power_capabilities`]: crate::getters::Ap33772s::get_all_source_power_capabilities
+    /// [`send_maximum_power_delivery_request`]: crate::Ap33772s::send_maximum_power_delivery_request
+    /// [`get_all_source_power_capabilities`]: crate::Ap33772s::get_all_source_power_capabilities
     #[maybe_async::maybe_async]
     pub async fn negotiate_maximum_power_delivery(
         &mut self,
@@ -840,7 +838,7 @@ impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
     /// [`0x52`]: Self::ADDRESS
     /// [`new_default`]: Self::new_default
     /// [`new`]: Self::new
-    /// [`get_status`]: crate::getters::Ap33772s::get_status
+    /// [`get_status`]: crate::Ap33772s::get_status
     /// [`hard_reset`]: Self::hard_reset
     #[maybe_async::maybe_async]
     pub async fn is_device_present(&mut self) -> Result<(), Ap33772sError> {
@@ -969,7 +967,7 @@ impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
     ///
     /// [`new_default`]: Self::new_default
     /// [`is_device_present`]: Self::is_device_present
-    /// [`get_status`]: crate::getters::Ap33772s::get_status
+    /// [`get_status`]: crate::Ap33772s::get_status
     #[maybe_async::maybe_async]
     pub async fn hard_reset(&mut self) -> Result<(), Ap33772sError> {
         let power_delivery_command_message = PowerDeliveryCommandMessage::builder()
