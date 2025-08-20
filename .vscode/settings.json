@@ -24,6 +24,7 @@
     "vscode",
     "versioning",
     "linting",
-    "docs.rs"
+    "docs.rs",
+    "imports"
   ]
 }
