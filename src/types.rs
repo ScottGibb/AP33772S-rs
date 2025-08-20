@@ -24,7 +24,7 @@
 //!
 //! ```rust,no_run
 //! use ap33772s_rs::types::{*, units::*};
-//! 
+//!
 //! // Create protection thresholds
 //! let thresholds = Thresholds {
 //!     over_voltage: ElectricPotential::new::<volt>(21.0),
@@ -33,7 +33,7 @@
 //!     under_voltage: ElectricPotential::new::<volt>(4.5),
 //!     derating: ThermodynamicTemperature::new::<degree_celsius>(85.0),
 //! };
-//! 
+//!
 //! // Configure power delivery modes
 //! let pd_mode = PowerDeliveryMode {
 //!     extended_power_range_mode_enabled: true,
@@ -144,20 +144,20 @@ pub use crate::errors::Ap33772sError;
 ///
 /// ```rust
 /// use ap33772s_rs::types::units::*;
-/// 
+///
 /// // Create values with specific units
 /// let voltage = ElectricPotential::new::<volt>(12.0);
 /// let current = ElectricCurrent::new::<milliampere>(2500.0);
-/// 
+///
 /// // Automatic unit conversion
-/// println!("Voltage: {:.1}V ({:.0}mV)", 
-///          voltage.get::<volt>(), 
+/// println!("Voltage: {:.1}V ({:.0}mV)",
+///          voltage.get::<volt>(),
 ///          voltage.get::<millivolt>());
-/// 
+///
 /// // Type-safe calculations
 /// let power = voltage * current; // Returns Power type
 /// println!("Power: {:.1}W", power.get::<watt>());
-/// 
+///
 /// // Compile-time error prevention
 /// // let invalid = voltage + current; // Won't compile!
 /// ```
@@ -232,13 +232,13 @@ use units::*;
 ///     extended_power_range_mode_enabled: false,
 ///     programmable_power_supply_adjustable_voltage_supply_enabled: false,
 /// };
-/// 
+///
 /// // High-power mode - full capabilities  
 /// let advanced_mode = PowerDeliveryMode {
 ///     extended_power_range_mode_enabled: true,
 ///     programmable_power_supply_adjustable_voltage_supply_enabled: true,
 /// };
-/// 
+///
 /// // Precision mode - adjustable voltage in SPR
 /// let pps_mode = PowerDeliveryMode {
 ///     extended_power_range_mode_enabled: false,
@@ -263,13 +263,13 @@ use units::*;
 #[derive(Debug, Clone, PartialEq)]
 pub struct PowerDeliveryMode {
     /// Enable Programmable Power Supply (PPS) and Adjustable Voltage Supply (AVS) support.
-    /// 
+    ///
     /// When `true`, the device can negotiate variable voltage PDOs that allow custom
     /// voltage selection within the PDO's specified range.
     pub programmable_power_supply_adjustable_voltage_supply_enabled: bool,
-    
+
     /// Enable Extended Power Range (EPR) mode for high-power applications.
-    /// 
+    ///
     /// When `true`, the device can negotiate PDOs with voltages beyond 20V and
     /// power levels beyond 100W (up to 28V @ 5A = 140W on AP33772S).
     pub extended_power_range_mode_enabled: bool,
@@ -318,10 +318,10 @@ impl core::fmt::Display for PowerDeliveryMode {
 /// # use ap33772s_rs::{Ap33772s, types::units::*};
 /// # async fn example(mut device: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
 /// let stats = device.get_statistics().await?;
-/// 
+///
 /// // Check actual output vs requested
 /// println!("Power Delivery Status:");
-/// println!("  Requested: {:.1}W @ {:.1}V, {:.1}A", 
+/// println!("  Requested: {:.1}W @ {:.1}V, {:.1}A",
 ///          stats.requested_power.get::<watt>(),
 ///          stats.requested_voltage.get::<volt>(),
 ///          stats.requested_current.get::<ampere>());
@@ -330,13 +330,13 @@ impl core::fmt::Display for PowerDeliveryMode {
 ///          stats.power.get::<watt>(),
 ///          stats.voltage.get::<volt>(),
 ///          stats.current.get::<ampere>());
-/// 
+///
 /// // Monitor thermal status
 /// let temp_c = stats.temperature.get::<degree_celsius>();
 /// if temp_c > 85.0 {
 ///     println!("Warning: High temperature {:.1}°C", temp_c);
 /// }
-/// 
+///
 /// // Check efficiency
 /// let efficiency = if stats.requested_power.get::<watt>() > 0.0 {
 ///     (stats.power.get::<watt>() / stats.requested_power.get::<watt>()) * 100.0
@@ -391,20 +391,20 @@ pub struct Statistics {
     /// current sensing circuitry. It represents the actual current flowing to
     /// the connected load.
     pub current: ElectricCurrent,
-    
+
     /// Current output voltage being delivered to the load.
     ///
     /// This is the instantaneous voltage measurement at the device output.
     /// It may differ slightly from the requested voltage due to load regulation,
     /// cable drops, and other factors.
     pub voltage: ElectricPotential,
-    
+
     /// Calculated output power (voltage × current).
     ///
     /// This represents the instantaneous power being delivered to the load.
     /// It is calculated from the measured voltage and current values.
     pub power: Power,
-    
+
     /// Device junction temperature for thermal monitoring.
     ///
     /// This is the internal temperature of the AP33772S die, used for thermal
@@ -416,13 +416,13 @@ pub struct Statistics {
     /// This represents the voltage that was negotiated during the last Power
     /// Delivery exchange. It shows what the source agreed to provide.
     pub requested_voltage: ElectricPotential,
-    
+
     /// Current limit that was negotiated with the Power Delivery source.  
     ///
     /// This represents the maximum current that the device is allowed to draw
     /// from the source based on the negotiated Power Data Object.
     pub requested_current: ElectricCurrent,
-    
+
     /// Calculated power budget (requested_voltage × requested_current).
     ///
     /// This represents the maximum power that was negotiated with the source.

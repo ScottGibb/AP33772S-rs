@@ -40,14 +40,14 @@
 //!
 //! ```rust,no_run
 //! use ap33772s_rs::{Ap33772s, types::units::*};
-//! 
+//!
 //! // Create device instance (sync mode)
 //! let mut device = Ap33772s::new(i2c, delay);
-//! 
+//!
 //! // Get current device statistics
 //! let stats = device.get_statistics().await?;
-//! println!("Voltage: {:.2}V, Current: {:.2}A", 
-//!          stats.voltage.get::<volt>(), 
+//! println!("Voltage: {:.2}V, Current: {:.2}A",
+//!          stats.voltage.get::<volt>(),
 //!          stats.current.get::<ampere>());
 //!
 //! // Negotiate power delivery

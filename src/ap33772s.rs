@@ -22,10 +22,10 @@
 //! ```rust,no_run
 //! # async fn example(i2c: impl embedded_hal::i2c::I2c, delay: impl embedded_hal::delay::DelayNs) -> Result<(), Box<dyn std::error::Error>> {
 //! use ap33772s_rs::Ap33772s;
-//! 
+//!
 //! // Create device instance without initialization
 //! let mut device = Ap33772s::new(i2c, delay);
-//! 
+//!
 //! // Check if device is present
 //! device.is_device_present().await?;
 //! # Ok(())
@@ -36,10 +36,10 @@
 //! ```rust,no_run
 //! # async fn example(i2c: impl embedded_hal::i2c::I2c, delay: impl embedded_hal::delay::DelayNs) -> Result<(), Box<dyn std::error::Error>> {
 //! use ap33772s_rs::Ap33772s;
-//! 
+//!
 //! // Create and fully initialize device with default settings
 //! let mut device = Ap33772s::new_default(i2c, delay).await?;
-//! 
+//!
 //! // Device is now ready for power delivery operations
 //! # Ok(())
 //! # }
@@ -117,7 +117,7 @@ use crate::types::*;
 /// ```rust,no_run
 /// # async fn example(i2c: impl embedded_hal::i2c::I2c, delay: impl embedded_hal::delay::DelayNs) -> Result<(), Box<dyn std::error::Error>> {
 /// let mut device = Ap33772s::new(i2c, delay);
-/// 
+///
 /// // Manual verification and configuration required
 /// device.is_device_present().await?;
 /// # Ok(())
@@ -129,7 +129,7 @@ use crate::types::*;
 /// ```rust,no_run
 /// # async fn example(i2c: impl embedded_hal::i2c::I2c, delay: impl embedded_hal::delay::DelayNs) -> Result<(), Box<dyn std::error::Error>> {
 /// let mut device = Ap33772s::new_default(i2c, delay).await?;
-/// 
+///
 /// // Device is immediately ready for use
 /// let stats = device.get_statistics().await?;
 /// # Ok(())
@@ -149,7 +149,7 @@ use crate::types::*;
 /// # async fn example(mut device: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
 /// // Step 1: Query available power capabilities
 /// let capabilities = device.get_all_source_power_capabilities().await?;
-/// 
+///
 /// // Step 2: Negotiate for 12V at maximum current
 /// let response = device.negotiate_power_delivery(
 ///     PowerDataObject::Two, // Typically 9V or 12V
@@ -157,7 +157,7 @@ use crate::types::*;
 ///     OperatingCurrentSelection::Maximum,
 ///     &capabilities
 /// ).await?;
-/// 
+///
 /// // Step 3: Verify negotiation success
 /// if response == PowerDeliveryResponse::Accepted {
 ///     println!("Power delivery negotiation successful!");
@@ -212,19 +212,19 @@ pub struct Ap33772s<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: Inpu
 #[cfg(not(feature = "interrupts"))]
 impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
     /// Timing delay for power delivery negotiation operations.
-    /// 
+    ///
     /// This delay allows the AP33772S and connected source sufficient time to process
     /// power delivery request messages and complete the negotiation protocol.
     const NEGOTIATE_TIMING_DELAY: Duration = Duration::from_millis(100);
-    
+
     /// Initial boot-up delay for device initialization.
-    /// 
+    ///
     /// This delay ensures the AP33772S has completed its internal boot sequence
     /// before attempting communication or configuration.
     const BOOT_UP_DELAY: Duration = Duration::from_millis(100);
-    
+
     /// The I2C address of the AP33772S device (7-bit addressing).
-    /// 
+    ///
     /// This address is fixed in the device hardware and is defined in the AP33772S datasheet.
     /// The device will respond to this address for all I2C communication.
     pub const ADDRESS: SevenBitAddress = 0x52;
@@ -245,12 +245,12 @@ impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
     /// ```rust,no_run
     /// # async fn example(i2c: impl embedded_hal::i2c::I2c, delay: impl embedded_hal::delay::DelayNs) -> Result<(), Box<dyn std::error::Error>> {
     /// use ap33772s_rs::Ap33772s;
-    /// 
+    ///
     /// let mut device = Ap33772s::new(i2c, delay);
-    /// 
+    ///
     /// // Verify device is present before use
     /// device.is_device_present().await?;
-    /// 
+    ///
     /// // Now safe to use device APIs
     /// let status = device.get_status().await?;
     /// # Ok(())
@@ -311,10 +311,10 @@ impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
     /// ```rust,no_run
     /// # async fn example(i2c: impl embedded_hal::i2c::I2c, delay: impl embedded_hal::delay::DelayNs) -> Result<(), Box<dyn std::error::Error>> {
     /// use ap33772s_rs::Ap33772s;
-    /// 
+    ///
     /// // Create and initialize device with defaults
     /// let mut device = Ap33772s::new_default(i2c, delay).await?;
-    /// 
+    ///
     /// // Device is immediately ready for use
     /// let capabilities = device.get_all_source_power_capabilities().await?;
     /// println!("Found {} power data objects", capabilities.power_data_objects.len());
@@ -374,7 +374,7 @@ impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
     }
 
     /// Internal initialization helper function.
-    /// 
+    ///
     /// Performs the actual device configuration steps including boot delay,
     /// thermal resistance setup, and protection threshold configuration.
     #[maybe_async::maybe_async]
@@ -469,7 +469,7 @@ impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
     /// # async fn example(mut device: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
     /// // Get available capabilities
     /// let capabilities = device.get_all_source_power_capabilities().await?;
-    /// 
+    ///
     /// // Request 12V (typically PDO 3) at maximum current
     /// let response = device.negotiate_power_delivery(
     ///     PowerDataObject::Three,
@@ -477,7 +477,7 @@ impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
     ///     OperatingCurrentSelection::Maximum,
     ///     &capabilities
     /// ).await?;
-    /// 
+    ///
     /// match response {
     ///     PowerDeliveryResponse::Accepted => {
     ///         println!("Power delivery negotiation successful!");
@@ -505,7 +505,7 @@ impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
     ///     OperatingCurrentSelection::Maximum,
     ///     &capabilities
     /// ).await?;
-    /// 
+    ///
     /// if response == PowerDeliveryResponse::Accepted {
     ///     println!("PPS voltage set to 12.5V");
     /// }
@@ -522,7 +522,7 @@ impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
     /// # async fn verify_example(mut device: ap33772s_rs::Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
     /// let capabilities = device.get_all_source_power_capabilities().await?;
     /// let pdo = capabilities.get_power_data_object(PowerDataObject::Three);
-    /// 
+    ///
     /// if pdo.is_detected() {
     ///     let max_voltage = pdo.get_max_voltage()?;
     ///     println!("PDO 3 supports up to {:.1}V", max_voltage.get::<volt>());
@@ -656,11 +656,11 @@ impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
     /// let response = device.negotiate_maximum_power_delivery(
     ///     PowerDataObject::Four
     /// ).await?;
-    /// 
+    ///
     /// match response {
     ///     PowerDeliveryResponse::Accepted => {
     ///         let stats = device.get_statistics().await?;
-    ///         println!("Maximum power negotiated: {:.1}W", 
+    ///         println!("Maximum power negotiated: {:.1}W",
     ///                  stats.requested_power.get::<watt>());
     ///     },
     ///     PowerDeliveryResponse::Rejected => {
@@ -774,7 +774,7 @@ impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
     /// // Verify device is present before proceeding
     /// device.is_device_present().await?;
     /// println!("AP33772S device detected and responding");
-    /// 
+    ///
     /// // Now safe to use other device functions
     /// let status = device.get_status().await?;
     /// # Ok(())
@@ -903,13 +903,13 @@ impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
     /// # async fn example(mut device: ap33772s_rs::Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
     /// // Reset device to recover from error state
     /// device.hard_reset().await?;
-    /// 
+    ///
     /// // Wait for reset to complete
     /// device.delay.delay_ms(200).await;
-    /// 
+    ///
     /// // Re-verify device presence
     /// device.is_device_present().await?;
-    /// 
+    ///
     /// println!("Device successfully reset and verified");
     /// # Ok(())
     /// # }
@@ -919,19 +919,19 @@ impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
     /// ```rust,no_run
     /// # async fn recovery_example(i2c: impl embedded_hal::i2c::I2c, delay: impl embedded_hal::delay::DelayNs) -> Result<(), Box<dyn std::error::Error>> {
     /// use ap33772s_rs::Ap33772s;
-    /// 
+    ///
     /// // Create device instance
     /// let mut device = Ap33772s::new(i2c, delay);
-    /// 
+    ///
     /// // Attempt reset and full re-initialization
     /// device.hard_reset().await?;
-    /// 
+    ///
     /// // Wait for reset completion
     /// device.delay.delay_ms(200).await;
-    /// 
+    ///
     /// // Perform complete re-initialization
     /// device = Ap33772s::new_default(device.i2c, device.delay).await?;
-    /// 
+    ///
     /// println!("Device fully reset and re-initialized");
     /// # Ok(())
     /// # }

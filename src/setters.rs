@@ -1,7 +1,7 @@
 //! # Setter Methods for AP33772S Device
 //!
-//! This module provides comprehensive methods to configure and control the AP33772S 
-//! USB-C Power Delivery controller. These functions allow you to modify device 
+//! This module provides comprehensive methods to configure and control the AP33772S
+//! USB-C Power Delivery controller. These functions allow you to modify device
 //! behavior, request power delivery changes, and configure protection parameters.
 //!
 //! ## Categories of Setters
@@ -24,7 +24,7 @@
 //! For advanced power delivery control (when `advanced` feature is enabled):
 //!
 //! 1. Get available capabilities with [`get_all_source_power_capabilities`]
-//! 2. Send request with [`send_power_delivery_request`] 
+//! 2. Send request with [`send_power_delivery_request`]
 //! 3. Wait for processing (typically 100ms)
 //! 4. Check result with [`get_power_delivery_request_result`]
 //!
@@ -132,9 +132,9 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     /// # async fn example(mut device: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
     /// // Temporarily disable output for safety
     /// device.override_output_voltage(VoltageOutputControl::Disabled).await?;
-    /// 
+    ///
     /// // Perform some configuration...
-    /// 
+    ///
     /// // Return to automatic control
     /// device.override_output_voltage(VoltageOutputControl::Auto).await?;
     /// # Ok(())
@@ -194,7 +194,7 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     /// device.set_minimum_selection_voltage(
     ///     ElectricPotential::new::<volt>(9.0)
     /// ).await?;
-    /// 
+    ///
     /// // This ensures 5V PDOs will be rejected, forcing negotiation to higher voltages
     /// # Ok(())
     /// # }
@@ -267,7 +267,7 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     ///     programmable_power_supply_adjustable_voltage_supply_enabled: true,
     /// };
     /// device.set_power_delivery_mode(advanced_mode).await?;
-    /// 
+    ///
     /// // Standard mode (SPR only, fixed voltages)
     /// let standard_mode = PowerDeliveryMode {
     ///     extended_power_range_mode_enabled: false,
@@ -355,10 +355,10 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     /// # #[cfg(feature = "advanced")]
     /// # async fn example(mut device: ap33772s_rs::Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
     /// use ap33772s_rs::types::{command_structures::*, units::*};
-    /// 
+    ///
     /// // Get available power capabilities
     /// let capabilities = device.get_all_source_power_capabilities().await?;
-    /// 
+    ///
     /// // Request PDO #2 (often 9V) at maximum current  
     /// device.send_power_delivery_request(
     ///     PowerDataObject::Two,
@@ -366,10 +366,10 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     ///     OperatingCurrentSelection::Maximum,
     ///     &capabilities
     /// ).await?;
-    /// 
+    ///
     /// // Wait for processing
     /// device.delay.delay_ms(100).await;
-    /// 
+    ///
     /// // Check if request was accepted
     /// match device.get_power_delivery_request_result().await? {
     ///     PowerDeliveryResponse::Accepted => println!("Request accepted!"),
@@ -509,13 +509,13 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     /// # #[cfg(feature = "advanced")]
     /// # async fn example(mut device: ap33772s_rs::Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
     /// use ap33772s_rs::types::command_structures::*;
-    /// 
+    ///
     /// // Request maximum power from PDO #3 (often 15V or 20V)
     /// device.send_maximum_power_delivery_request(PowerDataObject::Three).await?;
-    /// 
+    ///
     /// // Wait for processing
     /// device.delay.delay_ms(100).await;
-    /// 
+    ///
     /// // Check result
     /// let result = device.get_power_delivery_request_result().await?;
     /// println!("Maximum power request result: {:?}", result);
@@ -610,7 +610,7 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     ///     _75: ElectricalResistance::new::<ohm>(22.0),   // Increasing with temperature
     ///     _100: ElectricalResistance::new::<ohm>(28.0),  // Highest resistance at max temp
     /// };
-    /// 
+    ///
     /// device.set_thermal_resistances(thermal_resistances).await?;
     /// # Ok(())
     /// # }
@@ -730,9 +730,9 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     ///     under_voltage: ElectricPotential::new::<volt>(4.5),      // Below USB spec minimum
     ///     derating: ThermodynamicTemperature::new::<degree_celsius>(85.0),         // Start derating early
     /// };
-    /// 
+    ///
     /// device.set_thresholds(safety_thresholds).await?;
-    /// 
+    ///
     /// println!("Protection thresholds configured for safe operation");
     /// # Ok(())
     /// # }

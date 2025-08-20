@@ -25,7 +25,7 @@
 //!
 //! ```rust,no_run
 //! use ap33772s_rs::{Ap33772sError, errors::RequestError};
-//! 
+//!
 //! async fn handle_errors(mut device: ap33772s_rs::Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) {
 //!     match device.get_status().await {
 //!         Ok(status) => println!("Status: {:?}", status),
@@ -133,7 +133,7 @@ pub enum Ap33772sError {
     /// let result = device.set_minimum_selection_voltage(
     ///     ElectricPotential::new::<volt>(50.0) // Too high!
     /// ).await;
-    /// 
+    ///
     /// if let Err(Ap33772sError::ConversionFailed) = result {
     ///     eprintln!("Voltage value out of range");
     /// }
@@ -377,7 +377,7 @@ pub enum RequestError {
     /// // Check PDO range first
     /// let pdo = capabilities.get_power_data_object(PowerDataObject::Seven);
     /// let max_voltage = pdo.get_max_voltage()?;
-    /// 
+    ///
     /// if requested_voltage <= max_voltage {
     ///     // Safe to request
     /// } else {
@@ -420,7 +420,7 @@ pub enum RequestError {
     /// // Check current capability
     /// let max_current = pdo.get_max_current();
     /// let requested_current = ElectricCurrent::new::<ampere>(5.0);
-    /// 
+    ///
     /// if requested_current <= max_current {
     ///     // Request is valid
     /// } else {

@@ -1,7 +1,7 @@
 //! # Getter Methods for AP33772S Device
 //!
-//! This module provides comprehensive methods to read various parameters and statistics from 
-//! the AP33772S USB-C Power Delivery controller. These functions allow you to monitor device 
+//! This module provides comprehensive methods to read various parameters and statistics from
+//! the AP33772S USB-C Power Delivery controller. These functions allow you to monitor device
 //! state, power delivery configuration, electrical measurements, and protection status.
 //!
 //! ## Categories of Getters
@@ -37,9 +37,9 @@
 //! # async fn example(mut device: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
 //! // Get complete device statistics
 //! let stats = device.get_statistics().await?;
-//! println!("Power: {:.1}W @ {:.1}V, {:.2}A", 
+//! println!("Power: {:.1}W @ {:.1}V, {:.2}A",
 //!          stats.power.get::<watt>(),
-//!          stats.voltage.get::<volt>(), 
+//!          stats.voltage.get::<volt>(),
 //!          stats.current.get::<ampere>());
 //!
 //! // Check device status for any protection events
@@ -129,11 +129,11 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     /// # use ap33772s_rs::Ap33772s;
     /// # async fn example(mut device: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
     /// let status = device.get_status().await?;
-    /// 
+    ///
     /// if status.started() {
     ///     println!("Device has started successfully");
     /// }
-    /// 
+    ///
     /// if status.over_voltage_protection() {
     ///     println!("Over voltage protection triggered!");
     /// }
@@ -178,9 +178,9 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     /// # use ap33772s_rs::Ap33772s;
     /// # async fn example(mut device: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
     /// let mode = device.get_operating_mode().await?;
-    /// 
+    ///
     /// if mode.power_delivery_source_connected() {
-    ///     println!("USB-C PD source detected on CC{}", 
+    ///     println!("USB-C PD source detected on CC{}",
     ///              if mode.configuration_channel() == ConfigurationChannel::One { 1 } else { 2 });
     /// } else if mode.legacy_source_connected() {
     ///     println!("Legacy USB source detected");
@@ -224,11 +224,11 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     /// # use ap33772s_rs::Ap33772s;
     /// # async fn example(mut device: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
     /// let pd_config = device.get_power_delivery_configuration().await?;
-    /// 
+    ///
     /// if pd_config.extended_power_range_mode_enabled {
     ///     println!("Extended Power Range (EPR) mode available - up to 28V");
     /// }
-    /// 
+    ///
     /// if pd_config.programmable_power_supply_adjustable_voltage_supply_enabled {
     ///     println!("Programmable Power Supply (PPS) mode available");
     /// }
@@ -285,15 +285,15 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     /// # use ap33772s_rs::{Ap33772s, types::units::*};
     /// # async fn example(mut device: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
     /// let stats = device.get_statistics().await?;
-    /// 
-    /// println!("Output: {:.2}V @ {:.2}A = {:.1}W", 
+    ///
+    /// println!("Output: {:.2}V @ {:.2}A = {:.1}W",
     ///          stats.voltage.get::<volt>(),
     ///          stats.current.get::<ampere>(),
     ///          stats.power.get::<watt>());
     ///          
     /// println!("Requested: {:.2}V @ {:.2}A = {:.1}W",
     ///          stats.requested_voltage.get::<volt>(),
-    ///          stats.requested_current.get::<ampere>(), 
+    ///          stats.requested_current.get::<ampere>(),
     ///          stats.requested_power.get::<watt>());
     ///          
     /// println!("Temperature: {:.1}°C", stats.temperature.get::<degree_celsius>());
@@ -371,7 +371,7 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     /// # #[cfg(feature = "advanced")]
     /// # async fn example(mut device: ap33772s_rs::Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
     /// use ap33772s_rs::types::command_structures::*;
-    /// 
+    ///
     /// // Send a power delivery request
     /// device.send_power_delivery_request(
     ///     PowerDataObject::Two,
@@ -379,10 +379,10 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     ///     OperatingCurrentSelection::Maximum,
     ///     &source_capabilities
     /// ).await?;
-    /// 
+    ///
     /// // Wait for processing
     /// device.delay.delay_ms(100).await;
-    /// 
+    ///
     /// // Check the result
     /// match device.get_power_delivery_request_result().await? {
     ///     PowerDeliveryResponse::Accepted => println!("Request accepted!"),
@@ -441,7 +441,7 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     /// # use ap33772s_rs::{Ap33772s, types::command_structures::VoltageOutputControl};
     /// # async fn example(mut device: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
     /// let control = device.get_voltage_out_override().await?;
-    /// 
+    ///
     /// match control {
     ///     VoltageOutputControl::Enabled => println!("Output forcibly enabled"),
     ///     VoltageOutputControl::Disabled => println!("Output forcibly disabled"),  
@@ -488,8 +488,8 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     /// # use ap33772s_rs::{Ap33772s, types::units::*};
     /// # async fn example(mut device: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
     /// let current = device.get_current().await?;
-    /// 
-    /// println!("Output current: {:.2}A ({:.0}mA)", 
+    ///
+    /// println!("Output current: {:.2}A ({:.0}mA)",
     ///          current.get::<ampere>(),
     ///          current.get::<milliampere>());
     /// # Ok(())
@@ -534,8 +534,8 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     /// # use ap33772s_rs::{Ap33772s, types::units::*};
     /// # async fn example(mut device: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
     /// let voltage = device.get_voltage().await?;
-    /// 
-    /// println!("Output voltage: {:.2}V ({:.0}mV)", 
+    ///
+    /// println!("Output voltage: {:.2}V ({:.0}mV)",
     ///          voltage.get::<volt>(),
     ///          voltage.get::<millivolt>());
     /// # Ok(())
@@ -581,9 +581,9 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     /// # use ap33772s_rs::{Ap33772s, types::units::*};
     /// # async fn example(mut device: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
     /// let temperature = device.get_temperature().await?;
-    /// 
+    ///
     /// println!("Junction temperature: {:.1}°C", temperature.get::<degree_celsius>());
-    /// 
+    ///
     /// if temperature.get::<degree_celsius>() > 85.0 {
     ///     println!("Warning: High temperature detected!");
     /// }
@@ -635,7 +635,7 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     /// # use ap33772s_rs::{Ap33772s, types::units::*};
     /// # async fn example(mut device: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
     /// let power = device.get_power().await?;
-    /// 
+    ///
     /// println!("Output power: {:.2}W", power.get::<watt>());
     /// # Ok(())
     /// # }
@@ -687,8 +687,8 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     /// # async fn example(mut device: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
     /// let requested = device.get_requested_voltage().await?;
     /// let actual = device.get_voltage().await?;
-    /// 
-    /// println!("Requested: {:.2}V, Actual: {:.2}V", 
+    ///
+    /// println!("Requested: {:.2}V, Actual: {:.2}V",
     ///          requested.get::<volt>(),
     ///          actual.get::<volt>());
     /// # Ok(())
@@ -734,8 +734,8 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     /// # async fn example(mut device: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
     /// let requested = device.get_requested_current().await?;
     /// let actual = device.get_current().await?;
-    /// 
-    /// println!("Current limit: {:.2}A, Actual draw: {:.2}A", 
+    ///
+    /// println!("Current limit: {:.2}A, Actual draw: {:.2}A",
     ///          requested.get::<ampere>(),
     ///          actual.get::<ampere>());
     /// # Ok(())
@@ -781,8 +781,8 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     /// # async fn example(mut device: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
     /// let requested_power = device.get_requested_power().await?;
     /// let actual_power = device.get_power().await?;
-    /// 
-    /// println!("Power budget: {:.1}W, Actual usage: {:.1}W", 
+    ///
+    /// println!("Power budget: {:.1}W, Actual usage: {:.1}W",
     ///          requested_power.get::<watt>(),
     ///          actual_power.get::<watt>());
     /// # Ok(())
@@ -834,7 +834,7 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     /// # use ap33772s_rs::{Ap33772s, types::units::*};
     /// # async fn example(mut device: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
     /// let min_voltage = device.get_minimum_selection_voltage().await?;
-    /// 
+    ///
     /// println!("Minimum acceptable voltage: {:.1}V", min_voltage.get::<volt>());
     /// # Ok(())
     /// # }
@@ -887,7 +887,7 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     /// # use ap33772s_rs::{Ap33772s, types::units::*};
     /// # async fn example(mut device: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
     /// let thermal = device.get_thermal_resistances().await?;
-    /// 
+    ///
     /// println!("Thermal resistances:");
     /// println!("  25°C: {:.2}Ω", thermal._25.get::<ohm>());
     /// println!("  50°C: {:.2}Ω", thermal._50.get::<ohm>());
@@ -957,7 +957,7 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     /// # use ap33772s_rs::{Ap33772s, types::units::*};
     /// # async fn example(mut device: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
     /// let thresholds = device.get_thresholds().await?;
-    /// 
+    ///
     /// println!("Protection thresholds:");
     /// println!("  Over voltage: {:.1}V", thresholds.over_voltage.get::<volt>());
     /// println!("  Over current: {:.2}A", thresholds.over_current.get::<ampere>());
@@ -1039,17 +1039,17 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     /// # use ap33772s_rs::{Ap33772s, types::command_structures::PowerDataObject};
     /// # async fn example(mut device: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
     /// let capabilities = device.get_all_source_power_capabilities().await?;
-    /// 
+    ///
     /// // Check what PDOs are available
     /// for (i, pdo) in capabilities.power_data_objects.iter().enumerate() {
     ///     if let Ok(max_voltage) = pdo.get_max_voltage() {
     ///         if let Ok(max_current) = pdo.get_max_current() {
-    ///             println!("PDO {}: {:.1}V @ {:.2}A", 
+    ///             println!("PDO {}: {:.1}V @ {:.2}A",
     ///                      i, max_voltage.get::<volt>(), max_current.get::<ampere>());
     ///         }
     ///     }
     /// }
-    /// 
+    ///
     /// // Use a specific PDO for negotiation
     /// device.negotiate_power_delivery(
     ///     PowerDataObject::Two,
