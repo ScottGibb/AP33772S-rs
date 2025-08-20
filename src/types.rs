@@ -10,7 +10,11 @@ pub mod command_structures {
     pub use crate::commands::configuration::system_control::VoltageOutputControl;
     pub use crate::commands::data_objects::all_source_power_data_object::AllSourceDataPowerDataObject;
     pub use crate::commands::data_objects::extended_power_range_data_object::ExtendedPowerRangeDataObject;
+    pub use crate::commands::data_objects::source_power_range_data_object::PeakCurrent;
     pub use crate::commands::data_objects::source_power_range_data_object::PowerType;
+    pub use crate::commands::data_objects::source_power_range_data_object::SourceMaximumCurrent;
+    pub use crate::commands::data_objects::source_power_range_data_object::SourcePowerRangeDataObject;
+    pub use crate::commands::data_objects::standard_power_range_data_object::MinimumVoltage;
     pub use crate::commands::data_objects::standard_power_range_data_object::StandardPowerRangeDataObject;
     pub use crate::commands::power_delivery::power_delivery_message_result::PowerDeliveryResponse;
     pub use crate::commands::power_delivery::power_delivery_request_message::{

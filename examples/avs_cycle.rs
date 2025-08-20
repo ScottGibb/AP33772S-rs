@@ -68,7 +68,7 @@ fn main() {
 
     loop {
         // Increase the voltage using the first extended power range data object
-        for voltage in (15000..=ExtendedPowerRangeDataObject::MAXIMUM_VOLTAGE)
+        for voltage in (15000..=ExtendedPowerRangeDataObject::ABSOLUTE_MAXIMUM_VOLTAGE)
             .step_by(ExtendedPowerRangeDataObject::VOLTAGE_RESOLUTION as usize)
         {
             // Send a power delivery request with the current voltage

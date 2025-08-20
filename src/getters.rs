@@ -8,7 +8,7 @@ use crate::commands::configuration::power_delivery_configuration::PowerDeliveryC
 use crate::commands::configuration::system_control::SystemControl;
 use crate::commands::data_objects::all_source_power_data_object::AllSourceDataPowerDataObject;
 use crate::commands::data_objects::all_source_power_data_object::MAX_EXTENDED_POWER_DATA_OBJECTS;
-use crate::commands::data_objects::all_source_power_data_object::MAX_SOURCE_POWER_DATA_OBJECTS;
+use crate::commands::data_objects::all_source_power_data_object::MAX_STANDARD_POWER_DATA_OBJECTS;
 use crate::commands::data_objects::extended_power_range_data_object::ExtendedPowerRangeDataObject;
 use crate::commands::data_objects::source_power_range_data_object::SourcePowerRangeDataObject;
 use crate::commands::data_objects::standard_power_range_data_object::StandardPowerRangeDataObject;
@@ -59,6 +59,7 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
         })
     }
 
+    /// Retrieves the current operational statistics of the device, including current, voltage, and temperature.
     #[maybe_async::maybe_async]
     pub async fn get_statistics(&mut self) -> Result<Statistics, Ap33772sError> {
         let current = self.get_current().await?;
@@ -77,6 +78,9 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
         })
     }
 
+    /// This function is feature gated by the `advanced` feature. This can be called after calling
+    /// [send_power_delivery_request](crate::setters::Ap33772s::send_power_delivery_request). It is recommended
+    /// to give the system time to respond before calling this function otherwise the response may be `Busy`.
     #[maybe_async::maybe_async]
     #[cfg_attr(feature = "advanced", visibility::make(pub))]
     pub(crate) async fn get_power_delivery_request_result(
@@ -199,6 +203,7 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
         })
     }
 
+    /// Requests all the Power Source Capabilities the device supports.
     #[maybe_async::maybe_async]
     pub async fn get_all_source_power_capabilities(
         &mut self,
@@ -215,7 +220,7 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
             .await?;
         let mut data_object = AllSourceDataPowerDataObject::default();
 
-        for i in 0..MAX_SOURCE_POWER_DATA_OBJECTS {
+        for i in 0..MAX_STANDARD_POWER_DATA_OBJECTS {
             data_object.power_data_objects[i] = SourcePowerRangeDataObject::Standard(
                 StandardPowerRangeDataObject::new_with_raw_value(u16::from_le_bytes([
                     buff[2 * i],
@@ -223,8 +228,8 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
                 ])),
             );
         }
-        for i in MAX_SOURCE_POWER_DATA_OBJECTS
-            ..MAX_EXTENDED_POWER_DATA_OBJECTS + MAX_SOURCE_POWER_DATA_OBJECTS
+        for i in MAX_STANDARD_POWER_DATA_OBJECTS
+            ..MAX_EXTENDED_POWER_DATA_OBJECTS + MAX_STANDARD_POWER_DATA_OBJECTS
         {
             data_object.power_data_objects[i] = SourcePowerRangeDataObject::Extended(
                 ExtendedPowerRangeDataObject::new_with_raw_value(u16::from_le_bytes([

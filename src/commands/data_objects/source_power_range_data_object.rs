@@ -8,6 +8,10 @@ use crate::types::command_structures::{
     ExtendedPowerRangeDataObject, StandardPowerRangeDataObject,
 };
 use crate::types::units::*;
+
+/// Represents A wrapper for the underlying Power Range Data Objects
+/// The AP33772s supports both Standard and Extended Power Range Data Objects
+/// Individual functions are supplied for generic functionality between the two types
 #[derive(Debug, PartialEq, Clone)]
 pub enum SourcePowerRangeDataObject {
     Standard(StandardPowerRangeDataObject),
@@ -127,7 +131,9 @@ pub enum PowerType {
     /// the configuration of the Power Data Object
     Adjustable = 1,
 }
-
+/// Represents the peak current conditions as defined in the USB C specification.
+/// The exact meaning of each condition is currently unclear; these names are placeholders
+/// based on available documentation.
 #[bitenum(u2, exhaustive = true)]
 #[derive(Debug, PartialEq)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
@@ -150,6 +156,7 @@ impl From<u2> for PeakCurrent {
     }
 }
 
+/// Represents the different Source Maximum Current Levels the device supports.
 #[bitenum(u4, exhaustive = true)]
 #[derive(Debug, PartialEq)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
@@ -173,6 +180,7 @@ pub enum SourceMaximumCurrent {
 }
 
 impl SourceMaximumCurrent {
+    /// Returns the maximum current that can be requested using this data object for each level of the [SourceMaximumCurrent]
     pub fn max_range(&self) -> ElectricCurrent {
         match self {
             SourceMaximumCurrent::LessThan1_24 => ElectricCurrent::new::<milliampere>(1240.0),
@@ -193,6 +201,7 @@ impl SourceMaximumCurrent {
             SourceMaximumCurrent::Maximum => ElectricCurrent::new::<milliampere>(f32::INFINITY),
         }
     }
+    /// Returns the minimum current that can be requested using this data object for each level of the [SourceMaximumCurrent]
     pub fn min_range(&self) -> ElectricCurrent {
         match self {
             SourceMaximumCurrent::LessThan1_24 => ElectricCurrent::new::<milliampere>(0.0),

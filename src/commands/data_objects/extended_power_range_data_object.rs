@@ -6,6 +6,9 @@ use crate::types::units::*;
 use arbitrary_int::u2;
 use bitbybit::bitfield;
 
+/// Represents the extended power range for the AP33772S.
+/// This contains all the necessary information to select or query what the
+/// power range capabilities are.
 #[bitfield(u16, default = 0x00)]
 #[derive(Debug, PartialEq)]
 pub struct ExtendedPowerRangeDataObject {
@@ -31,8 +34,14 @@ pub struct ExtendedPowerRangeDataObject {
 /// 140 * 200 = 28000mV U16 is required
 /// Therefore the voltage should be checked multiplied
 impl ExtendedPowerRangeDataObject {
-    pub const VOLTAGE_RESOLUTION: u16 = 200; // mV per Unit
-    pub const MAXIMUM_VOLTAGE: u16 = 28000; // mV
+    /// The Voltage Resolution defined in mV per LSB
+    pub const VOLTAGE_RESOLUTION: u16 = 200;
+    /// The Absolute Maximum Voltage that can be requested using this data object.
+    /// The actual maximum voltage can be determined by using the [max_voltage function](crate::commands::data_objects::extended_power_range_data_object::ExtendedPowerRangeDataObject::max_voltage).
+    /// This is defined in mV
+    pub const ABSOLUTE_MAXIMUM_VOLTAGE: u16 = 28000;
+
+    /// Returns the maximum voltage that can be requested using this data object.
     pub fn max_voltage(&self) -> Result<ElectricPotential, Ap33772sError> {
         let scaled_voltage = u16::from(self.raw_max_voltage())
             .checked_mul(Self::VOLTAGE_RESOLUTION)
@@ -41,13 +50,15 @@ impl ExtendedPowerRangeDataObject {
             scaled_voltage,
         )))
     }
-
+    /// Returns the peak current that can be requested using this data object.
     pub fn peak_current(&self) -> Option<PeakCurrent> {
         match self.source_power_type() {
             PowerType::Fixed => Some(PeakCurrent::from(self.minimum_voltage_or_peak_current())),
             PowerType::Adjustable => None,
         }
     }
+    /// Returns the minimum voltage that can be requested using this data object.
+    /// This is only applicable for Adjustable Power Supplies using the Adjustable Voltage Supply (AVS) feature
     pub fn minimum_voltage(&self) -> Option<MinimumVoltage> {
         match self.source_power_type() {
             PowerType::Fixed => None,
@@ -58,6 +69,7 @@ impl ExtendedPowerRangeDataObject {
     }
 }
 
+/// The minimum voltage the Extended Power Range Data Object can provide
 #[derive(Debug, PartialEq)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum MinimumVoltage {
