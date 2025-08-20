@@ -555,7 +555,98 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
 }
 
 impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<I2C, D> {
-    /// Sets the thermal resistances for the device using those provided
+    /// Configures thermal resistance values for accurate thermal modeling.
+    ///
+    /// Thermal resistances are critical parameters that define how heat flows from the
+    /// AP33772S junction to the ambient environment. These values must be accurately
+    /// configured based on your PCB design, thermal management, and operating conditions
+    /// for proper thermal protection and derating behavior.
+    ///
+    /// # Parameters
+    ///
+    /// - `resistances` - A [`ThermalResistances`] struct containing resistance values at different temperatures:
+    ///   - `_25` - Thermal resistance from junction to ambient at 25°C
+    ///   - `_50` - Thermal resistance from junction to ambient at 50°C  
+    ///   - `_75` - Thermal resistance from junction to ambient at 75°C
+    ///   - `_100` - Thermal resistance from junction to ambient at 100°C
+    ///
+    /// All values should be specified as [`ElectricalResistance`] in ohms or milliohms.
+    ///
+    /// # Thermal Modeling Theory
+    ///
+    /// Thermal resistance represents the temperature rise per unit of power dissipated:
+    /// ```text
+    /// ΔT = P × R_th
+    /// T_junction = T_ambient + (P_dissipated × R_thermal)
+    /// ```
+    ///
+    /// The device uses these values to:
+    /// - Predict junction temperature under different loads
+    /// - Implement thermal derating (current reduction at high temperatures)
+    /// - Provide accurate over-temperature protection
+    ///
+    /// # Determining Thermal Resistance Values
+    ///
+    /// These values depend on your specific hardware design:
+    /// - **PCB copper area and thickness** - More copper = lower thermal resistance
+    /// - **Via stitching to ground planes** - Improves heat spreading  
+    /// - **Component placement and airflow** - Affects ambient temperature
+    /// - **Thermal pads and heatsinks** - Dramatically improve thermal performance
+    ///
+    /// # Errors
+    ///
+    /// - [`Ap33772sError::I2c`] if any of the I2C communications fail
+    /// - [`Ap33772sError::ConversionFailed`] if resistance values cannot be converted to device format
+    ///
+    /// # Example
+    ///
+    /// ```rust,no_run
+    /// # use ap33772s_rs::{Ap33772s, types::{ThermalResistances, units::*}};
+    /// # async fn example(mut device: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
+    /// // Example values for a well-designed PCB with good thermal management
+    /// let thermal_resistances = ThermalResistances {
+    ///     _25: ElectricalResistance::new::<ohm>(15.0),   // Good thermal design
+    ///     _50: ElectricalResistance::new::<ohm>(18.0),   // Slightly higher at elevated temp
+    ///     _75: ElectricalResistance::new::<ohm>(22.0),   // Increasing with temperature
+    ///     _100: ElectricalResistance::new::<ohm>(28.0),  // Highest resistance at max temp
+    /// };
+    /// 
+    /// device.set_thermal_resistances(thermal_resistances).await?;
+    /// # Ok(())
+    /// # }
+    /// ```
+    ///
+    /// # PCB Design Guidelines
+    ///
+    /// For optimal thermal performance:
+    /// - Use large copper pours connected to the device's thermal pad
+    /// - Implement via stitching to connect top and bottom copper layers
+    /// - Consider thermal vias directly under the device
+    /// - Ensure adequate airflow over the device area
+    /// - Place temperature-sensitive components away from the AP33772S
+    ///
+    /// # Safety Considerations
+    ///
+    /// **Important**: Incorrect thermal resistance values can lead to:
+    /// - Inadequate thermal protection (device overheating)
+    /// - Premature derating (reduced performance)
+    /// - Inaccurate temperature predictions
+    ///
+    /// Always measure or simulate your actual thermal performance!
+    ///
+    /// # See Also
+    ///
+    /// - [`get_thermal_resistances`] to read current values
+    /// - [`set_thresholds`] to configure thermal protection temperatures
+    /// - [`get_temperature`] to monitor junction temperature
+    /// - [`get_operating_mode`] to check derating status
+    ///
+    /// [`ThermalResistances`]: crate::types::ThermalResistances
+    /// [`ElectricalResistance`]: crate::types::units::ElectricalResistance
+    /// [`get_thermal_resistances`]: crate::getters::Ap33772s::get_thermal_resistances
+    /// [`set_thresholds`]: Self::set_thresholds
+    /// [`get_temperature`]: crate::getters::Ap33772s::get_temperature
+    /// [`get_operating_mode`]: crate::getters::Ap33772s::get_operating_mode
     #[maybe_async::maybe_async]
     pub async fn set_thermal_resistances(
         &mut self,
@@ -579,7 +670,123 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
         self.write_two_byte_command(resistance_100).await
     }
 
-    /// Sets the thresholds for the device using those provided
+    /// Configures all protection threshold values for safe operation.
+    ///
+    /// Protection thresholds define the operating limits at which the AP33772S will take
+    /// protective action to prevent damage from electrical or thermal stress. These must
+    /// be carefully configured based on your system design and component ratings.
+    ///
+    /// # Parameters
+    ///
+    /// - `thresholds` - A [`Thresholds`] struct containing all protection limits:
+    ///   - `over_voltage` - Maximum output voltage before shutdown [`ElectricPotential`]
+    ///   - `over_current` - Maximum output current before shutdown [`ElectricCurrent`]
+    ///   - `over_temperature` - Maximum junction temperature before shutdown [`ThermodynamicTemperature`]
+    ///   - `under_voltage` - Minimum input/output voltage for operation [`ElectricPotential`]
+    ///   - `derating` - Junction temperature at which current is reduced by 50% [`ThermodynamicTemperature`]
+    ///
+    /// # Protection Behaviors
+    ///
+    /// ## Over-Voltage Protection (OVP)
+    /// - **Trigger**: Output voltage exceeds `over_voltage` threshold
+    /// - **Action**: Immediate output shutdown via MOSFET switch
+    /// - **Typical values**: 105-110% of maximum expected voltage
+    ///
+    /// ## Over-Current Protection (OCP)  
+    /// - **Trigger**: Output current exceeds `over_current` threshold
+    /// - **Action**: Immediate output shutdown
+    /// - **Typical values**: 110-120% of maximum load current
+    ///
+    /// ## Over-Temperature Protection (OTP)
+    /// - **Trigger**: Junction temperature exceeds `over_temperature` threshold  
+    /// - **Action**: Immediate output shutdown
+    /// - **Typical values**: 125-150°C (depends on thermal design)
+    ///
+    /// ## Under-Voltage Protection (UVP)
+    /// - **Trigger**: Input or output voltage below `under_voltage` threshold
+    /// - **Action**: Output shutdown or limited operation
+    /// - **Typical values**: 85-90% of minimum operating voltage
+    ///
+    /// ## Thermal Derating
+    /// - **Trigger**: Junction temperature exceeds `derating` threshold
+    /// - **Action**: Current limit reduced by 50% (not shutdown)
+    /// - **Typical values**: 75-85°C (well below OTP threshold)
+    ///
+    /// # Errors
+    ///
+    /// - [`Ap33772sError::I2c`] if any I2C communication fails
+    /// - [`Ap33772sError::ConversionFailed`] if threshold values cannot be converted to device format
+    ///
+    /// # Example
+    ///
+    /// ```rust,no_run
+    /// # use ap33772s_rs::{Ap33772s, types::{Thresholds, units::*}};
+    /// # async fn example(mut device: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
+    /// // Conservative protection thresholds for a 20V/3A system
+    /// let safety_thresholds = Thresholds {
+    ///     over_voltage: ElectricPotential::new::<volt>(22.0),      // 110% of 20V max
+    ///     over_current: ElectricCurrent::new::<ampere>(3.3),       // 110% of 3A max  
+    ///     over_temperature: ThermodynamicTemperature::new::<degree_celsius>(125.0), // Conservative
+    ///     under_voltage: ElectricPotential::new::<volt>(4.5),      // Below USB spec minimum
+    ///     derating: ThermodynamicTemperature::new::<degree_celsius>(85.0),         // Start derating early
+    /// };
+    /// 
+    /// device.set_thresholds(safety_thresholds).await?;
+    /// 
+    /// println!("Protection thresholds configured for safe operation");
+    /// # Ok(())
+    /// # }
+    /// ```
+    ///
+    /// # Design Guidelines
+    ///
+    /// ## Voltage Thresholds
+    /// - **OVP**: Set 5-10% above maximum expected voltage
+    /// - **UVP**: Set 10-15% below minimum required voltage
+    /// - Consider cable voltage drops and regulation tolerances
+    ///
+    /// ## Current Thresholds  
+    /// - **OCP**: Set 10-20% above maximum load current
+    /// - Account for inrush currents and transient loads
+    /// - Consider connector and cable current ratings
+    ///
+    /// ## Temperature Thresholds
+    /// - **OTP**: Typically 125-150°C for commercial operation
+    /// - **Derating**: Set 20-40°C below OTP threshold
+    /// - Account for thermal resistance and ambient temperature
+    ///
+    /// # Hardware Considerations
+    ///
+    /// Ensure your system design can handle the configured thresholds:
+    /// - **PCB traces**: Rated for maximum current
+    /// - **Connectors**: Rated for maximum voltage and current
+    /// - **Capacitors**: Voltage rating above OVP threshold
+    /// - **Thermal design**: Can dissipate heat at maximum power
+    ///
+    /// # Safety Warning
+    ///
+    /// **Critical**: Incorrect threshold settings can result in:
+    /// - Component damage from overstress
+    /// - Fire hazard from overheating
+    /// - Unreliable operation from nuisance trips
+    ///
+    /// Always validate thresholds against your hardware specifications!
+    ///
+    /// # See Also
+    ///
+    /// - [`get_thresholds`] to read current threshold settings
+    /// - [`set_thermal_resistances`] to configure thermal modeling
+    /// - [`get_status`] to monitor protection events
+    /// - [`get_temperature`] to monitor thermal conditions
+    ///
+    /// [`Thresholds`]: crate::types::Thresholds
+    /// [`ElectricPotential`]: crate::types::units::ElectricPotential
+    /// [`ElectricCurrent`]: crate::types::units::ElectricCurrent
+    /// [`ThermodynamicTemperature`]: crate::types::units::ThermodynamicTemperature
+    /// [`get_thresholds`]: crate::getters::Ap33772s::get_thresholds
+    /// [`set_thermal_resistances`]: Self::set_thermal_resistances
+    /// [`get_status`]: crate::getters::Ap33772s::get_status
+    /// [`get_temperature`]: crate::getters::Ap33772s::get_temperature
     #[maybe_async::maybe_async]
     pub async fn set_thresholds(&mut self, thresholds: Thresholds) -> Result<(), Ap33772sError> {
         let over_voltage_threshold: OverVoltageProtectionThreshold =

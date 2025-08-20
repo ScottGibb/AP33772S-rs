@@ -1,7 +1,91 @@
-//! Types required by the Getters and Setters
-//! This module exposes the required types for the functions to be used externally.
+//! # Public Types for AP33772S Driver
+//!
+//! This module exposes all the types required for using the AP33772S driver API.
+//! It provides both high-level convenience types and direct access to command
+//! structures for advanced usage.
+//!
+//! ## Type Categories
+//!
+//! ### High-Level Data Types
+//! - [`PowerDeliveryMode`] - Power delivery capability configuration
+//! - [`Statistics`] - Complete device operational status  
+//! - [`ThermalResistances`] - Thermal modeling parameters
+//! - [`Thresholds`] - Protection threshold configuration
+//!
+//! ### Unit System  
+//! The [`units`] module provides strongly-typed physical quantities using the
+//! [uom](https://docs.rs/uom) crate for type-safe unit handling.
+//!
+//! ### Command Structures
+//! The [`command_structures`] module re-exports internal command types used
+//! for direct device communication (primarily for advanced mode).
+//!
+//! ## Usage Examples
+//!
+//! ```rust,no_run
+//! use ap33772s_rs::types::{*, units::*};
+//! 
+//! // Create protection thresholds
+//! let thresholds = Thresholds {
+//!     over_voltage: ElectricPotential::new::<volt>(21.0),
+//!     over_current: ElectricCurrent::new::<ampere>(3.5),
+//!     over_temperature: ThermodynamicTemperature::new::<degree_celsius>(125.0),
+//!     under_voltage: ElectricPotential::new::<volt>(4.5),
+//!     derating: ThermodynamicTemperature::new::<degree_celsius>(85.0),
+//! };
+//! 
+//! // Configure power delivery modes
+//! let pd_mode = PowerDeliveryMode {
+//!     extended_power_range_mode_enabled: true,
+//!     programmable_power_supply_adjustable_voltage_supply_enabled: true,
+//! };
+//! ```
+//!
+//! ## Error Handling
+//! All operations return [`Ap33772sError`] which provides detailed information
+//! about failure modes and suggested recovery actions.
 
-/// Module Reexports the internal api command types that are used for the getters and setters
+/// Re-exports the internal command API types used for getters and setters.
+///
+/// This module provides access to the low-level command structures that directly
+/// correspond to AP33772S registers and messages. These types are primarily used
+/// internally by the driver but are exposed for advanced use cases.
+///
+/// ## When to Use Command Structures
+///
+/// - **Advanced mode**: When the `advanced` feature is enabled for low-level control
+/// - **Custom operations**: Implementing functionality not covered by high-level APIs
+/// - **Debugging**: Direct register access for troubleshooting
+/// - **Performance**: Bypassing high-level abstraction when needed
+///
+/// ## Available Types
+///
+/// ### Configuration Types
+/// - [`OperationMode`] - Device operational state and CC configuration
+/// - [`Status`] - Device status register with protection flags
+/// - [`VoltageOutputControl`] - Output voltage switch control
+///
+/// ### Power Delivery Types  
+/// - [`PowerDataObject`] - PDO selection enumeration
+/// - [`OperatingCurrentSelection`] - Current selection modes
+/// - [`PowerDeliveryResponse`] - PD negotiation response codes
+///
+/// ### Data Object Types
+/// - [`AllSourceDataPowerDataObject`] - Complete source capabilities
+/// - [`StandardPowerRangeDataObject`] - SPR PDO structure
+/// - [`ExtendedPowerRangeDataObject`] - EPR PDO structure
+/// - [`PowerType`] - PDO type enumeration (Fixed, Variable, Battery, PPS)
+///
+/// [`OperationMode`]: crate::commands::configuration::operation_mode::OperationMode
+/// [`Status`]: crate::commands::configuration::status::Status
+/// [`VoltageOutputControl`]: crate::commands::configuration::system_control::VoltageOutputControl
+/// [`PowerDataObject`]: crate::commands::power_delivery::power_delivery_request_message::PowerDataObject
+/// [`OperatingCurrentSelection`]: crate::commands::power_delivery::power_delivery_request_message::OperatingCurrentSelection
+/// [`PowerDeliveryResponse`]: crate::commands::power_delivery::power_delivery_message_result::PowerDeliveryResponse
+/// [`AllSourceDataPowerDataObject`]: crate::commands::data_objects::all_source_power_data_object::AllSourceDataPowerDataObject
+/// [`StandardPowerRangeDataObject`]: crate::commands::data_objects::standard_power_range_data_object::StandardPowerRangeDataObject
+/// [`ExtendedPowerRangeDataObject`]: crate::commands::data_objects::extended_power_range_data_object::ExtendedPowerRangeDataObject
+/// [`PowerType`]: crate::commands::data_objects::source_power_range_data_object::PowerType
 pub mod command_structures {
     pub use crate::commands::configuration::operation_mode::{
         ConfigurationChannel, DeRatingMode, OperationMode,
@@ -32,7 +116,58 @@ use crate::commands::thresholds::over_temperature_protection_threshold::OverTemp
 use crate::commands::thresholds::over_voltage_protection_threshold::OverVoltageProtectionThreshold;
 pub use crate::errors::Ap33772sError;
 
-/// This particular module is responsible for exposing the relevant UOM types for use with this library.
+/// Strongly-typed physical quantities with unit safety.
+///
+/// This module re-exports types from the [uom](https://docs.rs/uom) (units of measure)
+/// crate to provide compile-time unit safety for all physical quantities used with
+/// the AP33772S driver.
+///
+/// ## Benefits of Typed Units
+///
+/// - **Compile-time safety**: Prevents unit confusion (volts vs millivolts)
+/// - **Automatic conversions**: Seamless conversion between compatible units
+/// - **Clear APIs**: Function signatures show expected units
+/// - **Runtime efficiency**: Zero-cost abstractions
+///
+/// ## Available Quantities
+///
+/// ### Electrical Quantities
+/// - [`ElectricCurrent`] - Current measurements (amperes, milliamperes)
+/// - [`ElectricPotential`] - Voltage measurements (volts, millivolts)  
+/// - [`Power`] - Power calculations (watts)
+/// - [`ElectricalResistance`] - Resistance values (ohms, milliohms)
+///
+/// ### Thermal Quantities
+/// - [`ThermodynamicTemperature`] - Temperature measurements (celsius)
+///
+/// ## Usage Examples
+///
+/// ```rust
+/// use ap33772s_rs::types::units::*;
+/// 
+/// // Create values with specific units
+/// let voltage = ElectricPotential::new::<volt>(12.0);
+/// let current = ElectricCurrent::new::<milliampere>(2500.0);
+/// 
+/// // Automatic unit conversion
+/// println!("Voltage: {:.1}V ({:.0}mV)", 
+///          voltage.get::<volt>(), 
+///          voltage.get::<millivolt>());
+/// 
+/// // Type-safe calculations
+/// let power = voltage * current; // Returns Power type
+/// println!("Power: {:.1}W", power.get::<watt>());
+/// 
+/// // Compile-time error prevention
+/// // let invalid = voltage + current; // Won't compile!
+/// ```
+///
+/// ## Unit Specifications
+///
+/// - **Base units**: SI base units (ampere, volt, watt, ohm, kelvin)
+/// - **Derived units**: Common derived units (milliampere, millivolt, etc.)
+/// - **Temperature**: Celsius for user convenience (internally Kelvin)
+/// - **Precision**: f32 floating point for embedded compatibility
 pub mod units {
     pub use uom::si::electric_current::ampere;
     pub use uom::si::electric_current::milliampere;
@@ -50,20 +185,93 @@ pub mod units {
 }
 use units::*;
 
-/// This struct represents the Power Delivery Modes and specifically,
-/// allows the user to query if Adjustable Voltage Supply and or Extended Power Supply
-/// is enabled and supported by the Type C device plugged into the AP33772S.
-/// Use the following method to get this struct
+/// Power Delivery mode configuration for the AP33772S.
 ///
-///  **Getter**
-/// `crate::getters::get_power_delivery_configuration()`
+/// This structure configures which advanced USB-C Power Delivery features are enabled
+/// and advertised to connected sources. It controls the device's capabilities in terms
+/// of power ranges and adjustable voltage support.
 ///
-/// **Setter**
-/// `crate::setters::set_power_delivery_configuration()`
+/// # Fields
 ///
+/// ## `programmable_power_supply_adjustable_voltage_supply_enabled`
+/// Enables support for variable voltage Power Data Objects:
+/// - **PPS (Programmable Power Supply)**: Adjustable voltage in Standard Power Range (3.3V-21V)
+/// - **AVS (Adjustable Voltage Supply)**: Adjustable voltage in Extended Power Range (15V-28V)
+/// - When `true`: Device can request custom voltages within PDO ranges
+/// - When `false`: Device limited to fixed voltage PDOs only
+///
+/// ## `extended_power_range_mode_enabled`  
+/// Enables Extended Power Range (EPR) support:
+/// - **EPR capability**: Supports voltages beyond 20V (up to 28V on AP33772S)
+/// - **High power**: Enables power delivery beyond 100W
+/// - **Cable requirements**: Requires 5A-rated electronically marked cables
+/// - When `true`: Device can negotiate EPR PDOs
+/// - When `false`: Device limited to Standard Power Range (SPR) only
+///
+/// # Power Delivery Modes
+///
+/// Different combinations enable different capabilities:
+///
+/// ```text
+/// | EPR | PPS/AVS | Capability                           |
+/// |-----|---------|--------------------------------------|
+/// |  F  |    F    | Fixed SPR only (5V, 9V, 12V, 15V, 20V) |
+/// |  F  |    T    | SPR + PPS (3.3V-21V adjustable)     |
+/// |  T  |    F    | SPR + EPR fixed (up to 28V)         |
+/// |  T  |    T    | Full capability (SPR + EPR + PPS/AVS) |
+/// ```
+///
+/// # Usage
+///
+/// Configure the mode based on your application requirements:
+///
+/// ```rust
+/// # use ap33772s_rs::types::PowerDeliveryMode;
+/// // Conservative mode - fixed voltages only
+/// let basic_mode = PowerDeliveryMode {
+///     extended_power_range_mode_enabled: false,
+///     programmable_power_supply_adjustable_voltage_supply_enabled: false,
+/// };
+/// 
+/// // High-power mode - full capabilities  
+/// let advanced_mode = PowerDeliveryMode {
+///     extended_power_range_mode_enabled: true,
+///     programmable_power_supply_adjustable_voltage_supply_enabled: true,
+/// };
+/// 
+/// // Precision mode - adjustable voltage in SPR
+/// let pps_mode = PowerDeliveryMode {
+///     extended_power_range_mode_enabled: false,
+///     programmable_power_supply_adjustable_voltage_supply_enabled: true,
+/// };
+/// ```
+///
+/// # Hardware Considerations
+///
+/// - **EPR mode**: Requires appropriate cable (5A rating with electronic marking)
+/// - **High power**: Ensure adequate thermal management
+/// - **Safety**: Configure appropriate protection thresholds
+///
+/// # See Also
+///
+/// - [`get_power_delivery_configuration`] to read current settings
+/// - [`set_power_delivery_mode`] to configure these settings
+/// - [USB PD Specification](https://github.com/ScottGibb/AP33772S-rs/blob/main/docs/understanding-the-usb-c-pd-specification.md)
+///
+/// [`get_power_delivery_configuration`]: crate::getters::Ap33772s::get_power_delivery_configuration
+/// [`set_power_delivery_mode`]: crate::setters::Ap33772s::set_power_delivery_mode
 #[derive(Debug, Clone, PartialEq)]
 pub struct PowerDeliveryMode {
+    /// Enable Programmable Power Supply (PPS) and Adjustable Voltage Supply (AVS) support.
+    /// 
+    /// When `true`, the device can negotiate variable voltage PDOs that allow custom
+    /// voltage selection within the PDO's specified range.
     pub programmable_power_supply_adjustable_voltage_supply_enabled: bool,
+    
+    /// Enable Extended Power Range (EPR) mode for high-power applications.
+    /// 
+    /// When `true`, the device can negotiate PDOs with voltages beyond 20V and
+    /// power levels beyond 100W (up to 28V @ 5A = 140W on AP33772S).
     pub extended_power_range_mode_enabled: bool,
 }
 impl core::fmt::Display for PowerDeliveryMode {
@@ -83,21 +291,142 @@ impl core::fmt::Display for PowerDeliveryMode {
     }
 }
 
-/// The statistics struct contains all the current information about the device
-/// specifically outlining what its doing currently and what its being requested to do
+/// Comprehensive operational statistics from the AP33772S device.
+///
+/// This structure contains a complete snapshot of the device's electrical and thermal
+/// state, including both actual measured values and the values that were requested
+/// from the Power Delivery source during negotiation.
+///
+/// # Measurement Categories
+///
+/// ## Output Measurements (Actual)
+/// These values represent what the device is actually delivering to the load:
+/// - [`current`] - Instantaneous output current to the load
+/// - [`voltage`] - Instantaneous output voltage to the load  
+/// - [`power`] - Calculated output power (voltage × current)
+/// - [`temperature`] - Device junction temperature for thermal monitoring
+///
+/// ## Power Delivery Requests (Negotiated)
+/// These values represent what was negotiated with the PD source:
+/// - [`requested_voltage`] - Voltage level requested from the source
+/// - [`requested_current`] - Current limit negotiated with the source
+/// - [`requested_power`] - Calculated power budget (requested_voltage × requested_current)
+///
+/// # Usage Examples
+///
+/// ```rust,no_run
+/// # use ap33772s_rs::{Ap33772s, types::units::*};
+/// # async fn example(mut device: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
+/// let stats = device.get_statistics().await?;
+/// 
+/// // Check actual output vs requested
+/// println!("Power Delivery Status:");
+/// println!("  Requested: {:.1}W @ {:.1}V, {:.1}A", 
+///          stats.requested_power.get::<watt>(),
+///          stats.requested_voltage.get::<volt>(),
+///          stats.requested_current.get::<ampere>());
+///          
+/// println!("  Actual:    {:.1}W @ {:.1}V, {:.1}A",
+///          stats.power.get::<watt>(),
+///          stats.voltage.get::<volt>(),
+///          stats.current.get::<ampere>());
+/// 
+/// // Monitor thermal status
+/// let temp_c = stats.temperature.get::<degree_celsius>();
+/// if temp_c > 85.0 {
+///     println!("Warning: High temperature {:.1}°C", temp_c);
+/// }
+/// 
+/// // Check efficiency
+/// let efficiency = if stats.requested_power.get::<watt>() > 0.0 {
+///     (stats.power.get::<watt>() / stats.requested_power.get::<watt>()) * 100.0
+/// } else { 0.0 };
+/// println!("System efficiency: {:.1}%", efficiency);
+/// # Ok(())
+/// # }
+/// ```
+///
+/// # Interpretation Guidelines
+///
+/// ## Normal Operation
+/// - **Voltage**: Should closely match requested voltage (within regulation tolerance)
+/// - **Current**: Should be ≤ requested current (depends on load)
+/// - **Power**: Will vary with load, up to the negotiated limit
+/// - **Temperature**: Should remain well below protection thresholds
+///
+/// ## Troubleshooting
+/// - **Low voltage**: Check cable resistance, source regulation, load current
+/// - **High current**: Verify load requirements, check for shorts
+/// - **High temperature**: Improve thermal management, reduce power
+/// - **Power mismatch**: Investigate load characteristics, cable losses
+///
+/// # Performance Monitoring
+///
+/// Use statistics for:
+/// - **Load profiling**: Understanding power consumption patterns
+/// - **Thermal monitoring**: Preventing overheating conditions  
+/// - **Efficiency analysis**: Optimizing power delivery settings
+/// - **System validation**: Verifying design requirements are met
+///
+/// # See Also
+///
+/// - [`get_statistics`] to retrieve current statistics
+/// - Individual getters for specific measurements when complete data isn't needed
+/// - [`get_thresholds`] for protection limit values
+///
+/// [`current`]: Self::current
+/// [`voltage`]: Self::voltage
+/// [`power`]: Self::power
+/// [`temperature`]: Self::temperature
+/// [`requested_voltage`]: Self::requested_voltage
+/// [`requested_current`]: Self::requested_current
+/// [`requested_power`]: Self::requested_power
+/// [`get_statistics`]: crate::getters::Ap33772s::get_statistics
+/// [`get_thresholds`]: crate::getters::Ap33772s::get_thresholds
 #[derive(Debug, Clone, PartialEq)]
 pub struct Statistics {
-    /// The operating Current
+    /// Current output current being delivered to the load.
+    ///
+    /// This is the instantaneous current measurement from the device's internal
+    /// current sensing circuitry. It represents the actual current flowing to
+    /// the connected load.
     pub current: ElectricCurrent,
-    /// The operating Voltage
+    
+    /// Current output voltage being delivered to the load.
+    ///
+    /// This is the instantaneous voltage measurement at the device output.
+    /// It may differ slightly from the requested voltage due to load regulation,
+    /// cable drops, and other factors.
     pub voltage: ElectricPotential,
-    /// The operating Power
+    
+    /// Calculated output power (voltage × current).
+    ///
+    /// This represents the instantaneous power being delivered to the load.
+    /// It is calculated from the measured voltage and current values.
     pub power: Power,
-    /// The Current Temperature
+    
+    /// Device junction temperature for thermal monitoring.
+    ///
+    /// This is the internal temperature of the AP33772S die, used for thermal
+    /// protection and derating decisions. Critical for safe operation.
     pub temperature: ThermodynamicTemperature,
 
+    /// Voltage level that was requested from the Power Delivery source.
+    ///
+    /// This represents the voltage that was negotiated during the last Power
+    /// Delivery exchange. It shows what the source agreed to provide.
     pub requested_voltage: ElectricPotential,
+    
+    /// Current limit that was negotiated with the Power Delivery source.  
+    ///
+    /// This represents the maximum current that the device is allowed to draw
+    /// from the source based on the negotiated Power Data Object.
     pub requested_current: ElectricCurrent,
+    
+    /// Calculated power budget (requested_voltage × requested_current).
+    ///
+    /// This represents the maximum power that was negotiated with the source.
+    /// The actual power consumption should not exceed this value.
     pub requested_power: Power,
 }
 
