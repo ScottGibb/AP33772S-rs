@@ -1,7 +1,7 @@
 use crate::commands::command_map::Command;
 use crate::errors::Ap33772sError;
 use crate::impl_two_byte_write_command;
-use crate::types::units::*;
+use crate::units::*;
 use bitbybit::{bitenum, bitfield};
 #[bitfield(u16, default = 0x0000)]
 #[derive(Debug, PartialEq)]

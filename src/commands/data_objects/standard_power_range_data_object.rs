@@ -1,7 +1,7 @@
 use crate::commands::data_objects::source_power_range_data_object::{
     PeakCurrent, SourceMaximumCurrent,
 };
-use crate::types::units::*;
+use crate::units::*;
 use crate::{
     commands::data_objects::source_power_range_data_object::PowerType, errors::Ap33772sError,
 };

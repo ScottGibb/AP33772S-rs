@@ -1,6 +1,6 @@
-use ap33772s_rs::types::units::*;
+use ap33772s_rs::units::*;
 use ap33772s_rs::{
-    ap33772s::Ap33772s,
+    Ap33772s,
     types::command_structures::{OperatingCurrentSelection, PowerDataObject, VoltageOutputControl},
 };
 use utils::setup_delay;

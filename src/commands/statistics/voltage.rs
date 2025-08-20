@@ -1,7 +1,7 @@
 use crate::commands::command_map::Command;
 use crate::errors::Ap33772sError;
 use crate::impl_two_byte_read_command;
-use crate::types::units::*;
+use crate::units::*;
 use bitbybit::bitfield;
 
 /// This struct represents the voltage of the AP33772S device.

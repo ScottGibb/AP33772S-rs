@@ -11,7 +11,7 @@ use esp_hal::time::Rate;
 use esp_hal::timer::systimer::SystemTimer;
 use esp_hal::{clock::CpuClock, i2c::master::I2c};
 
-use ap33772s_rs::ap33772s::Ap33772s;
+use ap33772s_rs::Ap33772s;
 use defmt::error;
 use defmt::info;
 use embassy_executor::Spawner;

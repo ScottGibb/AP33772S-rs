@@ -1,4 +1,4 @@
-use ap33772s_rs::ap33772s::Ap33772s;
+use ap33772s_rs::Ap33772s;
 use utils::setup_delay;
 use utils::setup_i2c;
 fn main() {
