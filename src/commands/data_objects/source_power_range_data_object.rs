@@ -131,7 +131,9 @@ pub enum PowerType {
     /// the configuration of the Power Data Object
     Adjustable = 1,
 }
-/// TODO: Find and Understand Better documentation
+/// Represents the peak current conditions as defined in the USB C specification.
+/// The exact meaning of each condition is currently unclear; these names are placeholders
+/// based on available documentation.
 #[bitenum(u2, exhaustive = true)]
 #[derive(Debug, PartialEq)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
