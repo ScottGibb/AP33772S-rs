@@ -1,4 +1,4 @@
-use ap33772s_rs::ap33772s::Ap33772s;
+use ap33772s_rs::Ap33772s;
 use utils::{setup_delay, setup_i2c};
 
 /// The following example shows how to query the AP33772S device for its status and power source delivery capabilities.

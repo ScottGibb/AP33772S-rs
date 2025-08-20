@@ -12,8 +12,8 @@ use crate::commands::power_delivery::power_delivery_command_message::PowerDelive
 
 // Public API Types
 use crate::types::command_structures::*;
-use crate::types::units::*;
 use crate::types::*;
+use crate::units::*;
 
 /// Represents the AP33772S device.
 /// It provides methods for interacting with the device over I2C.
