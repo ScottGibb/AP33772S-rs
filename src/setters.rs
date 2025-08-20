@@ -111,8 +111,8 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     /// # Parameters
     ///
     /// - `voltage_output` - The desired output control state:
-    ///   - [`VoltageOutputControl::Enabled`] - Force output ON regardless of PD state
-    ///   - [`VoltageOutputControl::Disabled`] - Force output OFF regardless of PD state  
+    ///   - [`VoltageOutputControl::ForceOn`] - Force output ON regardless of PD state
+    ///   - [`VoltageOutputControl::ForceOff`] - Force output OFF regardless of PD state  
     ///   - [`VoltageOutputControl::Auto`] - Return to automatic PD control (default)
     ///
     /// # Errors
