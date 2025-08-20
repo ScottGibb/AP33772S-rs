@@ -39,8 +39,9 @@
 //! ## Quick Start
 //!
 //! ```rust,no_run
-//! use ap33772s_rs::{Ap33772s, types::units::*};
+//! use ap33772s_rs::{Ap33772s, types::command_structures::*, units::*};
 //!
+//! # async fn example(i2c: impl embedded_hal::i2c::I2c, delay: impl embedded_hal::delay::DelayNs) -> Result<(), Box<dyn std::error::Error>> {
 //! // Create device instance (sync mode)
 //! let mut device = Ap33772s::new(i2c, delay);
 //!
@@ -50,12 +51,16 @@
 //!          stats.voltage.get::<volt>(),
 //!          stats.current.get::<ampere>());
 //!
-//! // Negotiate power delivery
+//! // Get available capabilities and negotiate power delivery
+//! let capabilities = device.get_all_source_power_capabilities().await?;
 //! device.negotiate_power_delivery(
 //!     PowerDataObject::One,
-//!     Some(ElectricPotential::new::<volt>(12.0)),
-//!     OperatingCurrentSelection::Maximum
+//!     None, // Fixed PDO
+//!     OperatingCurrentSelection::Maximum,
+//!     &capabilities
 //! ).await?;
+//! # Ok(())
+//! # }
 //! ```
 //!
 //! ## Related Documentation

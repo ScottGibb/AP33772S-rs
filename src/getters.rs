@@ -54,22 +54,22 @@
 //! # }
 //! ```
 //!
-//! [`get_status`]: crate::getters::Ap33772s::get_status
-//! [`get_operating_mode`]: crate::getters::Ap33772s::get_operating_mode
-//! [`get_power_delivery_configuration`]: crate::getters::Ap33772s::get_power_delivery_configuration  
-//! [`get_statistics`]: crate::getters::Ap33772s::get_statistics
-//! [`get_current`]: crate::getters::Ap33772s::get_current
-//! [`get_voltage`]: crate::getters::Ap33772s::get_voltage
-//! [`get_temperature`]: crate::getters::Ap33772s::get_temperature
-//! [`get_power`]: crate::getters::Ap33772s::get_power
-//! [`get_requested_voltage`]: crate::getters::Ap33772s::get_requested_voltage
-//! [`get_requested_current`]: crate::getters::Ap33772s::get_requested_current
-//! [`get_requested_power`]: crate::getters::Ap33772s::get_requested_power
-//! [`get_all_source_power_capabilities`]: crate::getters::Ap33772s::get_all_source_power_capabilities
-//! [`get_minimum_selection_voltage`]: crate::getters::Ap33772s::get_minimum_selection_voltage
-//! [`get_thermal_resistances`]: crate::getters::Ap33772s::get_thermal_resistances
-//! [`get_thresholds`]: crate::getters::Ap33772s::get_thresholds
-//! [`get_voltage_out_override`]: crate::getters::Ap33772s::get_voltage_out_override
+//! [`get_status`]: crate::Ap33772s::get_status
+//! [`get_operating_mode`]: crate::Ap33772s::get_operating_mode
+//! [`get_power_delivery_configuration`]: crate::Ap33772s::get_power_delivery_configuration  
+//! [`get_statistics`]: crate::Ap33772s::get_statistics
+//! [`get_current`]: crate::Ap33772s::get_current
+//! [`get_voltage`]: crate::Ap33772s::get_voltage
+//! [`get_temperature`]: crate::Ap33772s::get_temperature
+//! [`get_power`]: crate::Ap33772s::get_power
+//! [`get_requested_voltage`]: crate::Ap33772s::get_requested_voltage
+//! [`get_requested_current`]: crate::Ap33772s::get_requested_current
+//! [`get_requested_power`]: crate::Ap33772s::get_requested_power
+//! [`get_all_source_power_capabilities`]: crate::Ap33772s::get_all_source_power_capabilities
+//! [`get_minimum_selection_voltage`]: crate::Ap33772s::get_minimum_selection_voltage
+//! [`get_thermal_resistances`]: crate::Ap33772s::get_thermal_resistances
+//! [`get_thresholds`]: crate::Ap33772s::get_thresholds
+//! [`get_voltage_out_override`]: crate::Ap33772s::get_voltage_out_override
 use super::hal::*;
 use crate::ap33772s::Ap33772s;
 use crate::commands::command_map::Command;
@@ -242,7 +242,7 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     /// - [`get_all_source_power_capabilities`] for available power options
     ///
     /// [`PowerDeliveryMode`]: crate::types::PowerDeliveryMode
-    /// [`set_power_delivery_mode`]: crate::setters::Ap33772s::set_power_delivery_mode
+    /// [`set_power_delivery_mode`]: crate::Ap33772s::set_power_delivery_mode
     /// [`get_all_source_power_capabilities`]: Self::get_all_source_power_capabilities
     #[maybe_async::maybe_async]
     pub async fn get_power_delivery_configuration(
@@ -385,8 +385,8 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     ///
     /// // Check the result
     /// match device.get_power_delivery_request_result().await? {
-    ///     PowerDeliveryResponse::Accepted => println!("Request accepted!"),
-    ///     PowerDeliveryResponse::Rejected => println!("Request rejected"),
+    ///     PowerDeliveryResponse::Success => println!("Request accepted!"),
+    ///     PowerDeliveryResponse::NotSupported => println!("Request rejected"),
     ///     PowerDeliveryResponse::Busy => println!("Still processing..."),
     /// }
     /// # Ok(())
@@ -399,7 +399,7 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     /// - [`negotiate_power_delivery`] for high-level PD negotiation
     ///
     /// [`PowerDeliveryResponse`]: crate::types::command_structures::PowerDeliveryResponse
-    /// [`send_power_delivery_request`]: crate::setters::Ap33772s::send_power_delivery_request
+    /// [`send_power_delivery_request`]: crate::Ap33772s::send_power_delivery_request
     /// [`negotiate_power_delivery`]: crate::ap33772s::Ap33772s::negotiate_power_delivery
     #[maybe_async::maybe_async]
     #[cfg_attr(feature = "advanced", visibility::make(pub))]
@@ -456,7 +456,7 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     /// - [`override_output_voltage`] to set the voltage output control
     ///
     /// [`VoltageOutputControl`]: crate::types::command_structures::VoltageOutputControl
-    /// [`override_output_voltage`]: crate::setters::Ap33772s::override_output_voltage
+    /// [`override_output_voltage`]: crate::Ap33772s::override_output_voltage
     #[maybe_async::maybe_async]
     pub async fn get_voltage_out_override(
         &mut self,
@@ -502,7 +502,7 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     /// - [`get_power`] for calculated power (V × I)
     /// - [`get_statistics`] for all measurements together
     ///
-    /// [`ElectricCurrent`]: crate::types::units::ElectricCurrent
+    /// [`ElectricCurrent`]: crate::units::ElectricCurrent
     /// [`get_voltage`]: Self::get_voltage
     /// [`get_power`]: Self::get_power
     /// [`get_statistics`]: Self::get_statistics
@@ -549,7 +549,7 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     /// - [`get_requested_voltage`] for the voltage requested from source
     /// - [`get_statistics`] for all measurements together
     ///
-    /// [`ElectricPotential`]: crate::types::units::ElectricPotential
+    /// [`ElectricPotential`]: crate::units::ElectricPotential
     /// [`get_current`]: Self::get_current
     /// [`get_power`]: Self::get_power
     /// [`get_requested_voltage`]: Self::get_requested_voltage
@@ -604,7 +604,7 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     /// - [`get_thermal_resistances`] for thermal resistance values
     /// - [`get_statistics`] for all measurements together
     ///
-    /// [`ThermodynamicTemperature`]: crate::types::units::ThermodynamicTemperature
+    /// [`ThermodynamicTemperature`]: crate::units::ThermodynamicTemperature
     /// [`get_thresholds`]: Self::get_thresholds
     /// [`get_thermal_resistances`]: Self::get_thermal_resistances
     /// [`get_statistics`]: Self::get_statistics
@@ -652,7 +652,7 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     /// - [`get_requested_power`] for the power requested from source
     /// - [`get_statistics`] for all measurements including power
     ///
-    /// [`Power`]: crate::types::units::Power
+    /// [`Power`]: crate::units::Power
     /// [`get_current`]: Self::get_current
     /// [`get_voltage`]: Self::get_voltage
     /// [`get_requested_power`]: Self::get_requested_power
@@ -701,7 +701,7 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     /// - [`get_requested_current`] for requested current
     /// - [`negotiate_power_delivery`] to request different voltage/current
     ///
-    /// [`ElectricPotential`]: crate::types::units::ElectricPotential
+    /// [`ElectricPotential`]: crate::units::ElectricPotential
     /// [`get_voltage`]: Self::get_voltage
     /// [`get_requested_current`]: Self::get_requested_current
     /// [`negotiate_power_delivery`]: crate::ap33772s::Ap33772s::negotiate_power_delivery
@@ -748,7 +748,7 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     /// - [`get_requested_voltage`] for requested voltage
     /// - [`negotiate_power_delivery`] to request different voltage/current
     ///
-    /// [`ElectricCurrent`]: crate::types::units::ElectricCurrent
+    /// [`ElectricCurrent`]: crate::units::ElectricCurrent
     /// [`get_current`]: Self::get_current
     /// [`get_requested_voltage`]: Self::get_requested_voltage
     /// [`negotiate_power_delivery`]: crate::ap33772s::Ap33772s::negotiate_power_delivery
@@ -800,7 +800,7 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     /// - [`get_power`] for actual power consumption
     /// - [`get_statistics`] for all measurements including requested power
     ///
-    /// [`Power`]: crate::types::units::Power
+    /// [`Power`]: crate::units::Power
     /// [`get_requested_voltage`]: Self::get_requested_voltage
     /// [`get_requested_current`]: Self::get_requested_current
     /// [`get_power`]: Self::get_power
@@ -845,8 +845,8 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     /// - [`set_minimum_selection_voltage`] to configure the minimum voltage
     /// - [`get_all_source_power_capabilities`] to see available voltage options
     ///
-    /// [`ElectricPotential`]: crate::types::units::ElectricPotential
-    /// [`set_minimum_selection_voltage`]: crate::setters::Ap33772s::set_minimum_selection_voltage
+    /// [`ElectricPotential`]: crate::units::ElectricPotential
+    /// [`set_minimum_selection_voltage`]: crate::Ap33772s::set_minimum_selection_voltage
     /// [`get_all_source_power_capabilities`]: Self::get_all_source_power_capabilities
     #[maybe_async::maybe_async]
     pub async fn get_minimum_selection_voltage(
@@ -911,8 +911,8 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     /// - [`get_thresholds`] for thermal protection thresholds
     ///
     /// [`ThermalResistances`]: crate::types::ThermalResistances
-    /// [`ElectricalResistance`]: crate::types::units::ElectricalResistance
-    /// [`set_thermal_resistances`]: crate::setters::Ap33772s::set_thermal_resistances
+    /// [`ElectricalResistance`]: crate::units::ElectricalResistance
+    /// [`set_thermal_resistances`]: crate::Ap33772s::set_thermal_resistances
     /// [`get_temperature`]: Self::get_temperature
     /// [`get_thresholds`]: Self::get_thresholds
     #[maybe_async::maybe_async]
@@ -982,10 +982,10 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     /// - [`get_operating_mode`] to check derating mode status
     ///
     /// [`Thresholds`]: crate::types::Thresholds
-    /// [`ElectricPotential`]: crate::types::units::ElectricPotential
-    /// [`ElectricCurrent`]: crate::types::units::ElectricCurrent
-    /// [`ThermodynamicTemperature`]: crate::types::units::ThermodynamicTemperature
-    /// [`set_thresholds`]: crate::setters::Ap33772s::set_thresholds
+    /// [`ElectricPotential`]: crate::units::ElectricPotential
+    /// [`ElectricCurrent`]: crate::units::ElectricCurrent
+    /// [`ThermodynamicTemperature`]: crate::units::ThermodynamicTemperature
+    /// [`set_thresholds`]: crate::Ap33772s::set_thresholds
     /// [`get_status`]: Self::get_status
     /// [`get_operating_mode`]: Self::get_operating_mode
     #[maybe_async::maybe_async]
@@ -1082,7 +1082,7 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     ///
     /// [`AllSourceDataPowerDataObject`]: crate::types::command_structures::AllSourceDataPowerDataObject
     /// [`negotiate_power_delivery`]: crate::ap33772s::Ap33772s::negotiate_power_delivery
-    /// [`send_power_delivery_request`]: crate::setters::Ap33772s::send_power_delivery_request
+    /// [`send_power_delivery_request`]: crate::Ap33772s::send_power_delivery_request
     /// [`get_power_delivery_configuration`]: Self::get_power_delivery_configuration
     #[maybe_async::maybe_async]
     pub async fn get_all_source_power_capabilities(
