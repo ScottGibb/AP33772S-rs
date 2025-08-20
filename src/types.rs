@@ -114,76 +114,9 @@ use crate::commands::thresholds::de_rating_threshold::DeRatingThreshold;
 use crate::commands::thresholds::over_current_protection_threshold::OverCurrentProtectionThreshold;
 use crate::commands::thresholds::over_temperature_protection_threshold::OverTemperatureProtectionThreshold;
 use crate::commands::thresholds::over_voltage_protection_threshold::OverVoltageProtectionThreshold;
-pub use crate::errors::Ap33772sError;
 
-/// Strongly-typed physical quantities with unit safety.
-///
-/// This module re-exports types from the [uom](https://docs.rs/uom) (units of measure)
-/// crate to provide compile-time unit safety for all physical quantities used with
-/// the AP33772S driver.
-///
-/// ## Benefits of Typed Units
-///
-/// - **Compile-time safety**: Prevents unit confusion (volts vs millivolts)
-/// - **Automatic conversions**: Seamless conversion between compatible units
-/// - **Clear APIs**: Function signatures show expected units
-/// - **Runtime efficiency**: Zero-cost abstractions
-///
-/// ## Available Quantities
-///
-/// ### Electrical Quantities
-/// - [`ElectricCurrent`] - Current measurements (amperes, milliamperes)
-/// - [`ElectricPotential`] - Voltage measurements (volts, millivolts)  
-/// - [`Power`] - Power calculations (watts)
-/// - [`ElectricalResistance`] - Resistance values (ohms, milliohms)
-///
-/// ### Thermal Quantities
-/// - [`ThermodynamicTemperature`] - Temperature measurements (celsius)
-///
-/// ## Usage Examples
-///
-/// ```rust
-/// use ap33772s_rs::types::units::*;
-///
-/// // Create values with specific units
-/// let voltage = ElectricPotential::new::<volt>(12.0);
-/// let current = ElectricCurrent::new::<milliampere>(2500.0);
-///
-/// // Automatic unit conversion
-/// println!("Voltage: {:.1}V ({:.0}mV)",
-///          voltage.get::<volt>(),
-///          voltage.get::<millivolt>());
-///
-/// // Type-safe calculations
-/// let power = voltage * current; // Returns Power type
-/// println!("Power: {:.1}W", power.get::<watt>());
-///
-/// // Compile-time error prevention
-/// // let invalid = voltage + current; // Won't compile!
-/// ```
-///
-/// ## Unit Specifications
-///
-/// - **Base units**: SI base units (ampere, volt, watt, ohm, kelvin)
-/// - **Derived units**: Common derived units (milliampere, millivolt, etc.)
-/// - **Temperature**: Celsius for user convenience (internally Kelvin)
-/// - **Precision**: f32 floating point for embedded compatibility
-pub mod units {
-    pub use uom::si::electric_current::ampere;
-    pub use uom::si::electric_current::milliampere;
-    pub use uom::si::electric_potential::millivolt;
-    pub use uom::si::electric_potential::volt;
-    pub use uom::si::electrical_resistance::milliohm;
-    pub use uom::si::electrical_resistance::ohm;
-    pub use uom::si::f32::ElectricCurrent;
-    pub use uom::si::f32::ElectricPotential;
-    pub use uom::si::f32::ElectricalResistance;
-    pub use uom::si::f32::Power;
-    pub use uom::si::f32::ThermodynamicTemperature;
-    pub use uom::si::power::watt;
-    pub use uom::si::thermodynamic_temperature::degree_celsius;
-}
-use units::*;
+pub use crate::errors::Ap33772sError;
+pub use crate::units::*;
 
 /// Power Delivery mode configuration for the AP33772S.
 ///

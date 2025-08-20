@@ -1,7 +1,7 @@
 #[cfg_attr(docsrs, doc(cfg(feature = "advanced")))]
 #[cfg(feature = "advanced")]
 mod imports {
-    pub use ap33772s_rs::ap33772s::Ap33772s;
+    pub use ap33772s_rs::Ap33772s;
     pub use ap33772s_rs::commands::{
         configuration::power_delivery_configuration::PowerDeliveryConfiguration,
         thresholds::{

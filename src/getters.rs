@@ -101,8 +101,8 @@ use crate::commands::thresholds::under_voltage_protection_threshold::UnderVoltag
 
 // Public API Types
 use crate::types::command_structures::*;
-use crate::types::units::*;
 use crate::types::*;
+use crate::units::*;
 
 impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<I2C, D> {
     /// Reads the current device status register.

@@ -25,7 +25,7 @@ mod standard_api_formatting_tests {
     use ap33772s_rs::types::ThermalResistances;
     use ap33772s_rs::types::Thresholds;
     use ap33772s_rs::types::UnderVoltageThreshold;
-    use ap33772s_rs::types::units::*;
+    use ap33772s_rs::units::*;
 
     fn print_separator(title: &str) {
         println!("\n{}", "=".repeat(60));

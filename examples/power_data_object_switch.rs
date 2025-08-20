@@ -1,5 +1,5 @@
 use ap33772s_rs::{
-    ap33772s::Ap33772s,
+    Ap33772s,
     types::command_structures::{OperatingCurrentSelection, PowerDataObject},
 };
 use utils::{setup_delay, setup_i2c};

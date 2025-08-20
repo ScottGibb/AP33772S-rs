@@ -7,7 +7,7 @@ use crate::errors::{Ap33772sError, RequestError};
 use crate::types::command_structures::{
     ExtendedPowerRangeDataObject, StandardPowerRangeDataObject,
 };
-use crate::types::units::*;
+use crate::units::*;
 
 /// Represents A wrapper for the underlying Power Range Data Objects
 /// The AP33772s supports both Standard and Extended Power Range Data Objects

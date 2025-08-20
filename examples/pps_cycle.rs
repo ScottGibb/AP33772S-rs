@@ -1,8 +1,8 @@
-use ap33772s_rs::ap33772s::Ap33772s;
+use ap33772s_rs::Ap33772s;
 use ap33772s_rs::types::command_structures::{
     OperatingCurrentSelection, PowerDataObject, StandardPowerRangeDataObject,
 };
-use ap33772s_rs::types::units::*;
+use ap33772s_rs::units::*;
 use utils::setup_delay;
 
 const PROGRAMMABLE_POWER_SUPPLY_POWER_DATA_OBJECT: PowerDataObject =

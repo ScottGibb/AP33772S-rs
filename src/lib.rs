@@ -72,11 +72,13 @@ compile_error!("You cannot use both sync and async features at the same time. Pl
 #[cfg(all(not(feature = "async"), not(feature = "sync")))]
 compile_error!("You must enable either the sync or async feature. Please choose one.");
 
-pub mod ap33772s;
+mod ap33772s;
+pub use ap33772s::Ap33772s;
 mod errors;
 mod getters;
 mod setters;
 pub mod types;
+pub mod units;
 
 // Expose all underlying registers and communication methods for full access
 #[cfg(feature = "advanced")]

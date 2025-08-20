@@ -75,8 +75,8 @@ use crate::commands::power_delivery::power_delivery_command_message::PowerDelive
 
 // Public API Types
 use crate::types::command_structures::*;
-use crate::types::units::*;
 use crate::types::*;
+use crate::units::*;
 
 /// Main driver interface for the AP33772S USB-C Power Delivery controller.
 ///
