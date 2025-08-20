@@ -5,6 +5,7 @@
 ## Working Effectively
 
 ### Bootstrap and Build
+
 - **System Dependencies (Linux)**:
   - `sudo apt update && sudo apt install libftdi1 libftdi1-dev -y`
   - **CRITICAL**: Examples and tests WILL FAIL without these libraries
@@ -20,18 +21,21 @@
   - Documentation: `cargo doc --no-default-features --features sync` -- takes 11 seconds. NEVER CANCEL.
 
 ### Testing and Validation
+
 - **Run Tests**: `cargo test --no-default-features --features sync` -- takes 3 seconds. NEVER CANCEL.
 - **Format Test with Output**: `cargo test --test test_standard_api_formatting --features "advanced" -- --nocapture` -- shows formatted output
 - **Test Timeout**: Set timeout to 5+ minutes for initial builds, 2+ minutes for incremental builds and tests
 - **CRITICAL**: All tests require libftdi1 libraries installed. Tests will link error without them.
 
 ### Linting and Code Quality
+
 - **Format Check**: `cargo fmt --all -- --check` -- takes 1 second
 - **Clippy**: `cargo clippy --no-default-features --features sync -- -D warnings` -- takes 10 seconds. NEVER CANCEL.
 - **MegaLinter**: `npx mega-linter-runner --fix` -- requires Docker and NodeJS, may not work in all CI environments
 - **ALWAYS run linting before committing** or CI (.github/workflows/mega-linter.yaml) will fail
 
 ### Examples and Hardware Requirements
+
 - **Build Examples**: `cargo build --example power_data_object_query --no-default-features --features sync`
 - **Run Examples**: `cargo run --example <name> --no-default-features --features sync`
 - **HARDWARE REQUIRED**: Examples need FT232H Breakout Board + AP33772S breakout board
@@ -41,6 +45,7 @@
 - **Available Examples**: power_data_object_query, power_data_object_send, power_data_object_switch, avs_cycle, avs_fixed, pps_cycle, serial_profile_on_off, state_query, startup_configuration
 
 ### Platform-Specific Examples
+
 - **ESP32C3**: First install target: `rustup target add riscv32imac-unknown-none-elf`
   - Then: `cd examples/esp32c3 && cargo build` -- takes 52 seconds. NEVER CANCEL. Set timeout to 70+ minutes.
 - **Raspberry Pi**: `cd examples/raspberrypi && cargo fmt --all -- --check`
@@ -73,6 +78,7 @@
 ## Key Repository Structure
 
 ### Source Code Organization
+
 - `src/lib.rs`: Main library entry point, feature flag handling
 - `src/ap33772s.rs`: High-level driver API
 - `src/commands/`: Low-level register commands (advanced feature)
@@ -80,12 +86,14 @@
 - `src/types.rs`: Type definitions and units
 
 ### Examples Directory
+
 - `examples/*.rs`: Desktop sync examples using FT232H
 - `examples/esp32c3/`: Async ESP32C3 example project
 - `examples/raspberrypi/`: Raspberry Pi specific examples
 - `examples/README.md`: Hardware setup instructions
 
 ### Testing and CI
+
 - `tests/test_standard_api_formatting.rs`: Format display testing
 - `.github/workflows/`: CI pipeline definitions
 - `.mega-linter.yaml`: Linting configuration
@@ -93,6 +101,7 @@
 ## Common Commands Reference
 
 ### ls -la [repo-root]
+
 ```
 .github/               # CI workflows and configurations
 .vscode/               # VSCode settings and extensions
@@ -107,6 +116,7 @@ README.md              # Project overview and quick start
 ```
 
 ### Cargo.toml Key Features
+
 ```toml
 [features]
 default = ["sync"]
@@ -127,6 +137,7 @@ interrupts = []  # Interrupt pin support
 ## Hardware Setup Information
 
 This driver is for the AP33772S USB-C Power Delivery chip. Development requires:
+
 - **FT232H Breakout Board**: USB to I2C bridge for desktop development
 - **AP33772S Breakout Board**: Available from CentyLab
 - **USB-C PD Capable Charger**: For testing power delivery functionality
