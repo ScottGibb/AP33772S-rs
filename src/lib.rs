@@ -22,7 +22,7 @@
 //!
 //! ### Additional Features
 //!
-//! - **`interrupts`**: Enables interrupt pin support for asynchronous device communication
+//! - **`interrupts`**: Enables interrupt pin support for asynchronous device communication (STILL In active Development)
 //! - **`defmt`**: Adds defmt formatting support for embedded debugging
 //!
 //! ## Quick Start
