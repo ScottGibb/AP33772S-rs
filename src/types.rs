@@ -42,7 +42,7 @@ use crate::commands::thresholds::over_current_protection_threshold::OverCurrentP
 use crate::commands::thresholds::over_temperature_protection_threshold::OverTemperatureProtectionThreshold;
 use crate::commands::thresholds::over_voltage_protection_threshold::OverVoltageProtectionThreshold;
 pub use crate::errors::Ap33772sError;
-pub use crate::units::*;
+use crate::units::*;
 
 /// # Power Delivery Mode Configuration
 ///
