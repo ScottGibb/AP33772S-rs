@@ -40,14 +40,14 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     ///
     /// # Examples
     ///
-    /// ```rust,ignore
+    /// ```rust
     /// # use ap33772s_rs::{Ap33772s, types::command_structures::VoltageOutputControl};
     /// # async fn example(mut device: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
     /// // Enable output
-    /// device.override_output_voltage(VoltageOutputControl::Enable).await?;
+    /// device.override_output_voltage(VoltageOutputControl::ForceOn)?;
     ///
     /// // Disable output  
-    /// device.override_output_voltage(VoltageOutputControl::Disable).await?;
+    /// device.override_output_voltage(VoltageOutputControl::ForceOff)?;
     /// # Ok(())
     /// # }
     /// ```
@@ -79,12 +79,12 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     ///
     /// # Examples
     ///
-    /// ```rust,ignore
+    /// ```rust
     /// # use ap33772s_rs::{Ap33772s, units::*};
     /// # async fn example(mut device: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
     /// // Set minimum selection voltage to 5V
     /// let min_voltage = ElectricPotential::new::<volt>(5.0);
-    /// device.set_minimum_selection_voltage(min_voltage).await?;
+    /// device.set_minimum_selection_voltage(min_voltage)?;
     /// # Ok(())
     /// # }
     /// ```
@@ -118,7 +118,7 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     ///
     /// # Examples
     ///
-    /// ```rust,ignore
+    /// ```rust
     /// # use ap33772s_rs::{Ap33772s, types::PowerDeliveryMode};
     /// # async fn example(mut device: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
     /// let mode = PowerDeliveryMode {
@@ -126,7 +126,7 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     ///     extended_power_range_mode_enabled: false,
     /// };
     ///
-    /// device.set_power_delivery_mode(mode).await?;
+    /// device.set_power_delivery_mode(mode)?;
     /// # Ok(())
     /// # }
     /// ```
@@ -239,12 +239,12 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     ///
     /// # Examples
     ///
-    /// ```rust,ignore
+    /// ```rust
     /// # use ap33772s_rs::{Ap33772s, types::ThermalResistances, units::*};
     /// # async fn example(mut device: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
     /// // Use default thermal resistances
     /// let resistances = ThermalResistances::default();
-    /// device.set_thermal_resistances(resistances).await?;
+    /// device.set_thermal_resistances(resistances)?;
     ///
     /// // Or specify custom values
     /// let custom_resistances = ThermalResistances {
@@ -253,7 +253,7 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     ///     _75: ElectricalResistance::new::<ohm>(1622.0),
     ///     _100: ElectricalResistance::new::<ohm>(779.0),
     /// };
-    /// device.set_thermal_resistances(custom_resistances).await?;
+    /// device.set_thermal_resistances(custom_resistances)?;
     /// # Ok(())
     /// # }
     /// ```
@@ -299,7 +299,7 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     ///
     /// # Examples
     ///
-    /// ```rust,ignore
+    /// ```rust
     /// # use ap33772s_rs::{Ap33772s, types::{Thresholds, UnderVoltageThreshold}, units::*};
     /// # async fn example(mut device: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
     /// let thresholds = Thresholds {
@@ -310,7 +310,7 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     ///     derating: ThermodynamicTemperature::new::<degree_celsius>(75.0),
     /// };
     ///
-    /// device.set_thresholds(thresholds).await?;
+    /// device.set_thresholds(thresholds)?;
     /// # Ok(())
     /// # }
     /// ```

@@ -55,7 +55,7 @@ use crate::units::*;
 ///
 /// ### Manual Initialization
 ///
-/// ```rust,ignore
+/// ```rust
 /// use ap33772s_rs::{Ap33772s, types::{ThermalResistances, Thresholds}};
 ///
 /// # async fn example(i2c: impl embedded_hal::i2c::I2c, delay: impl embedded_hal::delay::DelayNs) -> Result<(), Box<dyn std::error::Error>> {
@@ -63,11 +63,11 @@ use crate::units::*;
 /// let mut device = Ap33772s::new(i2c, delay);
 ///
 /// // Check if device is present
-/// device.is_device_present().await?;
+/// device.is_device_present()?;
 ///
 /// // Configure custom settings
-/// device.set_thermal_resistances(ThermalResistances::default()).await?;
-/// device.set_thresholds(Thresholds::default()).await?;
+/// device.set_thermal_resistances(ThermalResistances::default())?;
+/// device.set_thresholds(Thresholds::default())?;
 /// # Ok(())
 /// # }
 /// ```
@@ -105,7 +105,7 @@ impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
     ///
     /// # Examples
     ///
-    /// ```rust,ignore
+    /// ```rust
     /// use ap33772s_rs::Ap33772s;
     ///
     /// # fn example(i2c: impl embedded_hal::i2c::I2c, delay: impl embedded_hal::delay::DelayNs) {
@@ -146,15 +146,15 @@ impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
     ///
     /// # Examples
     ///
-    /// ```rust,ignore
-    /// use ap33772s_rs::{Ap33772s, errors::Ap33772sError};
+    /// ```rust
+    /// use ap33772s_rs::{Ap33772s, types::Ap33772sError};
     ///
     /// # async fn example(i2c: impl embedded_hal::i2c::I2c, delay: impl embedded_hal::delay::DelayNs) -> Result<(), Box<dyn std::error::Error>> {
     /// // Initialize device with default settings
-    /// let mut device = Ap33772s::new_default(i2c, delay).await?;
+    /// let mut device = Ap33772s::new_default(i2c, delay)?;
     ///
     /// // Device is now ready for use
-    /// let stats = device.get_statistics().await?;
+    /// let stats = device.get_statistics()?;
     /// println!("Device initialized successfully");
     /// # Ok(())
     /// # }

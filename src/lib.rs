@@ -32,16 +32,16 @@
 //! ap33772s-rs = { version = "0.1", features = ["sync"] }
 //! ```
 //!
-//! ```rust,ignore
+//! ```rust
 //! use ap33772s_rs::{Ap33772s, types::Statistics};
-//!
+//! use ap33772s_rs::units::*;
 //! # async fn example(i2c: impl embedded_hal::i2c::I2c, delay: impl embedded_hal::delay::DelayNs) -> Result<(), Box<dyn std::error::Error>> {
 //! // Create and initialize the driver
-//! let mut ap33772s = Ap33772s::new_default(i2c, delay).await?;
+//! let mut ap33772s = Ap33772s::new_default(i2c, delay)?;
 //!
 //! // Read device statistics
-//! let stats: Statistics = ap33772s.get_statistics().await?;
-//! println!("Current: {}A, Voltage: {}V", stats.current, stats.voltage);
+//! let stats: Statistics = ap33772s.get_statistics()?;
+//! println!("Current: {}A, Voltage: {}V", stats.current.get::<ampere>(), stats.voltage.get::<volt>());
 //! # Ok(())
 //! # }
 //! ```
