@@ -39,16 +39,16 @@ use crate::units::*;
 ///
 /// ### Basic Synchronous Usage
 ///
-/// ```rust,ignore
+/// ```rust
 /// use ap33772s_rs::Ap33772s;
-///
+/// use ap33772s_rs::units::*;
 /// # async fn example(i2c: impl embedded_hal::i2c::I2c, delay: impl embedded_hal::delay::DelayNs) -> Result<(), Box<dyn std::error::Error>> {
 /// // Create and initialize with default settings
-/// let mut device = Ap33772s::new_default(i2c, delay).await?;
+/// let mut device = Ap33772s::new_default(i2c, delay)?;
 ///
 /// // Read device statistics
-/// let stats = device.get_statistics().await?;
-/// println!("Voltage: {:.2}V, Current: {:.2}A", stats.voltage, stats.current);
+/// let stats = device.get_statistics()?;
+/// println!("Voltage: {:.2}V, Current: {:.2}A", stats.voltage.get::<volt>(), stats.current.get::<ampere>());
 /// # Ok(())
 /// # }
 /// ```
