@@ -36,21 +36,21 @@ use crate::units::*;
 
 impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<I2C, D> {
     /// Reads the current device status register.
-    /// 
+    ///
     /// Returns detailed information about the device state including error flags,
     /// communication status, and power delivery state.
-    /// 
+    ///
     /// # Returns
-    /// 
+    ///
     /// [`Status`] containing device status flags, or [`Ap33772sError`] on communication error.
-    /// 
+    ///
     /// # Examples
-    /// 
+    ///
     /// ```rust,no_run
     /// # use ap33772s_rs::Ap33772s;
     /// # async fn example(mut device: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
     /// let status = device.get_status().await?;
-    /// 
+    ///
     /// if status.i2c_ready() {
     ///     println!("Device is ready for communication");
     /// }
@@ -60,7 +60,7 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     /// # Ok(())
     /// # }
     /// ```
-    /// 
+    ///
     /// [`Status`]: crate::types::command_structures::Status
     /// [`Ap33772sError`]: crate::errors::Ap33772sError
     #[maybe_async::maybe_async]
@@ -69,14 +69,14 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     }
 
     /// Reads the current operation mode of the device.
-    /// 
+    ///
     /// Returns information about the device's current operational configuration,
     /// including channel settings and de-rating mode.
-    /// 
+    ///
     /// # Returns
-    /// 
+    ///
     /// [`OperationMode`] containing the current operation settings, or [`Ap33772sError`] on communication error.
-    /// 
+    ///
     /// [`OperationMode`]: crate::types::command_structures::OperationMode
     /// [`Ap33772sError`]: crate::errors::Ap33772sError
     #[maybe_async::maybe_async]
@@ -85,21 +85,21 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     }
 
     /// Reads the power delivery configuration capabilities.
-    /// 
+    ///
     /// Returns information about supported power delivery modes including
     /// Programmable Power Supply (PPS) and Extended Power Range (EPR) support.
-    /// 
+    ///
     /// # Returns
-    /// 
+    ///
     /// [`PowerDeliveryMode`] indicating supported PD features, or [`Ap33772sError`] on communication error.
-    /// 
+    ///
     /// # Examples
-    /// 
+    ///
     /// ```rust,no_run
     /// # use ap33772s_rs::Ap33772s;
     /// # async fn example(mut device: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
     /// let pd_config = device.get_power_delivery_configuration().await?;
-    /// 
+    ///
     /// if pd_config.programmable_power_supply_adjustable_voltage_supply_enabled {
     ///     println!("PPS with AVS is supported");
     /// }
@@ -109,7 +109,7 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     /// # Ok(())
     /// # }
     /// ```
-    /// 
+    ///
     /// [`PowerDeliveryMode`]: crate::types::PowerDeliveryMode
     /// [`Ap33772sError`]: crate::errors::Ap33772sError
     #[maybe_async::maybe_async]
@@ -126,7 +126,38 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
         })
     }
 
-    /// Retrieves the current operational statistics of the device, including current, voltage, and temperature.
+    /// Retrieves comprehensive device statistics and measurements.
+    ///
+    /// This is a convenience method that collects all major device measurements
+    /// into a single [`Statistics`] struct. It reads current, voltage, temperature,
+    /// and requested values from the device.
+    ///
+    /// # Returns
+    ///
+    /// [`Statistics`] containing all current measurements and requested values,
+    /// or [`Ap33772sError`] on communication error.
+    ///
+    /// # Examples
+    ///
+    /// ```rust,no_run
+    /// # use ap33772s_rs::Ap33772s;
+    /// # async fn example(mut device: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
+    /// let stats = device.get_statistics().await?;
+    ///
+    /// println!("Current operation: {:.2}V @ {:.2}A = {:.2}W",
+    ///          stats.voltage, stats.current, stats.power);
+    /// println!("Device temperature: {:.1}°C", stats.temperature);
+    /// println!("Requested: {:.2}V @ {:.2}A",
+    ///          stats.requested_voltage, stats.requested_current);
+    /// # Ok(())
+    /// # }
+    /// ```
+    ///
+    /// **Note**: This method performs multiple I2C reads. For better performance,
+    /// use individual getter methods if you only need specific measurements.
+    ///
+    /// [`Statistics`]: crate::types::Statistics
+    /// [`Ap33772sError`]: crate::errors::Ap33772sError
     #[maybe_async::maybe_async]
     pub async fn get_statistics(&mut self) -> Result<Statistics, Ap33772sError> {
         let current = self.get_current().await?;
@@ -164,6 +195,17 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
 }
 
 impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<I2C, D> {
+    /// Reads the current voltage output override setting.
+    ///
+    /// Returns the current state of the voltage output control, indicating
+    /// whether the output is enabled, disabled, or in auto mode.
+    ///
+    /// # Returns
+    ///
+    /// [`VoltageOutputControl`] indicating the current output state, or [`Ap33772sError`] on communication error.
+    ///
+    /// [`VoltageOutputControl`]: crate::types::command_structures::VoltageOutputControl
+    /// [`Ap33772sError`]: crate::errors::Ap33772sError
     #[maybe_async::maybe_async]
     pub async fn get_voltage_out_override(
         &mut self,
@@ -174,24 +216,62 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
             .map_err(Ap33772sError::DataMalformed)
     }
 
+    /// Reads the current flowing through the device.
+    ///
+    /// # Returns
+    ///
+    /// [`ElectricCurrent`] measurement, or [`Ap33772sError`] on communication error.
+    ///
+    /// [`ElectricCurrent`]: crate::units::ElectricCurrent
+    /// [`Ap33772sError`]: crate::errors::Ap33772sError
     #[maybe_async::maybe_async]
     pub async fn get_current(&mut self) -> Result<ElectricCurrent, Ap33772sError> {
         let current = self.read_one_byte_command::<Current>().await?;
         current.current()
     }
 
+    /// Reads the output voltage of the device.
+    ///
+    /// # Returns
+    ///
+    /// [`ElectricPotential`] measurement, or [`Ap33772sError`] on communication error.
+    ///
+    /// [`ElectricPotential`]: crate::units::ElectricPotential
+    /// [`Ap33772sError`]: crate::errors::Ap33772sError
     #[maybe_async::maybe_async]
     pub async fn get_voltage(&mut self) -> Result<ElectricPotential, Ap33772sError> {
         let voltage = self.read_two_byte_command::<Voltage>().await?;
         voltage.voltage()
     }
 
+    /// Reads the internal temperature of the device.
+    ///
+    /// # Returns
+    ///
+    /// [`ThermodynamicTemperature`] measurement, or [`Ap33772sError`] on communication error.
+    ///
+    /// [`ThermodynamicTemperature`]: crate::units::ThermodynamicTemperature
+    /// [`Ap33772sError`]: crate::errors::Ap33772sError
     #[maybe_async::maybe_async]
     pub async fn get_temperature(&mut self) -> Result<ThermodynamicTemperature, Ap33772sError> {
         let temperature = self.read_one_byte_command::<Temperature>().await?;
         Ok(temperature.temperature())
     }
 
+    /// Calculates the current power consumption.
+    ///
+    /// This method reads both current and voltage, then calculates power as P = I × V.
+    ///
+    /// # Returns
+    ///
+    /// [`Power`] calculation (current × voltage), or [`Ap33772sError`] on communication error.
+    ///
+    /// **Note**: This method performs two I2C reads. For better performance when reading
+    /// multiple values, consider using [`get_statistics`] instead.
+    ///
+    /// [`Power`]: crate::units::Power
+    /// [`Ap33772sError`]: crate::errors::Ap33772sError
+    /// [`get_statistics`]: Self::get_statistics
     #[maybe_async::maybe_async]
     pub async fn get_power(&mut self) -> Result<Power, Ap33772sError> {
         let current = self.get_current().await?;
@@ -199,16 +279,46 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
         let power = current * voltage;
         Ok(power)
     }
+    /// Reads the voltage requested by the connected device during power delivery negotiation.
+    ///
+    /// # Returns
+    ///
+    /// [`ElectricPotential`] requested by the device, or [`Ap33772sError`] on communication error.
+    ///
+    /// [`ElectricPotential`]: crate::units::ElectricPotential
+    /// [`Ap33772sError`]: crate::errors::Ap33772sError
     #[maybe_async::maybe_async]
     pub async fn get_requested_voltage(&mut self) -> Result<ElectricPotential, Ap33772sError> {
         let requested_voltage = self.read_two_byte_command::<VoltageRequested>().await?;
         requested_voltage.voltage()
     }
+    /// Reads the current requested by the connected device during power delivery negotiation.
+    ///
+    /// # Returns
+    ///
+    /// [`ElectricCurrent`] requested by the device, or [`Ap33772sError`] on communication error.
+    ///
+    /// [`ElectricCurrent`]: crate::units::ElectricCurrent
+    /// [`Ap33772sError`]: crate::errors::Ap33772sError
     #[maybe_async::maybe_async]
     pub async fn get_requested_current(&mut self) -> Result<ElectricCurrent, Ap33772sError> {
         let requested_current = self.read_two_byte_command::<CurrentRequested>().await?;
         requested_current.current()
     }
+    /// Calculates the power requested by the connected device during power delivery negotiation.
+    ///
+    /// This method reads both requested voltage and current, then calculates power as P = I × V.
+    ///
+    /// # Returns
+    ///
+    /// [`Power`] calculation (requested_current × requested_voltage), or [`Ap33772sError`] on communication error.
+    ///
+    /// **Note**: This method performs two I2C reads. For better performance when reading
+    /// multiple values, consider using [`get_statistics`] instead.
+    ///
+    /// [`Power`]: crate::units::Power
+    /// [`Ap33772sError`]: crate::errors::Ap33772sError
+    /// [`get_statistics`]: Self::get_statistics
     #[maybe_async::maybe_async]
     pub async fn get_requested_power(&mut self) -> Result<Power, Ap33772sError> {
         let requested_voltage = self.get_requested_voltage().await?;
@@ -217,6 +327,17 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
         Ok(requested_power)
     }
 
+    /// Reads the minimum selection voltage setting.
+    ///
+    /// This voltage represents the lowest voltage that the device will negotiate
+    /// during power delivery.
+    ///
+    /// # Returns
+    ///
+    /// [`ElectricPotential`] minimum voltage setting, or [`Ap33772sError`] on communication error.
+    ///
+    /// [`ElectricPotential`]: crate::units::ElectricPotential
+    /// [`Ap33772sError`]: crate::errors::Ap33772sError
     #[maybe_async::maybe_async]
     pub async fn get_minimum_selection_voltage(
         &mut self,
@@ -229,6 +350,20 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
 }
 
 impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<I2C, D> {
+    /// Reads the current thermal resistance configuration for the NTC thermistor.
+    ///
+    /// Returns resistance values at different temperature points used for thermal
+    /// protection and temperature monitoring.
+    ///
+    /// # Returns
+    ///
+    /// [`ThermalResistances`] containing resistance values at 25°C, 50°C, 75°C, and 100°C,
+    /// or [`Ap33772sError`] on communication error.
+    ///
+    /// **Note**: This method performs four I2C reads.
+    ///
+    /// [`ThermalResistances`]: crate::types::ThermalResistances
+    /// [`Ap33772sError`]: crate::errors::Ap33772sError
     #[maybe_async::maybe_async]
     pub async fn get_thermal_resistances(&mut self) -> Result<ThermalResistances, Ap33772sError> {
         let resistance_25 = self.read_two_byte_command::<ThermalResistance25>().await?;
@@ -243,6 +378,19 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
             _100: resistance_100.thermal_resistance(),
         })
     }
+    /// Reads all protection threshold settings from the device.
+    ///
+    /// Returns comprehensive threshold configuration including over-voltage,
+    /// over-current, over-temperature, under-voltage, and de-rating thresholds.
+    ///
+    /// # Returns
+    ///
+    /// [`Thresholds`] containing all protection threshold values, or [`Ap33772sError`] on communication error.
+    ///
+    /// **Note**: This method performs five I2C reads.
+    ///
+    /// [`Thresholds`]: crate::types::Thresholds
+    /// [`Ap33772sError`]: crate::errors::Ap33772sError
     #[maybe_async::maybe_async]
     pub async fn get_thresholds(&mut self) -> Result<Thresholds, Ap33772sError> {
         let over_voltage_threshold = self
@@ -270,7 +418,33 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
         })
     }
 
-    /// Requests all the Power Source Capabilities the device supports.
+    /// Reads all available power source capabilities from the connected USB-C device.
+    ///
+    /// This method retrieves the complete list of Power Data Objects (PDOs) that the
+    /// connected device supports, including standard and extended power ranges.
+    ///
+    /// # Returns
+    ///
+    /// [`AllSourceDataPowerDataObject`] containing all supported power capabilities,
+    /// or [`Ap33772sError`] on communication error.
+    ///
+    /// # Examples
+    ///
+    /// ```rust,no_run
+    /// # use ap33772s_rs::Ap33772s;
+    /// # async fn example(mut device: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
+    /// let capabilities = device.get_all_source_power_capabilities().await?;
+    ///
+    /// println!("Available power capabilities:");
+    /// for (i, pdo) in capabilities.standard_power_data_objects().iter().enumerate() {
+    ///     println!("  PDO {}: {}", i + 1, pdo);
+    /// }
+    /// # Ok(())
+    /// # }
+    /// ```
+    ///
+    /// [`AllSourceDataPowerDataObject`]: crate::types::command_structures::AllSourceDataPowerDataObject
+    /// [`Ap33772sError`]: crate::errors::Ap33772sError
     #[maybe_async::maybe_async]
     pub async fn get_all_source_power_capabilities(
         &mut self,
