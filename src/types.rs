@@ -32,6 +32,7 @@ pub mod command_structures {
         OperatingCurrentSelection, PowerDataObject,
     };
 }
+pub use crate::errors::*;
 
 use crate::commands::thermal_resistances::thermal_resistance_25::ThermalResistance25;
 use crate::commands::thermal_resistances::thermal_resistance_50::ThermalResistance50;
@@ -41,7 +42,6 @@ use crate::commands::thresholds::de_rating_threshold::DeRatingThreshold;
 use crate::commands::thresholds::over_current_protection_threshold::OverCurrentProtectionThreshold;
 use crate::commands::thresholds::over_temperature_protection_threshold::OverTemperatureProtectionThreshold;
 use crate::commands::thresholds::over_voltage_protection_threshold::OverVoltageProtectionThreshold;
-pub use crate::errors::Ap33772sError;
 use crate::units::*;
 
 /// # Power Delivery Mode Configuration
