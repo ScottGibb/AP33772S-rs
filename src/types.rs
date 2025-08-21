@@ -1,7 +1,18 @@
-//! Types required by the Getters and Setters
-//! This module exposes the required types for the functions to be used externally.
+//! # Public Types and Data Structures
+//! 
+//! This module contains all public types used by the AP33772S driver API.
+//! These types represent various device states, configurations, and measurement data
+//! that can be read from or written to the AP33772S device.
 
-/// Module Reexports the internal api command types that are used for the getters and setters
+/// # Command Structures
+/// 
+/// Re-exports of internal command types used by the getter and setter methods.
+/// These types are used when configuring the device or interpreting responses.
+/// 
+/// **Available when using the `advanced` feature:**
+/// - Full access to underlying register structures
+/// - Direct register manipulation capabilities
+/// - Low-level device configuration options
 pub mod command_structures {
     pub use crate::commands::configuration::operation_mode::{
         ConfigurationChannel, DeRatingMode, OperationMode,
@@ -33,17 +44,47 @@ use crate::commands::thresholds::over_voltage_protection_threshold::OverVoltageP
 pub use crate::errors::Ap33772sError;
 pub use crate::units::*;
 
-/// This struct represents the Power Delivery Modes and specifically,
-/// allows the user to query if Adjustable Voltage Supply and or Extended Power Supply
-/// is enabled and supported by the Type C device plugged into the AP33772S.
-/// Use the following method to get this struct
-///
-///  **Getter**
-/// `crate::getters::get_power_delivery_configuration()`
-///
-/// **Setter**
-/// `crate::setters::set_power_delivery_configuration()`
-///
+/// # Power Delivery Mode Configuration
+/// 
+/// Represents the supported Power Delivery modes and capabilities of the connected USB-C device.
+/// This struct indicates whether advanced power delivery features are enabled and supported.
+/// 
+/// ## Fields
+/// 
+/// - `programmable_power_supply_adjustable_voltage_supply_enabled`: Indicates if PPS (Programmable Power Supply) with AVS (Adjustable Voltage Supply) is supported
+/// - `extended_power_range_mode_enabled`: Indicates if Extended Power Range (EPR) mode is supported for higher power delivery
+/// 
+/// ## Usage
+/// 
+/// **Get current configuration:**
+/// ```rust,no_run
+/// # use ap33772s_rs::{Ap33772s, types::PowerDeliveryMode};
+/// # async fn example(mut ap33772s: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
+/// let pd_mode: PowerDeliveryMode = ap33772s.get_power_delivery_configuration().await?;
+/// if pd_mode.programmable_power_supply_adjustable_voltage_supply_enabled {
+///     println!("PPS with AVS is supported");
+/// }
+/// # Ok(())
+/// # }
+/// ```
+/// 
+/// **Set configuration:**
+/// ```rust,no_run
+/// # use ap33772s_rs::{Ap33772s, types::PowerDeliveryMode};
+/// # async fn example(mut ap33772s: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
+/// let pd_mode = PowerDeliveryMode {
+///     programmable_power_supply_adjustable_voltage_supply_enabled: true,
+///     extended_power_range_mode_enabled: false,
+/// };
+/// ap33772s.set_power_delivery_mode(pd_mode).await?;
+/// # Ok(())
+/// # }
+/// ```
+/// 
+/// ## Related Methods
+/// 
+/// - [`crate::Ap33772s::get_power_delivery_configuration`] - Read current configuration
+/// - [`crate::Ap33772s::set_power_delivery_mode`] - Update configuration
 #[derive(Debug, Clone, PartialEq)]
 pub struct PowerDeliveryMode {
     pub programmable_power_supply_adjustable_voltage_supply_enabled: bool,
@@ -66,8 +107,48 @@ impl core::fmt::Display for PowerDeliveryMode {
     }
 }
 
-/// The statistics struct contains all the current information about the device
-/// specifically outlining what its doing currently and what its being requested to do
+/// # Device Statistics and Measurements
+/// 
+/// Contains real-time operating statistics and measurements from the AP33772S device.
+/// This includes both current operating values and the requested values from power negotiations.
+/// 
+/// ## Current Operating Values
+/// 
+/// - `current`: Current flowing through the device ([`ElectricCurrent`])
+/// - `voltage`: Output voltage being supplied ([`ElectricPotential`])  
+/// - `power`: Power being delivered ([`Power`])
+/// - `temperature`: Internal temperature of the device ([`ThermodynamicTemperature`])
+/// 
+/// ## Requested Values (from PD Negotiation)
+/// 
+/// - `requested_voltage`: Voltage requested by the connected device ([`ElectricPotential`])
+/// - `requested_current`: Current requested by the connected device ([`ElectricCurrent`])
+/// - `requested_power`: Power requested by the connected device ([`Power`])
+/// 
+/// ## Usage
+/// 
+/// ```rust,no_run
+/// # use ap33772s_rs::{Ap33772s, types::Statistics};
+/// # async fn example(mut ap33772s: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
+/// let stats: Statistics = ap33772s.get_statistics().await?;
+/// 
+/// println!("Operating: {:.2}V @ {:.2}A = {:.2}W", 
+///          stats.voltage, stats.current, stats.power);
+/// println!("Temperature: {:.1}°C", stats.temperature);
+/// println!("Requested: {:.2}V @ {:.2}A = {:.2}W",
+///          stats.requested_voltage, stats.requested_current, stats.requested_power);
+/// # Ok(())
+/// # }
+/// ```
+/// 
+/// ## Related Methods
+/// 
+/// - [`crate::Ap33772s::get_statistics`] - Read current device statistics
+/// 
+/// [`ElectricCurrent`]: crate::units::ElectricCurrent
+/// [`ElectricPotential`]: crate::units::ElectricPotential
+/// [`Power`]: crate::units::Power
+/// [`ThermodynamicTemperature`]: crate::units::ThermodynamicTemperature
 #[derive(Debug, Clone, PartialEq)]
 pub struct Statistics {
     /// The operating Current
@@ -79,8 +160,11 @@ pub struct Statistics {
     /// The Current Temperature
     pub temperature: ThermodynamicTemperature,
 
+    /// The requested voltage from power delivery negotiation
     pub requested_voltage: ElectricPotential,
+    /// The requested current from power delivery negotiation  
     pub requested_current: ElectricCurrent,
+    /// The requested power from power delivery negotiation
     pub requested_power: Power,
 }
 
@@ -136,16 +220,55 @@ impl defmt::Format for Statistics {
     }
 }
 
-/// The Thermal Resistances for the Negative Temperature Coefficeint Resister (NTC)
+/// # Thermal Resistance Configuration
+/// 
+/// Represents the thermal resistance values for the NTC (Negative Temperature Coefficient) thermistor
+/// at different temperature points. These values are used by the AP33772S for thermal protection and
+/// temperature monitoring.
+/// 
+/// ## Fields
+/// 
+/// - `_25`: Resistance at 25°C ([`ElectricalResistance`])
+/// - `_50`: Resistance at 50°C ([`ElectricalResistance`])  
+/// - `_75`: Resistance at 75°C ([`ElectricalResistance`])
+/// - `_100`: Resistance at 100°C ([`ElectricalResistance`])
+/// 
+/// ## Usage
+/// 
+/// ```rust,no_run
+/// # use ap33772s_rs::{Ap33772s, types::ThermalResistances, units::*};
+/// # async fn example(mut ap33772s: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
+/// // Use default values based on typical NTC characteristics
+/// let thermal_resistances = ThermalResistances::default();
+/// ap33772s.set_thermal_resistances(thermal_resistances).await?;
+/// 
+/// // Or specify custom values
+/// let custom_resistances = ThermalResistances {
+///     _25: ElectricalResistance::new::<ohm>(10000.0),
+///     _50: ElectricalResistance::new::<ohm>(3893.0),
+///     _75: ElectricalResistance::new::<ohm>(1622.0),
+///     _100: ElectricalResistance::new::<ohm>(779.0),
+/// };
+/// ap33772s.set_thermal_resistances(custom_resistances).await?;
+/// # Ok(())
+/// # }
+/// ```
+/// 
+/// ## Related Methods
+/// 
+/// - [`crate::Ap33772s::get_thermal_resistances`] - Read current thermal resistance settings
+/// - [`crate::Ap33772s::set_thermal_resistances`] - Update thermal resistance settings
+/// 
+/// [`ElectricalResistance`]: crate::units::ElectricalResistance
 #[derive(Debug, Clone, PartialEq)]
 pub struct ThermalResistances {
-    /// The Resistance at 25 degrees (celsius)
+    /// The resistance at 25°C
     pub _25: ElectricalResistance,
-    /// The Temperature at 25 degrees (celsius)
+    /// The resistance at 50°C
     pub _50: ElectricalResistance,
-    /// The Temperature at 50 degrees (celsius)
+    /// The resistance at 75°C
     pub _75: ElectricalResistance,
-    /// The Temperature at 100 degrees (celsius)
+    /// The resistance at 100°C
     pub _100: ElectricalResistance,
 }
 
@@ -186,22 +309,59 @@ impl Default for ThermalResistances {
 }
 pub use crate::commands::thresholds::under_voltage_protection_threshold::UnderVoltageThreshold;
 
-/// The Thresholds for the AP33772S for the different fault protections. All thresholds when applied will result in
-/// the corresponding flags in the [Status](crate::commands::configuration::status::Status) being set
+/// # Protection Thresholds Configuration
+/// 
+/// Defines the safety and protection thresholds for the AP33772S device. When any of these
+/// thresholds are exceeded, the device will take protective action and set corresponding
+/// flags in the device [`Status`].
+/// 
+/// ## Protection Types
+/// 
+/// - `over_voltage`: Maximum voltage threshold - triggers load disconnection ([`ElectricPotential`])
+/// - `under_voltage`: Minimum voltage threshold - triggers fault state ([`UnderVoltageThreshold`])
+/// - `over_current`: Maximum current threshold - triggers power cutoff ([`ElectricCurrent`])
+/// - `over_temperature`: Maximum temperature threshold - triggers thermal shutdown ([`ThermodynamicTemperature`])
+/// - `derating`: Temperature threshold for current derating (50% reduction) ([`ThermodynamicTemperature`])
+/// 
+/// ## Usage
+/// 
+/// ```rust,no_run
+/// # use ap33772s_rs::{Ap33772s, types::{Thresholds, UnderVoltageThreshold}, units::*};
+/// # async fn example(mut ap33772s: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
+/// let thresholds = Thresholds {
+///     over_voltage: ElectricPotential::new::<volt>(22.0),
+///     under_voltage: UnderVoltageThreshold::default(),
+///     over_current: ElectricCurrent::new::<ampere>(5.0),
+///     over_temperature: ThermodynamicTemperature::new::<degree_celsius>(85.0),
+///     derating: ThermodynamicTemperature::new::<degree_celsius>(75.0),
+/// };
+/// 
+/// ap33772s.set_thresholds(thresholds).await?;
+/// # Ok(())
+/// # }
+/// ```
+/// 
+/// ## Related Methods
+/// 
+/// - [`crate::Ap33772s::get_thresholds`] - Read current threshold settings
+/// - [`crate::Ap33772s::set_thresholds`] - Update threshold settings
+/// 
+/// [`Status`]: crate::types::command_structures::Status
+/// [`ElectricPotential`]: crate::units::ElectricPotential  
+/// [`ElectricCurrent`]: crate::units::ElectricCurrent
+/// [`ThermodynamicTemperature`]: crate::units::ThermodynamicTemperature
+/// [`UnderVoltageThreshold`]: crate::types::UnderVoltageThreshold
 #[derive(Debug, Clone, PartialEq)]
 pub struct Thresholds {
-    /// The over voltage threshold in which the load will be disconnected through MOS Switch and the system will enter
-    /// a fault state
+    /// Maximum voltage threshold - triggers load disconnection via MOSFET switch
     pub over_voltage: ElectricPotential,
-    /// The minimum voltage at which point if the device goes below, the AP33772S will enter a fault state and disconnect
-    /// the load
+    /// Minimum voltage threshold - triggers fault state and load disconnection  
     pub under_voltage: UnderVoltageThreshold,
-    /// The current at which the device will turn off the power to the load and enter a fault state
+    /// Maximum current threshold - triggers power cutoff and fault state
     pub over_current: ElectricCurrent,
-    /// The temperature at which the MOSFET Switch will be turned off disconnecting the load, entering a fault states
+    /// Maximum temperature threshold - triggers thermal shutdown via MOSFET switch
     pub over_temperature: ThermodynamicTemperature,
-    /// The Hot Spot Temperature in which the device will lower the input current by 50% in an attempt to cool
-    /// the AP33772S down.
+    /// Temperature threshold for current derating - reduces input current by 50%
     pub derating: ThermodynamicTemperature,
 }
 

@@ -1,9 +1,63 @@
-//! This crate provides an interface for the AP33772S I2C device. It supports both synchronous and asynchronous operations.
-//! It is designed to be used in embedded systems, and it can be compiled for both `no_std` and `std` environments.
-//! There are two modes the driver can run in normal and advanced mode.
-//! Advanced mode can be enabled by setting the `advanced` feature flag. This allows full access to the underlying registers and exposes
-//! the full functionality of the AP33772S device. The normal mode is a simplified version
-//! that provides a higher-level interface for common operations.
+//! # AP33772S USB-C Power Delivery Driver
+//!
+//! This crate provides a Rust driver for the AP33772S USB-C Power Delivery controller IC.
+//! It supports both synchronous and asynchronous I2C operations and is designed for embedded systems
+//! with `no_std` support.
+//! 
+//! ## Features
+//! 
+//! The driver supports two main operational modes controlled by feature flags:
+//! 
+//! ### Synchronous vs Asynchronous Operation
+//! 
+//! - **`sync`** (default): Uses [`embedded_hal`] traits for synchronous I2C operations
+//! - **`async`**: Uses `embedded_hal_async` traits for asynchronous I2C operations
+//! 
+//! **Note**: These features are mutually exclusive - you must choose one.
+//! 
+//! ### Access Levels
+//! 
+//! - **Normal mode** (default): Provides a high-level API through getter/setter methods on [`Ap33772s`]
+//! - **`advanced`**: Exposes low-level register access when enabled (see examples)
+//! 
+//! ### Additional Features
+//! 
+//! - **`interrupts`**: Enables interrupt pin support for asynchronous device communication
+//! - **`defmt`**: Adds defmt formatting support for embedded debugging
+//! 
+//! ## Quick Start
+//! 
+//! ```toml
+//! [dependencies]
+//! ap33772s-rs = { version = "0.1", features = ["sync"] }
+//! ```
+//! 
+//! ```rust,no_run
+//! use ap33772s_rs::{Ap33772s, types::Statistics};
+//! 
+//! # async fn example(i2c: impl embedded_hal::i2c::I2c, delay: impl embedded_hal::delay::DelayNs) -> Result<(), Box<dyn std::error::Error>> {
+//! // Create and initialize the driver
+//! let mut ap33772s = Ap33772s::new_default(i2c, delay).await?;
+//! 
+//! // Read device statistics
+//! let stats: Statistics = ap33772s.get_statistics().await?;
+//! println!("Current: {}A, Voltage: {}V", stats.current, stats.voltage);
+//! # Ok(())
+//! # }
+//! ```
+//! 
+//! ## Advanced Usage
+//! 
+//! Enable the `advanced` feature for direct register access:
+//! 
+//! ```toml
+//! [dependencies]
+//! ap33772s-rs = { version = "0.1", features = ["sync", "advanced"] }
+//! ```
+//! 
+//! This exposes low-level register operations for advanced device control.
+//! 
+//! For more examples, see the repository's `examples/` directory and [`README.md`](https://github.com/ScottGibb/AP33772S-rs).
 #![no_std]
 #![deny(unsafe_code)]
 
