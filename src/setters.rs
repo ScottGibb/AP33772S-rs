@@ -25,7 +25,34 @@ use crate::types::*;
 use crate::units::*;
 
 impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<I2C, D> {
-    /// Changes the state of the VOUT Switch, essentially controlling the power to the load
+    /// Controls the output voltage switch state.
+    ///
+    /// This method allows manual control of the VOUT switch, which controls power
+    /// delivery to the connected load.
+    ///
+    /// # Parameters
+    ///
+    /// - `voltage_output`: The desired output control state
+    ///
+    /// # Returns
+    ///
+    /// `Ok(())` on success, or [`Ap33772sError`] on communication error.
+    ///
+    /// # Examples
+    ///
+    /// ```rust,no_run
+    /// # use ap33772s_rs::{Ap33772s, types::command_structures::VoltageOutputControl};
+    /// # async fn example(mut device: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
+    /// // Enable output
+    /// device.override_output_voltage(VoltageOutputControl::Enable).await?;
+    ///
+    /// // Disable output  
+    /// device.override_output_voltage(VoltageOutputControl::Disable).await?;
+    /// # Ok(())
+    /// # }
+    /// ```
+    ///
+    /// [`Ap33772sError`]: crate::errors::Ap33772sError
     #[maybe_async::maybe_async]
     pub async fn override_output_voltage(
         &mut self,
@@ -37,6 +64,32 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
         self.write_one_byte_command(system_control).await
     }
 
+    /// Sets the minimum voltage that the device will negotiate during power delivery.
+    ///
+    /// This voltage represents the lowest voltage the device will accept during
+    /// USB-C Power Delivery negotiations.
+    ///
+    /// # Parameters
+    ///
+    /// - `voltage`: The minimum voltage threshold
+    ///
+    /// # Returns
+    ///
+    /// `Ok(())` on success, or [`Ap33772sError`] on communication or conversion error.
+    ///
+    /// # Examples
+    ///
+    /// ```rust,no_run
+    /// # use ap33772s_rs::{Ap33772s, units::*};
+    /// # async fn example(mut device: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
+    /// // Set minimum selection voltage to 5V
+    /// let min_voltage = ElectricPotential::new::<volt>(5.0);
+    /// device.set_minimum_selection_voltage(min_voltage).await?;
+    /// # Ok(())
+    /// # }
+    /// ```
+    ///
+    /// [`Ap33772sError`]: crate::errors::Ap33772sError
     #[maybe_async::maybe_async]
     pub async fn set_minimum_selection_voltage(
         &mut self,
@@ -49,9 +102,36 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
         self.write_one_byte_command(minimum_selection_voltage).await
     }
 
-    /// Configures additional modes for the USB C Power Delivery Device
+    /// Configures advanced power delivery modes and capabilities.
     ///
-    /// For example wether Extended Power Delivery Modes are enabled or wether Adjustable Voltage Supply can be used
+    /// This method enables or disables extended power delivery features such as
+    /// Programmable Power Supply (PPS) with Adjustable Voltage Supply (AVS) and
+    /// Extended Power Range (EPR) mode.
+    ///
+    /// # Parameters
+    ///
+    /// - `mode`: Power delivery mode configuration
+    ///
+    /// # Returns
+    ///
+    /// `Ok(())` on success, or [`Ap33772sError`] on communication error.
+    ///
+    /// # Examples
+    ///
+    /// ```rust,no_run
+    /// # use ap33772s_rs::{Ap33772s, types::PowerDeliveryMode};
+    /// # async fn example(mut device: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
+    /// let mode = PowerDeliveryMode {
+    ///     programmable_power_supply_adjustable_voltage_supply_enabled: true,
+    ///     extended_power_range_mode_enabled: false,
+    /// };
+    ///
+    /// device.set_power_delivery_mode(mode).await?;
+    /// # Ok(())
+    /// # }
+    /// ```
+    ///
+    /// [`Ap33772sError`]: crate::errors::Ap33772sError
     #[maybe_async::maybe_async]
     pub async fn set_power_delivery_mode(
         &mut self,
@@ -144,7 +224,43 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
 }
 
 impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<I2C, D> {
-    /// Sets the thermal resistances for the device using those provided
+    /// Sets the thermal resistance configuration for the NTC thermistor.
+    ///
+    /// This method configures the resistance values at different temperature points
+    /// used for thermal protection and temperature monitoring.
+    ///
+    /// # Parameters
+    ///
+    /// - `resistances`: Thermal resistance values at 25°C, 50°C, 75°C, and 100°C
+    ///
+    /// # Returns
+    ///
+    /// `Ok(())` on success, or [`Ap33772sError`] on communication or conversion error.
+    ///
+    /// # Examples
+    ///
+    /// ```rust,no_run
+    /// # use ap33772s_rs::{Ap33772s, types::ThermalResistances, units::*};
+    /// # async fn example(mut device: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
+    /// // Use default thermal resistances
+    /// let resistances = ThermalResistances::default();
+    /// device.set_thermal_resistances(resistances).await?;
+    ///
+    /// // Or specify custom values
+    /// let custom_resistances = ThermalResistances {
+    ///     _25: ElectricalResistance::new::<ohm>(10000.0),
+    ///     _50: ElectricalResistance::new::<ohm>(3893.0),
+    ///     _75: ElectricalResistance::new::<ohm>(1622.0),
+    ///     _100: ElectricalResistance::new::<ohm>(779.0),
+    /// };
+    /// device.set_thermal_resistances(custom_resistances).await?;
+    /// # Ok(())
+    /// # }
+    /// ```
+    ///
+    /// **Note**: This method performs four I2C writes.
+    ///
+    /// [`Ap33772sError`]: crate::errors::Ap33772sError
     #[maybe_async::maybe_async]
     pub async fn set_thermal_resistances(
         &mut self,
@@ -168,7 +284,40 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
         self.write_two_byte_command(resistance_100).await
     }
 
-    /// Sets the thresholds for the device using those provided
+    /// Sets all protection thresholds for the device.
+    ///
+    /// This method configures comprehensive protection thresholds including over-voltage,
+    /// over-current, over-temperature, under-voltage, and de-rating thresholds.
+    ///
+    /// # Parameters
+    ///
+    /// - `thresholds`: Complete threshold configuration
+    ///
+    /// # Returns
+    ///
+    /// `Ok(())` on success, or [`Ap33772sError`] on communication or conversion error.
+    ///
+    /// # Examples
+    ///
+    /// ```rust,no_run
+    /// # use ap33772s_rs::{Ap33772s, types::{Thresholds, UnderVoltageThreshold}, units::*};
+    /// # async fn example(mut device: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
+    /// let thresholds = Thresholds {
+    ///     over_voltage: ElectricPotential::new::<volt>(22.0),
+    ///     under_voltage: UnderVoltageThreshold::default(),
+    ///     over_current: ElectricCurrent::new::<ampere>(5.0),
+    ///     over_temperature: ThermodynamicTemperature::new::<degree_celsius>(85.0),
+    ///     derating: ThermodynamicTemperature::new::<degree_celsius>(75.0),
+    /// };
+    ///
+    /// device.set_thresholds(thresholds).await?;
+    /// # Ok(())
+    /// # }
+    /// ```
+    ///
+    /// **Note**: This method performs multiple I2C writes.
+    ///
+    /// [`Ap33772sError`]: crate::errors::Ap33772sError
     #[maybe_async::maybe_async]
     pub async fn set_thresholds(&mut self, thresholds: Thresholds) -> Result<(), Ap33772sError> {
         let over_voltage_threshold: OverVoltageProtectionThreshold =

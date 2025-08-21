@@ -38,14 +38,14 @@ use crate::units::*;
 /// ## Usage Examples
 ///
 /// ### Basic Synchronous Usage
-/// 
+///
 /// ```rust,no_run
 /// use ap33772s_rs::Ap33772s;
-/// 
+///
 /// # async fn example(i2c: impl embedded_hal::i2c::I2c, delay: impl embedded_hal::delay::DelayNs) -> Result<(), Box<dyn std::error::Error>> {
 /// // Create and initialize with default settings
 /// let mut device = Ap33772s::new_default(i2c, delay).await?;
-/// 
+///
 /// // Read device statistics
 /// let stats = device.get_statistics().await?;
 /// println!("Voltage: {:.2}V, Current: {:.2}A", stats.voltage, stats.current);
@@ -57,14 +57,14 @@ use crate::units::*;
 ///
 /// ```rust,no_run
 /// use ap33772s_rs::{Ap33772s, types::{ThermalResistances, Thresholds}};
-/// 
+///
 /// # async fn example(i2c: impl embedded_hal::i2c::I2c, delay: impl embedded_hal::delay::DelayNs) -> Result<(), Box<dyn std::error::Error>> {
 /// // Create device without initialization
 /// let mut device = Ap33772s::new(i2c, delay);
-/// 
+///
 /// // Check if device is present
 /// device.is_device_present().await?;
-/// 
+///
 /// // Configure custom settings
 /// device.set_thermal_resistances(ThermalResistances::default()).await?;
 /// device.set_thresholds(Thresholds::default()).await?;
@@ -94,74 +94,74 @@ impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
     const NEGOTIATE_TIMING_DELAY: Duration = Duration::from_millis(100);
     const BOOT_UP_DELAY: Duration = Duration::from_millis(100);
     /// Creates a new AP33772S driver instance without performing any initialization.
-    /// 
+    ///
     /// This method only creates the driver struct with the provided I2C and delay interfaces.
     /// No communication with the device occurs until other methods are called.
-    /// 
+    ///
     /// # Parameters
-    /// 
+    ///
     /// - `i2c`: I2C peripheral for device communication
     /// - `delay`: Delay provider for timing-critical operations
-    /// 
+    ///
     /// # Examples
-    /// 
+    ///
     /// ```rust,no_run
     /// use ap33772s_rs::Ap33772s;
-    /// 
+    ///
     /// # fn example(i2c: impl embedded_hal::i2c::I2c, delay: impl embedded_hal::delay::DelayNs) {
     /// let device = Ap33772s::new(i2c, delay);
     /// // Device is ready for use, but not yet initialized
     /// # }
     /// ```
-    /// 
+    ///
     /// For automatic initialization with default settings, use [`Self::new_default`] instead.
     pub fn new(i2c: I2C, delay: D) -> Self {
         Self { i2c, delay }
     }
     /// Creates and initializes a new AP33772S driver with default configuration.
-    /// 
+    ///
     /// This method performs the complete initialization sequence:
     /// 1. Creates the driver instance
     /// 2. Verifies device presence on I2C bus  
     /// 3. Checks device status and boot state
     /// 4. Configures default thermal resistances and protection thresholds
-    /// 
+    ///
     /// # Parameters
-    /// 
+    ///
     /// - `i2c`: I2C peripheral for device communication
     /// - `delay`: Delay provider for timing-critical operations
-    /// 
+    ///
     /// # Returns
-    /// 
+    ///
     /// Returns `Ok(Ap33772s)` if initialization succeeds, or an [`Ap33772sError`] if:
     /// - Device is not present on the I2C bus
     /// - Device is not in the correct boot state
     /// - Communication errors occur during setup
-    /// 
+    ///
     /// # Important Notes
-    /// 
+    ///
     /// ⚠️ **This method must be called immediately after device power-on.** If called on an already
     /// initialized device, it may return [`Ap33772sError::InitialisationFailure`]. In such cases,
     /// a full power cycle of the device is required before retrying.
-    /// 
+    ///
     /// # Examples
-    /// 
+    ///
     /// ```rust,no_run
     /// use ap33772s_rs::{Ap33772s, errors::Ap33772sError};
-    /// 
+    ///
     /// # async fn example(i2c: impl embedded_hal::i2c::I2c, delay: impl embedded_hal::delay::DelayNs) -> Result<(), Box<dyn std::error::Error>> {
     /// // Initialize device with default settings
     /// let mut device = Ap33772s::new_default(i2c, delay).await?;
-    /// 
+    ///
     /// // Device is now ready for use
     /// let stats = device.get_statistics().await?;
     /// println!("Device initialized successfully");
     /// # Ok(())
     /// # }
     /// ```
-    /// 
+    ///
     /// For manual initialization without defaults, use [`Self::new`] followed by individual setup methods.
-    /// 
+    ///
     /// [`Ap33772sError`]: crate::errors::Ap33772sError
     /// [`Ap33772sError::InitialisationFailure`]: crate::errors::Ap33772sError::InitialisationFailure
     #[maybe_async::maybe_async]
