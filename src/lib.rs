@@ -101,9 +101,9 @@ mod hal {
 /// Aysnc Based HAL Imports
 #[cfg(feature = "async")]
 mod hal {
-    #[cfg(feature = "interrupts")]
-    pub use embedded_hal::digital::InputPin;
     pub use embedded_hal_async::delay::DelayNs;
+    #[cfg(feature = "interrupts")]
+    pub use embedded_hal_async::digital::InputPin;
     pub use embedded_hal_async::i2c::Error;
     pub use embedded_hal_async::i2c::ErrorKind;
     pub use embedded_hal_async::i2c::I2c;
