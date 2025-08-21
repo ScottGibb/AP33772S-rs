@@ -6,7 +6,7 @@
 //! ## Operating Modes
 //!
 //! - **Delay-based** (default): Uses HAL-provided delay for timing-sensitive operations
-//! - **Interrupt-based**: Uses an interrupt pin to determine when the device is ready (requires `interrupts` feature)
+//! - **Interrupt-based**: Uses an interrupt pin to determine when the device is ready (requires `interrupts` feature) - STILL IN ACTIVE DEVELOPMENT
 //!
 //! ## Advanced Features
 //!
