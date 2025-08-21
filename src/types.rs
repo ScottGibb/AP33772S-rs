@@ -57,10 +57,10 @@ use crate::units::*;
 /// ## Usage
 ///
 /// **Get current configuration:**
-/// ```rust,ignore
+/// ```rust
 /// # use ap33772s_rs::{Ap33772s, types::PowerDeliveryMode};
 /// # async fn example(mut ap33772s: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
-/// let pd_mode: PowerDeliveryMode = ap33772s.get_power_delivery_configuration().await?;
+/// let pd_mode: PowerDeliveryMode = ap33772s.get_power_delivery_configuration()?;
 /// if pd_mode.programmable_power_supply_adjustable_voltage_supply_enabled {
 ///     println!("PPS with AVS is supported");
 /// }
@@ -69,14 +69,14 @@ use crate::units::*;
 /// ```
 ///
 /// **Set configuration:**
-/// ```rust,ignore
+/// ```rust
 /// # use ap33772s_rs::{Ap33772s, types::PowerDeliveryMode};
 /// # async fn example(mut ap33772s: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
 /// let pd_mode = PowerDeliveryMode {
 ///     programmable_power_supply_adjustable_voltage_supply_enabled: true,
 ///     extended_power_range_mode_enabled: false,
 /// };
-/// ap33772s.set_power_delivery_mode(pd_mode).await?;
+/// ap33772s.set_power_delivery_mode(pd_mode)?;
 /// # Ok(())
 /// # }
 /// ```
@@ -127,16 +127,17 @@ impl core::fmt::Display for PowerDeliveryMode {
 ///
 /// ## Usage
 ///
-/// ```rust,ignore
+/// ```rust
 /// # use ap33772s_rs::{Ap33772s, types::Statistics};
+/// # use ap33772s_rs::units::*;
 /// # async fn example(mut ap33772s: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
-/// let stats: Statistics = ap33772s.get_statistics().await?;
+/// let stats: Statistics = ap33772s.get_statistics()?;
 ///
 /// println!("Operating: {:.2}V @ {:.2}A = {:.2}W",
-///          stats.voltage, stats.current, stats.power);
-/// println!("Temperature: {:.1}°C", stats.temperature);
+///          stats.voltage.get::<volt>(), stats.current.get::<ampere>(), stats.power.get::<watt>());
+/// println!("Temperature: {:.1}°C", stats.temperature.get::<degree_celsius>());
 /// println!("Requested: {:.2}V @ {:.2}A = {:.2}W",
-///          stats.requested_voltage, stats.requested_current, stats.requested_power);
+///          stats.requested_voltage.get::<volt>(), stats.requested_current.get::<ampere>(), stats.requested_power.get::<watt>());
 /// # Ok(())
 /// # }
 /// ```
@@ -235,12 +236,12 @@ impl defmt::Format for Statistics {
 ///
 /// ## Usage
 ///
-/// ```rust,ignore
+/// ```rust
 /// # use ap33772s_rs::{Ap33772s, types::ThermalResistances, units::*};
 /// # async fn example(mut ap33772s: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
 /// // Use default values based on typical NTC characteristics
 /// let thermal_resistances = ThermalResistances::default();
-/// ap33772s.set_thermal_resistances(thermal_resistances).await?;
+/// ap33772s.set_thermal_resistances(thermal_resistances)?;
 ///
 /// // Or specify custom values
 /// let custom_resistances = ThermalResistances {
@@ -249,7 +250,7 @@ impl defmt::Format for Statistics {
 ///     _75: ElectricalResistance::new::<ohm>(1622.0),
 ///     _100: ElectricalResistance::new::<ohm>(779.0),
 /// };
-/// ap33772s.set_thermal_resistances(custom_resistances).await?;
+/// ap33772s.set_thermal_resistances(custom_resistances)?;
 /// # Ok(())
 /// # }
 /// ```
@@ -325,7 +326,7 @@ pub use crate::commands::thresholds::under_voltage_protection_threshold::UnderVo
 ///
 /// ## Usage
 ///
-/// ```rust,ignore
+/// ```rust
 /// # use ap33772s_rs::{Ap33772s, types::{Thresholds, UnderVoltageThreshold}, units::*};
 /// # async fn example(mut ap33772s: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
 /// let thresholds = Thresholds {
@@ -336,7 +337,7 @@ pub use crate::commands::thresholds::under_voltage_protection_threshold::UnderVo
 ///     derating: ThermodynamicTemperature::new::<degree_celsius>(75.0),
 /// };
 ///
-/// ap33772s.set_thresholds(thresholds).await?;
+/// ap33772s.set_thresholds(thresholds)?;
 /// # Ok(())
 /// # }
 /// ```

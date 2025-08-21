@@ -46,10 +46,10 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     ///
     /// # Examples
     ///
-    /// ```rust,ignore
+    /// ```rust
     /// # use ap33772s_rs::Ap33772s;
     /// # async fn example(mut device: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
-    /// let status = device.get_status().await?;
+    /// let status = device.get_status()?;
     ///
     /// if status.i2c_ready() {
     ///     println!("Device is ready for communication");
@@ -95,10 +95,10 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     ///
     /// # Examples
     ///
-    /// ```rust,ignore
+    /// ```rust
     /// # use ap33772s_rs::Ap33772s;
     /// # async fn example(mut device: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
-    /// let pd_config = device.get_power_delivery_configuration().await?;
+    /// let pd_config = device.get_power_delivery_configuration()?;
     ///
     /// if pd_config.programmable_power_supply_adjustable_voltage_supply_enabled {
     ///     println!("PPS with AVS is supported");
@@ -139,16 +139,17 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     ///
     /// # Examples
     ///
-    /// ```rust,ignore
+    /// ```rust
     /// # use ap33772s_rs::Ap33772s;
+    /// # use ap33772s_rs::units::*;
     /// # async fn example(mut device: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
-    /// let stats = device.get_statistics().await?;
+    /// let stats = device.get_statistics()?;
     ///
     /// println!("Current operation: {:.2}V @ {:.2}A = {:.2}W",
-    ///          stats.voltage, stats.current, stats.power);
-    /// println!("Device temperature: {:.1}°C", stats.temperature);
+    ///          stats.voltage.get::<volt>(), stats.current.get::<ampere>(), stats.power.get::<watt>());
+    /// println!("Device temperature: {:.1}°C", stats.temperature.get::<degree_celsius>());
     /// println!("Requested: {:.2}V @ {:.2}A",
-    ///          stats.requested_voltage, stats.requested_current);
+    ///          stats.requested_voltage.get::<volt>(), stats.requested_current.get::<ampere>());
     /// # Ok(())
     /// # }
     /// ```
@@ -430,14 +431,14 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     ///
     /// # Examples
     ///
-    /// ```rust,ignore
+    /// ```rust
     /// # use ap33772s_rs::Ap33772s;
     /// # async fn example(mut device: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
-    /// let capabilities = device.get_all_source_power_capabilities().await?;
+    /// let capabilities = device.get_all_source_power_capabilities()?;
     ///
     /// println!("Available power capabilities:");
-    /// for (i, pdo) in capabilities.standard_power_data_objects().iter().enumerate() {
-    ///     println!("  PDO {}: {}", i + 1, pdo);
+    /// for (i, pdo) in capabilities.power_data_objects.iter().enumerate() {
+    ///     println!("  PDO {}: {:?}", i + 1, pdo);
     /// }
     /// # Ok(())
     /// # }
