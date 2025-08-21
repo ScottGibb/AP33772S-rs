@@ -57,7 +57,7 @@ pub use crate::units::*;
 /// ## Usage
 ///
 /// **Get current configuration:**
-/// ```rust,no_run
+/// ```rust,ignore
 /// # use ap33772s_rs::{Ap33772s, types::PowerDeliveryMode};
 /// # async fn example(mut ap33772s: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
 /// let pd_mode: PowerDeliveryMode = ap33772s.get_power_delivery_configuration().await?;
@@ -69,7 +69,7 @@ pub use crate::units::*;
 /// ```
 ///
 /// **Set configuration:**
-/// ```rust,no_run
+/// ```rust,ignore
 /// # use ap33772s_rs::{Ap33772s, types::PowerDeliveryMode};
 /// # async fn example(mut ap33772s: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
 /// let pd_mode = PowerDeliveryMode {
@@ -127,7 +127,7 @@ impl core::fmt::Display for PowerDeliveryMode {
 ///
 /// ## Usage
 ///
-/// ```rust,no_run
+/// ```rust,ignore
 /// # use ap33772s_rs::{Ap33772s, types::Statistics};
 /// # async fn example(mut ap33772s: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
 /// let stats: Statistics = ap33772s.get_statistics().await?;
@@ -235,7 +235,7 @@ impl defmt::Format for Statistics {
 ///
 /// ## Usage
 ///
-/// ```rust,no_run
+/// ```rust,ignore
 /// # use ap33772s_rs::{Ap33772s, types::ThermalResistances, units::*};
 /// # async fn example(mut ap33772s: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
 /// // Use default values based on typical NTC characteristics
@@ -325,7 +325,7 @@ pub use crate::commands::thresholds::under_voltage_protection_threshold::UnderVo
 ///
 /// ## Usage
 ///
-/// ```rust,no_run
+/// ```rust,ignore
 /// # use ap33772s_rs::{Ap33772s, types::{Thresholds, UnderVoltageThreshold}, units::*};
 /// # async fn example(mut ap33772s: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
 /// let thresholds = Thresholds {

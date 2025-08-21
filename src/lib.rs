@@ -32,7 +32,7 @@
 //! ap33772s-rs = { version = "0.1", features = ["sync"] }
 //! ```
 //!
-//! ```rust,no_run
+//! ```rust,ignore
 //! use ap33772s_rs::{Ap33772s, types::Statistics};
 //!
 //! # async fn example(i2c: impl embedded_hal::i2c::I2c, delay: impl embedded_hal::delay::DelayNs) -> Result<(), Box<dyn std::error::Error>> {

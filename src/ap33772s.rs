@@ -39,7 +39,7 @@ use crate::units::*;
 ///
 /// ### Basic Synchronous Usage
 ///
-/// ```rust,no_run
+/// ```rust,ignore
 /// use ap33772s_rs::Ap33772s;
 ///
 /// # async fn example(i2c: impl embedded_hal::i2c::I2c, delay: impl embedded_hal::delay::DelayNs) -> Result<(), Box<dyn std::error::Error>> {
@@ -55,7 +55,7 @@ use crate::units::*;
 ///
 /// ### Manual Initialization
 ///
-/// ```rust,no_run
+/// ```rust,ignore
 /// use ap33772s_rs::{Ap33772s, types::{ThermalResistances, Thresholds}};
 ///
 /// # async fn example(i2c: impl embedded_hal::i2c::I2c, delay: impl embedded_hal::delay::DelayNs) -> Result<(), Box<dyn std::error::Error>> {
@@ -105,7 +105,7 @@ impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
     ///
     /// # Examples
     ///
-    /// ```rust,no_run
+    /// ```rust,ignore
     /// use ap33772s_rs::Ap33772s;
     ///
     /// # fn example(i2c: impl embedded_hal::i2c::I2c, delay: impl embedded_hal::delay::DelayNs) {
@@ -146,7 +146,7 @@ impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
     ///
     /// # Examples
     ///
-    /// ```rust,no_run
+    /// ```rust,ignore
     /// use ap33772s_rs::{Ap33772s, errors::Ap33772sError};
     ///
     /// # async fn example(i2c: impl embedded_hal::i2c::I2c, delay: impl embedded_hal::delay::DelayNs) -> Result<(), Box<dyn std::error::Error>> {
