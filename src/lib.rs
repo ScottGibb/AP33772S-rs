@@ -54,7 +54,7 @@
 //! // Get available capabilities and negotiate power delivery
 //! let capabilities = device.get_all_source_power_capabilities()?;
 //! device.negotiate_power_delivery(
-//!     PowerDataObject::One,
+//!     PowerDataObject::StandardRangeOne,
 //!     None, // Fixed PDO
 //!     OperatingCurrentSelection::Maximum,
 //!     &capabilities

@@ -152,7 +152,7 @@ use crate::units::*;
 ///
 /// // Step 2: Negotiate for 12V at maximum current
 /// let response = device.negotiate_power_delivery(
-///     PowerDataObject::Two, // Typically 9V or 12V
+///     PowerDataObject::StandardRangeTwo, // Typically 9V or 12V
 ///     None, // Fixed PDO
 ///     OperatingCurrentSelection::Maximum,
 ///     &capabilities
@@ -400,7 +400,7 @@ impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
     ///
     /// # Parameters
     ///
-    /// - `power_data_object_index` - Which PDO to request (PowerDataObject::One through PowerDataObject::Thirteen)
+    /// - `power_data_object_index` - Which PDO to request (PowerDataObject::StandardRangeOne through PowerDataObject::Thirteen)
     /// - `voltage_selection` - Desired voltage for variable PDOs (`None` for fixed PDOs)
     /// - `current_selection` - Operating current selection mode
     /// - `data_objects` - Available source capabilities from [`get_all_source_power_capabilities`]
@@ -475,12 +475,12 @@ impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
     ///     None, // Fixed PDO - no voltage selection
     ///     OperatingCurrentSelection::Maximum,
     ///     &capabilities
-    /// ).await?;
+    /// )?;
     ///
     /// match response {
     ///     PowerDeliveryResponse::Success => {
     ///         println!("Power delivery negotiation successful!");
-    ///         let stats = device.get_statistics().await?;
+    ///         let stats = device.get_statistics()?;
     ///         println!("New voltage: {:.1}V", stats.voltage.get::<volt>());
     ///     },
     ///     PowerDeliveryResponse::NotSupported => {

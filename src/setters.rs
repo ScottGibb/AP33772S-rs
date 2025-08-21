@@ -318,7 +318,7 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     ///
     /// # Parameters
     ///
-    /// - `power_data_object_index` - Which PDO to request (PowerDataObject::One through PowerDataObject::Thirteen)
+    /// - `power_data_object_index` - Which PDO to request (PowerDataObject::StandardRangeOne through PowerDataObject::Thirteen)
     /// - `voltage_selection` - Desired voltage for variable PDOs (None for fixed PDOs)  
     /// - `current_selection` - Operating current selection mode
     /// - `data_objects` - Available source capabilities from [`get_all_source_power_capabilities`]
@@ -361,7 +361,7 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     ///
     /// // Request PDO #2 (often 9V) at maximum current  
     /// device.send_power_delivery_request(
-    ///     PowerDataObject::Two,
+    ///     PowerDataObject::StandardRangeTwo,
     ///     None, // Fixed PDO - no voltage selection needed
     ///     OperatingCurrentSelection::Maximum,
     ///     &capabilities

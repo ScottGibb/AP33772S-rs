@@ -374,7 +374,7 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     ///
     /// // Send a power delivery request
     /// device.send_power_delivery_request(
-    ///     PowerDataObject::Two,
+    ///     PowerDataObject::StandardRangeTwo,
     ///     None, // Fixed PDO
     ///     OperatingCurrentSelection::Maximum,
     ///     &source_capabilities
@@ -1052,7 +1052,7 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     ///
     /// // Use a specific PDO for negotiation
     /// device.negotiate_power_delivery(
-    ///     PowerDataObject::Two,
+    ///     PowerDataObject::StandardRangeTwo,
     ///     None, // Fixed PDO
     ///     OperatingCurrentSelection::Maximum
     /// ).await?;
