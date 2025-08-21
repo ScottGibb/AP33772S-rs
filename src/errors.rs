@@ -27,7 +27,7 @@
 //! use ap33772s_rs::{Ap33772sError, errors::RequestError};
 //!
 //! async fn handle_errors(mut device: ap33772s_rs::Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) {
-//!     match device.get_status().await {
+//!     match device.get_status() {
 //!         Ok(status) => println!("Status: {:?}", status),
 //!         Err(Ap33772sError::I2c(_)) => {
 //!             // I2C communication problem - check connections
@@ -97,7 +97,7 @@ pub enum Ap33772sError {
     ///
     /// # Example
     /// ```rust,no_run
-    /// # use ap33772s_rs::Ap33772sError;
+    /// # use ap33772s_rs::types::Ap33772sError;
     /// match error {
     ///     Ap33772sError::I2c(i2c_error) => {
     ///         eprintln!("I2C communication failed: {:?}", i2c_error);
@@ -128,11 +128,11 @@ pub enum Ap33772sError {
     ///
     /// # Example
     /// ```rust,no_run
-    /// # use ap33772s_rs::{Ap33772sError, types::units::*};
+    /// # use ap33772s_rs::{Ap33772sError, units::*};
     /// // This might cause ConversionFailed if voltage is too high
     /// let result = device.set_minimum_selection_voltage(
     ///     ElectricPotential::new::<volt>(50.0) // Too high!
-    /// ).await;
+    /// );
     ///
     /// if let Err(Ap33772sError::ConversionFailed) = result {
     ///     eprintln!("Voltage value out of range");
@@ -164,7 +164,7 @@ pub enum Ap33772sError {
     ///
     /// # Example
     /// ```rust,no_run
-    /// # use ap33772s_rs::Ap33772sError;
+    /// # use ap33772s_rs::types::Ap33772sError;
     /// match error {
     ///     Ap33772sError::DataMalformed(raw_value) => {
     ///         eprintln!("Invalid data from device: 0x{:02X}", raw_value);
@@ -223,7 +223,7 @@ pub enum Ap33772sError {
     ///
     /// # Example
     /// ```rust,no_run
-    /// # use ap33772s_rs::Ap33772sError;
+    /// # use ap33772s_rs::types::Ap33772sError;
     /// match error {
     ///     Ap33772sError::WrongCommandVersion(version) => {
     ///         eprintln!("Expected AP33772S but found device with version: 0x{:02X}", version);
@@ -340,7 +340,7 @@ pub enum RequestError {
     ///     None, // ERROR: PPS requires voltage selection!
     ///     OperatingCurrentSelection::Maximum,
     ///     &capabilities
-    /// ).await;
+    /// );
     /// ```
     MissingArgument,
 

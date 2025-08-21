@@ -781,7 +781,7 @@ impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
     ///
     /// ## Error Handling with Device Detection
     /// ```rust,no_run
-    /// # use ap33772s_rs::Ap33772sError;
+    /// # use ap33772s_rs::types::Ap33772sError;
     /// # async fn example(mut device: ap33772s_rs::Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) {
     /// match device.is_device_present().await {
     ///     Ok(()) => println!("AP33772S found and ready"),

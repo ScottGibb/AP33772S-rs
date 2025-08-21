@@ -51,19 +51,19 @@
 //!     under_voltage: ElectricPotential::new::<volt>(4.5),
 //!     derating: ThermodynamicTemperature::new::<degree_celsius>(75.0),
 //! };
-//! device.set_thresholds(thresholds).await?;
+//! device.set_thresholds(thresholds)?;
 //!
 //! // Enable extended power range mode for higher voltages
 //! let pd_mode = PowerDeliveryMode {
 //!     extended_power_range_mode_enabled: true,
 //!     programmable_power_supply_adjustable_voltage_supply_enabled: true,
 //! };
-//! device.set_power_delivery_mode(pd_mode).await?;
+//! device.set_power_delivery_mode(pd_mode)?;
 //!
 //! // Set minimum acceptable voltage to 9V
 //! device.set_minimum_selection_voltage(
 //!     ElectricPotential::new::<volt>(9.0)
-//! ).await?;
+//! );
 //! # Ok(())
 //! # }
 //! ```
@@ -131,12 +131,12 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     /// # use ap33772s_rs::{Ap33772s, types::command_structures::VoltageOutputControl};
     /// # async fn example(mut device: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
     /// // Temporarily disable output for safety
-    /// device.override_output_voltage(VoltageOutputControl::Disabled).await?;
+    /// device.override_output_voltage(VoltageOutputControl::Disabled)?;
     ///
     /// // Perform some configuration...
     ///
     /// // Return to automatic control
-    /// device.override_output_voltage(VoltageOutputControl::Auto).await?;
+    /// device.override_output_voltage(VoltageOutputControl::Auto)?;
     /// # Ok(())
     /// # }
     /// ```
@@ -188,12 +188,12 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     /// # Example
     ///
     /// ```rust,no_run
-    /// # use ap33772s_rs::{Ap33772s, types::units::*};
+    /// # use ap33772s_rs::{Ap33772s, units::*};
     /// # async fn example(mut device: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
     /// // Only accept 9V or higher voltages
     /// device.set_minimum_selection_voltage(
     ///     ElectricPotential::new::<volt>(9.0)
-    /// ).await?;
+    /// );
     ///
     /// // This ensures 5V PDOs will be rejected, forcing negotiation to higher voltages
     /// # Ok(())

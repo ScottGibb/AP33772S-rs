@@ -46,19 +46,19 @@
 //! let mut device = Ap33772s::new(i2c, delay);
 //!
 //! // Get current device statistics
-//! let stats = device.get_statistics().await?;
+//! let stats = device.get_statistics()?;
 //! println!("Voltage: {:.2}V, Current: {:.2}A",
 //!          stats.voltage.get::<volt>(),
 //!          stats.current.get::<ampere>());
 //!
 //! // Get available capabilities and negotiate power delivery
-//! let capabilities = device.get_all_source_power_capabilities().await?;
+//! let capabilities = device.get_all_source_power_capabilities()?;
 //! device.negotiate_power_delivery(
 //!     PowerDataObject::One,
 //!     None, // Fixed PDO
 //!     OperatingCurrentSelection::Maximum,
 //!     &capabilities
-//! ).await?;
+//! );
 //! # Ok(())
 //! # }
 //! ```

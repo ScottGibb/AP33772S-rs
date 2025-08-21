@@ -248,9 +248,9 @@ impl core::fmt::Display for PowerDeliveryMode {
 /// # Usage Examples
 ///
 /// ```rust,no_run
-/// # use ap33772s_rs::{Ap33772s, types::units::*};
+/// # use ap33772s_rs::{Ap33772s, units::*};
 /// # async fn example(mut device: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
-/// let stats = device.get_statistics().await?;
+/// let stats = device.get_statistics()?;
 ///
 /// // Check actual output vs requested
 /// println!("Power Delivery Status:");
