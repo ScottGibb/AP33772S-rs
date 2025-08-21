@@ -35,16 +35,83 @@ use crate::types::*;
 use crate::units::*;
 
 impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<I2C, D> {
+    /// Reads the current device status register.
+    /// 
+    /// Returns detailed information about the device state including error flags,
+    /// communication status, and power delivery state.
+    /// 
+    /// # Returns
+    /// 
+    /// [`Status`] containing device status flags, or [`Ap33772sError`] on communication error.
+    /// 
+    /// # Examples
+    /// 
+    /// ```rust,no_run
+    /// # use ap33772s_rs::Ap33772s;
+    /// # async fn example(mut device: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
+    /// let status = device.get_status().await?;
+    /// 
+    /// if status.i2c_ready() {
+    ///     println!("Device is ready for communication");
+    /// }
+    /// if status.started() {
+    ///     println!("Device has completed initialization");
+    /// }
+    /// # Ok(())
+    /// # }
+    /// ```
+    /// 
+    /// [`Status`]: crate::types::command_structures::Status
+    /// [`Ap33772sError`]: crate::errors::Ap33772sError
     #[maybe_async::maybe_async]
     pub async fn get_status(&mut self) -> Result<Status, Ap33772sError> {
         self.read_one_byte_command::<Status>().await
     }
 
+    /// Reads the current operation mode of the device.
+    /// 
+    /// Returns information about the device's current operational configuration,
+    /// including channel settings and de-rating mode.
+    /// 
+    /// # Returns
+    /// 
+    /// [`OperationMode`] containing the current operation settings, or [`Ap33772sError`] on communication error.
+    /// 
+    /// [`OperationMode`]: crate::types::command_structures::OperationMode
+    /// [`Ap33772sError`]: crate::errors::Ap33772sError
     #[maybe_async::maybe_async]
     pub async fn get_operating_mode(&mut self) -> Result<OperationMode, Ap33772sError> {
         self.read_one_byte_command::<OperationMode>().await
     }
 
+    /// Reads the power delivery configuration capabilities.
+    /// 
+    /// Returns information about supported power delivery modes including
+    /// Programmable Power Supply (PPS) and Extended Power Range (EPR) support.
+    /// 
+    /// # Returns
+    /// 
+    /// [`PowerDeliveryMode`] indicating supported PD features, or [`Ap33772sError`] on communication error.
+    /// 
+    /// # Examples
+    /// 
+    /// ```rust,no_run
+    /// # use ap33772s_rs::Ap33772s;
+    /// # async fn example(mut device: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
+    /// let pd_config = device.get_power_delivery_configuration().await?;
+    /// 
+    /// if pd_config.programmable_power_supply_adjustable_voltage_supply_enabled {
+    ///     println!("PPS with AVS is supported");
+    /// }
+    /// if pd_config.extended_power_range_mode_enabled {
+    ///     println!("Extended Power Range mode is supported");  
+    /// }
+    /// # Ok(())
+    /// # }
+    /// ```
+    /// 
+    /// [`PowerDeliveryMode`]: crate::types::PowerDeliveryMode
+    /// [`Ap33772sError`]: crate::errors::Ap33772sError
     #[maybe_async::maybe_async]
     pub async fn get_power_delivery_configuration(
         &mut self,
