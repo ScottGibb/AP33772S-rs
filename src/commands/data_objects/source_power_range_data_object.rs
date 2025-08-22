@@ -63,9 +63,9 @@ impl SourcePowerRangeDataObject {
                         }
                         StandardMinimumVoltage::_3_3To5 => {
                             Ok(ElectricPotential::new::<millivolt>(5000)
-                                + ElectricPotential::new::<millivolt>(
-                                    u32::from(StandardPowerRangeDataObject::VOLTAGE_RESOLUTION),
-                                ))
+                                + ElectricPotential::new::<millivolt>(u32::from(
+                                    StandardPowerRangeDataObject::VOLTAGE_RESOLUTION,
+                                )))
                         }
                         _ => Err(Ap33772sError::ConversionFailed),
                     },
@@ -80,9 +80,9 @@ impl SourcePowerRangeDataObject {
                         }
                         ExtendedMinimumVoltage::FifteenLessThanVoltageMinimumLessThanTwenty => {
                             Ok(ElectricPotential::new::<millivolt>(20000)
-                                + ElectricPotential::new::<millivolt>(
-                                    u32::from(ExtendedPowerRangeDataObject::VOLTAGE_RESOLUTION),
-                                ))
+                                + ElectricPotential::new::<millivolt>(u32::from(
+                                    ExtendedPowerRangeDataObject::VOLTAGE_RESOLUTION,
+                                )))
                         }
                         _ => Err(Ap33772sError::ConversionFailed),
                     },

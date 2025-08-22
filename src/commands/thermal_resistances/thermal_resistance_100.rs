@@ -1,6 +1,6 @@
 use crate::commands::command_map::Command;
-use crate::{impl_two_byte_read_command, impl_two_byte_write_command};
 use crate::units::{ElectricalResistance, ohm};
+use crate::{impl_two_byte_read_command, impl_two_byte_write_command};
 use bitbybit::bitfield;
 
 /// This command is used to read and write the thermal resistance value at 100 degrees Celsius.

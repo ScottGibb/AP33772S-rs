@@ -34,7 +34,7 @@ impl MinimumSelectionVoltage {
     }
     pub fn convert_voltage_to_raw_voltage(voltage: ElectricPotential) -> Result<u8, Ap33772sError> {
         let voltage_mv = voltage.get::<millivolt>();
-        
+
         // Check for overflow in division
         let raw_value = voltage_mv / u32::from(Self::SELECTION_VOLTAGE_RESOLUTION);
 
