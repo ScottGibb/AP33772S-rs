@@ -1,8 +1,7 @@
 use crate::commands::command_map::Command;
 use crate::impl_one_byte_read_command;
+use crate::units::{ThermodynamicTemperature, degree_celsius};
 use bitbybit::bitfield;
-use uom::si::f32::ThermodynamicTemperature;
-use uom::si::thermodynamic_temperature::degree_celsius;
 
 /// This struct represents the temperature of the AP33772S device.
 /// It contains the raw temperature value and provides a method to convert it to degrees Celsius.
@@ -21,7 +20,7 @@ pub struct Temperature {
 impl Temperature {
     /// Returns the temperature value in degrees Celsius.
     pub fn temperature(&self) -> ThermodynamicTemperature {
-        let scaled_temperature = f32::from(self.raw_temperature()); // Conversion is already in degrees Celsius
+        let scaled_temperature = u32::from(self.raw_temperature()); // Conversion is already in degrees Celsius
         ThermodynamicTemperature::new::<degree_celsius>(scaled_temperature) // Temperature is already in degrees Celsius
     }
 }

@@ -59,12 +59,12 @@ impl SourcePowerRangeDataObject {
                 match data_object.minimum_voltage() {
                     Some(voltage) => match voltage {
                         StandardMinimumVoltage::_3_3 => {
-                            Ok(ElectricPotential::new::<millivolt>(3300.0))
+                            Ok(ElectricPotential::new::<millivolt>(3300))
                         }
                         StandardMinimumVoltage::_3_3To5 => {
-                            Ok(ElectricPotential::new::<millivolt>(5000.0)
+                            Ok(ElectricPotential::new::<millivolt>(5000)
                                 + ElectricPotential::new::<millivolt>(
-                                    StandardPowerRangeDataObject::VOLTAGE_RESOLUTION as f32,
+                                    u32::from(StandardPowerRangeDataObject::VOLTAGE_RESOLUTION),
                                 ))
                         }
                         _ => Err(Ap33772sError::ConversionFailed),
@@ -76,12 +76,12 @@ impl SourcePowerRangeDataObject {
                 match data_object.minimum_voltage() {
                     Some(voltage) => match voltage {
                         ExtendedMinimumVoltage::Fifteen => {
-                            Ok(ElectricPotential::new::<millivolt>(15000.0))
+                            Ok(ElectricPotential::new::<millivolt>(15000))
                         }
                         ExtendedMinimumVoltage::FifteenLessThanVoltageMinimumLessThanTwenty => {
-                            Ok(ElectricPotential::new::<millivolt>(20000.0)
+                            Ok(ElectricPotential::new::<millivolt>(20000)
                                 + ElectricPotential::new::<millivolt>(
-                                    ExtendedPowerRangeDataObject::VOLTAGE_RESOLUTION as f32,
+                                    u32::from(ExtendedPowerRangeDataObject::VOLTAGE_RESOLUTION),
                                 ))
                         }
                         _ => Err(Ap33772sError::ConversionFailed),
@@ -183,43 +183,43 @@ impl SourceMaximumCurrent {
     /// Returns the maximum current that can be requested using this data object for each level of the [SourceMaximumCurrent]
     pub fn max_range(&self) -> ElectricCurrent {
         match self {
-            SourceMaximumCurrent::LessThan1_24 => ElectricCurrent::new::<milliampere>(1240.0),
-            SourceMaximumCurrent::_1_24To1_49 => ElectricCurrent::new::<milliampere>(1490.0),
-            SourceMaximumCurrent::_1_50To1_74 => ElectricCurrent::new::<milliampere>(1740.0),
-            SourceMaximumCurrent::_1_75To1_99 => ElectricCurrent::new::<milliampere>(1990.0),
-            SourceMaximumCurrent::_2_00To2_24 => ElectricCurrent::new::<milliampere>(2240.0),
-            SourceMaximumCurrent::_2_25To2_49 => ElectricCurrent::new::<milliampere>(2490.0),
-            SourceMaximumCurrent::_2_50To2_74 => ElectricCurrent::new::<milliampere>(2740.0),
-            SourceMaximumCurrent::_2_75To2_99 => ElectricCurrent::new::<milliampere>(2990.0),
-            SourceMaximumCurrent::_3_00To3_24 => ElectricCurrent::new::<milliampere>(3240.0),
-            SourceMaximumCurrent::_3_25To3_49 => ElectricCurrent::new::<milliampere>(3490.0),
-            SourceMaximumCurrent::_3_50To3_74 => ElectricCurrent::new::<milliampere>(3740.0),
-            SourceMaximumCurrent::_3_75To3_99 => ElectricCurrent::new::<milliampere>(3990.0),
-            SourceMaximumCurrent::_4_00To4_24 => ElectricCurrent::new::<milliampere>(4240.0),
-            SourceMaximumCurrent::_4_25To4_49 => ElectricCurrent::new::<milliampere>(4490.0),
-            SourceMaximumCurrent::_4_50To4_99 => ElectricCurrent::new::<milliampere>(4990.0),
-            SourceMaximumCurrent::Maximum => ElectricCurrent::new::<milliampere>(f32::INFINITY),
+            SourceMaximumCurrent::LessThan1_24 => ElectricCurrent::new::<milliampere>(1240),
+            SourceMaximumCurrent::_1_24To1_49 => ElectricCurrent::new::<milliampere>(1490),
+            SourceMaximumCurrent::_1_50To1_74 => ElectricCurrent::new::<milliampere>(1740),
+            SourceMaximumCurrent::_1_75To1_99 => ElectricCurrent::new::<milliampere>(1990),
+            SourceMaximumCurrent::_2_00To2_24 => ElectricCurrent::new::<milliampere>(2240),
+            SourceMaximumCurrent::_2_25To2_49 => ElectricCurrent::new::<milliampere>(2490),
+            SourceMaximumCurrent::_2_50To2_74 => ElectricCurrent::new::<milliampere>(2740),
+            SourceMaximumCurrent::_2_75To2_99 => ElectricCurrent::new::<milliampere>(2990),
+            SourceMaximumCurrent::_3_00To3_24 => ElectricCurrent::new::<milliampere>(3240),
+            SourceMaximumCurrent::_3_25To3_49 => ElectricCurrent::new::<milliampere>(3490),
+            SourceMaximumCurrent::_3_50To3_74 => ElectricCurrent::new::<milliampere>(3740),
+            SourceMaximumCurrent::_3_75To3_99 => ElectricCurrent::new::<milliampere>(3990),
+            SourceMaximumCurrent::_4_00To4_24 => ElectricCurrent::new::<milliampere>(4240),
+            SourceMaximumCurrent::_4_25To4_49 => ElectricCurrent::new::<milliampere>(4490),
+            SourceMaximumCurrent::_4_50To4_99 => ElectricCurrent::new::<milliampere>(4990),
+            SourceMaximumCurrent::Maximum => ElectricCurrent::new::<milliampere>(u32::MAX),
         }
     }
     /// Returns the minimum current that can be requested using this data object for each level of the [SourceMaximumCurrent]
     pub fn min_range(&self) -> ElectricCurrent {
         match self {
-            SourceMaximumCurrent::LessThan1_24 => ElectricCurrent::new::<milliampere>(0.0),
-            SourceMaximumCurrent::_1_24To1_49 => ElectricCurrent::new::<milliampere>(1240.0),
-            SourceMaximumCurrent::_1_50To1_74 => ElectricCurrent::new::<milliampere>(1500.0),
-            SourceMaximumCurrent::_1_75To1_99 => ElectricCurrent::new::<milliampere>(1750.0),
-            SourceMaximumCurrent::_2_00To2_24 => ElectricCurrent::new::<milliampere>(2000.0),
-            SourceMaximumCurrent::_2_25To2_49 => ElectricCurrent::new::<milliampere>(2250.0),
-            SourceMaximumCurrent::_2_50To2_74 => ElectricCurrent::new::<milliampere>(2500.0),
-            SourceMaximumCurrent::_2_75To2_99 => ElectricCurrent::new::<milliampere>(2750.0),
-            SourceMaximumCurrent::_3_00To3_24 => ElectricCurrent::new::<milliampere>(3000.0),
-            SourceMaximumCurrent::_3_25To3_49 => ElectricCurrent::new::<milliampere>(3250.0),
-            SourceMaximumCurrent::_3_50To3_74 => ElectricCurrent::new::<milliampere>(3500.0),
-            SourceMaximumCurrent::_3_75To3_99 => ElectricCurrent::new::<milliampere>(3750.0),
-            SourceMaximumCurrent::_4_00To4_24 => ElectricCurrent::new::<milliampere>(4000.0),
-            SourceMaximumCurrent::_4_25To4_49 => ElectricCurrent::new::<milliampere>(4250.0),
-            SourceMaximumCurrent::_4_50To4_99 => ElectricCurrent::new::<milliampere>(4500.0),
-            SourceMaximumCurrent::Maximum => ElectricCurrent::new::<milliampere>(4990.0),
+            SourceMaximumCurrent::LessThan1_24 => ElectricCurrent::new::<milliampere>(0),
+            SourceMaximumCurrent::_1_24To1_49 => ElectricCurrent::new::<milliampere>(1240),
+            SourceMaximumCurrent::_1_50To1_74 => ElectricCurrent::new::<milliampere>(1500),
+            SourceMaximumCurrent::_1_75To1_99 => ElectricCurrent::new::<milliampere>(1750),
+            SourceMaximumCurrent::_2_00To2_24 => ElectricCurrent::new::<milliampere>(2000),
+            SourceMaximumCurrent::_2_25To2_49 => ElectricCurrent::new::<milliampere>(2250),
+            SourceMaximumCurrent::_2_50To2_74 => ElectricCurrent::new::<milliampere>(2500),
+            SourceMaximumCurrent::_2_75To2_99 => ElectricCurrent::new::<milliampere>(2750),
+            SourceMaximumCurrent::_3_00To3_24 => ElectricCurrent::new::<milliampere>(3000),
+            SourceMaximumCurrent::_3_25To3_49 => ElectricCurrent::new::<milliampere>(3250),
+            SourceMaximumCurrent::_3_50To3_74 => ElectricCurrent::new::<milliampere>(3500),
+            SourceMaximumCurrent::_3_75To3_99 => ElectricCurrent::new::<milliampere>(3750),
+            SourceMaximumCurrent::_4_00To4_24 => ElectricCurrent::new::<milliampere>(4000),
+            SourceMaximumCurrent::_4_25To4_49 => ElectricCurrent::new::<milliampere>(4250),
+            SourceMaximumCurrent::_4_50To4_99 => ElectricCurrent::new::<milliampere>(4500),
+            SourceMaximumCurrent::Maximum => ElectricCurrent::new::<milliampere>(4990),
         }
     }
 }

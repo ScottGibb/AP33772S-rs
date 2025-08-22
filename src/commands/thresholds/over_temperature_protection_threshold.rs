@@ -27,20 +27,17 @@ impl OverTemperatureProtectionThreshold {
     pub fn convert_temperature_to_raw_temperature(
         temperature: ThermodynamicTemperature,
     ) -> Result<u8, Ap33772sError> {
-        if !temperature.is_finite() || !temperature.is_sign_positive() {
-            return Err(Ap33772sError::ConversionFailed);
-        }
-        let raw_value = temperature.get::<degree_celsius>() as u16;
+        let temp_celsius = temperature.get::<degree_celsius>();
 
-        if raw_value > u8::MAX as u16 {
+        if temp_celsius > u32::from(u8::MAX) {
             return Err(Ap33772sError::ConversionFailed);
         }
 
-        Ok(raw_value as u8)
+        Ok(temp_celsius as u8)
     }
 
     pub fn convert_raw_temperature_to_temperature(raw_temperature: u8) -> ThermodynamicTemperature {
-        let scaled_temperature = f32::from(raw_temperature);
+        let scaled_temperature = u32::from(raw_temperature);
         ThermodynamicTemperature::new::<degree_celsius>(scaled_temperature)
     }
 }

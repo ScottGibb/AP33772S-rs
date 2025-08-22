@@ -1,8 +1,7 @@
 use crate::commands::command_map::Command;
 use crate::{impl_two_byte_read_command, impl_two_byte_write_command};
+use crate::units::{ElectricalResistance, ohm};
 use bitbybit::bitfield;
-use uom::si::electrical_resistance::ohm;
-use uom::si::f32::ElectricalResistance;
 
 /// This command is used to read and write the thermal resistance value at 50 degrees Celsius.
 /// It is represented as a 16-bit unsigned integer in ohms (Ω). The default value is set to 0x1041,
@@ -29,7 +28,7 @@ pub struct ThermalResistance50 {
 impl ThermalResistance50 {
     /// Returns the thermal resistance value in ohms at 50 degrees Celsius.
     pub fn thermal_resistance(&self) -> ElectricalResistance {
-        ElectricalResistance::new::<ohm>(f32::from(self.raw_thermal_resistance()))
+        ElectricalResistance::new::<ohm>(u32::from(self.raw_thermal_resistance()))
     }
 }
 impl_two_byte_read_command!(ThermalResistance50, Command::ThermalResistance50);

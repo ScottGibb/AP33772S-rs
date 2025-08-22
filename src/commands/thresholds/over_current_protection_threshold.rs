@@ -40,15 +40,13 @@ impl OverCurrentProtectionThreshold {
         u16::from(self.raw_current())
             .checked_mul(Self::CURRENT_RESOLUTION)
             .ok_or(Ap33772sError::ConversionFailed)
-            .map(|scaled_current| ElectricCurrent::new::<milliampere>(f32::from(scaled_current)))
+            .map(|scaled_current| ElectricCurrent::new::<milliampere>(u32::from(scaled_current)))
     }
     pub fn convert_current_to_raw_current(current: ElectricCurrent) -> Result<u8, Ap33772sError> {
-        if !current.is_finite() || !current.is_sign_positive() {
-            return Err(Ap33772sError::ConversionFailed);
-        }
-        let raw_value = current.get::<milliampere>() / Self::CURRENT_RESOLUTION as f32;
+        let current_ma = current.get::<milliampere>();
+        let raw_value = current_ma / u32::from(Self::CURRENT_RESOLUTION);
 
-        if raw_value > f32::from(u8::MAX) {
+        if raw_value > u32::from(u8::MAX) {
             return Err(Ap33772sError::ConversionFailed);
         }
 

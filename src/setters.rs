@@ -174,12 +174,12 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
                 .with_power_data_object_index(power_data_object_index)
                 .build()
         } else {
-            let scaling_value = f32::from(data_object.voltage_resolution());
+            let scaling_value = u32::from(data_object.voltage_resolution());
             let voltage_selection = voltage_selection
                 .ok_or(Ap33772sError::InvalidRequest(RequestError::MissingArgument))?;
             let scaled_voltage = voltage_selection.get::<millivolt>() / scaling_value;
             // Check for overflow
-            let scaled_voltage = if scaled_voltage > f32::from(u8::MAX) {
+            let scaled_voltage = if scaled_voltage > u32::from(u8::MAX) {
                 Err(Ap33772sError::ConversionFailed)
             } else {
                 Ok(scaled_voltage as u8)

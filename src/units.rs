@@ -30,14 +30,14 @@
 //! ```rust
 //! use ap33772s_rs::units::*;
 //!
-//! // Create measurements using unit constants
-//! let voltage = ElectricPotential::new::<volt>(5.0);
-//! let current = ElectricCurrent::new::<milliampere>(1500.0);
-//! let temp = ThermodynamicTemperature::new::<degree_celsius>(25.0);
+//! // Create measurements using unit constants with integer values
+//! let voltage = ElectricPotential::new::<volt>(5);      // 5 volts
+//! let current = ElectricCurrent::new::<milliampere>(1500); // 1500 mA (1.5A)
+//! let temp = ThermodynamicTemperature::new::<degree_celsius>(25); // 25°C
 //!
 //! // Convert between units
-//! let voltage_mv = voltage.get::<millivolt>(); // 5000.0
-//! let current_a = current.get::<ampere>();     // 1.5
+//! let voltage_mv = voltage.get::<millivolt>(); // 5000 (mV)
+//! let current_a = current.get::<ampere>();     // 1 (A, truncated from 1.5)
 //! ```
 pub use uom::si::electric_current::ampere;
 pub use uom::si::electric_current::milliampere;
@@ -45,10 +45,10 @@ pub use uom::si::electric_potential::millivolt;
 pub use uom::si::electric_potential::volt;
 pub use uom::si::electrical_resistance::milliohm;
 pub use uom::si::electrical_resistance::ohm;
-pub use uom::si::f32::ElectricCurrent;
-pub use uom::si::f32::ElectricPotential;
-pub use uom::si::f32::ElectricalResistance;
-pub use uom::si::f32::Power;
-pub use uom::si::f32::ThermodynamicTemperature;
+pub use uom::si::u32::ElectricCurrent;
+pub use uom::si::u32::ElectricPotential;
+pub use uom::si::u32::ElectricalResistance;
+pub use uom::si::u32::Power;
+pub use uom::si::u32::ThermodynamicTemperature;
 pub use uom::si::power::watt;
 pub use uom::si::thermodynamic_temperature::degree_celsius;

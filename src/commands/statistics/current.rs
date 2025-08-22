@@ -37,7 +37,7 @@ impl Current {
         u16::from(self.raw_current())
             .checked_mul(Self::CURRENT_RESOLUTION)
             .ok_or(Ap33772sError::ConversionFailed)
-            .map(|scaled_current| ElectricCurrent::new::<milliampere>(f32::from(scaled_current)))
+            .map(|scaled_current| ElectricCurrent::new::<milliampere>(u32::from(scaled_current)))
     }
 }
 impl_one_byte_read_command!(Current, Command::Current);

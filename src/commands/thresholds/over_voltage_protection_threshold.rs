@@ -38,15 +38,13 @@ impl OverVoltageProtectionThreshold {
         u16::from(self.raw_voltage())
             .checked_mul(Self::VOLTAGE_RESOLUTION)
             .ok_or(Ap33772sError::ConversionFailed)
-            .map(|scaled_voltage| ElectricPotential::new::<millivolt>(f32::from(scaled_voltage)))
+            .map(|scaled_voltage| ElectricPotential::new::<millivolt>(u32::from(scaled_voltage)))
     }
     pub fn convert_voltage_to_raw_voltage(voltage: ElectricPotential) -> Result<u8, Ap33772sError> {
-        if !voltage.is_finite() || !voltage.is_sign_positive() {
-            return Err(Ap33772sError::ConversionFailed);
-        }
-        let raw_value = voltage.get::<millivolt>() / f32::from(Self::VOLTAGE_RESOLUTION);
+        let voltage_mv = voltage.get::<millivolt>();
+        let raw_value = voltage_mv / u32::from(Self::VOLTAGE_RESOLUTION);
 
-        if raw_value > f32::from(u8::MAX) {
+        if raw_value > u32::from(u8::MAX) {
             return Err(Ap33772sError::ConversionFailed);
         }
 

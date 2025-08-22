@@ -46,7 +46,7 @@ impl ExtendedPowerRangeDataObject {
         let scaled_voltage = u16::from(self.raw_max_voltage())
             .checked_mul(Self::VOLTAGE_RESOLUTION)
             .ok_or(Ap33772sError::ConversionFailed)?;
-        Ok(ElectricPotential::new::<millivolt>(f32::from(
+        Ok(ElectricPotential::new::<millivolt>(u32::from(
             scaled_voltage,
         )))
     }
@@ -97,7 +97,7 @@ impl core::fmt::Display for ExtendedPowerRangeDataObject {
             f,
             "ExtendedPowerRangeDataObject {{ max_voltage: {:?}, minimum_voltage: {:?}, peak_current: {:?}, max_current: {:?}, source_power_type: {:?}, is_detected: {} }}",
             self.max_voltage()
-                .unwrap_or(ElectricPotential::new::<millivolt>(f32::NEG_INFINITY))
+                .unwrap_or(ElectricPotential::new::<millivolt>(0))
                 .get::<volt>(),
             self.minimum_voltage(),
             self.peak_current(),
@@ -115,7 +115,7 @@ impl defmt::Format for ExtendedPowerRangeDataObject {
             f,
             "ExtendedPowerRangeDataObject {{ max_voltage: {}, minimum_voltage: {:?}, max_current: {:?}, source_power_type: {:?}, is_detected: {} }}",
             self.max_voltage()
-                .unwrap_or(ElectricPotential::new::<millivolt>(f32::NEG_INFINITY))
+                .unwrap_or(ElectricPotential::new::<millivolt>(0))
                 .get::<volt>(),
             self.minimum_voltage(),
             self.max_current(),

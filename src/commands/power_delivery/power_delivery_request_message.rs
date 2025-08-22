@@ -130,22 +130,22 @@ impl OperatingCurrentSelection {
     pub fn current(&self) -> ElectricCurrent {
         use OperatingCurrentSelection::*;
         let current = match self {
-            _1A => 1000.0,
-            _1_25A => 1250.0,
-            _1_5A => 1500.0,
-            _1_75A => 1750.0,
-            _2A => 2000.0,
-            _2_25A => 2250.0,
-            _2_5A => 2500.0,
-            _2_75A => 2750.0,
-            _3A => 3000.0,
-            _3_25A => 3250.0,
-            _3_5A => 3500.0,
-            _3_75A => 3750.0,
-            _4A => 4000.0,
-            _4_25A => 4250.0,
-            _4_5A => 4500.0,
-            Maximum => 5000.0, // or more
+            _1A => 1000,
+            _1_25A => 1250,
+            _1_5A => 1500,
+            _1_75A => 1750,
+            _2A => 2000,
+            _2_25A => 2250,
+            _2_5A => 2500,
+            _2_75A => 2750,
+            _3A => 3000,
+            _3_25A => 3250,
+            _3_5A => 3500,
+            _3_75A => 3750,
+            _4A => 4000,
+            _4_25A => 4250,
+            _4_5A => 4500,
+            Maximum => 5000, // or more
         };
         ElectricCurrent::new::<milliampere>(current)
     }
