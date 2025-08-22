@@ -37,7 +37,7 @@
 //!
 //! // Convert between units
 //! let voltage_mv = voltage.get::<millivolt>(); // 5000 (mV)
-//! let current_a = current.get::<ampere>();     // 1 (A, truncated from 1.5)
+//! let current_a = current.get::<ampere>();     // 1 (A, result of integer division: 1500 mA / 1000 = 1, fractional part discarded)
 //! ```
 pub use uom::si::electric_current::ampere;
 pub use uom::si::electric_current::milliampere;
