@@ -13,7 +13,7 @@ fn main() {
     let mut ap33772s =
         Ap33772s::new_default(i2c, delay).expect("Failed to create AP33772S instance");
 
-    let adjustable_voltage_supply = ElectricPotential::new::<millivolt>(16500.0);
+    let adjustable_voltage_supply = ElectricPotential::new::<millivolt>(16500);
     // Set the MMOS Switch
     ap33772s
         .override_output_voltage(VoltageOutputControl::ForceOn)

@@ -38,13 +38,13 @@ mod standard_api_formatting_tests {
         print_separator("Statistics");
 
         let statistics = Statistics {
-            current: ElectricCurrent::new::<ampere>(0.1),
-            voltage: ElectricPotential::new::<millivolt>(100.0),
-            power: Power::new::<watt>(10.0),
-            temperature: ThermodynamicTemperature::new::<degree_celsius>(25.0),
-            requested_voltage: ElectricPotential::new::<millivolt>(120.0),
-            requested_current: ElectricCurrent::new::<ampere>(0.12),
-            requested_power: Power::new::<watt>(12.0),
+            current: ElectricCurrent::new::<milliampere>(100), // 0.1A = 100mA
+            voltage: ElectricPotential::new::<millivolt>(100),
+            power: Power::new::<watt>(10),
+            temperature: ThermodynamicTemperature::new::<degree_celsius>(25),
+            requested_voltage: ElectricPotential::new::<millivolt>(120),
+            requested_current: ElectricCurrent::new::<milliampere>(120), // 0.12A = 120mA
+            requested_power: Power::new::<watt>(12),
         };
 
         println!("Statistics (Display): {statistics}");
@@ -56,10 +56,10 @@ mod standard_api_formatting_tests {
         print_separator("ThermalResistances");
 
         let thermal_resistances = ThermalResistances {
-            _25: ElectricalResistance::new::<milliohm>(250.0),
-            _50: ElectricalResistance::new::<milliohm>(500.0),
-            _75: ElectricalResistance::new::<milliohm>(750.0),
-            _100: ElectricalResistance::new::<milliohm>(1000.0),
+            _25: ElectricalResistance::new::<milliohm>(250),
+            _50: ElectricalResistance::new::<milliohm>(500),
+            _75: ElectricalResistance::new::<milliohm>(750),
+            _100: ElectricalResistance::new::<milliohm>(1000),
         };
 
         println!("ThermalResistances (Display): {thermal_resistances}");
@@ -71,11 +71,11 @@ mod standard_api_formatting_tests {
         print_separator("Thresholds");
 
         let thresholds = Thresholds {
-            over_voltage: ElectricPotential::new::<millivolt>(13000.0),
+            over_voltage: ElectricPotential::new::<millivolt>(13000),
             under_voltage: UnderVoltageThreshold::EightyPercent,
-            over_current: ElectricCurrent::new::<milliampere>(3500.0),
-            over_temperature: ThermodynamicTemperature::new::<degree_celsius>(85.0),
-            derating: ThermodynamicTemperature::new::<degree_celsius>(75.0),
+            over_current: ElectricCurrent::new::<milliampere>(3500),
+            over_temperature: ThermodynamicTemperature::new::<degree_celsius>(85),
+            derating: ThermodynamicTemperature::new::<degree_celsius>(75),
         };
 
         println!("Thresholds (Display): {thresholds}");

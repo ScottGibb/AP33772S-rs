@@ -83,7 +83,7 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     /// # use ap33772s_rs::{Ap33772s, units::*};
     /// # async fn example(mut device: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
     /// // Set minimum selection voltage to 5V
-    /// let min_voltage = ElectricPotential::new::<volt>(5.0);
+    /// let min_voltage = ElectricPotential::new::<volt>(5);
     /// device.set_minimum_selection_voltage(min_voltage)?;
     /// # Ok(())
     /// # }
@@ -248,10 +248,10 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     ///
     /// // Or specify custom values
     /// let custom_resistances = ThermalResistances {
-    ///     _25: ElectricalResistance::new::<ohm>(10000.0),
-    ///     _50: ElectricalResistance::new::<ohm>(3893.0),
-    ///     _75: ElectricalResistance::new::<ohm>(1622.0),
-    ///     _100: ElectricalResistance::new::<ohm>(779.0),
+    ///     _25: ElectricalResistance::new::<ohm>(10000),
+    ///     _50: ElectricalResistance::new::<ohm>(3893),
+    ///     _75: ElectricalResistance::new::<ohm>(1622),
+    ///     _100: ElectricalResistance::new::<ohm>(779),
     /// };
     /// device.set_thermal_resistances(custom_resistances)?;
     /// # Ok(())
@@ -303,11 +303,11 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
     /// # use ap33772s_rs::{Ap33772s, types::{Thresholds, UnderVoltageThreshold}, units::*};
     /// # async fn example(mut device: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
     /// let thresholds = Thresholds {
-    ///     over_voltage: ElectricPotential::new::<volt>(22.0),
+    ///     over_voltage: ElectricPotential::new::<volt>(22),
     ///     under_voltage: UnderVoltageThreshold::default(),
-    ///     over_current: ElectricCurrent::new::<ampere>(5.0),
-    ///     over_temperature: ThermodynamicTemperature::new::<degree_celsius>(85.0),
-    ///     derating: ThermodynamicTemperature::new::<degree_celsius>(75.0),
+    ///     over_current: ElectricCurrent::new::<ampere>(5),
+    ///     over_temperature: ThermodynamicTemperature::new::<degree_celsius>(85),
+    ///     derating: ThermodynamicTemperature::new::<degree_celsius>(75),
     /// };
     ///
     /// device.set_thresholds(thresholds)?;

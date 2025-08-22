@@ -73,7 +73,7 @@ fn main() {
             let response = ap33772s
                 .negotiate_power_delivery(
                     PROGRAMMABLE_POWER_SUPPLY_POWER_DATA_OBJECT,
-                    Some(ElectricPotential::new::<millivolt>(voltage as f32)),
+                    Some(ElectricPotential::new::<millivolt>(voltage as u32)),
                     OperatingCurrentSelection::Maximum,
                     &power_data_objects,
                 )

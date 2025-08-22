@@ -105,7 +105,7 @@ fn get_chosen_voltage_from_user() -> Option<ElectricPotential> {
             .read_line(&mut input)
             .expect("Failed to read line");
         let raw_voltage: u32 = input.trim().parse().expect("Invalid input");
-        Some(ElectricPotential::new::<millivolt>(raw_voltage as f32))
+        Some(ElectricPotential::new::<millivolt>(raw_voltage))
     } else {
         None
     }

@@ -245,10 +245,10 @@ impl defmt::Format for Statistics {
 ///
 /// // Or specify custom values
 /// let custom_resistances = ThermalResistances {
-///     _25: ElectricalResistance::new::<ohm>(10000.0),
-///     _50: ElectricalResistance::new::<ohm>(3893.0),
-///     _75: ElectricalResistance::new::<ohm>(1622.0),
-///     _100: ElectricalResistance::new::<ohm>(779.0),
+///     _25: ElectricalResistance::new::<ohm>(10000),
+///     _50: ElectricalResistance::new::<ohm>(3893),
+///     _75: ElectricalResistance::new::<ohm>(1622),
+///     _100: ElectricalResistance::new::<ohm>(779),
 /// };
 /// ap33772s.set_thermal_resistances(custom_resistances)?;
 /// # Ok(())
@@ -330,11 +330,11 @@ pub use crate::commands::thresholds::under_voltage_protection_threshold::UnderVo
 /// # use ap33772s_rs::{Ap33772s, types::{Thresholds, UnderVoltageThreshold}, units::*};
 /// # async fn example(mut ap33772s: Ap33772s<impl embedded_hal::i2c::I2c, impl embedded_hal::delay::DelayNs>) -> Result<(), Box<dyn std::error::Error>> {
 /// let thresholds = Thresholds {
-///     over_voltage: ElectricPotential::new::<volt>(22.0),
+///     over_voltage: ElectricPotential::new::<volt>(22),
 ///     under_voltage: UnderVoltageThreshold::default(),
-///     over_current: ElectricCurrent::new::<ampere>(5.0),
-///     over_temperature: ThermodynamicTemperature::new::<degree_celsius>(85.0),
-///     derating: ThermodynamicTemperature::new::<degree_celsius>(75.0),
+///     over_current: ElectricCurrent::new::<ampere>(5),
+///     over_temperature: ThermodynamicTemperature::new::<degree_celsius>(85),
+///     derating: ThermodynamicTemperature::new::<degree_celsius>(75),
 /// };
 ///
 /// ap33772s.set_thresholds(thresholds)?;
