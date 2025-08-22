@@ -30,7 +30,7 @@ pub struct ThermalResistance25 {
 impl ThermalResistance25 {
     /// Returns the thermal resistance value in ohms at 25 degrees Celsius.
     pub fn thermal_resistance(&self) -> ElectricalResistance {
-        ElectricalResistance::new::<ohm>(u32::from(self.raw_thermal_resistance()))
+        ElectricalResistance::new::<ohm>(self.raw_thermal_resistance())
     }
 }
 impl_two_byte_read_command!(ThermalResistance25, Command::ThermalResistance25);

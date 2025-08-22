@@ -35,7 +35,7 @@ impl Voltage {
     pub fn voltage(&self) -> Result<ElectricPotential, Ap33772sError> {
         self.raw_voltage()
             .checked_mul(Self::VOLTAGE_RESOLUTION)
-            .map(|scaled_voltage| ElectricPotential::new::<millivolt>(u32::from(scaled_voltage)))
+            .map(ElectricPotential::new::<millivolt>)
             .ok_or(Ap33772sError::ConversionFailed)
     }
 }

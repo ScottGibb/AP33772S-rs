@@ -20,7 +20,7 @@ pub struct Temperature {
 impl Temperature {
     /// Returns the temperature value in degrees Celsius.
     pub fn temperature(&self) -> ThermodynamicTemperature {
-        let scaled_temperature = u32::from(self.raw_temperature()); // Conversion is already in degrees Celsius
+        let scaled_temperature = u16::from(self.raw_temperature()); // Conversion is already in degrees Celsius
         ThermodynamicTemperature::new::<degree_celsius>(scaled_temperature) // Temperature is already in degrees Celsius
     }
 }

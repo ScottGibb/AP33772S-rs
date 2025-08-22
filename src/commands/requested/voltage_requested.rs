@@ -47,9 +47,7 @@ impl VoltageRequested {
             .raw_voltage()
             .checked_mul(Self::VOLTAGE_RESOLUTION)
             .ok_or(Ap33772sError::ConversionFailed)?;
-        Ok(ElectricPotential::new::<millivolt>(u32::from(
-            scaled_voltage,
-        )))
+        Ok(ElectricPotential::new::<millivolt>(scaled_voltage))
     }
 }
 impl_two_byte_read_command!(VoltageRequested, Command::VoltageRequested);

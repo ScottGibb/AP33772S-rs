@@ -36,9 +36,9 @@ impl MinimumSelectionVoltage {
         let voltage_mv = voltage.get::<millivolt>();
 
         // Check for overflow in division
-        let raw_value = voltage_mv / u32::from(Self::SELECTION_VOLTAGE_RESOLUTION);
+        let raw_value = voltage_mv / Self::SELECTION_VOLTAGE_RESOLUTION;
 
-        if raw_value > u32::from(u8::MAX) {
+        if raw_value > u16::from(u8::MAX) {
             return Err(Ap33772sError::ConversionFailed);
         }
 
@@ -49,7 +49,7 @@ impl MinimumSelectionVoltage {
     ) -> Result<ElectricPotential, Ap33772sError> {
         u16::from(raw_voltage)
             .checked_mul(Self::SELECTION_VOLTAGE_RESOLUTION)
-            .map(|scaled| ElectricPotential::new::<millivolt>(u32::from(scaled)))
+            .map(ElectricPotential::new::<millivolt>)
             .ok_or(Ap33772sError::ConversionFailed)
     }
 }

@@ -48,9 +48,7 @@ impl CurrentRequested {
             .raw_current()
             .checked_mul(Self::CURRENT_RESOLUTION)
             .ok_or(Ap33772sError::ConversionFailed)?;
-        Ok(ElectricCurrent::new::<milliampere>(u32::from(
-            scaled_current,
-        )))
+        Ok(ElectricCurrent::new::<milliampere>(scaled_current))
     }
 }
 

@@ -29,7 +29,7 @@ impl OverTemperatureProtectionThreshold {
     ) -> Result<u8, Ap33772sError> {
         let temp_celsius = temperature.get::<degree_celsius>();
 
-        if temp_celsius > u32::from(u8::MAX) {
+        if temp_celsius > u16::from(u8::MAX) {
             return Err(Ap33772sError::ConversionFailed);
         }
 
@@ -37,7 +37,7 @@ impl OverTemperatureProtectionThreshold {
     }
 
     pub fn convert_raw_temperature_to_temperature(raw_temperature: u8) -> ThermodynamicTemperature {
-        let scaled_temperature = u32::from(raw_temperature);
+        let scaled_temperature = u16::from(raw_temperature);
         ThermodynamicTemperature::new::<degree_celsius>(scaled_temperature)
     }
 }

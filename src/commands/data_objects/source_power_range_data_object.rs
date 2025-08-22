@@ -63,9 +63,9 @@ impl SourcePowerRangeDataObject {
                         }
                         StandardMinimumVoltage::_3_3To5 => {
                             Ok(ElectricPotential::new::<millivolt>(5000)
-                                + ElectricPotential::new::<millivolt>(u32::from(
+                                + ElectricPotential::new::<millivolt>(
                                     StandardPowerRangeDataObject::VOLTAGE_RESOLUTION,
-                                )))
+                                ))
                         }
                         _ => Err(Ap33772sError::ConversionFailed),
                     },
@@ -80,9 +80,9 @@ impl SourcePowerRangeDataObject {
                         }
                         ExtendedMinimumVoltage::FifteenLessThanVoltageMinimumLessThanTwenty => {
                             Ok(ElectricPotential::new::<millivolt>(20000)
-                                + ElectricPotential::new::<millivolt>(u32::from(
+                                + ElectricPotential::new::<millivolt>(
                                     ExtendedPowerRangeDataObject::VOLTAGE_RESOLUTION,
-                                )))
+                                ))
                         }
                         _ => Err(Ap33772sError::ConversionFailed),
                     },
@@ -198,7 +198,7 @@ impl SourceMaximumCurrent {
             SourceMaximumCurrent::_4_00To4_24 => ElectricCurrent::new::<milliampere>(4240),
             SourceMaximumCurrent::_4_25To4_49 => ElectricCurrent::new::<milliampere>(4490),
             SourceMaximumCurrent::_4_50To4_99 => ElectricCurrent::new::<milliampere>(4990),
-            SourceMaximumCurrent::Maximum => ElectricCurrent::new::<milliampere>(u32::MAX),
+            SourceMaximumCurrent::Maximum => ElectricCurrent::new::<milliampere>(u16::MAX),
         }
     }
     /// Returns the minimum current that can be requested using this data object for each level of the [SourceMaximumCurrent]

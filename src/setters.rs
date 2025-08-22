@@ -6,7 +6,6 @@ use crate::commands::configuration::power_delivery_configuration::PowerDeliveryC
 use crate::commands::configuration::system_control::SystemControl;
 use crate::commands::power_delivery::power_delivery_request_message::PowerDeliveryRequestMessage;
 use crate::commands::statistics::minimum_selection_voltage::MinimumSelectionVoltage;
-use crate::commands::thermal_resistances::convert_resistance_to_raw_resistance;
 use crate::commands::thermal_resistances::thermal_resistance_25::ThermalResistance25;
 use crate::commands::thermal_resistances::thermal_resistance_50::ThermalResistance50;
 use crate::commands::thermal_resistances::thermal_resistance_75::ThermalResistance75;
@@ -174,12 +173,12 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
                 .with_power_data_object_index(power_data_object_index)
                 .build()
         } else {
-            let scaling_value = u32::from(data_object.voltage_resolution());
+            let scaling_value = data_object.voltage_resolution();
             let voltage_selection = voltage_selection
                 .ok_or(Ap33772sError::InvalidRequest(RequestError::MissingArgument))?;
             let scaled_voltage = voltage_selection.get::<millivolt>() / scaling_value;
             // Check for overflow
-            let scaled_voltage = if scaled_voltage > u32::from(u8::MAX) {
+            let scaled_voltage = if scaled_voltage > u16::from(u8::MAX) {
                 Err(Ap33772sError::ConversionFailed)
             } else {
                 Ok(scaled_voltage as u8)
@@ -267,19 +266,19 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
         resistances: ThermalResistances,
     ) -> Result<(), Ap33772sError> {
         let resistance_25 = ThermalResistance25::builder()
-            .with_raw_thermal_resistance(convert_resistance_to_raw_resistance(resistances._25)?)
+            .with_raw_thermal_resistance(resistances._25.get::<ohm>())
             .build();
         self.write_two_byte_command(resistance_25).await?;
         let resistance_50 = ThermalResistance50::builder()
-            .with_raw_thermal_resistance(convert_resistance_to_raw_resistance(resistances._50)?)
+            .with_raw_thermal_resistance(resistances._50.get::<ohm>())
             .build();
         self.write_two_byte_command(resistance_50).await?;
         let resistance_75 = ThermalResistance75::builder()
-            .with_raw_thermal_resistance(convert_resistance_to_raw_resistance(resistances._75)?)
+            .with_raw_thermal_resistance(resistances._75.get::<ohm>())
             .build();
         self.write_two_byte_command(resistance_75).await?;
         let resistance_100 = ThermalResistance100::builder()
-            .with_raw_thermal_resistance(convert_resistance_to_raw_resistance(resistances._100)?)
+            .with_raw_thermal_resistance(resistances._100.get::<ohm>())
             .build();
         self.write_two_byte_command(resistance_100).await
     }

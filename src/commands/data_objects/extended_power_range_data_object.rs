@@ -46,9 +46,7 @@ impl ExtendedPowerRangeDataObject {
         let scaled_voltage = u16::from(self.raw_max_voltage())
             .checked_mul(Self::VOLTAGE_RESOLUTION)
             .ok_or(Ap33772sError::ConversionFailed)?;
-        Ok(ElectricPotential::new::<millivolt>(u32::from(
-            scaled_voltage,
-        )))
+        Ok(ElectricPotential::new::<millivolt>(scaled_voltage))
     }
     /// Returns the peak current that can be requested using this data object.
     pub fn peak_current(&self) -> Option<PeakCurrent> {
