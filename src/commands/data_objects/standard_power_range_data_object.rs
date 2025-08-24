@@ -99,7 +99,7 @@ impl core::fmt::Display for StandardPowerRangeDataObject {
     fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         write!(
             f,
-            "StandardPowerDataObject {{ max_voltage: {:?} V, minimum_voltage: {:?}, peak_current: {:?}, max_current: {:?} A, source_power_type: {:?}, is_detected: {} }}",
+            "StandardPowerDataObject {{ max_voltage: {:?} mV, minimum_voltage: {:?}, peak_current: {:?}, max_current: {:?} A, source_power_type: {:?}, is_detected: {} }}",
             self.max_voltage()
                 .unwrap_or(ElectricPotential::new::<millivolt>(0))
                 .get::<millivolt>(),
@@ -117,7 +117,7 @@ impl defmt::Format for StandardPowerRangeDataObject {
     fn format(&self, f: defmt::Formatter) {
         defmt::write!(
             f,
-            "StandardPowerDataObject {{ max_voltage: {:?}, minimum_voltage: {:?}, max_current: {:?} A, source_power_type: {:?}, is_detected: {} }}",
+            "StandardPowerDataObject {{ max_voltage: {:?} mV, minimum_voltage: {:?} mV, max_current: {:?} A, source_power_type: {:?}, is_detected: {} }}",
             self.max_voltage()
                 .unwrap_or(ElectricPotential::new::<millivolt>(0))
                 .get::<millivolt>(),
