@@ -102,7 +102,7 @@
 
 ### ls -la [repo-root]
 
-```
+```txt
 .github/               # CI workflows and configurations
 .vscode/               # VSCode settings and extensions
 docs/                  # Datasheets and technical documentation
