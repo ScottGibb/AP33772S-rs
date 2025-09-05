@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.4](https://github.com/ScottGibb/AP33772S-rs/compare/ap33772s-rs-v0.1.3...ap33772s-rs-v0.1.4) - 2025-09-05
+
+### Fixed
+
+- *(deps)* bump arbitrary-int from 1.3.0 to 2.0.0 ([#60](https://github.com/ScottGibb/AP33772S-rs/pull/60))
+- *(deps)* bump bitbybit from 1.3.3 to 1.4.0 ([#64](https://github.com/ScottGibb/AP33772S-rs/pull/64))
+- *(deps)* bump bitbybit from 1.3.3 to 1.4.0 in /examples/raspberrypi ([#66](https://github.com/ScottGibb/AP33772S-rs/pull/66))
+
+### Other
+
+- *(deps)* bump actions/checkout from 4 to 5 ([#58](https://github.com/ScottGibb/AP33772S-rs/pull/58))
+
 ## [0.1.3](https://github.com/ScottGibb/AP33772S-rs/compare/ap33772s-rs-v0.1.2...ap33772s-rs-v0.1.3) - 2025-08-21
 
 ### Added
