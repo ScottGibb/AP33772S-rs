@@ -25,7 +25,7 @@ embassy-executor = { version = "0.7.0", features = [
 embassy-time = { version = "0.5.0", features = ["defmt"] }
 esp-hal-embassy = { version = "0.9.1", features = ["defmt", "esp32c3"] }
 panic-rtt-target = { version = "0.2.0", features = ["defmt"] }
-rtt-target = { version = "0.6.1", features = ["defmt"] }
+rtt-target = { version = "0.6.2", features = ["defmt"] }
 static_cell = "2.1.1"
 
 ap33772s-rs = { path = "../../", default-features = false,features = ["defmt", "async"] }
