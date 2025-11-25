@@ -23,7 +23,7 @@ embassy-executor = { version = "0.7", features = [
   "task-arena-size-20480",
 ] }
 embassy-time = { version = "0.5", features = ["defmt"] }
-esp-hal-embassy = { version = "0.8", features = ["defmt", "esp32c3"] }
+esp-hal-embassy = { version = "0.9", features = ["defmt", "esp32c3"] }
 panic-rtt-target = { version = "0.2", features = ["defmt"] }
 rtt-target = { version = "0.6", features = ["defmt"] }
 static_cell = "2"
