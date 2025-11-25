@@ -9,24 +9,24 @@ name = "esp32c3"
 path = "./src/bin/main.rs"
 
 [dependencies]
-defmt = "1.0.1"
-esp-bootloader-esp-idf = { version = "0.3.0", features = ["esp32c3"] }
+defmt = "1"
+esp-bootloader-esp-idf = { version = "0.4", features = ["esp32c3"] }
 esp-hal = { version = "=1.0.0-rc.0", features = [
   "defmt",
   "esp32c3",
   "unstable",
 ] }
 
-critical-section = "1.2.0"
-embassy-executor = { version = "0.7.0", features = [
+critical-section = "1"
+embassy-executor = { version = "0.7", features = [
   "defmt",
   "task-arena-size-20480",
 ] }
-embassy-time = { version = "0.5.0", features = ["defmt"] }
-esp-hal-embassy = { version = "0.9.1", features = ["defmt", "esp32c3"] }
-panic-rtt-target = { version = "0.2.0", features = ["defmt"] }
-rtt-target = { version = "0.6.2", features = ["defmt"] }
-static_cell = "2.1.1"
+embassy-time = { version = "0.5", features = ["defmt"] }
+esp-hal-embassy = { version = "0.9", features = ["defmt", "esp32c3"] }
+panic-rtt-target = { version = "0.2", features = ["defmt"] }
+rtt-target = { version = "0.6", features = ["defmt"] }
+static_cell = "2"
 
 ap33772s-rs = { path = "../../", default-features = false,features = ["defmt", "async"] }
 

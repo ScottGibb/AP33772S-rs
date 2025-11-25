@@ -19,16 +19,16 @@ advanced = [] # Used to enable lower level register access
 
 [dependencies]
 # Hal Dependencies
-maybe-async = "0.2.10"
-defmt = {version = "1.0.1", optional = true}
-embedded-hal = { version = "1.0.0", optional = true }
-embedded-hal-async = { version = "1.0.0", optional = true }
+maybe-async = "0.2"
+defmt = {version = "1", optional = true}
+embedded-hal = { version = "1", optional = true }
+embedded-hal-async = { version = "1", optional = true }
 
 # Driver Dependencies
-arbitrary-int = "2.0.0"
-bitbybit = "1.4.0"
-uom = { version = "0.37.0",default-features = false, features = ["autoconvert", "si", "f32",]}
-visibility = "0.1.1"
+arbitrary-int = "2"
+bitbybit = "1"
+uom = { version = "0.37",default-features = false, features = ["autoconvert", "si", "f32",]}
+visibility = "0.1"
 
 [dev-dependencies]
 utils ={ path = "./utils"}
