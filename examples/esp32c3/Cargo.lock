@@ -10,7 +10,7 @@ checksum = "a23eb6b1614318a8071c9b2521f36b424b2c83db5eb3a0fead4a6c0809af6e61"
 
 [[package]]
 name = "ap33772s-rs"
-version = "0.1.3"
+version = "0.1.4"
 dependencies = [
  "arbitrary-int 2.0.0",
  "bitbybit",
@@ -540,6 +540,28 @@ dependencies = [
 ]
 
 [[package]]
+name = "esp-build"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "837020ff95fbf4c15c206541dda7994f1bbe6e1505e36a6a5ecb51fdb61656d7"
+dependencies = [
+ "quote",
+ "syn",
+ "termcolor",
+]
+
+[[package]]
+name = "esp-config"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2c8c4c95d8d6243ddb39efe1fcf2524c9becd0f86bb3e24048ed30b4f553609f"
+dependencies = [
+ "document-features",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
 name = "esp-config"
 version = "0.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -618,9 +640,9 @@ dependencies = [
 
 [[package]]
 name = "esp-hal-embassy"
-version = "0.9.1"
+version = "0.8.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8be6d5d08adc5d26d8071450c76e62027906dce2795afaed76e9809e596f8e33"
+checksum = "87807cdf22124ba46dbac7d7f6d3ee2e7f06c4e461f3783443464d868101647d"
 dependencies = [
  "cfg-if",
  "critical-section",
@@ -631,12 +653,29 @@ dependencies = [
  "embassy-time 0.4.0",
  "embassy-time-driver",
  "embassy-time-queue-utils",
- "esp-config 0.5.0",
+ "esp-build",
+ "esp-config 0.4.0",
  "esp-hal",
- "esp-hal-procmacros 0.19.0",
- "esp-metadata-generated 0.1.0",
+ "esp-hal-procmacros 0.18.0",
+ "esp-metadata 0.7.0",
  "portable-atomic",
  "static_cell",
+]
+
+[[package]]
+name = "esp-hal-procmacros"
+version = "0.18.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "73164008cb2eada2ef85e6b0e459001d851f9b8e65e96e0d594bdfa8cf1b813b"
+dependencies = [
+ "darling 0.20.11",
+ "document-features",
+ "litrs 0.4.2",
+ "proc-macro-crate",
+ "proc-macro-error2",
+ "proc-macro2",
+ "quote",
+ "syn",
 ]
 
 [[package]]
@@ -670,6 +709,18 @@ dependencies = [
 
 [[package]]
 name = "esp-metadata"
+version = "0.7.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0154d59933c2419ef25a01938517cc6969f47b6af53ebb34c279393aa20d9654"
+dependencies = [
+ "anyhow",
+ "basic-toml",
+ "serde",
+ "strum",
+]
+
+[[package]]
+name = "esp-metadata"
 version = "0.8.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a6fbc1d166be84c0750f121e95c8989ddebd7e7bdd86af3594a6cfb34f039650"
@@ -689,7 +740,7 @@ version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "189d36b8c8a752bdebec67fd02a15ebb1432feea345553749bca7ce2393cc795"
 dependencies = [
- "esp-metadata",
+ "esp-metadata 0.8.0",
 ]
 
 [[package]]
@@ -1250,6 +1301,19 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn",
+]
+
+[[package]]
+name = "serde_json"
+version = "1.0.145"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "402a6f66d8c709116cf22f558eab210f5a50187f702eb4d7e5ef38d9a7f1c79c"
+dependencies = [
+ "itoa",
+ "memchr",
+ "ryu",
+ "serde",
+ "serde_core",
 ]
 
 [[package]]
