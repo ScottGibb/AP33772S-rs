@@ -122,7 +122,7 @@ jobs:
           !contains(github.event.head_commit.message, 'skip fix')
         with:
           token: ${{ secrets.PAT || secrets.GITHUB_TOKEN }}
-          commit-message: "[MegaLinter] Apply linters automatic fixes"
+          commit-message: "style: :art: Applied MegaLinter Changes"
           title: "[MegaLinter] Apply linters automatic fixes"
           labels: bot
           branch: megalinter-fixes-${{ github.head_ref }}
