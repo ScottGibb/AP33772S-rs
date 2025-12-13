@@ -76,7 +76,6 @@ use crate::units::*;
 ///
 /// - [Repository Examples](https://github.com/ScottGibb/AP33772S-rs/tree/main/examples) - Complete working examples
 /// - [`types`](crate::types) - Data structures for device configuration and measurements
-/// - [`types`](crate::types) - Data structures for device configuration and measurements
 pub struct Ap33772s<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> {
     pub(crate) i2c: I2C,
     /// The underlying delay mechanism required for the USB C Power Delivery negotiation
