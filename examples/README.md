@@ -2,7 +2,7 @@
 
 ## Summary
 
-Within this directory are a set of examples for different platforms the goal being to show the developer how to use the driver on each platform. The driver should be platform agnostic and the API should be the same regardless of wether its in `async` or `sync` mode. The top level examples are `sync` examples which require a developer machine such as Linux or Mac and the [FT232H Breakout Board](https://www.adafruit.com/product/2264?srsltid=AfmBOoqZKJGbxdDMfqFI-Ee3Zng37fVCyA3U3QFtUmqNaYjc6E0aB_gg). The setup for this is shown in the diagram below:
+Within this directory are a set of examples for different platforms the goal being to show the developer how to use the driver on each platform. The driver should be platform agnostic and the API should be the same regardless of whether its in `async` or `sync` mode. The top level examples are `sync` examples which require a developer machine such as Linux or Mac and the [FT232H Breakout Board](https://www.adafruit.com/product/2264?srsltid=AfmBOoqZKJGbxdDMfqFI-Ee3Zng37fVCyA3U3QFtUmqNaYjc6E0aB_gg). The setup for this is shown in the diagram below:
 
 ![Dev Setup](../docs/examples-dev-setup.drawio.png)
 
@@ -69,9 +69,9 @@ When running the examples you can then simply do the following
 cargo run --example power_data_object_query --no-default-features --features sync
 ```
 
-### F232H on MAC
+### FT232H on MAC
 
-When working with [FT32H](https://www.adafruit.com/product/2264), you must find the right device id, this can be done by using `lsusb`:
+When working with [FT232H](https://www.adafruit.com/product/2264), you must find the right device id, this can be done by using `lsusb`:
 
 ```bash
 ❯ lsusb
