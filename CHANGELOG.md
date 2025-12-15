@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.6](https://github.com/ScottGibb/AP33772S-rs/compare/ap33772s-rs-v0.1.5...ap33772s-rs-v0.1.6) - 2025-12-15
+
+### Added
+
+- *(ci)* Add Dependabot auto merge
+
+### Other
+
+- *(deps)* bump peter-evans/create-pull-request from 7 to 8
+- *(deps)* bump actions/upload-artifact from 5 to 6
+- *(deps)* bump actions/cache from 4 to 5
+
 ## [0.1.5](https://github.com/ScottGibb/AP33772S-rs/compare/ap33772s-rs-v0.1.4...ap33772s-rs-v0.1.5) - 2025-12-14
 
 ### Other
