@@ -10,7 +10,6 @@ permissions:
   contents: write
 
 jobs:
-
   # ---------------------------------------------------
   # Auto-merge GitHub Actions updates
   # ---------------------------------------------------
@@ -19,14 +18,13 @@ jobs:
       github.actor == 'dependabot[bot]' &&
       contains(join(github.event.pull_request.labels.*.name), 'github_actions')
     runs-on: ubuntu-latest
-
     steps:
       - uses: fastify/github-action-merge-dependabot@v3
         with:
           github-token: ${{ secrets.dependabot }}
           merge-method: rebase
           # No target: this avoids semver parsing → GH Actions merge cleanly
-          
+
   # Disabled due to no CICD System for the Driver
   # # ---------------------------------------------------
   # # Auto-merge minor (and patch) updates for all other ecosystems
