@@ -1,0 +1,45 @@
+name: Dependabot Auto Merge
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  pull-requests: write
+  contents: write
+
+jobs:
+
+  # ---------------------------------------------------
+  # Auto-merge GitHub Actions updates
+  # ---------------------------------------------------
+  merge-github-actions:
+    if: >
+      github.actor == 'dependabot[bot]' &&
+      contains(join(github.event.pull_request.labels.*.name), 'github_actions')
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: fastify/github-action-merge-dependabot@v3
+        with:
+          github-token: ${{ secrets.dependabot }}
+          merge-method: rebase
+          # No target: this avoids semver parsing → GH Actions merge cleanly
+          
+  # Disabled due to no CICD System for the Driver
+  # # ---------------------------------------------------
+  # # Auto-merge minor (and patch) updates for all other ecosystems
+  # # ---------------------------------------------------
+  # merge-semver-minor:
+  #   if: >
+  #     github.actor == 'dependabot[bot]' &&
+  #     !contains(join(github.event.pull_request.labels.*.name), 'github_actions')
+  #   runs-on: ubuntu-latest
+
+  #   steps:
+  #     - uses: fastify/github-action-merge-dependabot@v3
+  #       with:
+  #         github-token: ${{ secrets.dependabot }}
+  #         merge-method: rebase
+  #         target: minor    # Let Fastify enforce SemVer filtering
