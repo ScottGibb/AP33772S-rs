@@ -7,6 +7,7 @@ authors = ["Scott Gibb <smgibb@yahoo.com>"]
 repository = "https://github.com/ScottGibb/AP33772S-rs"
 license = "Apache-2.0"
 publish = true
+rust-version = "1.85.1"
 
 
 [features]
