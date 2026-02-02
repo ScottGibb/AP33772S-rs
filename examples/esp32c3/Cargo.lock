@@ -10,9 +10,9 @@ checksum = "a23eb6b1614318a8071c9b2521f36b424b2c83db5eb3a0fead4a6c0809af6e61"
 
 [[package]]
 name = "ap33772s-rs"
-version = "0.1.4"
+version = "0.1.7"
 dependencies = [
- "arbitrary-int 2.0.0",
+ "arbitrary-int 2.1.0",
  "bitbybit",
  "defmt 1.0.1",
  "embedded-hal-async",
@@ -29,9 +29,9 @@ checksum = "825297538d77367557b912770ca3083f778a196054b3ee63b22673c4a3cae0a5"
 
 [[package]]
 name = "arbitrary-int"
-version = "2.0.0"
+version = "2.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c858caffa49edfc4ecc45a4bec37abd3e88041a2903816f10f990b7b41abc281"
+checksum = "2575572fb5455467946777af62fbed3b3f96df50f6af4f1aa825182a6e881207"
 
 [[package]]
 name = "autocfg"
