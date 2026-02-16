@@ -8,7 +8,7 @@ use bitbybit::bitfield;
 /// [Status](crate::commands::configuration::status::Status)-defined events
 ///
 /// Datasheet Name: MASK
-#[bitfield(u8, default = 0x03)]
+#[bitfield(u8, default = 0x03, defmt_bitfields(feature = "defmt"))]
 #[derive(Debug, PartialEq)]
 pub struct InterruptEnable {
     /// Started Status
@@ -75,29 +75,5 @@ impl core::fmt::Display for InterruptEnable {
             self.over_current_protection(),
             self.over_temperature_protection()
         )
-    }
-}
-#[cfg(feature = "defmt")]
-impl defmt::Format for InterruptEnable {
-    fn format(&self, f: defmt::Formatter) {
-        defmt::write!(
-            f,
-            "InterruptEnable {{\n\
-             started: {},\n\
-             i2c_ready: {},\n\
-             new_power_data_object: {},\n\
-             under_voltage_protection: {},\n\
-             over_voltage_protection: {},\n\
-             over_current_protection: {},\n\
-             over_temperature_protection: {}\n\
-             }}",
-            self.started(),
-            self.i2c_ready(),
-            self.new_power_data_object(),
-            self.under_voltage_protection(),
-            self.over_voltage_protection(),
-            self.over_current_protection(),
-            self.over_temperature_protection()
-        );
     }
 }

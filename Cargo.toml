@@ -11,7 +11,7 @@ rust-version = "1.85.1"
 
 
 [features]
-default = ["sync"]
+default = ["sync", "defmt"]
 sync = ["dep:embedded-hal", "maybe-async/is_sync"]
 async = ["dep:embedded-hal-async"]
 defmt = ["dep:defmt"]

@@ -6,7 +6,7 @@ use bitbybit::bitfield;
 /// system configuration options that enable specific modules.
 ///
 /// Datasheet Name: CONFIG
-#[bitfield(u8, default = 0xF8)]
+#[bitfield(u8, default = 0xF8, defmt_bitfields(feature = "defmt"))]
 #[derive(Debug, PartialEq)]
 pub struct ProtectionModeConfiguration {
     // /// Reserved
@@ -59,25 +59,5 @@ impl core::fmt::Display for ProtectionModeConfiguration {
             self.over_temperature_protection_enabled(),
             self.derating_function_enabled()
         )
-    }
-}
-#[cfg(feature = "defmt")]
-impl defmt::Format for ProtectionModeConfiguration {
-    fn format(&self, f: defmt::Formatter) {
-        defmt::write!(
-            f,
-            "ProtectionModeConfiguration {{\n
-             under_voltage_protection_enabled: {},\n\
-             over_voltage_protection_enabled: {},\n\
-             over_current_protection_enabled: {},\n\
-             over_temperature_protection_enabled: {},\n\
-             derating_function_enabled: {}\n\
-             }}",
-            self.under_voltage_protection_enabled(),
-            self.over_voltage_protection_enabled(),
-            self.over_current_protection_enabled(),
-            self.over_temperature_protection_enabled(),
-            self.derating_function_enabled()
-        );
     }
 }

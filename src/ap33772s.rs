@@ -288,9 +288,7 @@ impl<I2C: I2c, D: DelayNs> Ap33772s<I2C, D> {
         let system_control = self.read_one_byte_command::<SystemControl>().await?;
         system_control
             .command_version()
-            .map_err(|raw_command_version| {
-                Ap33772sError::WrongCommandVersion(raw_command_version)
-            })?;
+            .map_err(|_| Ap33772sError::WrongCommandVersion(system_control.raw_value()))?;
         Ok(())
     }
 

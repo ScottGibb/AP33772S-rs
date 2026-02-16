@@ -6,7 +6,7 @@ use bitbybit::bitfield;
 /// The STATUS register will be reset to 0 after a read operation.
 ///
 /// Datasheet Name: STATUS
-#[bitfield(u8, default = 0x00)]
+#[bitfield(u8, default = 0x00, defmt_bitfields(feature = "defmt"))]
 #[derive(Debug, PartialEq)]
 pub struct Status {
     /// Detect if the System has started.
@@ -69,22 +69,5 @@ impl core::fmt::Display for Status {
             self.over_current_protection(),
             self.over_temperature_protection()
         )
-    }
-}
-
-#[cfg(feature = "defmt")]
-impl defmt::Format for Status {
-    fn format(&self, f: defmt::Formatter) {
-        defmt::write!(
-            f,
-            "Status {{\n started: {}, \n i2c_ready: {}, \n new_power_data_object: {}, \n under_voltage_protection: {}, \n over_voltage_protection: {}, \n over_current_protection: {}, \n over_temperature_protection: {}\n }}",
-            self.started(),
-            self.i2c_ready(),
-            self.new_power_data_object(),
-            self.under_voltage_protection(),
-            self.over_voltage_protection(),
-            self.over_current_protection(),
-            self.over_temperature_protection()
-        );
     }
 }
