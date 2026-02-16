@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.8](https://github.com/ScottGibb/AP33772S-rs/compare/ap33772s-rs-v0.1.7...ap33772s-rs-v0.1.8) - 2026-02-16
+
+### Added
+
+- migrate to bitbybit2
+
+### Fixed
+
+- *(deps)* bump bitbybit from 1.4.0 to 2.0.0 in /examples/raspberrypi
+- *(deps)* update bitbybit requirement from 1 to 2
+- *(deps)* bump arbitrary-int from 2.1.0 to 2.1.1 in /examples/esp32c3
+- *(deps)* bump uom from 0.37.0 to 0.38.0 in /examples/raspberrypi
+
 ## [0.1.7](https://github.com/ScottGibb/AP33772S-rs/compare/ap33772s-rs-v0.1.6...ap33772s-rs-v0.1.7) - 2026-01-05
 
 ### Added
