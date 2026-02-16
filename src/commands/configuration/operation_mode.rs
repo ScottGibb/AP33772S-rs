@@ -13,7 +13,7 @@ use bitbybit::{bitenum, bitfield};
 /// When `legacy_source_connected` = `true`, the AP33772S works in Legacy mode (non Power Delivery Modes).
 ///
 /// Datasheet Name: OPMODE
-#[bitfield(u8, default = 0x00)]
+#[bitfield(u8, default = 0x00, defmt_bitfields(feature = "defmt"))]
 #[derive(Debug, PartialEq)]
 pub struct OperationMode {
     /// Leagacy Source Connected
@@ -86,24 +86,5 @@ impl core::fmt::Display for OperationMode {
             self.derating_mode(),
             self.configuration_channel()
         )
-    }
-}
-
-#[cfg(feature = "defmt")]
-impl defmt::Format for OperationMode {
-    fn format(&self, f: defmt::Formatter) {
-        defmt::write!(
-            f,
-            "OperationMode {{\n\
-             legacy_source_connected: {},\n\
-             power_delivery_source_connected: {},\n\
-             derating_mode: {:?},\n\
-             configuration_channel: {:?}\n\
-             }}",
-            self.legacy_source_connected(),
-            self.power_delivery_source_connected(),
-            self.derating_mode(),
-            self.configuration_channel()
-        );
     }
 }

@@ -9,7 +9,7 @@ use bitbybit::bitfield;
 /// Represents the extended power range for the AP33772S.
 /// This contains all the necessary information to select or query what the
 /// power range capabilities are.
-#[bitfield(u16, default = 0x00)]
+#[bitfield(u16, default = 0x00, defmt_bitfields(feature = "defmt"))]
 #[derive(Debug, PartialEq)]
 pub struct ExtendedPowerRangeDataObject {
     #[bits(0..=7, r)]
@@ -101,23 +101,6 @@ impl core::fmt::Display for ExtendedPowerRangeDataObject {
                 .get::<volt>(),
             self.minimum_voltage(),
             self.peak_current(),
-            self.max_current(),
-            self.source_power_type(),
-            self.is_detected()
-        )
-    }
-}
-
-#[cfg(feature = "defmt")]
-impl defmt::Format for ExtendedPowerRangeDataObject {
-    fn format(&self, f: defmt::Formatter) {
-        defmt::write!(
-            f,
-            "ExtendedPowerRangeDataObject {{ max_voltage: {}, minimum_voltage: {:?}, max_current: {:?}, source_power_type: {:?}, is_detected: {} }}",
-            self.max_voltage()
-                .unwrap_or(ElectricPotential::new::<millivolt>(f32::NEG_INFINITY))
-                .get::<volt>(),
-            self.minimum_voltage(),
             self.max_current(),
             self.source_power_type(),
             self.is_detected()

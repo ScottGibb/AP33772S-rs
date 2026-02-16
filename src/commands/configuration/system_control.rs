@@ -7,7 +7,7 @@ use bitbybit::{bitenum, bitfield};
 /// The command version is also included in this register.
 ///
 /// Datasheet Name: SYSTEM
-#[bitfield(u8, default = 0x10)]
+#[bitfield(u8, default = 0x10, defmt_bitfields(feature = "defmt"))]
 #[derive(Debug, PartialEq)]
 pub struct SystemControl {
     /// VOUT Control Switch
@@ -76,17 +76,5 @@ impl core::fmt::Display for SystemControl {
             self.v_out_control(),
             self.command_version()
         )
-    }
-}
-
-#[cfg(feature = "defmt")]
-impl defmt::Format for SystemControl {
-    fn format(&self, f: defmt::Formatter) {
-        defmt::write!(
-            f,
-            "SystemControl {{\n v_out_control: {:?}, command_version: {:?}\n }}",
-            self.v_out_control(),
-            self.command_version()
-        );
     }
 }

@@ -191,7 +191,7 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
 
         power_delivery_request_result
             .response()
-            .map_err(Ap33772sError::DataMalformed)
+            .map_err(|_| Ap33772sError::DataMalformed(power_delivery_request_result.raw_value()))
     }
 }
 
@@ -214,7 +214,7 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
         let system_control = self.read_one_byte_command::<SystemControl>().await?;
         system_control
             .v_out_control()
-            .map_err(Ap33772sError::DataMalformed)
+            .map_err(|_| Ap33772sError::DataMalformed(system_control.raw_value()))
     }
 
     /// Reads the current flowing through the device.
@@ -408,7 +408,7 @@ impl<I2C: I2c, D: DelayNs, #[cfg(feature = "interrupts")] P: InputPin> Ap33772s<
             .await?;
         let under_voltage_threshold = under_voltage_threshold
             .threshold()
-            .map_err(Ap33772sError::DataMalformed)?;
+            .map_err(|_| Ap33772sError::DataMalformed(under_voltage_threshold.raw_value()))?;
         let de_rating_threshold = self.read_one_byte_command::<DeRatingThreshold>().await?;
         Ok(Thresholds {
             over_voltage: over_voltage_threshold.voltage()?,

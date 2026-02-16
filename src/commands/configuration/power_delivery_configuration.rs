@@ -7,7 +7,7 @@ use bitbybit::bitfield;
 /// system configuration options that enable specific modules.
 ///
 /// Datasheet Name: PDCONFIG
-#[bitfield(u8, default = 0x03)]
+#[bitfield(u8, default = 0x03, defmt_bitfields(feature = "defmt"))]
 #[derive(Debug, PartialEq)]
 pub struct PowerDeliveryConfiguration {
     /// Extended Power Delivery Enabled
@@ -51,20 +51,5 @@ impl core::fmt::Display for PowerDeliveryConfiguration {
             self.extended_power_delivery_enabled(),
             self.programmable_power_supply_and_adjustable_power_supply_enabled()
         )
-    }
-}
-
-#[cfg(feature = "defmt")]
-impl defmt::Format for PowerDeliveryConfiguration {
-    fn format(&self, f: defmt::Formatter) {
-        defmt::write!(
-            f,
-            "PowerDeliveryConfiguration {{\n\
-             extended_power_delivery_enabled: {},\n\
-             programmable_power_delivery_and_adjustable_power_supply_enabled: {}\n\
-             }}",
-            self.extended_power_delivery_enabled(),
-            self.programmable_power_supply_and_adjustable_power_supply_enabled()
-        );
     }
 }
