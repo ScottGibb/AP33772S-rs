@@ -27,7 +27,7 @@ embedded-hal-async = { version = "1", optional = true }
 
 # Driver Dependencies
 arbitrary-int = "2"
-bitbybit = "1"
+bitbybit = "2"
 uom = { version = "0.38",default-features = false, features = ["autoconvert", "si", "f32",]}
 visibility = "0.1"
 
