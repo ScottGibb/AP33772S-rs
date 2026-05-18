@@ -86,6 +86,11 @@ mod commands;
 #[cfg(not(feature = "advanced"))]
 mod communications;
 
+pub(crate) use crate::commands::macros::{
+    impl_one_byte_read_command, impl_one_byte_write_command, impl_two_byte_read_command,
+    impl_two_byte_write_command,
+};
+
 /// Sync Based HAL Imports
 #[cfg(feature = "sync")]
 mod hal {
