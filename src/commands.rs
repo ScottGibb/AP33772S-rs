@@ -12,5 +12,5 @@ pub mod requested;
 pub mod statistics;
 pub mod thermal_resistances;
 pub mod thresholds;
-// Keep macros private - they should not be exposed to end users
-mod macros;
+// Keep macros crate-private - they should not be exposed to end users
+pub(crate) mod macros;

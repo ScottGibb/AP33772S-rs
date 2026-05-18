@@ -1,4 +1,3 @@
-#[macro_export]
 macro_rules! impl_one_byte_write_command {
     ($type:ty, $address:expr) => {
         impl $crate::communications::traits::WriteOneByteCommand for $type {
@@ -13,7 +12,6 @@ macro_rules! impl_one_byte_write_command {
     };
 }
 
-#[macro_export]
 macro_rules! impl_one_byte_read_command {
     ($type:ty, $address:expr) => {
         impl $crate::communications::traits::ReadOneByteCommand for $type {
@@ -27,7 +25,6 @@ macro_rules! impl_one_byte_read_command {
     };
 }
 
-#[macro_export]
 macro_rules! impl_two_byte_write_command {
     ($type:ty, $address:expr) => {
         impl $crate::communications::traits::WriteTwoByteCommand for $type {
@@ -41,7 +38,6 @@ macro_rules! impl_two_byte_write_command {
     };
 }
 
-#[macro_export]
 macro_rules! impl_two_byte_read_command {
     ($type:ty, $address:expr) => {
         impl $crate::communications::traits::ReadTwoByteCommand for $type {
@@ -54,3 +50,8 @@ macro_rules! impl_two_byte_read_command {
         }
     };
 }
+
+pub(crate) use impl_one_byte_read_command;
+pub(crate) use impl_one_byte_write_command;
+pub(crate) use impl_two_byte_read_command;
+pub(crate) use impl_two_byte_write_command;
