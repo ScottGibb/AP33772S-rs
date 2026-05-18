@@ -9,3 +9,9 @@ Cargo.toml
 # Override the default owners and remove ownership for the .github/workflows directory
 
 .github/workflows/
+./examples/esp32c3/Cargo.toml
+./examples/esp32c3/Cargo.lock
+./examples/raspberrypi/Cargo.toml
+./examples/raspberrypi/Cargo.lock
+
+
