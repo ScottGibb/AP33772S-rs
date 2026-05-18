@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.9](https://github.com/ScottGibb/AP33772S-rs/compare/ap33772s-rs-v0.1.8...ap33772s-rs-v0.1.9) - 2026-05-18
+
+### Added
+
+- Make internal command macros crate-private
+
+### Fixed
+
+- *(deps)* bump maybe-async from 0.2.10 to 0.2.11 in /examples/esp32c3
+- *(deps)* bump maybe-async in /examples/raspberrypi
+- *(deps)* bump defmt from 1.0.1 to 1.1.0 in /examples/esp32c3
+- Codeowner scope
+- *(deps)* bump esp-bootloader-esp-idf in /examples/esp32c3
+- *(deps)* bump embassy-time from 0.5.0 to 0.5.1 in /examples/esp32c3
+
+### Other
+
+- reduce unwanted linters
+- *(deps)* bump marocchino/sticky-pull-request-comment from 2 to 3
+- *(deps)* bump actions/upload-artifact from 6 to 7
+
 ## [0.1.8](https://github.com/ScottGibb/AP33772S-rs/compare/ap33772s-rs-v0.1.7...ap33772s-rs-v0.1.8) - 2026-02-16
 
 ### Added
