@@ -4,7 +4,7 @@ version = 4
 
 [[package]]
 name = "ap33772s-rs"
-version = "0.1.8"
+version = "0.1.9"
 dependencies = [
  "arbitrary-int",
  "bitbybit",
@@ -28,9 +28,9 @@ checksum = "c08606f8c3cbf4ce6ec8e28fb0014a2c086708fe954eaa885384a6165172e7e8"
 
 [[package]]
 name = "bitbybit"
-version = "2.0.0"
+version = "2.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "71d2a3353d70ac1091a33cbf31fc7e77b19091538a7e306e3740712af19807ca"
+checksum = "bf218b839af0730012cc21856c4149789afde9ae6dc3078c7adaf311e8b76854"
 dependencies = [
  "proc-macro2",
  "quote",
