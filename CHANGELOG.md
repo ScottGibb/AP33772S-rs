@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.10](https://github.com/ScottGibb/AP33772S-rs/compare/ap33772s-rs-v0.1.9...ap33772s-rs-v0.1.10) - 2026-08-24
+
+### Fixed
+
+- *(deps)* bump arbitrary-int in /examples/raspberrypi
+- *(deps)* bump arbitrary-int from 2.1.1 to 2.2.0 in /examples/esp32c3
+- *(deps)* bump bitbybit from 2.0.0 to 2.0.1 in /examples/raspberrypi
+- *(deps)* bump bitbybit from 2.0.0 to 2.0.1 in /examples/esp32c3
+- *(deps)* bump defmt from 1.1.0 to 1.1.1 in /examples/esp32c3
+
+### Other
+
+- *(deps)* bump oxsecurity/megalinter from 9 to 10
+- Enable auto-merge for minor updates in dependabot.yaml
+- *(deps)* bump actions/cache from 5 to 6
+- *(deps)* bump actions/checkout from 6 to 7
+
 ## [0.1.9](https://github.com/ScottGibb/AP33772S-rs/compare/ap33772s-rs-v0.1.8...ap33772s-rs-v0.1.9) - 2026-05-18
 
 ### Added
